@@ -34,5 +34,8 @@ __pycache__/
 .vite-dev.log
 .vite-dev.pid
 
+# Build caches
+.vite/
+
 # Build artifacts
 dist.zip
