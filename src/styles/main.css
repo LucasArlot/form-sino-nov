@@ -272,11 +272,13 @@ body {
 
 /* Smooth hover effects utility classes */
 .hover-lift {
+  --hover-translate: 0px;
   transition: all var(--duration-normal) var(--ease-out-cubic);
+  transform: translateY(var(--hover-translate));
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
+  --hover-translate: -4px;
   box-shadow: var(--shadow-large);
 }
 

@@ -7,7 +7,7 @@ import { PackageOpen, Package, Container, CheckCircle, Info, Minus, Plus } from 
 import CustomDropdown from '@/shared/components/CustomDropdown';
 
 const StepFreight: React.FC = () => {
-  const { currentStep, formData, setFormData, getText, activeLoadIndex, step4SubStep, setStep4SubStep, nextStep, setCurrentStep } = useQuoteForm();
+  const { currentStep, formData, setFormData, getText, activeLoadIndex, step4SubStep, setStep4SubStep, setCurrentStep } = useQuoteForm();
   const [hoveredShippingType, setHoveredShippingType] = useState<string | null>(null);
 
   const t = (key: string, fallback: string): string => getText(key, fallback);
@@ -44,7 +44,7 @@ const StepFreight: React.FC = () => {
         }}
       >
         {[
-          { n: 1, label: getText('tabType', 'Type'), onClick: () => setStep4SubStep(1), done: !!currentLoad.shippingType, disabled: false },
+          { n: 1, label: getText('tabContactType', 'Type'), onClick: () => setStep4SubStep(1), done: !!currentLoad.shippingType, disabled: false },
           { n: 2, label: getText('tabDetails', 'Details'), onClick: () => currentLoad.shippingType && setStep4SubStep(2), done: step4SubStep === 2, disabled: !currentLoad.shippingType },
         ].map(({ n, label, onClick, done, disabled }) => {
           const active = step4SubStep === n;

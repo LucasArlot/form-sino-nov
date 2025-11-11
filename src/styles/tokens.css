@@ -186,7 +186,7 @@
   --max-width-prose: 600px;
   --max-width-full: 100%;
   /* Fixed dimensions to match 32" rendering exactly on all screens */
-  --form-width-desktop: 700px;
+  --form-width-desktop: 880px;
   --form-height-desktop: 1100px;
   --form-height-mobile: 60vh;
   

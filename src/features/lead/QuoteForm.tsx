@@ -1,11 +1,15 @@
-import { useState, FormEvent, useEffect } from 'react';
-import type { FC } from 'react';
+import { useState, FormEvent, useEffect, useMemo } from 'react';
+import type { FC, MouseEvent as ReactMouseEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Timeline from './Timeline';
 import Toast from '@/shared/components/Toast';
 import CustomDropdown from '@/shared/components/CustomDropdown';
 import { useQuoteForm } from '@/features/lead/context/useQuoteForm';
-import { initialLoadDetails } from '@/features/lead/context/types';
+import {
+  initialLoadDetails,
+  initialFormData,
+  type FormData as LeadFormData,
+} from '@/features/lead/context/types';
 import { useToast } from '@/hooks';
 import StepDestination from './steps/StepDestination';
 import StepMode from './steps/StepMode';
@@ -19,6 +23,9 @@ import { COUNTRIES } from '@/data/countries';
 // import { COUNTRY_TRANSLATIONS } from '@/data/countryTranslations';
 // import { getTranslatedPortName } from '@/data/portTranslations';
 // import { TEST_LEADS } from '@/data/testLeads';
+
+const INITIAL_FORM_SNAPSHOT = JSON.parse(JSON.stringify(initialFormData)) as LeadFormData;
+const INITIAL_LOADS_SNAPSHOT = JSON.stringify(INITIAL_FORM_SNAPSHOT.loads);
 
 // LOCATION_TYPES moved to context; local copy removed
 
@@ -6529,12 +6536,66 @@ const QuoteForm: FC = () => {
     activeLoadIndex,
     // setActiveLoadIndex, // Not used in minimal validation
     step1SubStep,
+    step4SubStep,
     step6SubStep,
+    setStep6SubStep,
   } = useQuoteForm();
 
   const { message: toastMessage, showToast } = useToast();
   const [submissionId, setSubmissionId] = useState<string>('');
   const [isStepValid, setIsStepValid] = useState<boolean>(false);
+
+  const hasInProgressForm = useMemo(() => {
+    if (currentStep === 7) return false;
+
+    const keys = Object.keys(INITIAL_FORM_SNAPSHOT) as (keyof LeadFormData)[];
+    const loadsSignature = JSON.stringify(formData.loads);
+
+    for (const key of keys) {
+      if (key === 'loads') {
+        if (loadsSignature !== INITIAL_LOADS_SNAPSHOT) {
+          return true;
+        }
+        continue;
+      }
+
+      const currentValue = formData[key];
+      const initialValue = INITIAL_FORM_SNAPSHOT[key];
+
+      if (typeof currentValue === 'string' && typeof initialValue === 'string') {
+        if (currentValue.trim() !== initialValue.trim()) {
+          return true;
+        }
+      } else if (currentValue !== initialValue) {
+        return true;
+      }
+    }
+
+    return currentStep > 1 || step1SubStep > 1 || step6SubStep > 1;
+  }, [formData, currentStep, step1SubStep, step6SubStep]);
+
+  useEffect(() => {
+    if (!hasInProgressForm || typeof window === 'undefined') {
+      return;
+    }
+
+    const leaveMessage =
+      userLang === 'fr'
+        ? 'Êtes-vous sûr(e) de quitter cette page ? Votre demande de devis ne sera pas sauvegardée.'
+        : 'Are you sure you want to leave this page? Your progress will be lost.';
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = leaveMessage;
+      return leaveMessage;
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasInProgressForm, userLang]);
 
   const languageOptions: Array<{ value: string; label: string }> = [
     { value: 'en', label: '🇺🇸 English' },
@@ -6564,6 +6625,43 @@ const QuoteForm: FC = () => {
     return { ...(formData as any)?.loads?.[activeLoadIndex] };
   };
 
+  const getActiveLoadDetails = () =>
+    formData.loads?.[activeLoadIndex] ?? initialLoadDetails;
+
+  const isPositiveNumber = (value: string | number | null | undefined): boolean => {
+    if (value === null || value === undefined) return false;
+    const raw = typeof value === 'number' ? `${value}` : String(value);
+    const normalized = raw.replace(',', '.').trim();
+    if (!normalized) return false;
+    const parsed = Number.parseFloat(normalized);
+    return Number.isFinite(parsed) && parsed > 0;
+  };
+
+  const getFreightValidationMessage = (
+    key: 'unitDimensions' | 'unitWeight' | 'totalVolume' | 'totalWeight'
+  ): string => {
+    const messages = {
+      unitDimensions: {
+        en: 'Please provide length, width, and height for each unit before continuing.',
+        fr: 'Veuillez renseigner la longueur, la largeur et la hauteur pour chaque unité avant de continuer.',
+      },
+      unitWeight: {
+        en: 'Please provide a weight per unit before continuing.',
+        fr: 'Veuillez indiquer le poids par unité avant de continuer.',
+      },
+      totalVolume: {
+        en: 'Please provide the total volume before continuing.',
+        fr: 'Veuillez indiquer le volume total avant de continuer.',
+      },
+      totalWeight: {
+        en: 'Please provide the total weight before continuing.',
+        fr: 'Veuillez indiquer le poids total avant de continuer.',
+      },
+    } as const;
+    const locale: 'en' | 'fr' = userLang === 'fr' ? 'fr' : 'en';
+    return messages[key][locale];
+  };
+
   // const isLoadDataValid = (_load: any, _idx: number): boolean => {
   //   // Minimal validation placeholder; detailed validation happens within steps
   //   return true;
@@ -6575,18 +6673,63 @@ const QuoteForm: FC = () => {
       case 1:
         return !!formData.country;
       case 2:
-        return !!formData.mode;
+        return true;
       case 3:
-      case 4:
+        return true;
+      case 4: {
+        const currentLoad = getActiveLoadDetails();
+        if (currentLoad.shippingType !== 'loose') {
+          return true;
+        }
+        if (step4SubStep < 2) {
+          return true;
+        }
+        if (currentLoad.calculationType === 'unit') {
+          const { length, width, height } = currentLoad.dimensions;
+          return (
+            isPositiveNumber(length) &&
+            isPositiveNumber(width) &&
+            isPositiveNumber(height) &&
+            isPositiveNumber(currentLoad.weightPerUnit)
+          );
+        }
+        if (currentLoad.calculationType === 'total') {
+          return (
+            isPositiveNumber(currentLoad.totalVolume) &&
+            isPositiveNumber(currentLoad.totalWeight)
+          );
+        }
+        return true;
+      }
       case 5:
         return true; // All optional
-      case 6:
-        // For step 6, only validate email when we're in the final sub-step (Contact)
+      case 6: {
         const maxStep6 = formData.customerType === 'company' ? 5 : 4;
-        if (step6SubStep < maxStep6) {
-          return true; // Allow navigation between sub-steps
+        // Each sub-step has its own minimal validation before allowing "Next"
+        if (step6SubStep === 1) {
+          return !!formData.customerType;
         }
-        return !!(formData.email && validateField('email', formData.email));
+        if (step6SubStep === 2) {
+          return (
+            validateField('firstName', formData.firstName) &&
+            validateField('lastName', formData.lastName)
+          );
+        }
+        if (step6SubStep === 3) {
+          return !!formData.shipperType;
+        }
+        if (formData.customerType === 'company' && step6SubStep === 4 && maxStep6 === 5) {
+          return !!formData.companyName.trim();
+        }
+        if (step6SubStep >= maxStep6) {
+          return (
+            validateField('firstName', formData.firstName) &&
+            validateField('lastName', formData.lastName) &&
+            validateField('email', formData.email)
+          );
+        }
+        return false;
+      }
       default:
         return true;
     }
@@ -6595,13 +6738,43 @@ const QuoteForm: FC = () => {
   // Update validation state when form data or current step changes
   useEffect(() => {
     setIsStepValid(checkStepValidation(currentStep));
-  }, [currentStep, formData.country, formData.mode, formData.email, step6SubStep, formData.customerType]);
+  }, [
+    currentStep,
+    formData.country,
+    formData.mode,
+    formData.email,
+    formData.firstName,
+    formData.lastName,
+    formData.shipperType,
+    formData.companyName,
+    formData.loads,
+    activeLoadIndex,
+    step4SubStep,
+    step6SubStep,
+    formData.customerType,
+  ]);
 
   // Wrapper function to handle next step with validation and error toasts
   const handleNextStep = () => {
-    if (validateStep(currentStep)) {
-      nextStep();
+    if (!validateStep(currentStep)) {
+      return;
     }
+
+    if (currentStep === 6) {
+      const maxStep6 = formData.customerType === 'company' ? 5 : 4;
+      if (step6SubStep < maxStep6) {
+        setStep6SubStep((prev) => Math.min(prev + 1, maxStep6));
+        return;
+      }
+    }
+
+    nextStep();
+  };
+
+  const handleNextStepClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    handleNextStep();
   };
 
   // Function to validate step with side effects (toasts, field validation state)
@@ -6626,13 +6799,7 @@ const QuoteForm: FC = () => {
         }));
         break;
       case 2:
-        // Mode is essential for quote
-        if (!formData.mode) {
-          showToast(getText('validationShippingMode', userLang));
-          setFieldValid((prev) => ({ ...prev, mode: false }));
-          return false;
-        }
-        setFieldValid((prev) => ({ ...prev, mode: true }));
+        setFieldValid((prev) => ({ ...prev, mode: formData.mode ? true : null }));
         break;
       case 3:
         // Origin is now optional - can be collected later
@@ -6644,13 +6811,40 @@ const QuoteForm: FC = () => {
           zipCode: null, // Optional
         }));
         break;
-      case 4:
-        // Cargo details are now optional
-        setFieldValid((prev) => ({
-          ...prev,
-          // All cargo fields are optional
-        }));
-        break;
+      case 4: {
+        const currentLoad = getActiveLoadDetails();
+        if (currentLoad.shippingType !== 'loose' || step4SubStep < 2) {
+          return true;
+        }
+        if (currentLoad.calculationType === 'unit') {
+          const { length, width, height } = currentLoad.dimensions;
+          const dimensionsValid =
+            isPositiveNumber(length) &&
+            isPositiveNumber(width) &&
+            isPositiveNumber(height);
+          if (!dimensionsValid) {
+            showToast(getFreightValidationMessage('unitDimensions'));
+            return false;
+          }
+          if (!isPositiveNumber(currentLoad.weightPerUnit)) {
+            showToast(getFreightValidationMessage('unitWeight'));
+            return false;
+          }
+          return true;
+        }
+        if (currentLoad.calculationType === 'total') {
+          if (!isPositiveNumber(currentLoad.totalVolume)) {
+            showToast(getFreightValidationMessage('totalVolume'));
+            return false;
+          }
+          if (!isPositiveNumber(currentLoad.totalWeight)) {
+            showToast(getFreightValidationMessage('totalWeight'));
+            return false;
+          }
+          return true;
+        }
+        return true;
+      }
       case 5:
         // Goods details are now optional
         setFieldValid((prev) => ({
@@ -6660,26 +6854,83 @@ const QuoteForm: FC = () => {
         }));
         break;
       case 6:
-        // For step 6, only validate email when we're in the final sub-step (Contact)
         const maxStep6 = formData.customerType === 'company' ? 5 : 4;
-        if (step6SubStep < maxStep6) {
-          return true; // Allow navigation between sub-steps
+        if (step6SubStep === 1) {
+          const valid = !!formData.customerType;
+          setFieldValid((prev) => ({ ...prev, customerType: valid ? true : false }));
+          if (!valid) {
+            showToast(getText('validationCustomerType', userLang));
+            return false;
+          }
+          return true;
         }
-        // Only email is essential for contact in the final sub-step
+
+        if (step6SubStep === 2) {
+          const firstValid = !!formData.firstName.trim();
+          const lastValid = !!formData.lastName.trim();
+          setFieldValid((prev) => ({
+            ...prev,
+            firstName: firstValid ? true : false,
+            lastName: lastValid ? true : false,
+          }));
+          if (!firstValid) {
+            showToast(getText('validationFirstName', userLang));
+            return false;
+          }
+          if (!lastValid) {
+            showToast(getText('validationLastName', userLang));
+            return false;
+          }
+          return true;
+        }
+
+        if (step6SubStep === 3) {
+          const experienceValid = !!formData.shipperType;
+          setFieldValid((prev) => ({ ...prev, shipperType: experienceValid ? true : false }));
+          if (!experienceValid) {
+            showToast(getText('validationShipperType', userLang));
+            return false;
+          }
+          return true;
+        }
+
+        if (formData.customerType === 'company' && step6SubStep === 4) {
+          const companyValid = !!formData.companyName.trim();
+          setFieldValid((prev) => ({ ...prev, companyName: companyValid ? true : false }));
+          if (!companyValid) {
+            showToast(getText('validationCompanyName', userLang));
+            return false;
+          }
+          return true;
+        }
+
+        if (step6SubStep < maxStep6) {
+          return true;
+        }
+
+        if (!formData.firstName || !validateField('firstName', formData.firstName)) {
+          showToast(getText('validationFirstName', userLang));
+          setFieldValid((prev) => ({ ...prev, firstName: false }));
+          return false;
+        }
+        if (!formData.lastName || !validateField('lastName', formData.lastName)) {
+          showToast(getText('validationLastName', userLang));
+          setFieldValid((prev) => ({ ...prev, lastName: false }));
+          return false;
+        }
         if (!formData.email || !validateField('email', formData.email)) {
           showToast(getText('validationEmail', userLang));
           setFieldValid((prev) => ({ ...prev, email: false }));
           return false;
         }
-        // All other contact fields are now optional
         setFieldValid((prev) => ({
           ...prev,
-          customerType: null, // Optional
-          firstName: null, // Optional
-          lastName: null, // Optional
-          companyName: null, // Optional
-          shipperType: null, // Optional
-          email: true, // Essential
+          customerType: true,
+          firstName: true,
+          lastName: true,
+          companyName: formData.customerType === 'company' ? true : null,
+          shipperType: true,
+          email: true,
         }));
         break;
     }
@@ -6707,8 +6958,15 @@ const QuoteForm: FC = () => {
 
       // For input fields, allow normal Enter behavior (form submission) but prevent our custom handler
       if (isInInput) {
-        // If it's the last step with a submit button, let the form handle it
-        if (currentStep === 6) return;
+        if (currentStep === 6) {
+          const maxStep6 = formData.customerType === 'company' ? 5 : 4;
+          if (step6SubStep < maxStep6) {
+            event.preventDefault();
+            handleNextStep();
+            return;
+          }
+          return;
+        }
         // Otherwise prevent default and trigger next step
         event.preventDefault();
       }
@@ -6883,110 +7141,113 @@ const QuoteForm: FC = () => {
   };
 
   return (
-    <div className="quote-form-container hover-lift">
-      <div className="form-header form-header-compact">
-        <div className="form-header-row">
-          <div className="form-header-text">
-            <h1 className="form-title animate-fade-in">
-              {currentStep === 7
-                ? getText('confirmationMainTitle', userLang)
-                : getText('mainTitle', userLang)}
-            </h1>
-          </div>
-          <div className="language-selector-header language-selector-compact">
-            <CustomDropdown
-              value={userLang}
-              onChange={(value: string) => setUserLang(value as typeof userLang)}
-              options={languageOptions}
-              placeholder="Select language"
+    <div className="quote-form-wrapper">
+      <div className="quote-form-container hover-lift">
+        <div className="form-header form-header-compact">
+          <div className="form-header-row">
+            <div className="form-header-text">
+              <h1 className="form-title animate-fade-in">
+                {currentStep === 7
+                  ? getText('confirmationMainTitle', userLang)
+                  : getText('mainTitle', userLang)}
+              </h1>
+            </div>
+            <div className="language-selector-header language-selector-compact">
+              <CustomDropdown
+                value={userLang}
+                onChange={(value: string) => setUserLang(value as typeof userLang)}
+                options={languageOptions}
+                placeholder="Select language"
               />
+            </div>
           </div>
         </div>
-      </div>
-      
-      {currentStep !== 7 && (
-        <Timeline
-          currentStep={currentStep}
-          totalSteps={6}
-          compact
-          translations={{
-            timelineDestination: getText('timelineDestination', userLang),
-            timelineMode: getText('timelineMode', userLang),
-            timelineOrigin: getText('timelineOrigin', userLang),
-            timelineCargo: getText('timelineCargo', userLang),
-            timelineGoodsDetails: getText('timelineGoodsDetails', userLang),
-            timelineContact: getText('timelineContact', userLang),
-            stepCounter: getText('stepCounter', userLang),
-          }}
-        />
-      )}
+        
+        {currentStep !== 7 && (
+          <Timeline
+            currentStep={currentStep}
+            totalSteps={6}
+            compact
+            translations={{
+              timelineDestination: getText('timelineDestination', userLang),
+              timelineMode: getText('timelineMode', userLang),
+              timelineOrigin: getText('timelineOrigin', userLang),
+              timelineCargo: getText('timelineCargo', userLang),
+              timelineGoodsDetails: getText('timelineGoodsDetails', userLang),
+              timelineContact: getText('timelineContact', userLang),
+              stepCounter: getText('stepCounter', userLang),
+            }}
+          />
+        )}
 
-      <div className="form-content-scroll">
+        <div className="form-content-scroll">
 
-        <form onSubmit={handleSubmit} className="quote-form">
-          <StepDestination />
-          <StepMode />
-          <StepOrigin />
-          <StepFreight />
-          <StepGoodsDetails />
-          <StepContact />
-          {currentStep !== 7 && (
-            <div className="form-footer">
-              <div className="trust-badge glassmorphism compact">
-                <span>💡 {getText('trustBadge', userLang)}</span>
-              </div>
-              <div className="form-navigation">
-                <div>
-                  {(currentStep > 1 || (currentStep === 1 && step1SubStep > 1)) && (
-                    <button
-                      type="button"
-                      onClick={prevStep}
-                      className="btn btn-secondary"
-                      style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
-                    >
-                      <ChevronLeft size={16} />
-                      {getText('previous', userLang)}
-                    </button>
-                  )}
+          <form onSubmit={handleSubmit} className="quote-form">
+            <StepDestination />
+            <StepMode />
+            <StepOrigin />
+            <StepFreight />
+            <StepGoodsDetails />
+            <StepContact />
+            {currentStep !== 7 && (
+              <div className="form-footer">
+                <div className="trust-badge glassmorphism compact">
+                  <span>💡 {getText('trustBadge', userLang)}</span>
                 </div>
-                <div>
-                  {currentStep < 6 || (currentStep === 6 && step6SubStep < (formData.customerType === 'company' ? 5 : 4)) ? (
-                    <button
-                      type="button"
-                      onClick={handleNextStep}
-                      className="btn btn-primary"
-                      disabled={!isStepValid}
-                      style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
-                    >
-                      {getText('next', userLang)}
-                      <ChevronRight size={16} />
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="btn btn-success"
-                      style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
-                    >
-                      {getText('submitCta', userLang)}
-                      <ChevronRight size={16} />
-                    </button>
-                  )}
+                <div className="form-navigation">
+                  <div>
+                    {(currentStep > 1 || (currentStep === 1 && step1SubStep > 1)) && (
+                      <button
+                        type="button"
+                        onClick={prevStep}
+                        className="btn btn-secondary"
+                        style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
+                      >
+                        <ChevronLeft size={16} />
+                        {getText('previous', userLang)}
+                      </button>
+                    )}
+                  </div>
+                  <div>
+                    {currentStep < 6 || (currentStep === 6 && step6SubStep < (formData.customerType === 'company' ? 5 : 4)) ? (
+                      <button
+                        type="button"
+                        onClick={handleNextStepClick}
+                        className="btn btn-primary"
+                        disabled={!isStepValid}
+                        style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
+                      >
+                        {getText('next', userLang)}
+                        <ChevronRight size={16} />
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="btn btn-success"
+                        disabled={!isStepValid}
+                        style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}
+                      >
+                        {getText('submitCta', userLang)}
+                        <ChevronRight size={16} />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </form>
+            )}
+          </form>
 
-        <StepConfirmation
-          submissionId={submissionId}
-          setSubmissionId={setSubmissionId}
-          showToast={showToast}
-        />
+          <StepConfirmation
+            submissionId={submissionId}
+            setSubmissionId={setSubmissionId}
+            showToast={showToast}
+          />
+        </div>
+
+        {/* Moved trust badge into sticky footer above */}
+
+        <Toast message={toastMessage} isVisible={!!toastMessage} />
       </div>
-
-      {/* Moved trust badge into sticky footer above */}
-
-      <Toast message={toastMessage} isVisible={!!toastMessage} />
     </div>
   );
 };
