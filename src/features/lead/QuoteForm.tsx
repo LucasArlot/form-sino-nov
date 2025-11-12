@@ -318,7 +318,6 @@ const INITIAL_LOADS_SNAPSHOT = JSON.stringify(INITIAL_FORM_SNAPSHOT.loads);
   const translations = I18N_TEXT[userLang] as any;
   return translations.chooseLocationDescription || 'Choose your pickup location';
 }; */
-
 const SEA_PORTS = [
   {
     code: 'SHA',
@@ -4049,7 +4048,7 @@ const getText = (key: string, lang: keyof typeof I18N_TEXT): string => {
     container20: "20' Estándar (33 CBM)",
     container40: "40' Estándar (67 CBM)",
     container40HC: "40' High Cube (76 CBM)",
-    container45HC: "45' High Cube (86 CBM)",
+    container40HC: "45' High Cube (86 CBM)",
     additionalDetails: 'Detalles Adicionales (Opcional)',
     additionalDetailsDescription: 'Proporcione cualquier requisito especial o información adicional',
     goodsDescription: 'Breve descripción de mercancías (opcional)',
@@ -5319,7 +5318,7 @@ const getText = (key: string, lang: keyof typeof I18N_TEXT): string => {
       container20: "20' قياسية (33 متر مكعب)",
       container40: "40' قياسية (67 متر مكعب)",
       container40HC: "40' عالية المكعب (76 متر مكعب)",
-      container45HC: "45' عالية المكعب (86 متر مكعب)",
+      container40HC: "45' عالية المكعب (86 متر مكعب)",
       // Additional shipment summary translations
       shipmentTitle: 'شحنة',
       setupPending: 'الإعداد معلق...',
@@ -5707,7 +5706,7 @@ const getText = (key: string, lang: keyof typeof I18N_TEXT): string => {
       container20: "20' Padrão (33 CBM)",
       container40: "40' Padrão (67 CBM)",
       container40HC: "40' High Cube (76 CBM)",
-      container45HC: "45' High Cube (86 CBM)",
+      container40HC: "45' High Cube (86 CBM)",
       // Additional shipment summary translations
       shipmentTitle: 'Remessa',
       setupPending: 'Configuração pendente...',
@@ -6020,7 +6019,7 @@ const getText = (key: string, lang: keyof typeof I18N_TEXT): string => {
       aboutSino: 'SINO Shipping & FS International Hakkında',
       aboutSubtitle: 'Talebiniz uzmanlar tarafından işleniyor',
       sinoDescription: 'SINO Shipping 2018 yılında Fransız girişimciler tarafından kuruldu ve 2021\'de FS International\'ın bir parçası oldu. Bu işbirliği, müşteri odaklı Batılı yaklaşımı derin yerel Çin uzmanlığı ile birleştiriyor.',
-      fsDescription: 'FS International, Eylül 1989\'da Hong Kong\'da kuruldu ve bölgede küresel lojistik ve taşımacılık için en güvenilir markalardan biri.',
+      fsDescription: 'FS International, Eylül 1989\'da Hong Kong\'daki kuruldu ve bölgede küresel lojistik ve taşımacılık için en güvenilir markalardan biri.',
       ourExpertise: 'Uzmanlığımız',
       expertise1: 'Tüm büyük Çin limanlarından deniz ve hava taşımacılığı',
       expertise2: 'Avrupa ve Rusya\'ya demiryolu taşımacılığı',
@@ -6107,7 +6106,7 @@ const getText = (key: string, lang: keyof typeof I18N_TEXT): string => {
       container20: "20' Standart (33 CBM)",
       container40: "40' Standart (67 CBM)",
       container40HC: "40' High Cube (76 CBM)",
-      container45HC: "45' High Cube (86 CBM)",
+      container40HC: "45' High Cube (86 CBM)",
       // Additional shipment summary translations
       shipmentTitle: 'Gönderi',
       setupPending: 'Kurulum bekliyor...',
@@ -6622,11 +6621,10 @@ const QuoteForm: FC = () => {
 
   const syncCurrentLoadToArray = () => {
     // Return the active load details; context/state keeps loads array authoritative
-    return { ...(formData as any)?.loads?.[activeLoadIndex] };
+    return { ...(formData.loads?.[activeLoadIndex] ?? {}) };
   };
 
-  const getActiveLoadDetails = () =>
-    formData.loads?.[activeLoadIndex] ?? initialLoadDetails;
+  const getActiveLoadDetails = () => formData.loads?.[activeLoadIndex] ?? initialLoadDetails;
 
   const isPositiveNumber = (value: string | number | null | undefined): boolean => {
     if (value === null || value === undefined) return false;
@@ -6695,8 +6693,7 @@ const QuoteForm: FC = () => {
         }
         if (currentLoad.calculationType === 'total') {
           return (
-            isPositiveNumber(currentLoad.totalVolume) &&
-            isPositiveNumber(currentLoad.totalWeight)
+            isPositiveNumber(currentLoad.totalVolume) && isPositiveNumber(currentLoad.totalWeight)
           );
         }
         return true;
@@ -6776,7 +6773,6 @@ const QuoteForm: FC = () => {
     event.stopPropagation();
     handleNextStep();
   };
-
   // Function to validate step with side effects (toasts, field validation state)
   // Used only when user tries to proceed (not for button disabled state)
   const validateStep = (step: number): boolean => {
@@ -6819,9 +6815,7 @@ const QuoteForm: FC = () => {
         if (currentLoad.calculationType === 'unit') {
           const { length, width, height } = currentLoad.dimensions;
           const dimensionsValid =
-            isPositiveNumber(length) &&
-            isPositiveNumber(width) &&
-            isPositiveNumber(height);
+            isPositiveNumber(length) && isPositiveNumber(width) && isPositiveNumber(height);
           if (!dimensionsValid) {
             showToast(getFreightValidationMessage('unitDimensions'));
             return false;
@@ -6853,7 +6847,7 @@ const QuoteForm: FC = () => {
           areGoodsReady: null, // Optional
         }));
         break;
-      case 6:
+      case 6: {
         const maxStep6 = formData.customerType === 'company' ? 5 : 4;
         if (step6SubStep === 1) {
           const valid = !!formData.customerType;
@@ -6933,6 +6927,7 @@ const QuoteForm: FC = () => {
           email: true,
         }));
         break;
+      }
     }
     return true;
   };
@@ -7079,7 +7074,6 @@ const QuoteForm: FC = () => {
         ...payloadBase, // Spread the rest of the form data (country here will be the name)
         loads: processedLoads, // Add the processed loads
       };
-
       try {
         const promises = [
           fetch(n8nTestWebhookUrl, {
@@ -7143,26 +7137,24 @@ const QuoteForm: FC = () => {
   return (
     <div className="quote-form-wrapper">
       <div className="quote-form-container hover-lift">
-        <div className="form-header form-header-compact">
-          <div className="form-header-row">
-            <div className="form-header-text">
-              <h1 className="form-title animate-fade-in">
-                {currentStep === 7
-                  ? getText('confirmationMainTitle', userLang)
-                  : getText('mainTitle', userLang)}
-              </h1>
-            </div>
-            <div className="language-selector-header language-selector-compact">
-              <CustomDropdown
-                value={userLang}
-                onChange={(value: string) => setUserLang(value as typeof userLang)}
-                options={languageOptions}
-                placeholder="Select language"
-              />
+        {currentStep !== 7 && (
+          <div className="form-header form-header-compact">
+            <div className="form-header-row">
+              <div className="form-header-text">
+                <h1 className="form-title animate-fade-in">{getText('mainTitle', userLang)}</h1>
+              </div>
+              <div className="language-selector-header language-selector-compact">
+                <CustomDropdown
+                  value={userLang}
+                  onChange={(value: string) => setUserLang(value as typeof userLang)}
+                  options={languageOptions}
+                  placeholder="Select language"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        
+        )}
+
         {currentStep !== 7 && (
           <Timeline
             currentStep={currentStep}
@@ -7181,7 +7173,6 @@ const QuoteForm: FC = () => {
         )}
 
         <div className="form-content-scroll">
-
           <form onSubmit={handleSubmit} className="quote-form">
             <StepDestination />
             <StepMode />
@@ -7209,7 +7200,9 @@ const QuoteForm: FC = () => {
                     )}
                   </div>
                   <div>
-                    {currentStep < 6 || (currentStep === 6 && step6SubStep < (formData.customerType === 'company' ? 5 : 4)) ? (
+                    {currentStep < 6 ||
+                    (currentStep === 6 &&
+                      step6SubStep < (formData.customerType === 'company' ? 5 : 4)) ? (
                       <button
                         type="button"
                         onClick={handleNextStepClick}

@@ -3,6 +3,21 @@ import FormStep from '../FormStep';
 import { useQuoteForm } from '@/features/lead/context/useQuoteForm';
 import { initialLoadDetails } from '@/features/lead/context/types';
 import { COUNTRIES } from '@/data/countries';
+import CustomDropdown from '@/shared/components/CustomDropdown';
+
+const LANGUAGE_OPTIONS: Array<{ value: string; label: string }> = [
+  { value: 'en', label: '🇺🇸 English' },
+  { value: 'fr', label: '🇫🇷 Français' },
+  { value: 'zh', label: '🇨🇳 中文' },
+  { value: 'de', label: '🇩🇪 Deutsch' },
+  { value: 'es', label: '🇪🇸 Español' },
+  { value: 'it', label: '🇮🇹 Italiano' },
+  { value: 'nl', label: '🇳🇱 Nederlands' },
+  { value: 'ar', label: '🇸🇦 العربية' },
+  { value: 'pt', label: '🇵🇹 Português' },
+  { value: 'tr', label: '🇹🇷 Türkçe' },
+  { value: 'ru', label: '🇷🇺 Русский' },
+];
 
 type StepConfirmationProps = {
   submissionId: string;
@@ -23,11 +38,15 @@ const StepConfirmation: React.FC<StepConfirmationProps> = ({
     setFieldValid,
     setCurrentStep,
     getText: ctxGetText,
+    setUserLang,
   } = useQuoteForm();
 
   const DEFAULT_EN_TEXT: Record<string, string> = {
     confirmationTitle: ctxGetText('confirmationTitle', 'Quote Request Confirmed'),
-    confirmationSubtitle: ctxGetText('confirmationSubtitle', 'Your request has been successfully submitted'),
+    confirmationSubtitle: ctxGetText(
+      'confirmationSubtitle',
+      'Your request has been successfully submitted'
+    ),
     referenceNumber: 'Reference Number',
     yourRequest: 'Your Request Summary',
     shipmentDetails: 'Shipment Details',
@@ -213,7 +232,7 @@ const StepConfirmation: React.FC<StepConfirmationProps> = ({
     aboutSino: 'Su SINO Shipping & FS International',
     aboutSubtitle: 'La vostra richiesta è in mani esperte',
     sinoDescription:
-      'SINO Shipping, lanciata nel 2018 da imprenditori francesi, è diventata parte di FS International nel 2021. Questa partnership combina l’approccio occidentale orientato al cliente con una profonda expertise locale in Cina.',
+      "SINO Shipping, lanciata nel 2018 da imprenditori francesi, è diventata parte di FS International nel 2021. Questa partnership combina l'approccio occidentale orientato al cliente con una profonda expertise locale in Cina.",
     fsDescription:
       'FS International, fondata a Hong Kong nel settembre 1989, è uno dei nomi più affidabili nella logistica e nel trasporto globale nella regione.',
     ourExpertise: 'La Nostra Esperienza',
@@ -593,8 +612,380 @@ const StepConfirmation: React.FC<StepConfirmationProps> = ({
       (userLang === 'ru' && DEFAULT_RU_TEXT[key]) ||
       DEFAULT_EN_TEXT[key] ||
       key;
+
     return ctxGetText(key, fallback);
   };
+
+  const completionLabel = React.useMemo(() => {
+    switch (userLang) {
+      case 'fr':
+        return 'Processus terminé avec succès';
+      case 'de':
+        return 'Vorgang erfolgreich abgeschlossen';
+      case 'es':
+        return 'Proceso completado con éxito';
+      case 'it':
+        return 'Processo completato con successo';
+      case 'nl':
+        return 'Proces succesvol voltooid';
+      case 'ar':
+        return 'تم إنجاز العملية بنجاح';
+      case 'pt':
+        return 'Processo concluído com sucesso';
+      case 'tr':
+        return 'Süreç başarıyla tamamlandı';
+      case 'ru':
+        return 'Процесс успешно завершён';
+      case 'zh':
+        return '流程成功完成';
+      default:
+        return 'Process successfully completed';
+    }
+  }, [userLang]);
+
+  const destinationCountry = React.useMemo(() => {
+    if (!formData.country) {
+      return undefined;
+    }
+
+    return COUNTRIES.find((country) => country.code === formData.country)?.name;
+  }, [formData.country]);
+
+  const loadsCount = formData.loads?.length || 0;
+
+  const modeKey =
+    formData.mode === 'Unsure'
+      ? 'unsureShipping'
+      : formData.mode === 'Sea Freight'
+        ? 'seaFreight'
+        : formData.mode === 'Air Freight'
+          ? 'airFreight'
+          : formData.mode === 'Rail Freight'
+            ? 'railFreight'
+            : formData.mode === 'Express'
+              ? 'express'
+              : 'mode';
+
+  const modeLabel = getText(modeKey);
+
+  const timelineSteps = React.useMemo(
+    () => [
+      {
+        id: 'step1',
+        title: userLang === 'fr' ? 'Demande reçue' : getText('step1'),
+        time: userLang === 'fr' ? 'Maintenant' : getText('step1Time'),
+        status: 'done' as const,
+      },
+      {
+        id: 'step2',
+        title: userLang === 'fr' ? 'Analyse et cotation' : getText('step2'),
+        time: userLang === 'fr' ? 'Sous 4h ouvrées' : getText('step2Time'),
+        status: 'current' as const,
+      },
+      {
+        id: 'step3',
+        title: userLang === 'fr' ? 'Contact commercial' : getText('step3'),
+        time: userLang === 'fr' ? 'Sous 24h' : getText('step3Time'),
+        status: 'upcoming' as const,
+      },
+      {
+        id: 'step4',
+        title: userLang === 'fr' ? 'Devis détaillé' : getText('step4'),
+        time: userLang === 'fr' ? 'Sous 48h' : getText('step4Time'),
+        status: 'upcoming' as const,
+      },
+    ],
+    [getText, userLang]
+  );
+
+  const expertise = React.useMemo(
+    () => [
+      getText('expertise1'),
+      getText('expertise2'),
+      getText('expertise3'),
+      getText('expertise4'),
+    ],
+    [getText]
+  );
+
+  const impactMetrics = React.useMemo(
+    () => [
+      {
+        icon: '📦',
+        value: '55,000+',
+        label: userLang === 'fr' ? 'Clients accompagnés' : getText('satisfiedCustomers'),
+        caption:
+          userLang === 'fr'
+            ? 'Accompagnement d’importateurs chaque année'
+            : getText('impactDescription'),
+      },
+      {
+        icon: '⭐',
+        value: '4.8/5',
+        label: userLang === 'fr' ? 'Satisfaction client' : getText('customerSatisfaction'),
+        caption:
+          userLang === 'fr' ? 'Basé sur les retours clients certifiés' : getText('thankYouMessage'),
+      },
+      {
+        icon: '👥',
+        value: '400+',
+        label: userLang === 'fr' ? "Membres de l'équipe" : getText('teamMembers'),
+        caption:
+          userLang === 'fr' ? 'Experts répartis entre Chine et Europe' : getText('globalNetwork'),
+      },
+      {
+        icon: '🚢',
+        value: '140,000+',
+        label: userLang === 'fr' ? 'Volume maritime TEU' : getText('oceanVolume'),
+        caption:
+          userLang === 'fr'
+            ? 'Capacité moyenne traitée annuellement'
+            : getText('impactDescription'),
+      },
+      {
+        icon: '🏢',
+        value: '8',
+        label: userLang === 'fr' ? 'Bureaux en Chine' : getText('officesInChina'),
+        caption:
+          userLang === 'fr'
+            ? 'Implantations locales pour la proximité'
+            : getText('networkDescription'),
+      },
+      {
+        icon: '📦',
+        value: '519,000+',
+        label: userLang === 'fr' ? 'm² Installations CFS' : getText('cfsFacilities'),
+        caption:
+          userLang === 'fr' ? 'Capacité de stockage et préparation' : getText('impactDescription'),
+      },
+    ],
+    [getText, userLang]
+  );
+
+  const websites = React.useMemo(
+    () => [
+      {
+        href: 'https://sino-shipping.com',
+        label: 'sino-shipping.com',
+        description: 'Global freight forwarder',
+      },
+      { href: 'https://fschina.com', label: 'fschina.com', description: 'FS International (HK)' },
+      {
+        href: 'https://es.sino-shipping.com',
+        label: 'es.sino-shipping.com',
+        description: 'SINO Shipping (ES)',
+      },
+      {
+        href: 'https://moreplusfsi.com',
+        label: 'moreplusfsi.com',
+        description: 'MorePlus (Sourcing)',
+      },
+      { href: 'https://eaanetwork.com', label: 'eaanetwork.com', description: 'EAA Network' },
+      { href: 'https://can-qianhai.com', label: 'can-qianhai.com', description: 'CAN Alliance' },
+      { href: 'https://mcc-qianhai.com', label: 'mcc-qianhai.com', description: 'Export to China' },
+    ],
+    []
+  );
+
+  const timelineStatusLabels = React.useMemo<Record<'done' | 'current' | 'upcoming', string>>(
+    () => ({
+      done: userLang === 'fr' ? 'Terminé' : 'Completed',
+      current: userLang === 'fr' ? 'En cours' : 'In progress',
+      upcoming: userLang === 'fr' ? 'À venir' : 'Upcoming',
+    }),
+    [userLang]
+  );
+
+  const supportAvailabilityLabel = React.useMemo(
+    () =>
+      userLang === 'fr'
+        ? 'Disponible : 9h-18h (heure de Chine)'
+        : `${getText('available')}: ${getText('businessHours')}`,
+    [getText, userLang]
+  );
+
+  const viewServicesLabel = React.useMemo(
+    () => (userLang === 'fr' ? 'Découvrir nos services' : getText('viewServices')),
+    [getText, userLang]
+  );
+
+  const handleCopyReference = React.useCallback(() => {
+    if (!submissionId) {
+      return;
+    }
+
+    try {
+      navigator.clipboard?.writeText(submissionId);
+      showToast(userLang === 'fr' ? 'Référence copiée' : 'Reference copied');
+    } catch {
+      showToast(
+        userLang === 'fr' ? 'Impossible de copier la référence' : 'Unable to copy reference'
+      );
+    }
+  }, [submissionId, showToast, userLang]);
+
+  const handleResetForm = React.useCallback(() => {
+    const resetMessage =
+      userLang === 'fr'
+        ? 'Nouveau formulaire prêt !'
+        : userLang === 'es'
+          ? '¡Nuevo formulario listo!'
+          : userLang === 'de'
+            ? 'Neues Formular bereit!'
+            : userLang === 'it'
+              ? 'Nuovo modulo pronto!'
+              : userLang === 'nl'
+                ? 'Nieuw formulier klaar!'
+                : userLang === 'zh'
+                  ? '新表单已准备!'
+                  : userLang === 'ar'
+                    ? 'استمارة جديدة جاهزة!'
+                    : userLang === 'pt'
+                      ? 'Novo formulário pronto!'
+                      : userLang === 'tr'
+                        ? 'Yeni form hazır!'
+                        : userLang === 'ru'
+                          ? 'Новая форма готова!'
+                          : 'New form ready!';
+
+    try {
+      setFormData({
+        country: '',
+        origin: '',
+        mode: '',
+        email: '',
+        phone: '',
+        phoneCountryCode: '+234',
+        locationType: '',
+        city: '',
+        zipCode: '',
+        destLocationType: '',
+        destCity: '',
+        destZipCode: '',
+        destPort: '',
+        firstName: '',
+        lastName: '',
+        companyName: '',
+        shipperType: '',
+        loads: [JSON.parse(JSON.stringify(initialLoadDetails))],
+        goodsValue: '',
+        goodsCurrency: 'USD',
+        isPersonalOrHazardous: false,
+        areGoodsReady: 'yes',
+        goodsDescription: '',
+        specialRequirements: '',
+        remarks: '',
+      });
+
+      setFieldValid({
+        country: null,
+        origin: null,
+        mode: null,
+        email: null,
+        phone: null,
+        phoneCountryCode: null,
+        city: null,
+        zipCode: null,
+        destCity: null,
+        destZipCode: null,
+        destPort: null,
+        firstName: null,
+        lastName: null,
+        companyName: null,
+        shipperType: null,
+        goodsValue: null,
+        destLocationType: null,
+      });
+
+      setCurrentStep(1);
+      setSubmissionId('');
+      showToast(resetMessage);
+    } catch {
+      showToast('Error resetting form');
+    }
+  }, [setCurrentStep, setFieldValid, setFormData, setSubmissionId, showToast, userLang]);
+
+  const heroHighlights = React.useMemo(
+    () =>
+      userLang === 'fr'
+        ? ['Réponse sous 24h', 'Experts logistiques dédiés', 'Réseau mondial certifié']
+        : ['Reply within 24h', 'Dedicated logistics expert', 'Global network coverage'],
+    [userLang]
+  );
+
+  const heroVisualSteps = React.useMemo(
+    () =>
+      userLang === 'fr'
+        ? [
+            { icon: '⏱️', label: 'Analyse & cotation en cours' },
+            { icon: '🤝', label: 'Un expert vous contacte au plus vite' },
+            { icon: '🧾', label: 'Réception de votre devis détaillé' },
+          ]
+        : [
+            { icon: '⏱️', label: 'Review & pricing underway' },
+            { icon: '🤝', label: 'A dedicated expert will reach out shortly' },
+            { icon: '🧾', label: 'Receive your detailed quotation' },
+          ],
+    [userLang]
+  );
+
+  const heroMetrics = React.useMemo(
+    () => [
+      {
+        icon: '📈',
+        value: '55K+',
+        label: userLang === 'fr' ? 'Clients accompagnés' : getText('satisfiedCustomers'),
+        description:
+          userLang === 'fr'
+            ? 'Importateurs accompagnés chaque année'
+            : getText('impactDescription'),
+        accent: '#2563eb',
+        accentSoft: 'rgba(37, 99, 235, 0.14)',
+        accentStrong: '#1d4ed8',
+      },
+      {
+        icon: '⭐',
+        value: '4.8/5',
+        label: userLang === 'fr' ? 'Note de satisfaction' : getText('customerSatisfaction'),
+        description:
+          userLang === 'fr' ? 'Basé sur les retours clients vérifiés' : getText('thankYouMessage'),
+        accent: '#f97316',
+        accentSoft: 'rgba(249, 115, 22, 0.18)',
+        accentStrong: '#ea580c',
+      },
+      {
+        icon: '🚢',
+        value: '140K+',
+        label: userLang === 'fr' ? 'TEU gérés/an' : getText('oceanVolume'),
+        description:
+          userLang === 'fr' ? 'Capacité logistique globale annuelle' : getText('globalNetwork'),
+        accent: '#0ea5e9',
+        accentSoft: 'rgba(14, 165, 233, 0.18)',
+        accentStrong: '#0284c7',
+      },
+    ],
+    [getText, userLang]
+  );
+
+  const companyIntro = React.useMemo(
+    () => [
+      {
+        title: '🇫🇷 SINO Shipping (2018)',
+        description:
+          userLang === 'fr'
+            ? "SINO Shipping, lancée en 2018 par des entrepreneurs français, est devenue une marque de FS International en 2021. Ce partenariat combine l'approche occidentale centrée client avec une expertise locale chinoise approfondie."
+            : getText('sinoDescription'),
+      },
+      {
+        title: '🇭🇰 FS International (1989)',
+        description:
+          userLang === 'fr'
+            ? "FS International, fondée à Hong Kong en septembre 1989, est l'un des noms les plus fiables en logistique et transport global dans sa région."
+            : getText('fsDescription'),
+      },
+    ],
+    [getText, userLang]
+  );
 
   return (
     <FormStep
@@ -602,1647 +993,455 @@ const StepConfirmation: React.FC<StepConfirmationProps> = ({
       stepNumber={7}
       title={userLang === 'fr' ? 'Demande de Devis Confirmée' : getText('confirmationTitle')}
       emoji="✅"
-      hideStepNumber={true}
+      hideStepNumber
+      hideHeader
     >
-      <div
-        className="confirmation-container"
-        style={{
-          background:
-            'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%)',
-          borderRadius: '2rem',
-          padding: '0',
-          margin: '2rem 0',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          overflow: 'hidden',
-          position: 'relative',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '-50%',
-            left: '-50%',
-            width: '200%',
-            height: '200%',
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%)',
-            animation: 'float 6s ease-in-out infinite',
-            zIndex: 0,
-          }}
-        ></div>
-        <div
-          style={{
-            position: 'absolute',
-            top: '10%',
-            right: '10%',
-            width: '100px',
-            height: '100px',
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
-            borderRadius: '50%',
-            animation: 'pulse 4s ease-in-out infinite',
-            zIndex: 0,
-          }}
-        ></div>
-        <div style={{ position: 'relative', zIndex: 10 }}>
-          <div
-            style={{
-              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-              padding: '4rem 2rem',
-              textAlign: 'center',
-              color: 'white',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                position: 'absolute',
-                top: '20%',
-                left: '10%',
-                width: '8px',
-                height: '8px',
-                backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                borderRadius: '50%',
-                animation: 'float 3s ease-in-out infinite',
-              }}
-            ></div>
-            <div
-              style={{
-                position: 'absolute',
-                top: '60%',
-                right: '15%',
-                width: '6px',
-                height: '6px',
-                backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                borderRadius: '50%',
-                animation: 'float 4s ease-in-out infinite reverse',
-              }}
-            ></div>
-            <div
-              style={{
-                position: 'absolute',
-                top: '30%',
-                right: '30%',
-                width: '10px',
-                height: '10px',
-                backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                borderRadius: '50%',
-                animation: 'float 5s ease-in-out infinite',
-              }}
-            ></div>
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '25%',
-                left: '20%',
-                width: '4px',
-                height: '4px',
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                borderRadius: '50%',
-                animation: 'sparkle 2s ease-in-out infinite',
-              }}
-            ></div>
-            <div
-              style={{
-                fontSize: '6rem',
-                marginBottom: '1.5rem',
-                animation: 'bounceIn 1s ease-out',
-                filter: 'drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2))',
-              }}
-            >
-              🎉
+      <div className="confirmation-layout">
+        <section className="confirmation-hero">
+          <div className="confirmation-hero__content">
+            <div className="confirmation-hero__top">
+              <p className="confirmation-hero__tag">✨ {completionLabel}</p>
+              <div className="confirmation-lang">
+                <CustomDropdown
+                  value={userLang}
+                  onChange={(value) => setUserLang(value as typeof userLang)}
+                  options={LANGUAGE_OPTIONS}
+                  compact
+                />
+              </div>
             </div>
-            <div
-              style={{
-                display: 'inline-block',
-                padding: '1rem 2.5rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                borderRadius: '50px',
-                border: '2px solid rgba(255, 255, 255, 0.3)',
-                fontSize: '1rem',
-                fontWeight: '700',
-                marginBottom: '2rem',
-                backdropFilter: 'blur(10px)',
-                animation: 'slideInDown 0.8s ease-out 0.3s both',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-              }}
-            >
-              ✨{' '}
-              {userLang === 'fr'
-                ? 'Processus Terminé avec Succès'
-                : userLang === 'de'
-                  ? 'Vorgang Erfolgreich Abgeschlossen'
-                  : userLang === 'es'
-                    ? 'Proceso Completado con Éxito'
-                    : userLang === 'it'
-                      ? 'Processo Completato con Successo'
-                      : userLang === 'nl'
-                        ? 'Proces Succesvol Voltooid'
-                        : userLang === 'ar'
-                          ? 'تم إنجاز العملية بنجاح'
-                          : userLang === 'pt'
-                            ? 'Processo Concluído com Sucesso'
-                            : userLang === 'tr'
-                              ? 'Süreç Başarıyla Tamamlandı'
-                              : userLang === 'ru'
-                                ? 'Процесс Успешно Завершён'
-                                : userLang === 'zh'
-                                  ? '流程成功完成'
-                                  : 'Process Successfully Completed'}
-            </div>
-            <h1
-              style={{
-                fontSize: '3rem',
-                fontWeight: '800',
-                marginBottom: '1.5rem',
-                textShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                animation: 'slideInUp 0.8s ease-out 0.1s both',
-                background: 'linear-gradient(45deg, #ffffff 0%, #f0fdf4 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
+            <h1 className="confirmation-hero__title">
               {userLang === 'fr' ? 'Merci pour votre confiance !' : getText('thankYouTitle')}
             </h1>
-            <p
-              style={{
-                fontSize: '1.3rem',
-                opacity: '0.95',
-                marginBottom: '2.5rem',
-                maxWidth: '700px',
-                margin: '0 auto 2.5rem auto',
-                lineHeight: '1.7',
-                animation: 'slideInUp 0.8s ease-out 0.2s both',
-                fontWeight: '300',
-              }}
-            >
+            <p className="confirmation-hero__subtitle">
               {userLang === 'fr'
                 ? 'Votre demande a été soumise avec succès'
                 : getText('confirmationSubtitle')}
             </p>
-            <div
-              onClick={() => {
-                try {
-                  if (submissionId) {
-                    navigator.clipboard?.writeText(submissionId);
-                    showToast(userLang === 'fr' ? 'Référence copiée' : 'Reference copied');
-                  }
-                } catch {
-                  // ignore
-                }
-              }}
-              title={userLang === 'fr' ? 'Cliquer pour copier' : 'Click to copy'}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  try {
-                    if (submissionId) {
-                      navigator.clipboard?.writeText(submissionId);
-                      showToast(userLang === 'fr' ? 'Référence copiée' : 'Reference copied');
-                    }
-                  } catch {
-                    // ignore
-                  }
-                }
-              }}
-              style={{
-                background:
-                  'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%)',
-                padding: '1.5rem 3rem',
-                borderRadius: '20px',
-                border: '2px solid rgba(255, 255, 255, 0.3)',
-                display: 'inline-block',
-                backdropFilter: 'blur(15px)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-                animation: 'slideInUp 0.8s ease-out 0.4s both',
-                minWidth: '300px',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '0.9rem',
-                  opacity: '0.8',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500',
-                }}
-              >
-                {userLang === 'fr' ? 'Numéro de Référence' : getText('referenceNumber')}
+            <button type="button" className="confirmation-reference" onClick={handleCopyReference}>
+              <span className="confirmation-reference__label">
+                {userLang === 'fr' ? 'Numéro de référence' : getText('referenceNumber')}
+              </span>
+              <span className="confirmation-reference__value">{submissionId || '— — — —'}</span>
+            </button>
+            <div className="confirmation-hero__stats">
+              <div className="hero-stat">
+                <span className="hero-stat__value">4.8/5</span>
+                <span className="hero-stat__label">
+                  {userLang === 'fr' ? 'Note de satisfaction' : getText('customerSatisfaction')}
+                </span>
               </div>
-              <div
-                style={{
-                  fontSize: '1.3rem',
-                  fontWeight: '700',
-                  fontFamily: 'monospace',
-                  letterSpacing: '2px',
-                  color: '#ffffff',
-                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                {submissionId}
+              <div className="hero-stat">
+                <span className="hero-stat__value">55K+</span>
+                <span className="hero-stat__label">
+                  {userLang === 'fr' ? 'Clients accompagnés' : getText('satisfiedCustomers')}
+                </span>
+              </div>
+              <div className="hero-stat">
+                <span className="hero-stat__value">24h</span>
+                <span className="hero-stat__label">
+                  {userLang === 'fr' ? 'Premier retour sous 24h' : getText('step3Time')}
+                </span>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="request-summary"
-          style={{
-            marginBottom: '2rem',
-            padding: '2rem',
-            background:
-              'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%)',
-            borderRadius: '1.5rem',
-            border: '2px solid rgba(16, 185, 129, 0.1)',
-            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-            animation: 'slideInUp 0.8s ease-out 0.6s both',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <div
-              style={{
-                width: '40px',
-                height: '40px',
-                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '1rem',
-                fontSize: '1.2rem',
-              }}
-            >
-              📋
+            <div className="confirmation-hero__highlights">
+              {heroHighlights.map((highlight) => (
+                <span className="confirmation-highlight" key={highlight}>
+                  {highlight}
+                </span>
+              ))}
             </div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1f2937', margin: 0 }}>
-              {userLang === 'fr' ? 'Récapitulatif de Votre Demande' : getText('yourRequest')}
-            </h3>
-          </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '2rem',
-            }}
-          >
-            <div
-              style={{
-                padding: '1.5rem',
-                background:
-                  'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%)',
-                borderRadius: '1rem',
-                border: '1px solid rgba(16, 185, 129, 0.15)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: '0.75rem',
-                    fontSize: '1rem',
-                  }}
-                >
-                  🚢
-                </div>
-                <h4 style={{ color: '#1f2937', fontSize: '1.1rem', fontWeight: '600', margin: 0 }}>
-                  {userLang === 'fr' ? "Détails de l'Expédition" : getText('shipmentDetails')}
-                </h4>
-              </div>
-              <div style={{ color: '#374151', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                <p style={{ margin: '0rem 0', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>📍</span>
-                  <strong>{formData.city || formData.origin}</strong> →{' '}
-                  <strong>
-                    {formData.destCity || formData.country},{' '}
-                    {COUNTRIES.find((c) => c.code === formData.country)?.name}
-                  </strong>
-                </p>
-                <p style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>🚛</span>
-                  {userLang === 'fr' ? 'Mode' : getText('mode')}:&nbsp;
-                  <strong>
-                    {getText(
-                      formData.mode === 'Unsure'
-                        ? 'unsureShipping'
-                        : formData.mode === 'Sea Freight'
-                          ? 'seaFreight'
-                          : formData.mode === 'Air Freight'
-                            ? 'airFreight'
-                            : formData.mode === 'Rail Freight'
-                              ? 'railFreight'
-                              : formData.mode === 'Express'
-                                ? 'express'
-                                : 'mode'
-                    )}
-                  </strong>
-                </p>
-                <p style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>📦</span>
-                  <strong>{formData.loads.length}</strong>&nbsp;
-                  {formData.loads.length === 1
-                    ? userLang === 'fr'
-                      ? 'expédition'
-                      : getText('shipment')
-                    : userLang === 'fr'
-                      ? 'expéditions'
-                      : getText('shipments')}
-                </p>
-              </div>
-            </div>
-            <div
-              style={{
-                padding: '1.5rem',
-                background:
-                  'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%)',
-                borderRadius: '1rem',
-                border: '1px solid rgba(59, 130, 246, 0.15)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: '0.75rem',
-                    fontSize: '1rem',
-                  }}
-                >
-                  👤
-                </div>
-                <h4 style={{ color: '#1f2937', fontSize: '1.1rem', fontWeight: '600', margin: 0 }}>
-                  {userLang === 'fr' ? 'Coordonnées' : getText('contactDetails')}
-                </h4>
-              </div>
-              <div style={{ color: '#374151', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                <p style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>👨‍💼</span>
-                  <strong>
-                    {formData.firstName} {formData.lastName}
-                  </strong>
-                </p>
-                {formData.companyName && (
-                  <p style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center' }}>
-                    <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>🏢</span>
-                    <strong>{formData.companyName}</strong>
-                  </p>
-                )}
-                <p style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>📧</span>
-                  <strong>{formData.email}</strong>
-                </p>
-                {formData.phone && (
-                  <p style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center' }}>
-                    <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>📱</span>
-                    <strong>
-                      {formData.phoneCountryCode} {formData.phone}
-                    </strong>
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="next-steps"
-          style={{
-            marginBottom: '3rem',
-            padding: '2.5rem',
-            background:
-              'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.05) 100%)',
-            borderRadius: '1.5rem',
-            border: '2px solid rgba(59, 130, 246, 0.15)',
-            boxShadow: '0 10px 25px rgba(59, 130, 246, 0.1)',
-            animation: 'slideInUp 0.8s ease-out 0.8s both',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '-20px',
-              right: '-20px',
-              width: '80px',
-              height: '80px',
-              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
-              borderRadius: '50%',
-            }}
-          ></div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: '2rem',
-              position: 'relative',
-              zIndex: 10,
-            }}
-          >
-            <div
-              style={{
-                width: '48px',
-                height: '48px',
-                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '1rem',
-                fontSize: '1.5rem',
-                boxShadow: '0 8px 16px rgba(59, 130, 246, 0.3)',
-              }}
-            >
-              ⏱️
-            </div>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: '700', color: '#1f2937', margin: 0 }}>
-              {userLang === 'fr' ? 'Prochaines Étapes' : getText('nextSteps')}
-            </h3>
-          </div>
-          <div style={{ position: 'relative' }}>
-            <div
-              style={{
-                position: 'absolute',
-                left: '24px',
-                top: '40px',
-                bottom: '40px',
-                width: '3px',
-                background: 'linear-gradient(to bottom, #10b981 0%, #3b82f6 50%, #94a3b8 100%)',
-                borderRadius: '2px',
-                opacity: 0.3,
-              }}
-            ></div>
-            <div style={{ display: 'grid', gap: '1.5rem', position: 'relative', zIndex: 10 }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1.5rem',
-                  padding: '1rem',
-                  borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.6)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(16, 185, 129, 0.2)',
-                  transform: 'translateX(0)',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontSize: '1.2rem',
-                    fontWeight: '700',
-                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)',
-                    border: '3px solid white',
-                  }}
-                >
-                  ✓
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: '#1f2937',
-                      marginBottom: '0.25rem',
-                    }}
-                  >
-                    {userLang === 'fr' ? 'Demande reçue' : getText('step1')}
-                  </div>
-                  <div style={{ color: '#059669', fontSize: '0.9rem', fontWeight: '500' }}>
-                    {userLang === 'fr' ? 'Maintenant' : getText('step1Time')}
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1.5rem',
-                  padding: '1rem',
-                  borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.6)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(59, 130, 246, 0.2)',
-                  transform: 'translateX(0)',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontSize: '1.1rem',
-                    fontWeight: '700',
-                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
-                    border: '3px solid white',
-                    animation: 'pulse 2s ease-in-out infinite',
-                  }}
-                >
-                  2
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: '#1f2937',
-                      marginBottom: '0.25rem',
-                    }}
-                  >
-                    {userLang === 'fr' ? 'Analyse et cotation' : getText('step2')}
-                  </div>
-                  <div style={{ color: '#3b82f6', fontSize: '0.9rem', fontWeight: '500' }}>
-                    {userLang === 'fr' ? 'Sous 4h ouvrées' : getText('step2Time')}
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1.5rem',
-                  padding: '1rem',
-                  borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.4)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(148, 163, 184, 0.3)',
-                  opacity: 0.8,
-                }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    background: 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontSize: '1.1rem',
-                    fontWeight: '700',
-                    border: '3px solid white',
-                  }}
-                >
-                  3
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: '#64748b',
-                      marginBottom: '0.25rem',
-                    }}
-                  >
-                    {userLang === 'fr' ? 'Contact commercial' : getText('step3')}
-                  </div>
-                  <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500' }}>
-                    {userLang === 'fr' ? 'Sous 24h' : getText('step3Time')}
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1.5rem',
-                  padding: '1rem',
-                  borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.4)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(148, 163, 184, 0.3)',
-                  opacity: 0.8,
-                }}
-              >
-                <div
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    background: 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontSize: '1.1rem',
-                    fontWeight: '700',
-                    border: '3px solid white',
-                  }}
-                >
-                  4
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: '#64748b',
-                      marginBottom: '0.25rem',
-                    }}
-                  >
-                    {userLang === 'fr' ? 'Devis détaillé' : getText('step4')}
-                  </div>
-                  <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500' }}>
-                    {userLang === 'fr' ? 'Sous 48h' : getText('step4Time')}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="company-info"
-          style={{
-            marginBottom: '2rem',
-            padding: '3rem',
-            background:
-              'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 95, 70, 0.05) 100%)',
-            borderRadius: '2rem',
-            border: '2px solid rgba(16, 185, 129, 0.15)',
-            boxShadow: '0 15px 35px rgba(16, 185, 129, 0.1)',
-            animation: 'slideInUp 0.8s ease-out 1s both',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '-30px',
-              left: '-30px',
-              width: '120px',
-              height: '120px',
-              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%)',
-              borderRadius: '50%',
-            }}
-          ></div>
-          <div style={{ position: 'relative', zIndex: 10 }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '1.5rem',
-              }}
-            >
-              <div
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                  borderRadius: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '1rem',
-                  fontSize: '2rem',
-                  boxShadow: '0 10px 20px rgba(16, 185, 129, 0.3)',
-                }}
-              >
-                🚢
-              </div>
-              <h3 style={{ fontSize: '2rem', fontWeight: '800', color: '#1f2937', margin: 0 }}>
-                {userLang === 'fr'
-                  ? 'À Propos de SINO Shipping & FS International'
-                  : getText('aboutSino')}
-              </h3>
-            </div>
-            <p
-              style={{
-                color: '#6b7280',
-                fontSize: '1.2rem',
-                textAlign: 'center',
-                marginBottom: '3rem',
-                maxWidth: '800px',
-                margin: '0 auto 3rem auto',
-                lineHeight: '1.7',
-                fontWeight: '300',
-              }}
-            >
-              {userLang === 'fr'
-                ? 'Votre demande est entre de bonnes mains'
-                : getText('aboutSubtitle')}
-            </p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '2rem',
-                marginBottom: '2rem',
-              }}
-            >
-              <div
-                style={{
-                  padding: '1.5rem',
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  borderRadius: '0.75rem',
-                }}
-              >
-                <h4 style={{ color: '#10b981', marginBottom: '1rem', fontSize: '1.2rem' }}>
-                  🇫🇷 SINO Shipping (2018)
-                </h4>
-                <p style={{ color: '#374151', lineHeight: '1.6' }}>
-                  {userLang === 'fr'
-                    ? "SINO Shipping, lancée en 2018 par des entrepreneurs français, est devenue une marque de FS International en 2021. Ce partenariat combine l'approche occidentale centrée client avec une expertise locale chinoise approfondie."
-                    : getText('sinoDescription')}
-                </p>
-              </div>
-              <div
-                style={{
-                  padding: '1.5rem',
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  borderRadius: '0.75rem',
-                }}
-              >
-                <h4 style={{ color: '#10b981', marginBottom: '1rem', fontSize: '1.2rem' }}>
-                  🇭🇰 FS International (1989)
-                </h4>
-                <p style={{ color: '#374151', lineHeight: '1.6' }}>
-                  {userLang === 'fr'
-                    ? "FS International, fondée à Hong Kong en septembre 1989, est l'un des noms les plus fiables en logistique et transport global dans sa région."
-                    : getText('fsDescription')}
-                </p>
-              </div>
-            </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '2rem',
-              }}
-            >
-              <div
-                style={{
-                  background:
-                    'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%)',
-                  borderRadius: '1rem',
-                  padding: '1.5rem',
-                  border: '1px solid rgba(16, 185, 129, 0.1)',
-                  boxShadow: '0 8px 25px rgba(16, 185, 129, 0.1)',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginBottom: '1.5rem',
-                    gap: '0.75rem',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                      borderRadius: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.2rem',
-                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
-                    }}
-                  >
-                    🎯
-                  </div>
-                  <h4
-                    style={{
-                      color: '#1f2937',
-                      margin: 0,
-                      fontSize: '1.3rem',
-                      fontWeight: '700',
-                    }}
-                  >
-                    {getText('ourExpertise')}
-                  </h4>
-                </div>
-                <div style={{ display: 'grid', gap: '1rem' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      padding: '1rem',
-                      background: 'rgba(255, 255, 255, 0.7)',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(16, 185, 129, 0.1)',
-                      transition: 'all 0.3s ease',
-                      cursor: 'default',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1rem',
-                        flexShrink: 0,
-                      }}
-                    >
-                      🚢
-                    </div>
-                    <span style={{ color: '#374151', fontWeight: '500', lineHeight: '1.4' }}>
-                      {userLang === 'fr'
-                        ? 'Transport maritime, aérien, ferroviaire et multimodal'
-                        : getText('expertise1')}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      padding: '1rem',
-                      background: 'rgba(255, 255, 255, 0.7)',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(16, 185, 129, 0.1)',
-                      transition: 'all 0.3s ease',
-                      cursor: 'default',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1rem',
-                        flexShrink: 0,
-                      }}
-                    >
-                      📦
-                    </div>
-                    <span style={{ color: '#374151', fontWeight: '500', lineHeight: '1.4' }}>
-                      {userLang === 'fr'
-                        ? 'Solutions e-commerce (Amazon FBA, dropshipping)'
-                        : getText('expertise2')}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      padding: '1rem',
-                      background: 'rgba(255, 255, 255, 0.7)',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(16, 185, 129, 0.1)',
-                      transition: 'all 0.3s ease',
-                      cursor: 'default',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1rem',
-                        flexShrink: 0,
-                      }}
-                    >
-                      🔍
-                    </div>
-                    <span style={{ color: '#374151', fontWeight: '500', lineHeight: '1.4' }}>
-                      {userLang === 'fr' ? 'Sourcing et contrôle qualité' : getText('expertise3')}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      padding: '1rem',
-                      background: 'rgba(255, 255, 255, 0.7)',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(16, 185, 129, 0.1)',
-                      transition: 'all 0.3s ease',
-                      cursor: 'default',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1rem',
-                        flexShrink: 0,
-                      }}
-                    >
-                      📋
-                    </div>
-                    <span style={{ color: '#374151', fontWeight: '500', lineHeight: '1.4' }}>
-                      {userLang === 'fr' ? 'Services logistiques complets' : getText('expertise4')}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <h4 style={{ color: '#1f2937', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
-                  📊 {userLang === 'fr' ? 'Notre Impact en Chiffres' : getText('impactInNumbers')}
-                </h4>
-                <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '1rem' }}>
-                  {userLang === 'fr'
-                    ? "Offrir l'excellence en Chine avec des résultats prouvés et un service de confiance"
-                    : getText('impactDescription')}
-                </p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: '0.8rem',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      borderRadius: '0.5rem',
-                    }}
-                  >
-                    <div style={{ fontSize: '1.3rem', fontWeight: '600', color: '#10b981' }}>
-                      55,000+
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {userLang === 'fr' ? 'Clients Satisfaits' : getText('satisfiedCustomers')}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: '0.8rem',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      borderRadius: '0.5rem',
-                    }}
-                  >
-                    <div style={{ fontSize: '1.3rem', fontWeight: '600', color: '#10b981' }}>
-                      4.8/5
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {userLang === 'fr' ? 'Satisfaction Client' : getText('customerSatisfaction')}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: '0.8rem',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      borderRadius: '0.5rem',
-                    }}
-                  >
-                    <div style={{ fontSize: '1.3rem', fontWeight: '600', color: '#10b981' }}>
-                      400+
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {userLang === 'fr' ? "Membres de l'Équipe" : getText('teamMembers')}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: '0.8rem',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      borderRadius: '0.5rem',
-                    }}
-                  >
-                    <div style={{ fontSize: '1.3rem', fontWeight: '600', color: '#10b981' }}>
-                      140,000+
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {userLang === 'fr' ? 'Volume Maritime TEU' : getText('oceanVolume')}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: '0.8rem',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      borderRadius: '0.5rem',
-                    }}
-                  >
-                    <div style={{ fontSize: '1.3rem', fontWeight: '600', color: '#10b981' }}>8</div>
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {userLang === 'fr' ? 'Bureaux en Chine' : getText('officesInChina')}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: '0.8rem',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      borderRadius: '0.5rem',
-                    }}
-                  >
-                    <div style={{ fontSize: '1.3rem', fontWeight: '600', color: '#10b981' }}>
-                      519,000+
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {userLang === 'fr' ? 'M² Installations CFS' : getText('cfsFacilities')}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              style={{
-                marginTop: '2rem',
-                padding: '1.5rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '0.75rem',
-              }}
-            >
-              <h4 style={{ color: '#1f2937', marginBottom: '1rem' }}>
-                🌍 {userLang === 'fr' ? 'Réseau Mondial' : getText('globalNetwork')}
-              </h4>
-              <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
-                {userLang === 'fr'
-                  ? 'Bureaux stratégiques dans les hubs logistiques clés :'
-                  : getText('networkDescription')}
+            <div className="confirmation-next">
+              <p className="confirmation-next__title">
+                {userLang === 'fr' ? 'La suite de votre demande' : 'What happens next'}
               </p>
-              <div style={{ fontSize: '0.9rem', color: '#374151', lineHeight: '1.6' }}>
-                <p>
-                  <strong>
-                    🇨🇳{' '}
-                    {userLang === 'fr'
-                      ? 'Chine : Shanghai, Shenzhen, Guangzhou, Ningbo, Tianjin, Qingdao, Xiamen'
-                      : getText('chinaOffices')}
-                  </strong>
-                </p>
-                <p>
-                  <strong>
-                    🇭🇰{' '}
-                    {userLang === 'fr'
-                      ? 'Hong Kong : 1er étage, Bloc C, Sea View Estate, 8 Watson Road, North Point'
-                      : getText('hkOffice')}
-                  </strong>
-                </p>
-              </div>
+              <ul className="confirmation-next__list">
+                {heroVisualSteps.map((step) => (
+                  <li key={step.label}>
+                    <span className="confirmation-next__icon" aria-hidden>
+                      {step.icon}
+                    </span>
+                    <div>
+                      <p>{step.label}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        </div>
-        <div
-          className="contact-support"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
-            marginBottom: '2rem',
-          }}
-        >
-          <div
-            style={{
-              padding: '1.5rem',
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              borderRadius: '1rem',
-              border: '1px solid #e5e7eb',
-              position: 'relative',
-              zIndex: 1,
-            }}
-          >
-            <h4 style={{ color: '#1f2937', marginBottom: '1rem', fontSize: '1rem' }}>
-              ❓ {userLang === 'fr' ? "Besoin d'Aide ?" : getText('needHelp')}
-            </h4>
-            {userLang === 'fr' ? (
-              <div style={{ fontSize: '0.9rem', color: '#374151', lineHeight: 1.8 }}>
-                <p
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    margin: '0.25rem 0',
-                  }}
-                >
-                  <span>👥</span>
-                  <span>Communauté WhatsApp:</span>
-                  <strong>
-                    <a
-                      href="https://chat.whatsapp.com/EcOPbD18vFxHTVjECQVsRE"
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{
-                        color: '#0ea5e9',
-                        textDecoration: 'underline',
-                        textUnderlineOffset: '2px',
-                      }}
-                    >
-                      WhatsApp
-                    </a>
-                  </strong>
-                </p>
-                <p
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    margin: '0.25rem 0',
-                  }}
-                >
-                  <span>📧</span>
-                  <span>Email:</span>
-                  <strong>
-                    <a
-                      href="mailto:info@sino-shipping.com"
-                      style={{
-                        color: '#0ea5e9',
-                        textDecoration: 'underline',
-                        textUnderlineOffset: '2px',
-                      }}
-                    >
-                      info@sino-shipping.com
-                    </a>
-                  </strong>
-                </p>
-                <p>⏰ available: 9h-18h (Heure de Chine)</p>
+        </section>
+
+        <div className="confirmation-body">
+          <div className="confirmation-grid">
+            <div className="confirmation-grid__column confirmation-grid__column--primary">
+              <div className="confirmation-card confirmation-card--summary">
+                <div className="confirmation-card__header">
+                  <div className="confirmation-card__icon" aria-hidden>
+                    📋
+                  </div>
+                  <h3 className="confirmation-card__title">
+                    {userLang === 'fr' ? 'Récapitulatif' : getText('yourRequest')}
+                  </h3>
+                </div>
+                <ul className="confirmation-list confirmation-summary">
+                  <li>
+                    <span className="summary-item__icon" aria-hidden>
+                      📍
+                    </span>
+                    <div className="summary-item__content">
+                      <span className="summary-item__label">
+                        {userLang === 'fr' ? 'Trajet' : getText('fromTo')}
+                      </span>
+                      <p className="summary-item__value">
+                        <strong>{formData.city || formData.origin || '—'}</strong>
+                        <span aria-hidden> → </span>
+                        <strong>
+                          {formData.destCity || destinationCountry || formData.country || '—'}
+                        </strong>
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <span className="summary-item__icon" aria-hidden>
+                      🚛
+                    </span>
+                    <div className="summary-item__content">
+                      <span className="summary-item__label">
+                        {userLang === 'fr' ? 'Mode de transport' : getText('mode')}
+                      </span>
+                      <p className="summary-item__value">{modeLabel}</p>
+                    </div>
+                  </li>
+                  <li>
+                    <span className="summary-item__icon" aria-hidden>
+                      📦
+                    </span>
+                    <div className="summary-item__content">
+                      <span className="summary-item__label">
+                        {userLang === 'fr' ? 'Expéditions' : getText('shipments')}
+                      </span>
+                      <p className="summary-item__value">
+                        <strong>{loadsCount}</strong>{' '}
+                        {loadsCount === 1
+                          ? userLang === 'fr'
+                            ? 'expédition'
+                            : getText('shipment')
+                          : userLang === 'fr'
+                            ? 'expéditions'
+                            : getText('shipments')}
+                      </p>
+                    </div>
+                  </li>
+                  {formData.goodsDescription && (
+                    <li>
+                      <span className="summary-item__icon" aria-hidden>
+                        🧾
+                      </span>
+                      <div className="summary-item__content">
+                        <span className="summary-item__label">
+                          {userLang === 'fr' ? 'Marchandises' : 'Goods'}
+                        </span>
+                        <p className="summary-item__value">{formData.goodsDescription}</p>
+                      </div>
+                    </li>
+                  )}
+                </ul>
               </div>
-            ) : (
-              <div style={{ fontSize: '0.9rem', color: '#374151' }}>
-                <p
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    margin: '0.25rem 0',
-                  }}
-                >
-                  <span>👥</span>
-                  <span>{getText('community')}:</span>
-                  <strong>
-                    <a
-                      href="https://chat.whatsapp.com/EcOPbD18vFxHTVjECQVsRE"
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{
-                        color: '#0ea5e9',
-                        textDecoration: 'underline',
-                        textUnderlineOffset: '2px',
-                      }}
+
+              <section className="confirmation-section confirmation-section--timeline">
+                <div className="confirmation-section__header">
+                  <div className="confirmation-section__icon" aria-hidden>
+                    ⏱️
+                  </div>
+                  <h3 className="confirmation-section__title">
+                    {userLang === 'fr' ? 'Étapes à venir' : getText('nextSteps')}
+                  </h3>
+                </div>
+                <div className="confirmation-timeline">
+                  {timelineSteps.map((step, index) => {
+                    const statusLabel =
+                      timelineStatusLabels[step.status as 'done' | 'current' | 'upcoming'] ?? '';
+                    const markerContent =
+                      step.status === 'done' ? '✓' : String(index + 1).padStart(2, '0');
+
+                    return (
+                      <article
+                        key={step.id}
+                        className="confirmation-timeline__item"
+                        data-status={step.status}
+                      >
+                        <div className="confirmation-timeline__progress" aria-hidden="true">
+                          <span className="confirmation-timeline__marker" data-status={step.status}>
+                            {markerContent}
+                          </span>
+                          {index < timelineSteps.length - 1 && (
+                            <span className="confirmation-timeline__connector" />
+                          )}
+                        </div>
+                        <div className="confirmation-timeline__content">
+                          <div className="confirmation-timeline__header">
+                            <span className="confirmation-timeline__step">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <h4>{step.title}</h4>
+                            <span
+                              className="confirmation-timeline__badge"
+                              data-status={step.status}
+                            >
+                              {statusLabel}
+                            </span>
+                          </div>
+                          <p>{step.time}</p>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section className="confirmation-section confirmation-section--hero-metrics">
+                <div className="confirmation-section__header">
+                  <div className="confirmation-section__icon" aria-hidden>
+                    📊
+                  </div>
+                  <h3 className="confirmation-section__title">
+                    {userLang === 'fr' ? 'Notre impact' : getText('impactInNumbers')}
+                  </h3>
+                </div>
+                <div className="confirmation-mini-metrics">
+                  {heroMetrics.map((metric) => (
+                    <article
+                      key={metric.label}
+                      style={
+                        {
+                          '--metric-accent': metric.accent,
+                          '--metric-accent-soft': metric.accentSoft,
+                          '--metric-accent-strong': metric.accentStrong,
+                        } as React.CSSProperties
+                      }
                     >
-                      WhatsApp
-                    </a>
-                  </strong>
-                </p>
-                <p
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    margin: '0.25rem 0',
-                  }}
-                >
-                  <span>📧</span>
-                  <span>{getText('contactEmail')}:</span>
-                  <strong>
-                    <a
-                      href="mailto:info@sino-shipping.com"
-                      style={{
-                        color: '#0ea5e9',
-                        textDecoration: 'underline',
-                        textUnderlineOffset: '2px',
-                      }}
-                    >
-                      info@sino-shipping.com
-                    </a>
-                  </strong>
-                </p>
-                <p
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    margin: '0.25rem 0',
-                    color: '#6b7280',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  <span>⏰</span>
-                  <span>
-                    {getText('available')}: {getText('businessHours')}
-                  </span>
-                </p>
+                      <div className="mini-metric__icon" aria-hidden>
+                        {metric.icon}
+                      </div>
+                      <div className="mini-metric__content">
+                        <div className="mini-metric__value">{metric.value}</div>
+                        <div className="mini-metric__label">{metric.label}</div>
+                        <p className="mini-metric__description">{metric.description}</p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            </div>
+
+            <div className="confirmation-grid__column confirmation-grid__column--side">
+              <div className="confirmation-card confirmation-card--contact">
+                <div className="confirmation-card__header">
+                  <div className="confirmation-card__icon" aria-hidden>
+                    👤
+                  </div>
+                  <h3 className="confirmation-card__title">
+                    {userLang === 'fr' ? 'Coordonnées' : getText('contactDetails')}
+                  </h3>
+                </div>
+                <ul className="confirmation-list">
+                  <li>
+                    <span aria-hidden>🧑‍💼</span>
+                    <div>
+                      <strong>
+                        {formData.firstName} {formData.lastName}
+                      </strong>
+                    </div>
+                  </li>
+                  {formData.companyName && (
+                    <li>
+                      <span aria-hidden>🏢</span>
+                      <div>{formData.companyName}</div>
+                    </li>
+                  )}
+                  <li>
+                    <span aria-hidden>📧</span>
+                    <div>{formData.email}</div>
+                  </li>
+                  {formData.phone && (
+                    <li>
+                      <span aria-hidden>📱</span>
+                      <div>
+                        {formData.phoneCountryCode} {formData.phone}
+                      </div>
+                    </li>
+                  )}
+                </ul>
               </div>
-            )}
-          </div>
-          <div
-            style={{
-              padding: '1.5rem',
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              borderRadius: '1rem',
-              border: '1px solid #e5e7eb',
-              position: 'relative',
-              zIndex: 1,
-            }}
-          >
-            <h4 style={{ color: '#1f2937', marginBottom: '1rem', fontSize: '1rem' }}>
-              🔗 {userLang === 'fr' ? 'Nos Sites Web' : getText('websites')}
-            </h4>
-            <div style={{ fontSize: '0.9rem', color: '#374151' }}>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🌐</span>
-                <strong>
+
+              <div className="confirmation-card confirmation-card--actions">
+                <div className="confirmation-card__header">
+                  <div className="confirmation-card__icon" aria-hidden>
+                    ⚡
+                  </div>
+                  <h3 className="confirmation-card__title">
+                    {userLang === 'fr' ? 'Actions rapides' : getText('actions')}
+                  </h3>
+                </div>
+                <div className="confirmation-actions">
+                  <button
+                    type="button"
+                    className="confirmation-actions__button"
+                    onClick={handleResetForm}
+                  >
+                    ➕ {userLang === 'fr' ? 'Faire une autre demande' : getText('newRequest')}
+                  </button>
                   <a
+                    className="confirmation-actions__link"
                     href="https://sino-shipping.com"
                     target="_blank"
                     rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
                   >
-                    sino-shipping.com
+                    {viewServicesLabel}
+                    <span aria-hidden className="confirmation-actions__link-icon">
+                      ↗
+                    </span>
                   </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – Global freight forwarder
-                </span>
-              </p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🇭🇰</span>
-                <strong>
-                  <a
-                    href="https://fschina.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    fschina.com
-                  </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – FS International (HK)
-                </span>
-              </p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🇪🇸</span>
-                <strong>
-                  <a
-                    href="https://es.sino-shipping.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    es.sino-shipping.com
-                  </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – SINO Shipping (ES)
-                </span>
-              </p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🧩</span>
-                <strong>
-                  <a
-                    href="https://moreplusfsi.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    moreplusfsi.com
-                  </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – MorePlus (Sourcing)
-                </span>
-              </p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🧭</span>
-                <strong>
-                  <a
-                    href="https://eaanetwork.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    eaanetwork.com
-                  </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – EAA Network
-                </span>
-              </p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🤝</span>
-                <strong>
-                  <a
-                    href="https://can-qianhai.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    can-qianhai.com
-                  </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – CAN Alliance
-                </span>
-              </p>
-              <p
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  margin: '0.25rem 0',
-                }}
-              >
-                <span>🚢</span>
-                <strong>
-                  <a
-                    href="https://mcc-qianhai.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      color: '#0ea5e9',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      fontSize: '0.85rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    mcc-qianhai.com
-                  </a>
-                </strong>
-                <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                  – Export to China
-                </span>
-              </p>
+                </div>
+              </div>
+
+              <section className="confirmation-section confirmation-section--support">
+                <div className="confirmation-section__header">
+                  <div className="confirmation-section__icon" aria-hidden>
+                    🤝
+                  </div>
+                  <h3 className="confirmation-section__title">
+                    {userLang === 'fr' ? 'Support' : getText('needHelp')}
+                  </h3>
+                </div>
+                <div className="confirmation-support">
+                  <div className="confirmation-support__status">
+                    <span className="support-status-dot" aria-hidden="true" />
+                    {supportAvailabilityLabel}
+                  </div>
+                  <div className="confirmation-support__channels">
+                    <a
+                      className="support-chip support-chip--whatsapp"
+                      href="https://chat.whatsapp.com/EcOPbD18vFxHTVjECQVsRE"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span aria-hidden>👥</span>
+                      <span>
+                        {userLang === 'fr' ? 'Communauté WhatsApp' : getText('community')}
+                      </span>
+                      <span className="support-chip__cta" aria-hidden>
+                        ↗
+                      </span>
+                    </a>
+                    <a className="support-chip" href="mailto:info@sino-shipping.com">
+                      <span aria-hidden>📧</span>
+                      <span>info@sino-shipping.com</span>
+                      <span className="support-chip__cta" aria-hidden>
+                        ↗
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </section>
+
+              <section className="confirmation-section confirmation-section--links">
+                <div className="confirmation-section__header">
+                  <div className="confirmation-section__icon" aria-hidden>
+                    🌐
+                  </div>
+                  <h3 className="confirmation-section__title">
+                    {userLang === 'fr' ? 'Nos sites' : getText('websites')}
+                  </h3>
+                </div>
+                <ul className="confirmation-links">
+                  {websites.map((site) => (
+                    <li key={site.href}>
+                      <a href={site.href} target="_blank" rel="noreferrer">
+                        <span>{site.label}</span>
+                        <span className="confirmation-links__icon" aria-hidden>
+                          ↗
+                        </span>
+                      </a>
+                      <p>{site.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </div>
-            <h4 style={{ color: '#1f2937', marginTop: '1.5rem', marginBottom: '1rem' }}>
-              ⚡ {userLang === 'fr' ? 'Actions Rapides' : getText('actions')}
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  const resetMessage =
-                    userLang === 'fr'
-                      ? 'Nouveau formulaire prêt !'
-                      : userLang === 'es'
-                        ? '¡Nuevo formulario listo!'
-                        : userLang === 'de'
-                          ? 'Neues Formular bereit!'
-                          : userLang === 'it'
-                            ? 'Nuovo modulo pronto!'
-                            : userLang === 'nl'
-                              ? 'Nieuw formulier klaar!'
-                              : userLang === 'zh'
-                                ? '新表单已准备!'
-                                : userLang === 'ar'
-                                  ? 'استمارة جديدة جاهزة!'
-                                  : userLang === 'pt'
-                                    ? 'Novo formulário pronto!'
-                                    : userLang === 'tr'
-                                      ? 'Yeni form hazır!'
-                                      : userLang === 'ru'
-                                        ? 'Новая форма готова!'
-                                        : 'New form ready!';
-                  try {
-                    setFormData({
-                      country: '',
-                      origin: '',
-                      mode: '',
-                      email: '',
-                      phone: '',
-                      phoneCountryCode: '+234',
-                      locationType: '',
-                      city: '',
-                      zipCode: '',
-                      destLocationType: '',
-                      destCity: '',
-                      destZipCode: '',
-                      destPort: '',
-                      firstName: '',
-                      lastName: '',
-                      companyName: '',
-                      shipperType: '',
-                      loads: [JSON.parse(JSON.stringify(initialLoadDetails))],
-                      goodsValue: '',
-                      goodsCurrency: 'USD',
-                      isPersonalOrHazardous: false,
-                      areGoodsReady: 'yes',
-                      goodsDescription: '',
-                      specialRequirements: '',
-                      remarks: '',
-                    });
-                    setFieldValid({
-                      country: null,
-                      origin: null,
-                      mode: null,
-                      email: null,
-                      phone: null,
-                      phoneCountryCode: null,
-                      city: null,
-                      zipCode: null,
-                      destCity: null,
-                      destZipCode: null,
-                      destPort: null,
-                      firstName: null,
-                      lastName: null,
-                      companyName: null,
-                      shipperType: null,
-                      goodsValue: null,
-                      destLocationType: null,
-                    });
-                    setCurrentStep(1);
-                    setSubmissionId('');
-                    showToast(resetMessage);
-                  } catch {
-                    // Silent fail with fallback toast
-                    showToast('Error resetting form');
-                  }
-                }}
-                style={{
-                  padding: '0.75rem 1.25rem',
-                  backgroundColor: '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '0.75rem',
-                  cursor: 'pointer',
-                  fontSize: '0.95rem',
-                  fontWeight: '600',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)',
-                  position: 'relative',
-                  zIndex: 1000,
-                  pointerEvents: 'auto',
-                  userSelect: 'none',
-                  outline: 'none',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#059669';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.35)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#10b981';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.25)';
-                }}
-              >
-                ➕ {userLang === 'fr' ? 'Faire une autre demande' : getText('newRequest')}
-              </button>
-            </div>
+
+            <section className="confirmation-section confirmation-section--company confirmation-grid__full">
+              <div className="confirmation-section__header">
+                <div className="confirmation-section__icon" aria-hidden>
+                  🚢
+                </div>
+                <h3 className="confirmation-section__title">
+                  {userLang === 'fr' ? 'SINO & FS' : getText('aboutSino')}
+                </h3>
+              </div>
+              <div className="confirmation-company">
+                <p className="confirmation-company__subtitle">
+                  {userLang === 'fr'
+                    ? 'Votre demande est entre de bonnes mains'
+                    : getText('aboutSubtitle')}
+                </p>
+                <div className="confirmation-company__intro">
+                  {companyIntro.map((item) => (
+                    <article key={item.title}>
+                      <h4>{item.title}</h4>
+                      <p>{item.description}</p>
+                    </article>
+                  ))}
+                </div>
+                <div className="confirmation-company__expertise">
+                  <h4>{getText('ourExpertise')}</h4>
+                  <ul>
+                    {expertise.map((item, index) => (
+                      <li key={item}>
+                        <span>0{index + 1}</span>
+                        <p>{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="confirmation-company__metrics">
+                  {impactMetrics.map((metric) => (
+                    <article key={metric.label}>
+                      <div className="company-metric__icon" aria-hidden>
+                        {metric.icon}
+                      </div>
+                      <div className="company-metric__content">
+                        <strong>{metric.value}</strong>
+                        <span>{metric.label}</span>
+                        <p>{metric.caption}</p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+                <div className="confirmation-company__network">
+                  <h4>🌍 {userLang === 'fr' ? 'Réseau mondial' : getText('globalNetwork')}</h4>
+                  <ul>
+                    <li>
+                      <strong>
+                        🇨🇳{' '}
+                        {userLang === 'fr'
+                          ? 'Chine : Shanghai, Shenzhen, Guangzhou, Ningbo, Tianjin, Qingdao, Xiamen'
+                          : getText('chinaOffices')}
+                      </strong>
+                    </li>
+                    <li>
+                      <strong>
+                        🇭🇰{' '}
+                        {userLang === 'fr'
+                          ? 'Hong Kong : 1er étage, Bloc C, Sea View Estate, 8 Watson Road, North Point'
+                          : getText('hkOffice')}
+                      </strong>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
           </div>
-        </div>
-        <div
-          style={{
-            textAlign: 'center',
-            padding: '2rem',
-            backgroundColor: 'rgba(59, 130, 246, 0.05)',
-            borderRadius: '1rem',
-            border: '1px solid rgba(59, 130, 246, 0.2)',
-          }}
-        >
-          <h3 style={{ color: '#1f2937', marginBottom: '1rem' }}>
-            🙏 {userLang === 'fr' ? 'Merci pour votre confiance !' : getText('thankYouTitle')}
-          </h3>
-          <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>
-            {userLang === 'fr'
-              ? 'Votre demande sera traitée avec le plus grand soin par nos experts en transport international.'
-              : getText('thankYouMessage')}
-          </p>
         </div>
       </div>
     </FormStep>

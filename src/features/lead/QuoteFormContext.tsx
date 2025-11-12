@@ -4,7 +4,12 @@ import { COUNTRY_TRANSLATIONS } from '@/data/countryTranslations';
 import { Warehouse, Ship, Building2, Home } from 'lucide-react';
 import { DESTINATION_PORTS_BY_COUNTRY as PORTS_BY_COUNTRY } from '@/features/lead/context/ports';
 import { I18N_TEXT } from '@/features/lead/context/i18n';
-import { FormData, FieldValid, initialFormData, initialFieldValid } from '@/features/lead/context/types';
+import {
+  FormData,
+  FieldValid,
+  initialFormData,
+  initialFieldValid,
+} from '@/features/lead/context/types';
 import type { QuoteFormContextValue as QuoteFormContextValueExt } from '@/features/lead/context/QuoteFormTypes';
 import { QuoteFormContext } from '@/features/lead/context/QuoteFormContext';
 
@@ -11804,12 +11809,22 @@ export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => 
     [setFormData, setFieldValid]
   );
 
-
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
       setFormData((prev) => ({ ...prev, [name]: value }));
-      setFieldValid((prev) => ({ ...prev, [name]: value.trim() ? true : null }));
+      setFieldValid((prev) => {
+        if (name === 'email') {
+          const trimmed = value.trim();
+          if (!trimmed) {
+            return { ...prev, email: null };
+          }
+          const emailRegex = /.+@.+\..+/;
+          return { ...prev, email: emailRegex.test(trimmed) ? true : null };
+        }
+
+        return { ...prev, [name]: value.trim() ? true : null };
+      });
     },
     [setFormData, setFieldValid]
   );
@@ -11845,12 +11860,12 @@ export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => 
         // Get current load data
         const currentLoad = formData.loads[activeLoadIndex];
         const currentShippingType = currentLoad?.shippingType || '';
-        
+
         // If no shipping type selected or "unsure" is selected, skip directly to Step 5
         if (currentShippingType === '' || currentShippingType === 'unsure') {
           return Math.min(s + 1, 7);
         }
-        
+
         // Otherwise, proceed to sub-step 2 if not already there
         if (step4SubStep < 2) {
           setStep4SubStep((prev) => prev + 1);
@@ -11871,7 +11886,16 @@ export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => 
       }
       return Math.min(s + 1, 7);
     });
-  }, [step1SubStep, step3SubStep, step4SubStep, step5SubStep, step6SubStep, formData.customerType, formData.loads, activeLoadIndex]);
+  }, [
+    step1SubStep,
+    step3SubStep,
+    step4SubStep,
+    step5SubStep,
+    step6SubStep,
+    formData.customerType,
+    formData.loads,
+    activeLoadIndex,
+  ]);
 
   const prevStep = useCallback(() => {
     setCurrentStep((s) => {
@@ -11916,7 +11940,7 @@ export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => 
       }
 
       setIsDestPortListVisible(false);
-      
+
       // Automatically advance to the next step after port selection
       nextStep();
     },
