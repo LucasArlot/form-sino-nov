@@ -3393,7 +3393,7 @@ export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => 
 
   // Step 1 UI list states
   const [countrySearch, setCountrySearch] = useState('');
-  const [isCountryListVisible, setIsCountryListVisible] = useState(false);
+  const [isCountryListVisible, setIsCountryListVisible] = useState(true);
   const [highlightedCountryIndex, setHighlightedCountryIndex] = useState(-1);
 
   // Language state (copied from QuoteForm.tsx)

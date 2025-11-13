@@ -127,16 +127,26 @@ body {
 }
 
 /* For embed mode: make body transparent */
+/* Always make body transparent - embed.html will override if needed */
+body {
+  background: linear-gradient(135deg, var(--gray-50) 0%, #fafbff 100%);
+}
 
-/* Override for embed mode - detect when there's no App container */
-body:not(:has(.min-h-screen)) {
+/* Force transparency when embed mode is detected */
+/* This is a more reliable selector that works in all browsers */
+html body {
+  background: linear-gradient(135deg, var(--gray-50) 0%, #fafbff 100%);
+}
+
+/* For embed mode specifically - check if there's a div with transform scale (EmbedApp) */
+body:has(#root > div[style*='transform'][style*='scale']) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
 }
 
-/* Alternative: detect embed by checking for root with scaling div */
-html body:has(#root > div[style*='scale']) {
+/* Fallback: if body doesn't have min-h-screen class (App.tsx), it's embed mode */
+body:not(:has(.min-h-screen)) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;

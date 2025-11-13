@@ -59,6 +59,13 @@ const StepDestination: FC = () => {
   const locationTypeRef = useRef<HTMLDivElement>(null);
   const addressDetailsRef = useRef<HTMLDivElement>(null);
 
+  // Open country dropdown by default when on step 1, substep 1
+  useEffect(() => {
+    if (currentStep === 1 && step1SubStep === 1 && !formData.country) {
+      setIsCountryListVisible(true);
+    }
+  }, [currentStep, step1SubStep, formData.country, setIsCountryListVisible]);
+
   // Debounce the country search input (200 ms)
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -102,7 +109,9 @@ const StepDestination: FC = () => {
     if (!listEl) return;
 
     const containerEl = listEl.closest('.quote-form-container') as HTMLElement | null;
-    const triggerEl = searchInputRef.current?.closest('.search-input-wrapper') as HTMLElement | null;
+    const triggerEl = searchInputRef.current?.closest(
+      '.search-input-wrapper'
+    ) as HTMLElement | null;
 
     const adjustCountryDropdown = () => {
       if (!containerEl || !triggerEl) return;
@@ -141,7 +150,10 @@ const StepDestination: FC = () => {
     const onResize = () => adjustCountryDropdown();
     const onScroll = () => adjustCountryDropdown();
     window.addEventListener('resize', onResize, { passive: true } as AddEventListenerOptions);
-    window.addEventListener('scroll', onScroll, { passive: true, capture: true } as AddEventListenerOptions);
+    window.addEventListener('scroll', onScroll, {
+      passive: true,
+      capture: true,
+    } as AddEventListenerOptions);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -225,7 +237,10 @@ const StepDestination: FC = () => {
     const onResize = () => adjustDropdown();
     const onScroll = () => adjustDropdown();
     window.addEventListener('resize', onResize, { passive: true } as AddEventListenerOptions);
-    window.addEventListener('scroll', onScroll, { passive: true, capture: true } as AddEventListenerOptions);
+    window.addEventListener('scroll', onScroll, {
+      passive: true,
+      capture: true,
+    } as AddEventListenerOptions);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -273,9 +288,10 @@ const StepDestination: FC = () => {
 
           const isStep1Done = !!formData.country;
           const isStep2Done = !!formData.destLocationType;
-          const isStep3Done = formData.destLocationType === 'port'
-            ? !!formData.destPort
-            : !!(formData.destCity && formData.destZipCode);
+          const isStep3Done =
+            formData.destLocationType === 'port'
+              ? !!formData.destPort
+              : !!(formData.destCity && formData.destZipCode);
 
           const canGoTo = (target: number) => {
             if (target === 1) return true;
@@ -314,7 +330,8 @@ const StepDestination: FC = () => {
               {tabs.map((label, idx) => {
                 const n = idx + 1;
                 const active = step1SubStep === n;
-                const done = (n === 1 && isStep1Done) || (n === 2 && isStep2Done) || (n === 3 && isStep3Done);
+                const done =
+                  (n === 1 && isStep1Done) || (n === 2 && isStep2Done) || (n === 3 && isStep3Done);
                 return (
                   <button
                     key={n}
@@ -341,15 +358,26 @@ const StepDestination: FC = () => {
                       opacity: canGoTo(n) ? 1 : 0.5,
                     }}
                   >
-                    <span style={{
-                      width: '16px', height: '16px', borderRadius: '50%',
-                      background: done ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e7eb',
-                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                      color: '#fff', fontSize: '0.7rem',
-                    }}>
+                    <span
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '50%',
+                        background: done ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e7eb',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#fff',
+                        fontSize: '0.7rem',
+                      }}
+                    >
                       {done ? '✓' : n}
                     </span>
-                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
+                    <span
+                      style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                    >
+                      {label}
+                    </span>
                   </button>
                 );
               })}
@@ -370,187 +398,201 @@ const StepDestination: FC = () => {
               paddingTop: '1.25rem',
             }}
           >
-          <div className="phase-header">
-            <h3 className="phase-header-title">
-              <span className={`step-indicator ${formData.country ? 'completed' : ''}`}>1</span>
-              {textFor('selectDestinationCountry') || 'Select destination country'}
-            </h3>
-            <p className="phase-header-subtitle">
-              {textFor('searchCountryDescription') ||
-                'Start typing to find your destination country'}
-            </p>
-          </div>
+            <div className="phase-header">
+              <h3 className="phase-header-title">
+                <span className={`step-indicator ${formData.country ? 'completed' : ''}`}>1</span>
+                {textFor('selectDestinationCountry') || 'Select destination country'}
+              </h3>
+              <p className="phase-header-subtitle">
+                {textFor('searchCountryDescription') ||
+                  'Start typing to find your destination country'}
+              </p>
+            </div>
 
             <div className="form-control country-select" style={{ marginTop: '0.5rem' }}>
-            <div className="search-input-wrapper relative">
-              <Search className="search-icon" size={18} />
-                  <input
-                ref={searchInputRef}
-                type="text"
-                placeholder={textFor('searchCountry') || 'Search country...'}
-                value={countrySearch}
-                onChange={(e) => {
-                  setCountrySearch(e.target.value);
-                  setIsCountryListVisible(true);
-                }}
-                onFocus={() => setIsCountryListVisible(true)}
-                onKeyDown={handleCountrySearchKeyDown}
-                role="combobox"
-                aria-expanded={isCountryListVisible}
-                aria-controls="country-listbox"
-                aria-activedescendant={
-                  highlightedCountryIndex >= 0 && filteredCountries[highlightedCountryIndex]
-                    ? `country-option-${filteredCountries[highlightedCountryIndex].code}`
-                    : undefined
-                }
-                className="input glassmorphism search-input"
-              />
-              {formData.country && (
-                <XCircle
-                  size={18}
-                  className="clear-search-icon clear-button"
-                  onClick={clearCountrySelection}
-                  aria-label={textFor('clearCountry') || 'Clear country'}
+              <div className="search-input-wrapper relative">
+                <Search className="search-icon" size={18} />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder={textFor('searchCountry') || 'Search country...'}
+                  value={countrySearch}
+                  onChange={(e) => {
+                    setCountrySearch(e.target.value);
+                    setIsCountryListVisible(true);
+                  }}
+                  onFocus={() => setIsCountryListVisible(true)}
+                  onKeyDown={handleCountrySearchKeyDown}
+                  role="combobox"
+                  aria-expanded={isCountryListVisible}
+                  aria-controls="country-listbox"
+                  aria-activedescendant={
+                    highlightedCountryIndex >= 0 && filteredCountries[highlightedCountryIndex]
+                      ? `country-option-${filteredCountries[highlightedCountryIndex].code}`
+                      : undefined
+                  }
+                  className="input glassmorphism search-input"
                 />
-              )}
-            </div>
-            <div
-              ref={countryListRef}
-              id="country-listbox"
-              role="listbox"
-              aria-expanded={isCountryListVisible}
-              className={`country-list ${isCountryListVisible ? 'show' : ''}`}
-            >
-              {filteredCountries.length > 0
-                ? (() => {
-                    // Définir les pays prioritaires selon la langue
-                    const PRIORITY_COUNTRIES_BY_LANG: Record<string, string[]> = {
-                      fr: ['FR', 'BE', 'CH', 'CA', 'LU', 'MC'],
-                      en: ['US', 'GB', 'CA', 'AU', 'NZ', 'IE'],
-                      de: ['DE', 'AT', 'CH', 'LI'],
-                      es: ['ES', 'MX', 'AR', 'CO', 'PE', 'CL'],
-                      it: ['IT', 'SM', 'VA', 'CH'],
-                      nl: ['NL', 'BE'],
-                      pt: ['PT', 'BR', 'AO', 'MZ'],
-                      zh: ['CN', 'TW', 'HK', 'MO', 'SG'],
-                      ar: ['SA', 'AE', 'EG', 'JO', 'LB', 'MA'],
-                      tr: ['TR', 'CY'],
-                      ru: ['RU', 'BY', 'KZ', 'KG', 'UA'],
-                    };
-                    const priorityCountryCodes = PRIORITY_COUNTRIES_BY_LANG[userLang] || [];
-                    const priorityCountries = filteredCountries.filter((c) =>
-                      priorityCountryCodes.includes(c.code)
-                    );
-                    const otherCountries = filteredCountries.filter(
-                      (c) => !priorityCountryCodes.includes(c.code)
-                    );
+                {formData.country && (
+                  <XCircle
+                    size={18}
+                    className="clear-search-icon clear-button"
+                    onClick={clearCountrySelection}
+                    aria-label={textFor('clearCountry') || 'Clear country'}
+                  />
+                )}
+              </div>
+              <div
+                ref={countryListRef}
+                id="country-listbox"
+                role="listbox"
+                aria-expanded={isCountryListVisible}
+                className={`country-list ${isCountryListVisible ? 'show' : ''}`}
+              >
+                {filteredCountries.length > 0
+                  ? (() => {
+                      // Définir les pays prioritaires selon la langue
+                      const PRIORITY_COUNTRIES_BY_LANG: Record<string, string[]> = {
+                        fr: ['FR', 'BE', 'CH', 'CA', 'LU', 'MC'],
+                        en: ['US', 'GB', 'CA', 'AU', 'NZ', 'IE'],
+                        de: ['DE', 'AT', 'CH', 'LI'],
+                        es: ['ES', 'MX', 'AR', 'CO', 'PE', 'CL'],
+                        it: ['IT', 'SM', 'VA', 'CH'],
+                        nl: ['NL', 'BE'],
+                        pt: ['PT', 'BR', 'AO', 'MZ'],
+                        zh: ['CN', 'TW', 'HK', 'MO', 'SG'],
+                        ar: ['SA', 'AE', 'EG', 'JO', 'LB', 'MA'],
+                        tr: ['TR', 'CY'],
+                        ru: ['RU', 'BY', 'KZ', 'KG', 'UA'],
+                      };
+                      const priorityCountryCodes = PRIORITY_COUNTRIES_BY_LANG[userLang] || [];
+                      const priorityCountries = filteredCountries.filter((c) =>
+                        priorityCountryCodes.includes(c.code)
+                      );
+                      const otherCountries = filteredCountries.filter(
+                        (c) => !priorityCountryCodes.includes(c.code)
+                      );
 
-                    return (
-                      <>
-                        {/* Section Populaires */}
-                        {!sanitizedCountrySearch && priorityCountries.length > 0 && (
-                          <>
-                            <div
-                              className="country-section-header section-header"
-                              style={{
-                                padding: '0.5rem 0.75rem',
-                                backgroundColor: '#f8fafc',
-                                borderBottom: '1px solid #e5e7eb',
-                                fontSize: '0.8rem',
-                                fontWeight: 600,
-                                color: '#6b7280',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.05em',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                              }}
-                            >
-                              <span style={{ color: '#10b981' }}>⭐</span>
-                              {textFor('popular') || 'Popular'}
-                            </div>
-                            {priorityCountries.map((country, index) => (
-                              <div
-                                id={`country-option-${country.code}`}
-                                role="option"
-                                aria-selected={highlightedCountryIndex === index}
-                                key={country.code}
-                                className={`country-option ${formData.country === country.code ? 'selected' : ''} ${highlightedCountryIndex === index ? 'highlighted' : ''}`}
-                                onClick={() => {
-                                  handleCountrySelect(country.code);
-                                  // auto-advance to sub-step 2
-                                  setStep1SubStep(2);
-                                  // focus next logical action: location types
-                                  setTimeout(() => locationTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
-                                }}
-                              >
-                                <span className="country-flag">{country.flag}</span>
-                                <span className="country-name">
-                                  {getTranslatedCountryName(country.code, userLang)}
-                                </span>
-                                <span className="country-code">{country.code}</span>
-                              </div>
-                            ))}
-                            {otherCountries.length > 0 && (
+                      return (
+                        <>
+                          {/* Section Populaires */}
+                          {!sanitizedCountrySearch && priorityCountries.length > 0 && (
+                            <>
                               <div
                                 className="country-section-header section-header"
                                 style={{
                                   padding: '0.5rem 0.75rem',
-                                  backgroundColor: '#f1f5f9',
+                                  backgroundColor: '#f8fafc',
                                   borderBottom: '1px solid #e5e7eb',
                                   fontSize: '0.8rem',
                                   fontWeight: 600,
-                                  color: '#475569',
+                                  color: '#6b7280',
                                   textTransform: 'uppercase',
                                   letterSpacing: '0.05em',
-                                  borderRadius: '4px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.5rem',
                                 }}
                               >
-                                {textFor('otherCountries') || 'Other Countries'}
+                                <span style={{ color: '#10b981' }}>⭐</span>
+                                {textFor('popular') || 'Popular'}
                               </div>
-                            )}
-                          </>
-                        )}
+                              {priorityCountries.map((country, index) => (
+                                <div
+                                  id={`country-option-${country.code}`}
+                                  role="option"
+                                  aria-selected={highlightedCountryIndex === index}
+                                  key={country.code}
+                                  className={`country-option ${formData.country === country.code ? 'selected' : ''} ${highlightedCountryIndex === index ? 'highlighted' : ''}`}
+                                  onClick={() => {
+                                    handleCountrySelect(country.code);
+                                    // auto-advance to sub-step 2
+                                    setStep1SubStep(2);
+                                    // focus next logical action: location types
+                                    setTimeout(
+                                      () =>
+                                        locationTypeRef.current?.scrollIntoView({
+                                          behavior: 'smooth',
+                                          block: 'start',
+                                        }),
+                                      50
+                                    );
+                                  }}
+                                >
+                                  <span className="country-flag">{country.flag}</span>
+                                  <span className="country-name">
+                                    {getTranslatedCountryName(country.code, userLang)}
+                                  </span>
+                                  <span className="country-code">{country.code}</span>
+                                </div>
+                              ))}
+                              {otherCountries.length > 0 && (
+                                <div
+                                  className="country-section-header section-header"
+                                  style={{
+                                    padding: '0.5rem 0.75rem',
+                                    backgroundColor: '#f1f5f9',
+                                    borderBottom: '1px solid #e5e7eb',
+                                    fontSize: '0.8rem',
+                                    fontWeight: 600,
+                                    color: '#475569',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                    borderRadius: '4px',
+                                  }}
+                                >
+                                  {textFor('otherCountries') || 'Other Countries'}
+                                </div>
+                              )}
+                            </>
+                          )}
 
-                        {/* Reste des pays (ou tous si recherche) */}
-                        {(sanitizedCountrySearch ? filteredCountries : otherCountries).map(
-                          (country, idx) => {
-                            const adjustedIdx = !sanitizedCountrySearch
-                              ? idx + priorityCountries.length
-                              : idx;
-                            return (
-                              <div
-                                id={`country-option-${country.code}`}
-                                role="option"
-                                aria-selected={highlightedCountryIndex === adjustedIdx}
-                                key={country.code}
-                                className={`country-option ${formData.country === country.code ? 'selected' : ''} ${highlightedCountryIndex === adjustedIdx ? 'highlighted' : ''}`}
-                                onClick={() => {
-                                  handleCountrySelect(country.code);
-                                  setStep1SubStep(2);
-                                  setTimeout(() => locationTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
-                                }}
-                              >
-                                <span className="country-flag">{country.flag}</span>
-                                <span className="country-name">
-                                  {getTranslatedCountryName(country.code, userLang)}
-                                </span>
-                                <span className="country-code">{country.code}</span>
-                              </div>
-                            );
-                          }
-                        )}
-                      </>
-                    );
-                  })()
-                : countrySearch.trim() && (
-                    <div className="no-results">
-                      {textFor('noCountryResults') || 'No countries found'}
-                    </div>
-                  )}
+                          {/* Reste des pays (ou tous si recherche) */}
+                          {(sanitizedCountrySearch ? filteredCountries : otherCountries).map(
+                            (country, idx) => {
+                              const adjustedIdx = !sanitizedCountrySearch
+                                ? idx + priorityCountries.length
+                                : idx;
+                              return (
+                                <div
+                                  id={`country-option-${country.code}`}
+                                  role="option"
+                                  aria-selected={highlightedCountryIndex === adjustedIdx}
+                                  key={country.code}
+                                  className={`country-option ${formData.country === country.code ? 'selected' : ''} ${highlightedCountryIndex === adjustedIdx ? 'highlighted' : ''}`}
+                                  onClick={() => {
+                                    handleCountrySelect(country.code);
+                                    setStep1SubStep(2);
+                                    setTimeout(
+                                      () =>
+                                        locationTypeRef.current?.scrollIntoView({
+                                          behavior: 'smooth',
+                                          block: 'start',
+                                        }),
+                                      50
+                                    );
+                                  }}
+                                >
+                                  <span className="country-flag">{country.flag}</span>
+                                  <span className="country-name">
+                                    {getTranslatedCountryName(country.code, userLang)}
+                                  </span>
+                                  <span className="country-code">{country.code}</span>
+                                </div>
+                              );
+                            }
+                          )}
+                        </>
+                      );
+                    })()
+                  : countrySearch.trim() && (
+                      <div className="no-results">
+                        {textFor('noCountryResults') || 'No countries found'}
+                      </div>
+                    )}
+              </div>
             </div>
           </div>
-        </div>
         )}
 
         {/* Phase 2: Location Type Selection (substep 2) */}

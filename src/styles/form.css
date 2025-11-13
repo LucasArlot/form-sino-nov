@@ -124,8 +124,6 @@
   width: 100%;
   padding: var(--wrapper-padding);
   box-sizing: border-box;
-  background: transparent !important;
-  background-color: transparent !important;
 }
 
 .quote-form-wrapper .quote-form-container {
