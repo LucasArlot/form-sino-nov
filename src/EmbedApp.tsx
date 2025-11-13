@@ -10,7 +10,7 @@ function EmbedApp() {
     // Système de scaling responsive
     function applyResponsiveScaling() {
       let parentWidth;
-      
+
       try {
         // Essayer de détecter la largeur de l'écran parent
         if (window.parent && window.parent !== window) {
@@ -24,9 +24,9 @@ function EmbedApp() {
         // Fallback si on ne peut pas accéder au parent
         parentWidth = window.screen.width;
       }
-      
+
       let newScale = 1;
-      
+
       // Breakpoints de scaling
       if (parentWidth >= 2560) {
         newScale = 1; // 100% - taille optimale pour 32"
@@ -37,25 +37,25 @@ function EmbedApp() {
       } else {
         newScale = 0.65; // 65% pour écrans plus petits
       }
-      
+
       setScale(newScale);
     }
-    
+
     // Appliquer le scaling au chargement
     applyResponsiveScaling();
-    
+
     // Réappliquer le scaling si la fenêtre est redimensionnée
     window.addEventListener('resize', applyResponsiveScaling);
-    
+
     // Écouter les messages du parent pour les mises à jour
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'resize') {
         applyResponsiveScaling();
       }
     };
-    
+
     window.addEventListener('message', handleMessage);
-    
+
     return () => {
       window.removeEventListener('resize', applyResponsiveScaling);
       window.removeEventListener('message', handleMessage);
@@ -63,7 +63,7 @@ function EmbedApp() {
   }, []);
 
   return (
-    <div 
+    <div
       style={{
         transform: `scale(${scale})`,
         transformOrigin: 'top center',
@@ -72,10 +72,19 @@ function EmbedApp() {
         height: '100vh',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        background: 'transparent',
+        backgroundColor: 'transparent',
       }}
     >
-      <div style={{ width: '100%', height: '100%' }}>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          background: 'transparent',
+          backgroundColor: 'transparent',
+        }}
+      >
         <QuoteFormProvider>
           <QuoteForm />
         </QuoteFormProvider>
