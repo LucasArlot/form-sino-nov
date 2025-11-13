@@ -1,0 +1,4902 @@
+<style>
+  /* SINO Header v1.3 — Modern Design (.sino-*) */
+  .sino-root {
+    --sino-blue: #001C38;
+    --sino-green: #D6DF20;
+    --sino-green-light: #E8F032;
+    --sino-blue-light: #1A365D;
+    --text: #1A202C;
+    --text-muted: #4A5568;
+    --bg: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.95);
+    --bg-glass-dark: rgba(0, 28, 56, 0.95);
+    --muted: #F7FAFC;
+    --muted-dark: #EDF2F7;
+    --ring: var(--sino-green);
+    --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-2: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
+    --shadow-3: 0 25px 50px rgba(0, 0, 0, 0.15), 0 12px 24px rgba(0, 0, 0, 0.08);
+    --shadow-green: 0 8px 32px rgba(214, 223, 32, 0.25);
+    --radius-8: 8px;
+    --radius-12: 12px;
+    --radius-16: 16px;
+    --radius-20: 20px;
+    --radius-full: 9999px;
+    --sino-admin-offset: 0px;
+    --scroll-progress: 0;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    font-size: clamp(14px, 1.6vw, 16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .sino-container { 
+    max-width: 1280px; 
+    margin: 0 auto; 
+    padding-left: 24px; 
+    padding-right: 24px; 
+  }
+
+  .sino-sr-only { 
+    position: absolute; 
+    width: 1px; 
+    height: 1px; 
+    padding: 0; 
+    margin: -1px; 
+    overflow: hidden; 
+    clip: rect(0, 0, 0, 0); 
+    white-space: nowrap; 
+    border: 0; 
+  }
+  
+  .sino-scroll-lock { 
+    overflow: hidden !important; 
+    position: fixed; 
+    width: 100%; 
+  }
+
+  .sino-header { 
+    position: sticky; 
+    top: var(--sino-admin-offset); 
+    z-index: 99990; 
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Topbar - Modern gradient background */
+  .sino-topbar { 
+    background: linear-gradient(135deg, var(--muted) 0%, var(--muted-dark) 100%);
+    color: var(--text-muted); 
+    font-size: 0.75rem; 
+    line-height: 1; 
+    border-bottom: 1px solid rgba(209, 213, 219, 0.5);
+    position: relative;
+    overflow: visible;
+    z-index: 99996;
+  }
+
+  /* Topbar cities popover */
+  .sino-topbar-cities-wrapper { 
+    position: relative; 
+    display: inline-block; 
+    margin-left: 8px; 
+  }
+  .sino-topbar-cities-popover { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    --sinfoot-green: #D6DF20; 
+    background: #fff; 
+    color: inherit; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+    border: 1px solid rgba(15,23,42,0.08); 
+    border-radius: 12px; 
+    box-shadow: 0 16px 48px rgba(2,6,23,0.12), 0 4px 12px rgba(2,6,23,0.08); 
+    padding: 16px 18px; 
+    min-width: 220px; 
+    z-index: 2147483647; 
+    opacity: 0; 
+    transform: translateY(-4px) scale(0.98); 
+    pointer-events: none; 
+    transition: all 0.2s ease; 
+    will-change: top, left, transform, opacity; 
+  }
+  .sino-topbar-cities-popover a { 
+    text-decoration: none; 
+  }
+  .sino-topbar-cities-popover a:hover,
+  .sino-topbar-cities-popover a:focus,
+  .sino-topbar-cities-popover a:visited { 
+    text-decoration: none; 
+  }
+  .sino-topbar-cities-popover::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-left: 1px solid rgba(15,23,42,0.08);
+    border-top: 1px solid rgba(15,23,42,0.08);
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 6px rgba(2,6,23,0.04);
+  }
+  .sino-topbar-cities-wrapper.sino-open .sino-topbar-cities-popover,
+  .sino-topbar-cities-popover.is-open { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+    pointer-events: auto; 
+  }
+  .sino-topbar-cities-list { 
+    list-style: none; 
+    margin: 0; 
+    padding: 0; 
+    display: grid; 
+    grid-template-columns: repeat(2, minmax(140px, 1fr)); 
+    gap: 10px 24px; 
+  }
+  .sino-topbar-cities-list li { 
+    white-space: nowrap; 
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Chips layout for cities */
+  .sino-topbar-cities-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 2px 0 0 0;
+  }
+  .sino-topbar-cities-popover .sinfoot-cta-chip { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif; 
+  }
+  
+  /* Removed cities popover styles */
+
+  .sino-topbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(214, 223, 32, 0.03) 50%, transparent 100%);
+    pointer-events: none;
+  }
+  
+  .sino-topbar-inner { 
+    display: grid; 
+    grid-template-columns: 1fr auto; 
+    align-items: center; 
+    gap: 16px; 
+    padding: 12px 0; 
+    position: relative;
+    z-index: 1;
+  }
+  
+  .sino-topbar a { 
+    color: inherit; 
+    text-decoration: none; 
+  }
+  
+  .sino-topbar a:hover { 
+    text-decoration: none;
+    color: var(--sino-blue);
+  }
+
+  /* Cities feature fully removed */
+  
+  .sino-topbar-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    flex-wrap: wrap; 
+    justify-self: start; 
+  }
+  
+  .sino-chip { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    padding: 6px 12px; 
+    border-radius: var(--radius-full); 
+    background: #ffffff;
+    color: var(--text); 
+    text-decoration: none; 
+    border: 1px solid rgba(226, 232, 240, 1); 
+    box-shadow: none;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    font-weight: 500;
+  }
+  
+  .sino-chip:hover { 
+    background: #F8FAFC; 
+    border-color: #CBD5E1;
+  }
+  
+  .sino-chip svg { 
+    width: 12px; 
+    height: 12px; 
+    transition: transform 0.2s ease;
+  }
+  
+  .sino-chip:hover svg {
+    transform: scale(1.1);
+  }
+  
+  .sino-chip:focus { 
+    outline: 2px solid var(--sino-green); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-topbar-info { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    gap: 8px; 
+  }
+  
+  .sino-topbar-line { 
+    font-size: 0.82rem; 
+  }
+  
+  .sino-topbar-line--primary { 
+    font-weight: 600; 
+    color: var(--text); 
+  }
+  
+  .sino-topbar-line--secondary { 
+    color: var(--text-muted); 
+    opacity: 0.9; 
+    font-size: 0.76rem; 
+  }
+  
+  /* cities popover removed */
+  
+  @media (max-width: 767.98px) {
+    .sino-topbar { display: none; }
+  }
+
+  /* Main bar - Enhanced with glass effect */
+  .sino-mainbar { 
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 99995;
+  }
+  
+  .sino-mainbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(214, 223, 32, 0.2) 50%, transparent 100%);
+  }
+  
+  .sino-mainbar-inner {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center !important;
+    gap: 0;
+    padding: 12px 0 !important;
+    position: relative;
+    /* Reasonable height for proper centering */
+    min-height: 52px !important;
+    box-sizing: border-box !important;
+  }
+  
+  .sino-logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    justify-self: start; 
+  }
+  
+  .sino-logo a { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 10px; 
+    text-decoration: none; 
+    color: var(--text); 
+    font-weight: 700;
+    transition: all 0.3s ease;
+  }
+  
+  .sino-logo a:hover {
+    transform: translateY(-1px);
+  }
+  
+  .sino-logo .sino-logo-mark { 
+    width: 48px; 
+    height: 48px; 
+    border-radius: var(--radius-12); 
+    background: linear-gradient(135deg, var(--sino-blue) 0%, var(--sino-blue-light) 100%);
+    display: inline-block; 
+    position: relative;
+    box-shadow: var(--shadow-1);
+    transition: all 0.3s ease;
+  }
+  
+  .sino-logo .sino-logo-mark::after { 
+    content: ""; 
+    position: absolute; 
+    inset: 8px; 
+    border-radius: 8px; 
+    background: linear-gradient(135deg, var(--sino-green) 0%, var(--sino-green-light) 100%);
+    mix-blend-mode: screen;
+    transition: all 0.3s ease;
+  }
+  
+  .sino-logo:hover .sino-logo-mark {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-2);
+  }
+  
+  .sino-logo-img { 
+    height: 56px; 
+    width: auto; 
+    display: inline-block; 
+    margin-right: 4px;
+    transition: all 0.3s ease;
+  }
+
+  /* Condensed state - Enhanced with smooth transitions */
+  .sino-header.sino-condensed { 
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    transform: translateY(0);
+  }
+  
+  .sino-header.sino-condensed .sino-mainbar-inner {
+    padding: 8px 0 !important;
+    /* Maintain vertical centering in condensed state */
+    align-items: center !important;
+    min-height: 48px !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Progressive mainbar padding with topbar compensation */
+  .sino-mainbar-inner {
+    padding: calc(12px - (var(--scroll-progress) * 4px)) 0 !important;
+    transform: translateY(calc(var(--scroll-progress) * 1px)) !important;
+    /* Maintain vertical centering during scroll */
+    align-items: center !important;
+    min-height: calc(52px - (var(--scroll-progress) * 4px)) !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Smooth height transition for mainbar */
+  .sino-mainbar {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Ensure smooth header height transition */
+  .sino-header {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-header.sino-condensed .sino-logo-img { 
+    height: 40px; 
+    transform: scale(0.85);
+  }
+  
+  .sino-header.sino-condensed .sino-logo .sino-logo-mark {
+    transform: scale(0.9);
+  }
+  
+  /* Progressive logo scaling with enhanced effects */
+  .sino-logo-img {
+    transform: scale(calc(1 - (var(--scroll-progress) * 0.15))) translateY(calc(var(--scroll-progress) * -2px));
+    filter: brightness(calc(1 - (var(--scroll-progress) * 0.1)));
+  }
+  
+  .sino-logo .sino-logo-mark {
+    transform: scale(calc(1 - (var(--scroll-progress) * 0.1))) rotate(calc(var(--scroll-progress) * 2deg));
+  }
+  
+  /* Navigation buttons - always readable with enhanced transitions */
+  
+  .sino-header.sino-condensed .sino-nav {
+    /* Maintain vertical centering in condensed state */
+    align-self: center !important;
+    vertical-align: middle !important;
+    height: 32px !important;
+  }
+
+  .sino-header.sino-condensed .sino-nav > li {
+    /* Maintain vertical centering in condensed state */
+    align-self: center !important;
+    vertical-align: middle !important;
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .sino-header.sino-condensed .sino-nav-btn {
+    color: var(--text) !important;
+    padding: 8px 14px !important;
+    font-size: 14px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    /* Maintain vertical centering in condensed state */
+    align-self: center !important;
+    vertical-align: middle !important;
+  }
+  
+  /* Progressive navigation button scaling with enhanced effects */
+  
+  .sino-header.sino-condensed .sino-nav-btn:hover {
+    color: var(--sino-green) !important;
+    background: rgba(214, 223, 32, 0.15);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(214, 223, 32, 0.2);
+  }
+  
+  .sino-header.sino-condensed .sino-nav-btn.is-current {
+    color: var(--sino-green) !important;
+  }
+  
+  .sino-header.sino-condensed .sino-nav-btn.is-current::after {
+    background: linear-gradient(90deg, var(--sino-green) 0%, var(--sino-green-light) 100%);
+    box-shadow: 0 0 12px rgba(214, 223, 32, 0.6);
+    height: 2px;
+    bottom: 8px;
+  }
+  
+  /* Progressive indicator adjustment with enhanced effects */
+  .sino-nav-btn.is-current::after {
+    height: calc(3px - (var(--scroll-progress) * 1px));
+    bottom: calc(10px - (var(--scroll-progress) * 2px));
+    opacity: calc(1 - (var(--scroll-progress) * 0.2));
+    transform: scaleX(calc(1 - (var(--scroll-progress) * 0.1)));
+  }
+  
+  /* CTA button condensed state */
+  .sino-header.sino-condensed .sino-cta a {
+    height: 42px;
+    padding: 0 20px;
+    font-size: 14px;
+    transform: translateY(-1px);
+  }
+  
+  /* Progressive CTA scaling with enhanced effects */
+  .sino-cta a {
+    height: calc(48px - (var(--scroll-progress) * 6px));
+    padding: 0 calc(24px - (var(--scroll-progress) * 4px));
+    font-size: calc(16px - (var(--scroll-progress) * 2px));
+    transform: translateY(calc(var(--scroll-progress) * -1px)) scale(calc(1 - (var(--scroll-progress) * 0.05)));
+    box-shadow: 
+      0 calc(4px - (var(--scroll-progress) * 2px)) calc(12px - (var(--scroll-progress) * 6px)) rgba(214, 223, 32, calc(0.3 - (var(--scroll-progress) * 0.1))),
+      0 0 0 1px rgba(214, 223, 32, calc(0.2 * var(--scroll-progress)));
+  }
+
+  /* Enhanced transitions for condensed state with progressive effects */
+  .sino-header { 
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(calc(var(--scroll-progress) * -2px));
+  }
+  
+  .sino-mainbar-inner { 
+    transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+  }
+  
+  .sino-logo-img { 
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+  }
+  
+  .sino-logo .sino-logo-mark {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-nav-btn {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-nav-btn::after {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-cta a {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Progressive topbar transition with smooth collapse */
+  .sino-topbar {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: calc(1 - var(--scroll-progress));
+    transform: translateY(calc(var(--scroll-progress) * -100%)) scale(calc(1 - var(--scroll-progress) * 0.1));
+    max-height: calc(60px - (var(--scroll-progress) * 60px));
+    overflow: hidden;
+    filter: blur(calc(var(--scroll-progress) * 2px));
+  }
+  
+  .sino-header.sino-condensed .sino-topbar {
+    pointer-events: none;
+    height: 0;
+  }
+  
+  /* Progressive background blur effect */
+  .sino-header {
+    backdrop-filter: blur(calc(20px + (var(--scroll-progress) * 15px)));
+    -webkit-backdrop-filter: blur(calc(20px + (var(--scroll-progress) * 15px)));
+    box-shadow: 
+      0 calc(1px + (var(--scroll-progress) * 8px)) calc(40px * var(--scroll-progress)) rgba(0, 0, 0, calc(0.12 * var(--scroll-progress))),
+      0 1px 3px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(255, 255, 255, calc(0.1 * var(--scroll-progress)));
+    transition: backdrop-filter 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                -webkit-backdrop-filter 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Desktop nav - Modern styling */
+  .sino-nav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    justify-self: center;
+    /* Perfect vertical centering */
+    align-self: center !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    /* Dynamic height based on scroll progress */
+    height: calc(40px - (var(--scroll-progress) * 8px)) !important;
+  }
+  
+  .sino-nav > li {
+    list-style: none !important;
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    /* Perfect vertical centering */
+    align-self: center !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    /* Force flex properties */
+    flex: 0 0 auto !important;
+    /* Dynamic height based on scroll progress */
+    height: calc(40px - (var(--scroll-progress) * 8px)) !important;
+    min-height: calc(32px + (var(--scroll-progress) * 0px)) !important;
+  }
+  
+  .sino-nav-btn {
+    appearance: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    padding: calc(10px - (var(--scroll-progress) * 2px)) calc(18px - (var(--scroll-progress) * 4px)) !important;
+    border-radius: var(--radius-12) !important;
+    color: var(--text) !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    border-top: 2px solid transparent !important;
+    font-size: calc(15px - (var(--scroll-progress) * 1px)) !important;
+    letter-spacing: calc(0.2px + (var(--scroll-progress) * 0.1px)) !important;
+    font-weight: 500 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 0 0 1px rgba(226, 232, 240, 0) !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    align-self: center !important;
+    /* Dynamic height based on scroll progress */
+    height: calc(40px - (var(--scroll-progress) * 8px)) !important;
+    min-height: calc(32px + (var(--scroll-progress) * 0px)) !important;
+    /* Maintain vertical centering during scroll */
+    transform: translateY(calc(var(--scroll-progress) * -1px)) !important;
+  }
+  
+  .sino-nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(214, 223, 32, 0.1) 0%, rgba(214, 223, 32, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sino-nav-btn:hover::before {
+    opacity: 1;
+  }
+  
+  .sino-nav-btn:focus { 
+    outline: 2px solid var(--sino-green); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-chevron { 
+    width: 14px; 
+    height: 14px; 
+    transform: rotate(0deg); 
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    opacity: 0.7; 
+    vertical-align: baseline; 
+    margin-bottom: 1px; 
+  }
+  
+  .sino-nav-btn[aria-expanded="true"] .sino-chevron { 
+    transform: rotate(180deg); 
+  }
+  
+  .sino-nav-btn.is-current { 
+    position: relative; 
+    background: rgba(214, 223, 32, 0.08);
+    box-shadow: 0 0 0 1px rgba(214, 223, 32, 0.45);
+    color: var(--sino-blue);
+  }
+  
+  .sino-nav-btn.is-current::after { 
+    content: ""; 
+    position: absolute; 
+    left: 20px; 
+    right: 20px; 
+    bottom: 10px; 
+    height: 3px; 
+    background: linear-gradient(90deg, var(--sino-green) 0%, var(--sino-green-light) 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(214, 223, 32, 0.4);
+  }
+  
+  .sino-nav-btn:hover { 
+    transform: translateY(-2px);
+    color: var(--sino-blue);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(226, 232, 240, 0.9);
+  }
+
+  .sino-nav-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(226, 232, 240, 0.9);
+  }
+
+  /* Dropdowns and mega-menu containers - Enhanced */
+  .sino-dropdown, .sino-megamenu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-20);
+    box-shadow: var(--shadow-3);
+    min-width: 280px;
+    padding: 16px;
+    opacity: 0;
+    --sino-panel-shift-x: 0px;
+    transform: translateX(var(--sino-panel-shift-x)) translateY(-12px) scale(0.95);
+    pointer-events: none;
+    z-index: 99992;
+    will-change: transform, opacity;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 8px; /* Add consistent spacing */
+  }
+
+  /* Ensure all nav items start from the same baseline */
+  .sino-nav > li > .sino-dropdown,
+  .sino-nav > li > .sino-megamenu {
+    top: 100%;
+    margin-top: 8px;
+  }
+  
+  .sino-nav > li.sino-open > .sino-dropdown, 
+  .sino-nav > li.sino-open > .sino-megamenu { 
+    opacity: 1; 
+    transform: translateX(var(--sino-panel-shift-x)) translateY(0) scale(1);
+    pointer-events: auto; 
+  }
+  
+  .sino-dropdown a { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    padding: 12px 16px; 
+    border-radius: var(--radius-12); 
+    color: var(--text); 
+    text-decoration: none; 
+    border-top: 2px solid transparent; 
+    font-size: 16px; 
+    line-height: 1.25; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sino-dropdown a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(214, 223, 32, 0.1) 0%, rgba(214, 223, 32, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sino-dropdown a:hover::before {
+    opacity: 1;
+  }
+  
+  .sino-dropdown a:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-dropdown a:hover, 
+  .sino-dropdown a[aria-current], 
+  .sino-dropdown a.is-current { 
+    transform: translateX(4px);
+    color: var(--sino-blue);
+  }
+  
+  .sino-dropdown a.is-current { 
+    text-decoration: none; 
+    border-top-color: var(--sino-green);
+    font-weight: 600;
+  }
+
+  /* Mega menu - Enhanced */
+  .sino-megamenu {
+    width: min(960px, 92vw);
+    padding: 24px;
+    left: 50%;
+    transform: translateX(calc(-50% + var(--sino-panel-shift-x))) translateY(-12px) scale(0.95);
+    margin-top: 8px; /* Add consistent spacing */
+  }
+
+  .sino-nav > li.sino-open > .sino-megamenu {
+    transform: translateX(calc(-50% + var(--sino-panel-shift-x))) translateY(0) scale(1);
+  }
+  
+  .sino-mega-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, minmax(0, 1fr)); 
+    gap: 20px; 
+  }
+  
+  .sino-mega-card { 
+    display: block; 
+    padding: 20px; 
+    border-radius: var(--radius-16); 
+    background: rgba(248, 250, 252, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-decoration: none; 
+    color: var(--text); 
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sino-mega-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(214, 223, 32, 0.05) 0%, rgba(214, 223, 32, 0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sino-mega-card:hover::before {
+    opacity: 1;
+  }
+  
+  .sino-mega-card:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-mega-card h4 { 
+    margin: 0 0 8px; 
+    font-size: 0.9375rem; 
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .sino-mega-card p { 
+    margin: 0; 
+    font-size: 0.8125rem; 
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .sino-mega-card.is-current { 
+    border-color: var(--sino-green); 
+    box-shadow: var(--shadow-green);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  
+  .sino-mega-card:hover { 
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-4px); 
+    border-color: var(--sino-green);
+    box-shadow: var(--shadow-2);
+  }
+
+  /* CTA - Enhanced with gradient */
+  .sino-cta { 
+    justify-self: end; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-left: auto; 
+  }
+  
+  .sino-cta a { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 0 24px; 
+    height: 48px; 
+    background: linear-gradient(135deg, var(--sino-green) 0%, var(--sino-green-light) 100%);
+    color: #000; 
+    border-radius: var(--radius-16); 
+    text-decoration: none; 
+    font-weight: 700; 
+    box-shadow: var(--shadow-green);
+    gap: 8px; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sino-cta a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sino-cta a:hover::before {
+    opacity: 1;
+  }
+  
+  .sino-cta a:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-cta a:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 12px 40px rgba(214, 223, 32, 0.4);
+  }
+
+  .sino-cta a:active {
+    transform: translateY(-1px) scale(0.99);
+    box-shadow: 0 8px 24px rgba(214, 223, 32, 0.35);
+  }
+  
+  .sino-cta a::after { 
+    content: "→"; 
+    display: inline-block; 
+    font-weight: 700; 
+    transition: transform 0.3s ease;
+  }
+  
+  .sino-cta a:hover::after {
+    transform: translateX(4px);
+  }
+
+  /* Link validation warning */
+  .sino-link-warning:focus, 
+  .sino-link-warning:hover { 
+    box-shadow: 0 0 0 2px #FFB200 inset; 
+  }
+
+  /* Separator utility for menus */
+  .sino-separator { 
+    height: 1px; 
+    background: linear-gradient(90deg, transparent 0%, rgba(226, 230, 239, 0.8) 50%, transparent 100%);
+    margin: 8px 8px; 
+    border-radius: 1px; 
+  }
+
+  /* Mobile controls - Enhanced */
+  .sino-burger { 
+    display: none; 
+    justify-self: start; 
+    appearance: none; 
+    background: transparent; 
+    border: 0; 
+    padding: 10px; 
+    border-radius: var(--radius-12); 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  /* Prevent horizontal scroll on mobile */
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  body {
+    max-width: 100vw;
+  }
+  
+  .sino-burger:hover {
+    background: rgba(214, 223, 32, 0.1);
+    transform: scale(1.05);
+  }
+  
+  .sino-burger:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: 2px; 
+  }
+
+  /* Overlay & Drawer - Enhanced */
+  .sino-overlay { 
+    position: fixed; 
+    top: var(--sino-admin-offset); 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0; 
+    pointer-events: none; 
+    z-index: 99994; 
+    touch-action: none; 
+    width: 100vw; 
+    height: 100vh;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-overlay.sino-active { 
+    opacity: 1; 
+    pointer-events: auto; 
+  }
+
+  .sino-drawer { 
+    position: fixed; 
+    top: var(--sino-admin-offset); 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    transform: translateX(100%); 
+    z-index: 99995; 
+    display: flex; 
+    flex-direction: column; 
+    touch-action: none; 
+    padding-bottom: calc(env(safe-area-inset-bottom)); 
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Ensure the drawer is completely hidden when closed */
+    visibility: hidden;
+    /* Prevent the drawer from being visible outside viewport */
+    clip-path: inset(0 0 0 0);
+  }
+  
+  .sino-drawer.sino-active { 
+    transform: translateX(0); 
+    visibility: visible; 
+  }
+  
+  .sino-drawer-header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 20px; 
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    padding-top: calc(20px + env(safe-area-inset-top));
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  
+  .sino-drawer-title { 
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  
+  .sino-close { 
+    appearance: none; 
+    background: transparent; 
+    border: 0; 
+    padding: 10px; 
+    border-radius: var(--radius-12); 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .sino-close:hover {
+    background: rgba(214, 223, 32, 0.1);
+    transform: scale(1.05);
+  }
+  
+  .sino-close:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-drawer-body { 
+    padding: 12px 12px 96px; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    overscroll-behavior: contain; 
+    -webkit-overflow-scrolling: touch; 
+    touch-action: pan-y; 
+    flex: 1; 
+  }
+  
+  .sino-accordion { 
+    border-radius: var(--radius-16); 
+    overflow: hidden; 
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 12px; 
+    max-width: 100%; 
+    box-shadow: var(--shadow-1);
+  }
+  
+  .sino-acc-item + .sino-acc-item { 
+    border-top: 1px solid rgba(226, 232, 240, 0.6); 
+  }
+  
+  .sino-acc-btn { 
+    width: 100%; 
+    text-align: left; 
+    background: transparent; 
+    border: 0; 
+    padding: 20px; 
+    min-height: 48px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .sino-acc-btn:hover {
+    background: rgba(214, 223, 32, 0.05);
+  }
+  
+  .sino-acc-btn:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: -2px; 
+  }
+  
+  .sino-acc-panel { 
+    max-height: 0; 
+    overflow: hidden; 
+    background: rgba(248, 250, 252, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-acc-item.sino-open .sino-acc-panel { 
+    max-height: 640px; 
+  }
+  
+  .sino-acc-list { 
+    list-style: none; 
+    margin: 0; 
+    padding: 12px; 
+    display: grid; 
+    gap: 8px; 
+  }
+  
+  .sino-acc-list a { 
+    display: block; 
+    padding: 14px 18px; 
+    border-radius: var(--radius-12); 
+    text-decoration: none; 
+    color: var(--text); 
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    min-height: 44px; 
+    display: flex; 
+    align-items: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .sino-acc-list a.is-current { 
+    font-weight: 700;
+    background: rgba(214, 223, 32, 0.1);
+    color: var(--sino-blue);
+  }
+  
+  .sino-acc-list a:focus { 
+    outline: 2px solid var(--ring); 
+    outline-offset: 2px; 
+  }
+  
+  .sino-acc-list a:hover {
+    background: rgba(214, 223, 32, 0.1);
+    transform: translateX(4px);
+  }
+
+  .sino-drawer-cta { 
+    position: fixed; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    padding: 24px; 
+    padding-bottom: calc(24px + env(safe-area-inset-bottom)); 
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 30%, rgba(255,255,255,1) 60%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 99996; 
+    display: flex; 
+    justify-content: center; 
+    width: 100vw; 
+    box-sizing: border-box; 
+  }
+  
+  .sino-drawer-cta a { 
+    width: calc(100vw - 48px); 
+    max-width: 400px; 
+    padding: 16px 20px; 
+    min-height: 48px; 
+    text-align: center; 
+    background: linear-gradient(135deg, var(--sino-green) 0%, var(--sino-green-light) 100%);
+    color: #000; 
+    font-weight: 600; 
+    border-radius: var(--radius-16); 
+    text-decoration: none; 
+    box-shadow: var(--shadow-green);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sino-drawer-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(214, 223, 32, 0.4);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) { 
+    .sino-mainbar-inner { grid-template-columns: auto 1fr auto; } 
+    .sino-logo { order: 2; justify-self: center; } 
+    /* Force mobile layout: override desktop !important rules */
+    .sino-nav { display: none !important; } 
+    .sino-cta { display: none !important; } 
+    .sino-burger { display: inline-flex !important; order: 1; } 
+    .sino-drawer { left: 0; }
+    .sino-dropdown, .sino-megamenu { display: none !important; }
+  }
+  
+  @media (max-width: 1199.98px) and (min-width: 768px) { 
+    .sino-mega-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } 
+  }
+  
+  @media (max-width: 767.98px) { 
+    .sino-mega-grid { grid-template-columns: 1fr; } 
+  }
+  
+  @media (max-width: 480px) { 
+    .sino-drawer-cta a { 
+      width: calc(100vw - 32px); 
+      padding: 14px 18px; 
+      font-size: 0.9rem; 
+    }
+    .sino-drawer-cta { 
+      padding: 16px; 
+      padding-bottom: calc(16px + env(safe-area-inset-bottom)); 
+    }
+    .sino-topbar-line--primary { 
+      font-size: 0.68rem; 
+    }
+    .sino-chip { 
+      padding: 4px 8px; 
+      font-size: 0.65rem; 
+    }
+    .sino-chip svg { 
+      width: 10px; 
+      height: 10px; 
+    }
+  }
+
+  /* Motion preferences */
+  @media (prefers-reduced-motion: no-preference) {
+    .sino-nav-btn { 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .sino-chevron { 
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .sino-dropdown, .sino-megamenu { 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .sino-mega-card { 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .sino-cta a { 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .sino-drawer { 
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .sino-overlay { 
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) { 
+    .sino-root * { 
+      transition: none !important; 
+      animation: none !important; 
+    } 
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6SM9YGDKNX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  // Activation du tracking sur les trois propriétés
+  gtag('config', 'G-6SM9YGDKNX');
+  gtag('config', 'G-40MM3VCFRH');
+  gtag('config', 'G-7WJEDQ35ER');
+</script>
+
+<header class="sino-root sino-header" role="banner">
+  <div class="sino-topbar" role="region" aria-label="Topbar">
+    <div class="sino-container sino-topbar-inner">
+      <div class="sino-topbar-left">
+        <a class="sino-chip" href="https://chat.whatsapp.com/EcOPbD18vFxHTVjECQVsRE?mode=ems_copy_h_t" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.52 3.48A11.5 11.5 0 0 0 3.5 20.5L2 22l1.5-.5A11.5 11.5 0 1 0 20.52 3.48z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9c0 4 4 8 8 8l2-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="sino-chip" href="mailto:info@sino-shipping.com" aria-label="Email info@sino-shipping.com">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 0 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>info@sino-shipping.com</span>
+        </a>
+      </div>
+      <div class="sino-topbar-info">
+        <div class="sino-topbar-line sino-topbar-line--primary">International freight forwarder & customs broker • Mainland China • <a class="sino-chip" href="https://www.sino-shipping.com/freight-forwarder-hong-kong/" aria-label="Hong Kong logistics hub">Hong Kong</a> • 
+          <span class="sino-topbar-cities-wrapper" id="sino-cities">
+            <button type="button" class="sino-chip" aria-haspopup="true" aria-expanded="false" aria-controls="sino-cities-popover" aria-label="Show 9 cities">+9 cities</button>
+            <div class="sino-topbar-cities-popover" id="sino-cities-popover" role="menu" aria-label="Cities">
+              <div class="sino-topbar-cities-chips" role="none">
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-guangzhou/">Guangzhou</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-shenzhen/">Shenzhen</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-ningbo/">Ningbo</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-shanghai/">Shanghai</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/shipping-company-qingdao/">Qingdao</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-tianjin/">Tianjin</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-xiamen/">Xiamen</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-bangkok/">Bangkok</a>
+                <a class="sinfoot-cta-chip" role="menuitem" href="https://www.sino-shipping.com/freight-forwarder-yiwu/">Yiwu</a>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sino-mainbar">
+    <div class="sino-container sino-mainbar-inner" role="navigation" aria-label="Main">
+      <button class="sino-burger" aria-label="Open menu" aria-controls="sino-drawer" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <div class="sino-logo">
+        <a href="https://www.sino-shipping.com/" aria-label="SINO Shipping home">
+          <img class="sino-logo-img" src="https://www.sino-shipping.com/wp-content/uploads/2025/10/SINO-Shipping-Logo.webp" alt="SINO Shipping" />
+        </a>
+      </div>
+
+      <ul class="sino-nav" role="menubar">
+        <li>
+          <button class="sino-nav-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="sino-services-menu">
+            <span>Services</span>
+            <svg class="sino-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div id="sino-services-menu" class="sino-dropdown" role="menu" aria-label="Services"></div>
+        </li>
+        <li>
+          <button class="sino-nav-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="sino-guides-menu">
+            <span>Guides</span>
+            <svg class="sino-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div id="sino-guides-menu" class="sino-megamenu" role="menu" aria-label="Guides">
+            <div class="sino-mega-grid" data-guides-grid></div>
+          </div>
+        </li>
+        <li>
+          <button class="sino-nav-btn" role="menuitem" aria-haspopup="menu" aria-expanded="false" aria-controls="sino-company-menu">
+            <span>Company</span>
+            <svg class="sino-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div id="sino-company-menu" class="sino-dropdown" role="menu" aria-label="Company"></div>
+        </li>
+      </ul>
+
+      <div class="sino-cta">
+        <a href="#" data-sino-form="open" data-nav="cta" data-item="Get a Quote" aria-label="Get a Quote">Get a Quote</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile drawer and overlay -->
+  <div class="sino-overlay" id="sino-overlay" aria-hidden="true"></div>
+  <aside class="sino-drawer" id="sino-drawer" aria-hidden="true" aria-modal="true" role="dialog">
+    <div class="sino-drawer-header">
+      <div class="sino-drawer-title">Menu</div>
+      <button class="sino-close" aria-label="Close menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="sino-drawer-body" tabindex="-1">
+      <nav class="sino-accordion" aria-label="Mobile Navigation">
+        <div class="sino-acc-item" id="sino-acc-services">
+          <button class="sino-acc-btn" aria-expanded="false" aria-controls="sino-acc-panel-services">
+            <span>Services</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sino-acc-panel" id="sino-acc-panel-services">
+            <ul class="sino-acc-list" data-mobile-services></ul>
+          </div>
+        </div>
+
+        <div class="sino-acc-item" id="sino-acc-guides">
+          <button class="sino-acc-btn" aria-expanded="false" aria-controls="sino-acc-panel-guides">
+            <span>Guides</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sino-acc-panel" id="sino-acc-panel-guides">
+            <ul class="sino-acc-list" data-mobile-guides></ul>
+          </div>
+        </div>
+
+        <div class="sino-acc-item" id="sino-acc-company">
+          <button class="sino-acc-btn" aria-expanded="false" aria-controls="sino-acc-panel-company">
+            <span>Company</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sino-acc-panel" id="sino-acc-panel-company">
+            <ul class="sino-acc-list" data-mobile-company></ul>
+          </div>
+        </div>
+
+        <div class="sino-acc-item" id="sino-acc-contact">
+          <button class="sino-acc-btn" aria-expanded="false" aria-controls="sino-acc-panel-contact">
+            <span>Contact</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sino-acc-panel" id="sino-acc-panel-contact">
+            <ul class="sino-acc-list" data-mobile-contact></ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="sino-drawer-cta">
+      <a href="#" data-sino-form="open" data-nav="cta" data-item="Get a Quote" aria-label="Get a Quote (mobile)">Get a Quote</a>
+    </div>
+  </aside>
+</header>
+
+<script>
+  (function () {
+    'use strict';
+    var init = function initSinoHeader() {
+      var ROOT = document.querySelector('.sino-header');
+      if (!ROOT || ROOT.dataset.sinoInit === '1') return;
+      ROOT.dataset.sinoInit = '1';
+
+      // Ensure viewport meta for responsive scaling when header is embedded
+      try {
+        var existingViewport = document.querySelector('meta[name="viewport"]');
+        if (!existingViewport && document.head) {
+          var meta = document.createElement('meta');
+          meta.name = 'viewport';
+          meta.content = 'width=device-width, initial-scale=1, viewport-fit=cover';
+          document.head.appendChild(meta);
+        }
+      } catch (_) {}
+
+    /* Config: read window.SINO_HEADER_CONFIG if present */
+    var deepMerge = function (base, override) {
+      if (!override) return base;
+      var out = Array.isArray(base) ? base.slice() : Object.assign({}, base);
+      Object.keys(override).forEach(function (k) {
+        var bv = base ? base[k] : undefined;
+        var ov = override[k];
+        if (ov && typeof ov === 'object' && !Array.isArray(ov)) {
+          out[k] = deepMerge(bv || {}, ov);
+        } else {
+          out[k] = ov;
+        }
+      });
+      return out;
+    };
+
+    var DEFAULTS = {
+      topbar: { text: "24/7 support • Offices in CN / HK / EU", url: "#", items: [
+        { icon: 'phone',    text: '24/7 support',      url: '#' },
+        { icon: 'whatsapp', text: '852 5555 5555',     url: '#' },
+        { icon: 'wechat',   text: 'WeChat: SINO-care' }
+      ]},
+      cta: { label: 'Get a Quote', url: '#' },
+      servicesAllUrl: '/services/',
+      servicesAllLabel: 'View all services →',
+      servicesMax: 6,
+      services: [
+        { label: 'Sea Freight (FCL & LCL)',           url: 'https://sino-shipping.com/sea-freight-china/' },
+        { label: 'Air Freight',                       url: 'https://www.sino-shipping.com/air-freight-china/' },
+        { label: 'Rail Freight (China–Europe)',       url: 'https://sino-shipping.com/rail-freight-china/' },
+        { label: 'Customs & Compliance',              url: 'https://www.sino-shipping.com/customs-clearance-china/' },
+        { label: 'Warehousing & Fulfillment (China)', url: 'https://www.sino-shipping.com/warehousing-china/' },
+        { label: 'Sourcing & Procurement (MorePlus)', url: '#' }
+      ],
+      practicalGuidesAllUrl: 'https://www.sino-shipping.com/international-shipping-knowledge-base/',
+      practicalGuides: [
+        { label:'Shipping from China',      tagline:'Complete guide hub – 200+ countries', url:'https://www.sino-shipping.com/shipping-from-china/' },
+        { label:'Sea Freight',              tagline:'FCL, LCL, containers',                 url:'https://sino-shipping.com/sea-freight-china/' },
+        { label:'Air Freight',              tagline:'Transit times & pricing',              url:'https://www.sino-shipping.com/air-freight-china/' },
+        { label:'Rail Freight',             tagline:'China–Europe corridor',                url:'https://sino-shipping.com/rail-freight-china/' },
+        { label:'Road & Inland Trucking',   tagline:'First/last mile & cross-border',       url:'https://www.sino-shipping.com/trucking-service-china/' },
+        { label:'Express & Courier',        tagline:'DHL, UPS, FedEx, SF, Cainiao',         url:'https://www.sino-shipping.com/express-shipping-china/' },
+        { label:'Freight Costs',            tagline:'How rates are built',                  url:'#' },
+        { label:'Customs & Duties',         tagline:'HS codes, VAT, tariffs',               url:'https://www.sino-shipping.com/customs-clearance-china/' },
+        { label:'Licensing & Compliance',   tagline:'CE, FCC, FDA & more',                  url:'https://www.sino-shipping.com/export-license/' },
+        { label:'Warehousing & Fulfillment',tagline:'Bonded & non-bonded, WMS',             url:'https://www.sino-shipping.com/warehousing-china/' },
+        { label:'Cargo Services',           tagline:'Insurance, packing, DG, cold chain',   url:'#' },
+        { label:'E-commerce & Amazon FBA',  tagline:'Workflows & integrations',             url:'#' },
+        { label:'Dropshipping from China',  tagline:'Agents, shipping options',             url:'#' },
+        { label:'Sourcing & Procurement',   tagline:'Suppliers, QC, audits',                url:'#' },
+        { label:'Export to China',          tagline:'Docs, platforms, distribution',        url:'#' },
+        { label:'Industries & Products',    tagline:'Electronics, apparel, furniture…',     url:'#' }
+      ],
+      company: [
+        { label:'Our Story',           url:'https://www.sino-shipping.com/our-story/' },
+        { label:'Leadership',             url:'#' },
+        { label:'Global Network',            url:'#' },
+        { label:'Certifications', url:'#' },
+        { label:'Why SINO',      url:'#' },
+        { label:'Contact & Offices',             url:'#' }
+      ]
+    };
+
+    var EXTERNAL = (typeof window !== 'undefined' && window.SINO_HEADER_CONFIG) ? window.SINO_HEADER_CONFIG : null;
+    var NAV_DATA = deepMerge(DEFAULTS, EXTERNAL || {});
+
+    var DEBUG_TRACK = false; // set true to debug GA4 events
+
+    /* Utilities */
+    var $ = function (sel, root) { return (root || document).querySelector(sel); };
+    var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+    var now = function () { return (window.performance && performance.now) ? performance.now() : Date.now(); };
+
+    var stripTrailingSlash = function (p) { return p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p; };
+    var normalizePath = function (path) { try { return stripTrailingSlash((path || '/').split('?')[0].split('#')[0]) || '/'; } catch (_) { return '/'; } };
+    var currentPath = normalizePath(window.location.pathname || '/');
+
+    var isActive = function (url) {
+      if (!url || url === '#') return false;
+      try {
+        var parsed = new URL(url, window.location.origin);
+        var target = normalizePath(parsed.pathname);
+        return target === currentPath;
+      } catch (_) { return false; }
+    };
+
+    var lastTrackTimes = new Map();
+    var trackNav = function (opts) {
+      var section = (opts && opts.section) || '';
+      var item = (opts && opts.item) || '';
+      var locationLabel = (opts && opts.location) || 'header';
+      var key = section + '|' + item + '|' + locationLabel;
+      var t = now();
+      var last = lastTrackTimes.get(key) || 0;
+      if (t - last < 50) return; // debounce duplicates
+      lastTrackTimes.set(key, t);
+      if (DEBUG_TRACK) console.info('[SINO-TRACK]', { section: section, item: item, location: locationLabel });
+      if (typeof window.gtag === 'function') {
+        try {
+          if (section === 'cta') window.gtag('event', 'cta_click', { label: NAV_DATA.cta && NAV_DATA.cta.label || 'Get a Quote', location: locationLabel });
+          else window.gtag('event', 'nav_click', { label: section, item: item, location: locationLabel });
+        } catch (_) {}
+      }
+    };
+
+    var iconSvg = function (name) {
+      var common = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+      if (name === 'phone') return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path '+common+' d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.11 5.18 2 2 0 0 1 5.1 3h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.59 2.61a2 2 0 0 1-.45 2.11L9.1 10.9a16 16 0 0 0 4 4l1.46-1.14a2 2 0 0 1 2.11-.45c.84.27 1.71.47 2.61.59A2 2 0 0 1 22 16.92z"/></svg>';
+      if (name === 'whatsapp') return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path '+common+' d="M20.52 3.48A11.5 11.5 0 0 0 3.5 20.5L2 22l1.5-.5A11.5 11.5 0 1 0 20.52 3.48z"/><path '+common+' d="M8 9c0 4 4 8 8 8l2-2"/></svg>';
+      if (name === 'wechat') return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path '+common+' d="M5 12a7 7 0 1 1 13.65 2.12c.22.5.35 1.06.35 1.64 0 2.76-2.69 5-6 5-2.54 0-4.72-1.39-5.55-3.33C5.5 17.26 4 15.8 4 14c0-1.03.44-1.98 1.16-2.67A7 7 0 0 1 5 12z"/><circle cx="9" cy="11" r="1.2" fill="currentColor"/><circle cx="14" cy="11" r="1.2" fill="currentColor"/></svg>';
+      return '';
+    };
+
+    /* Populate topbar (items or fallback, else hidden) */
+    var topbarRoot = $('.sino-topbar');
+    var topbarItemsRoot = $('[data-topbar-items]');
+    var topbarText = $('[data-topbar-text]');
+    var topbarLink = $('[data-topbar-link]');
+    var renderedTopbar = false;
+
+    // If custom static topbar structure is present, consider it rendered
+    if ($('.sino-topbar-left') || $('.sino-topbar-info')) {
+      renderedTopbar = true;
+    } else if (Array.isArray(NAV_DATA.topbar && NAV_DATA.topbar.items) && NAV_DATA.topbar.items.length) {
+      if (topbarItemsRoot) {
+        topbarItemsRoot.innerHTML = '';
+        NAV_DATA.topbar.items.slice(0, 3).forEach(function (it) {
+          var a = document.createElement(it.url ? 'a' : 'span');
+          if (it.url) a.href = it.url;
+          a.className = 'sino-topbar-item';
+          a.innerHTML = iconSvg(it.icon || '') + '<span>' + (it.text || '') + '</span>';
+          if (it.url) {
+            a.setAttribute('data-nav', 'Topbar');
+            a.setAttribute('data-item', it.text || '');
+            a.addEventListener('click', function () { trackNav({ section: 'Topbar', item: it.text || '' }); });
+          }
+          topbarItemsRoot.appendChild(a);
+        });
+        topbarItemsRoot.hidden = false;
+        if (topbarText) topbarText.hidden = true;
+        if (topbarLink) topbarLink.hidden = true;
+        renderedTopbar = true;
+      }
+    } else if (NAV_DATA.topbar && NAV_DATA.topbar.text) {
+      if (topbarText) topbarText.textContent = NAV_DATA.topbar.text || '';
+      if (topbarLink) topbarLink.setAttribute('href', (NAV_DATA.topbar && NAV_DATA.topbar.url) || '#');
+      renderedTopbar = true;
+    }
+    if (!renderedTopbar && topbarRoot) topbarRoot.hidden = true;
+
+    // Cities feature fully removed
+
+    /* Build desktop menus */
+    var servicesMenu = $('#sino-services-menu');
+    var companyMenu = $('#sino-company-menu');
+    var guidesGrid = $('[data-guides-grid]');
+
+    var createLink = function (label, url, section) {
+      var a = document.createElement('a');
+      a.href = url || '#'; a.textContent = label;
+      a.setAttribute('role', 'menuitem');
+      a.dataset.nav = section; a.dataset.item = label;
+      var active = isActive(url);
+      if (active) { a.dataset.current = 'true'; a.classList.add('is-current'); }
+      a.addEventListener('click', function () { trackNav({ section: section, item: label }); });
+      return a;
+    };
+
+    // Services (desktop): up to servicesMax, then separator + View all services
+    if (servicesMenu) {
+      var maxServices = (typeof NAV_DATA.servicesMax === 'number') ? NAV_DATA.servicesMax : 6;
+      (NAV_DATA.services || []).slice(0, maxServices).forEach(function (svc) {
+        servicesMenu.appendChild(createLink(svc.label, svc.url, 'Services'));
+      });
+      // Separator
+      var sep = document.createElement('div');
+      sep.setAttribute('role', 'separator');
+      sep.setAttribute('aria-orientation', 'horizontal');
+      sep.className = 'sino-separator';
+      servicesMenu.appendChild(sep);
+      // View all services link
+      var allLabel = NAV_DATA.servicesAllLabel || 'View all services →';
+      var allUrl = NAV_DATA.servicesAllUrl || '#';
+      var allLink = createLink(allLabel, allUrl, 'Services');
+      allLink.dataset.item = 'View all services';
+      allLink.addEventListener('click', function () { trackNav({ section: 'Services', item: 'View all services' }); });
+      servicesMenu.appendChild(allLink);
+    }
+    // Company
+    if (companyMenu) {
+      NAV_DATA.company.slice(0, 8).forEach(function (co) {
+        companyMenu.appendChild(createLink(co.label, co.url, 'Company'));
+      });
+    }
+    // Practical Guides mega-menu (cap 12 + optional "View all guides →")
+    var guidesActiveAny = false;
+    if (guidesGrid) {
+      var MAX = 12;
+      var items = NAV_DATA.practicalGuides || [];
+      var visible = items.slice(0, MAX);
+      visible.forEach(function (g) {
+        var a = document.createElement('a');
+        a.href = g.url || '#';
+        a.className = 'sino-mega-card';
+        a.setAttribute('role', 'menuitem');
+        a.dataset.nav = 'Practical Guides';
+        a.dataset.item = g.label;
+        a.innerHTML = '<h4>' + g.label + '</h4><p>' + (g.tagline || '') + '</p>';
+        var active = isActive(g.url);
+        if (active) { a.dataset.current = 'true'; a.classList.add('is-current'); guidesActiveAny = true; }
+        a.addEventListener('click', function () { trackNav({ section: 'Practical Guides', item: g.label }); });
+        guidesGrid.appendChild(a);
+      });
+      if ((items && items.length || 0) > MAX) {
+        var aAll = document.createElement('a');
+        aAll.href = NAV_DATA.practicalGuidesAllUrl || '#';
+        aAll.className = 'sino-mega-card';
+        aAll.setAttribute('role', 'menuitem');
+        aAll.dataset.nav = 'Practical Guides';
+        aAll.dataset.item = 'View all guides';
+        aAll.innerHTML = '<h4>View all guides →</h4><p>Explore the complete knowledge base</p>';
+        var activeAll = isActive(aAll.href);
+        if (activeAll) { aAll.dataset.current = 'true'; aAll.classList.add('is-current'); guidesActiveAny = true; }
+        aAll.addEventListener('click', function () { trackNav({ section: 'Practical Guides', item: 'View all guides' }); });
+        guidesGrid.appendChild(aAll);
+      }
+    }
+
+    /* Desktop dropdown logic + a11y - Enhanced robustness */
+    // Prevent multiple initializations
+    if (window.sinoHeaderInitialized) {
+      console.warn('[SINO-HEADER] Header already initialized, skipping...');
+      return;
+    }
+    window.sinoHeaderInitialized = true;
+
+    var navItems = $$('.sino-nav > li');
+    if (!navItems || navItems.length === 0) {
+      console.warn('[SINO-HEADER] No navigation items found');
+      return;
+    }
+
+    console.info('[SINO-HEADER] Initializing with', navItems.length, 'navigation items');
+
+    // Utility functions for DOM validation
+    var isValidElement = function(element) {
+      return element &&
+             element.nodeType === Node.ELEMENT_NODE &&
+             element.tagName &&
+             typeof element.querySelector === 'function';
+    };
+
+    var isValidButton = function(button) {
+      return isValidElement(button) &&
+             button.tagName === 'BUTTON' &&
+             button.classList &&
+             button.classList.contains('sino-nav-btn');
+    };
+
+    var closeAll = function () {
+      navItems.forEach(function (li) {
+        if (!isValidElement(li) || !li.classList) return;
+        try {
+          li.classList.remove('sino-open');
+          var btn = li.querySelector('button.sino-nav-btn');
+          if (isValidButton(btn) && btn.setAttribute) {
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        } catch (e) {
+          console.warn('[SINO-HEADER] Error closing dropdown:', e);
+        }
+      });
+    };
+
+    var focusFirstInPanel = function (li) {
+      if (!li) return;
+      try {
+        var panel = li.querySelector('.sino-dropdown, .sino-megamenu');
+        if (!panel) return;
+        var first = panel.querySelector('a, .sino-mega-card');
+        if (first && typeof first.focus === 'function') first.focus();
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error focusing first panel item:', e);
+      }
+    };
+
+    var adjustPanelWithinViewport = function (li) {
+      if (!li) return;
+      try {
+        var panel = li.querySelector('.sino-dropdown, .sino-megamenu');
+        if (!panel || !panel.style) return;
+
+        // Reset shift, force reflow, then measure
+        panel.style.setProperty('--sino-panel-shift-x', '0px');
+        if (panel.offsetWidth === undefined) return; // Element not in DOM
+        void panel.offsetWidth;
+
+        var rect = panel.getBoundingClientRect();
+        if (!rect || typeof rect.width !== 'number') return;
+
+        var margin = 8;
+        var shift = 0;
+        var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+
+        if (viewportWidth <= 0) return;
+
+        // Special handling for megamenu (centered)
+        if (panel.classList.contains('sino-megamenu')) {
+          // For megamenu, ensure it stays within viewport bounds
+          if (rect.right > viewportWidth - margin) {
+            shift = Math.max(-(rect.width / 2), -(viewportWidth - margin - rect.width) / 2);
+          }
+          if (rect.left < margin) {
+            shift = Math.min(rect.width / 2, (margin - rect.left) + (viewportWidth - margin - rect.right) / 2);
+          }
+        } else {
+          // Enhanced logic for regular dropdowns
+          if (rect.right > viewportWidth - margin) {
+            shift = Math.max(-(rect.width + li.getBoundingClientRect().left - (viewportWidth - margin)), -(rect.width));
+          }
+          if (rect.left < margin) {
+            shift = Math.min(margin - rect.left, rect.width - (li.getBoundingClientRect().right - margin));
+          }
+        }
+
+        if (typeof shift === 'number' && !isNaN(shift)) {
+          panel.style.setProperty('--sino-panel-shift-x', shift + 'px');
+        }
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error adjusting panel viewport:', e);
+      }
+    };
+    var toggleItem = function (li, open, focusFirst) {
+      if (!li || !li.classList) return;
+
+      try {
+        var btn = li.querySelector('button.sino-nav-btn');
+        if (!btn || !btn.setAttribute) return;
+
+        if (open) {
+          // Ensure only one dropdown is open at a time
+          closeAll();
+
+          // Pre-compute shift while closed for smoother animation
+          adjustPanelWithinViewport(li);
+
+          // Add open state
+          li.classList.add('sino-open');
+          btn.setAttribute('aria-expanded', 'true');
+
+          // Final adjustment after opening
+          if (typeof requestAnimationFrame === 'function') {
+            requestAnimationFrame(function () {
+              adjustPanelWithinViewport(li);
+            });
+          } else {
+            // Fallback for browsers without requestAnimationFrame
+            setTimeout(function() { adjustPanelWithinViewport(li); }, 10);
+          }
+
+          if (focusFirst) {
+            // Delay focus to ensure panel is visible
+            setTimeout(function() { focusFirstInPanel(li); }, 100);
+          }
+        } else {
+          // Close dropdown
+          li.classList.remove('sino-open');
+          btn.setAttribute('aria-expanded', 'false');
+
+          var panel = li.querySelector('.sino-dropdown, .sino-megamenu');
+          if (panel && panel.style && panel.style.setProperty) {
+            panel.style.setProperty('--sino-panel-shift-x', '0px');
+          }
+        }
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error toggling dropdown:', e);
+      }
+    };
+
+    var markSectionTriggerIfActive = function (triggerLi, panelSelector) {
+      if (!triggerLi) return;
+      try {
+        var btn = triggerLi.querySelector('button.sino-nav-btn');
+        var panel = triggerLi.querySelector(panelSelector);
+        if (!btn || !panel) return;
+        var anyActive = panel.querySelector('[data-current="true"]');
+        if (anyActive && btn.classList) btn.classList.add('is-current');
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error marking section trigger:', e);
+      }
+    };
+
+    // Enhanced event handling with proper cleanup and error handling
+    var eventHandlers = [];
+
+    navItems.forEach(function (li, index) {
+      if (!li) return;
+
+      try {
+        var btn = li.querySelector('button.sino-nav-btn');
+        if (!btn) return;
+
+        // Click handler
+        var clickHandler = function (e) {
+          if (e) e.preventDefault();
+          try {
+            var isOpen = li.classList.contains('sino-open');
+            toggleItem(li, !isOpen, true);
+          } catch (error) {
+            console.warn('[SINO-HEADER] Error in click handler:', error);
+          }
+        };
+
+        // Keyboard navigation handler
+        var keydownHandler = function (e) {
+          if (!e || !e.key) return;
+          try {
+            var key = e.key;
+            var isOpen = li.classList.contains('sino-open');
+
+            if (key === 'ArrowDown' || key === 'Enter' || key === ' ') {
+              e.preventDefault();
+              toggleItem(li, true, true);
+            } else if (key === 'ArrowUp') {
+              e.preventDefault();
+              toggleItem(li, true, true);
+              var panel = li.querySelector('.sino-dropdown, .sino-megamenu');
+              if (panel) {
+                var items = panel.querySelectorAll('a, .sino-mega-card');
+                if (items && items.length > 0) {
+                  var lastItem = items[items.length - 1];
+                  if (lastItem && typeof lastItem.focus === 'function') lastItem.focus();
+                }
+              }
+            } else if (key === 'Escape') {
+              if (isOpen) {
+                toggleItem(li, false, false);
+                btn.focus();
+              }
+            } else if (key === 'ArrowRight' || key === 'ArrowLeft') {
+              e.preventDefault();
+              var siblings = Array.from(navItems).filter(function(sibling) {
+                return sibling && sibling.querySelector && sibling.querySelector('button.sino-nav-btn');
+              });
+              var currentIdx = siblings.indexOf(li);
+              if (currentIdx !== -1) {
+                var nextIdx = key === 'ArrowRight'
+                  ? (currentIdx + 1) % siblings.length
+                  : (currentIdx - 1 + siblings.length) % siblings.length;
+                var nextBtn = siblings[nextIdx] ? siblings[nextIdx].querySelector('button.sino-nav-btn') : null;
+                if (nextBtn && typeof nextBtn.focus === 'function') nextBtn.focus();
+              }
+            }
+          } catch (error) {
+            console.warn('[SINO-HEADER] Error in keydown handler:', error);
+          }
+        };
+
+        // Panel keyboard navigation
+        var panel = li.querySelector('.sino-dropdown, .sino-megamenu');
+        if (panel) {
+          var panelKeydownHandler = function (e) {
+            if (!e || !e.key) return;
+            try {
+              var key = e.key;
+              var items = Array.prototype.slice.call(panel.querySelectorAll('a, .sino-mega-card'));
+              if (!items || items.length === 0) return;
+
+              var currentIdx = items.indexOf(document.activeElement);
+              if (currentIdx === -1) return;
+
+              if (key === 'Escape') {
+                e.preventDefault();
+                toggleItem(li, false, false);
+                btn.focus();
+              } else if (key === 'ArrowDown') {
+                e.preventDefault();
+                var nextIdx = (currentIdx + 1) % items.length;
+                var next = items[nextIdx] || items[0];
+                if (next && typeof next.focus === 'function') next.focus();
+              } else if (key === 'ArrowUp') {
+                e.preventDefault();
+                var prevIdx = (currentIdx - 1 + items.length) % items.length;
+                var prev = items[prevIdx] || items[items.length - 1];
+                if (prev && typeof prev.focus === 'function') prev.focus();
+              } else if (key === 'Home') {
+                e.preventDefault();
+                if (items[0] && typeof items[0].focus === 'function') items[0].focus();
+              } else if (key === 'End') {
+                e.preventDefault();
+                if (items[items.length - 1] && typeof items[items.length - 1].focus === 'function') items[items.length - 1].focus();
+              }
+            } catch (error) {
+              console.warn('[SINO-HEADER] Error in panel keydown handler:', error);
+            }
+          };
+
+          panel.addEventListener('keydown', panelKeydownHandler, { passive: false });
+          eventHandlers.push({ element: panel, type: 'keydown', handler: panelKeydownHandler });
+        }
+
+        // Add main event listeners
+        btn.addEventListener('click', clickHandler, { passive: false });
+        btn.addEventListener('keydown', keydownHandler, { passive: false });
+
+        eventHandlers.push(
+          { element: btn, type: 'click', handler: clickHandler },
+          { element: btn, type: 'keydown', handler: keydownHandler }
+        );
+
+        // Enhanced hover handling with debouncing and cleanup
+        var hoverTimeout = null;
+        var isHovering = false;
+
+        var mouseEnterHandler = function () {
+          // Clear any existing timeout
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = null;
+          }
+
+          isHovering = true;
+
+          hoverTimeout = setTimeout(function() {
+            if (isHovering) {
+              try {
+                // Double-check element still exists and is valid
+                if (isValidElement(li) && isValidButton(btn)) {
+                  toggleItem(li, true, false);
+                }
+              } catch (error) {
+                console.warn('[SINO-HEADER] Error in mouseenter handler:', error);
+              }
+            }
+            hoverTimeout = null;
+          }, 50); // Small delay to prevent flickering
+        };
+
+        var mouseLeaveHandler = function () {
+          isHovering = false;
+
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = null;
+          }
+
+          hoverTimeout = setTimeout(function() {
+            if (!isHovering) {
+              try {
+                // Double-check element still exists and is valid
+                if (isValidElement(li) && isValidButton(btn)) {
+                  toggleItem(li, false, false);
+                }
+              } catch (error) {
+                console.warn('[SINO-HEADER] Error in mouseleave handler:', error);
+              }
+            }
+            hoverTimeout = null;
+          }, 150); // Longer delay for mouse leave to allow for mouse movement between elements
+        };
+
+        // Store cleanup function for this specific element
+        var originalRemoveEventListener = li.removeEventListener;
+        li.removeEventListener = function(type, handler, options) {
+          if (type === 'mouseenter' && handler === mouseEnterHandler) {
+            if (hoverTimeout) clearTimeout(hoverTimeout);
+            isHovering = false;
+          }
+          return originalRemoveEventListener.call(this, type, handler, options);
+        };
+
+        li.addEventListener('mouseenter', mouseEnterHandler, { passive: true });
+        li.addEventListener('mouseleave', mouseLeaveHandler, { passive: true });
+
+        eventHandlers.push(
+          { element: li, type: 'mouseenter', handler: mouseEnterHandler, cleanup: function() {
+            if (hoverTimeout) clearTimeout(hoverTimeout);
+            isHovering = false;
+          }},
+          { element: li, type: 'mouseleave', handler: mouseLeaveHandler }
+        );
+
+      } catch (error) {
+        console.warn('[SINO-HEADER] Error setting up event handlers for nav item ' + index + ':', error);
+      }
+    });
+
+    // Mark active sections with enhanced validation
+    try {
+      var servicesLi = document.getElementById('sino-services-menu');
+      if (servicesLi && isValidElement(servicesLi)) {
+        servicesLi = servicesLi.parentElement;
+        if (isValidElement(servicesLi)) {
+          markSectionTriggerIfActive(servicesLi, '.sino-dropdown');
+        }
+      }
+
+      var guidesLi = document.getElementById('sino-guides-menu');
+      if (guidesLi && isValidElement(guidesLi)) {
+        guidesLi = guidesLi.parentElement;
+        if (isValidElement(guidesLi) && guidesActiveAny) {
+          var guidesBtn = guidesLi.querySelector('button.sino-nav-btn');
+          if (isValidButton(guidesBtn)) {
+            guidesBtn.classList.add('is-current');
+          }
+        }
+      }
+
+      var companyLi = document.getElementById('sino-company-menu');
+      if (companyLi && isValidElement(companyLi)) {
+        companyLi = companyLi.parentElement;
+        if (isValidElement(companyLi)) {
+          markSectionTriggerIfActive(companyLi, '.sino-dropdown');
+        }
+      }
+    } catch (e) {
+      console.warn('[SINO-HEADER] Error marking active sections:', e);
+    }
+
+    // Validate configuration data
+    try {
+      if (!NAV_DATA || typeof NAV_DATA !== 'object') {
+        console.warn('[SINO-HEADER] NAV_DATA is not properly defined');
+        return;
+      }
+
+      // Validate essential sections
+      if (!NAV_DATA.services || !Array.isArray(NAV_DATA.services)) {
+        console.warn('[SINO-HEADER] NAV_DATA.services is missing or invalid');
+      }
+
+      if (!NAV_DATA.practicalGuides || !Array.isArray(NAV_DATA.practicalGuides)) {
+        console.warn('[SINO-HEADER] NAV_DATA.practicalGuides is missing or invalid');
+      }
+
+      if (!NAV_DATA.company || !Array.isArray(NAV_DATA.company)) {
+        console.warn('[SINO-HEADER] NAV_DATA.company is missing or invalid');
+      }
+    } catch (e) {
+      console.warn('[SINO-HEADER] Error validating configuration:', e);
+    }
+
+    // Global event handlers with enhanced robustness
+    var globalEventHandlers = [];
+    var lastClickTime = 0;
+    var clickCooldown = 100; // Prevent rapid clicking
+
+    var globalClickHandler = function (e) {
+      if (!e || !e.target) return;
+
+      try {
+        // Prevent rapid clicking
+        var now = Date.now();
+        if (now - lastClickTime < clickCooldown) return;
+        lastClickTime = now;
+
+        // Close dropdowns if clicking outside navigation
+        if (!e.target.closest('.sino-nav')) {
+          closeAll();
+        }
+      } catch (error) {
+        console.warn('[SINO-HEADER] Error in global click handler:', error);
+      }
+    };
+
+    var globalKeydownHandler = function (e) {
+      if (!e || !e.key) return;
+
+      try {
+        if (e.key === 'Escape') {
+          closeAll();
+          // Return focus to first nav button if no other element is focused
+          var activeElement = document.activeElement;
+          if (!activeElement || !activeElement.closest || !activeElement.closest('.sino-nav')) {
+            var firstBtn = document.querySelector('.sino-nav button.sino-nav-btn');
+            if (firstBtn && typeof firstBtn.focus === 'function') firstBtn.focus();
+          }
+        }
+      } catch (error) {
+        console.warn('[SINO-HEADER] Error in global keydown handler:', error);
+      }
+    };
+
+    var globalResizeHandler = function () {
+      try {
+        // Debounce resize events
+        if (globalResizeHandler.timeout) clearTimeout(globalResizeHandler.timeout);
+        globalResizeHandler.timeout = setTimeout(function() {
+          navItems.forEach(function (li) {
+            if (li && li.classList && li.classList.contains('sino-open')) {
+              adjustPanelWithinViewport(li);
+            }
+          });
+        }, 250);
+      } catch (error) {
+        console.warn('[SINO-HEADER] Error in resize handler:', error);
+      }
+    };
+
+    var globalScrollHandler = function () {
+      try {
+        // Close dropdowns on scroll for better UX on mobile
+        if (window.innerWidth <= 768) {
+          closeAll();
+        }
+      } catch (error) {
+        console.warn('[SINO-HEADER] Error in scroll handler:', error);
+      }
+    };
+
+    // Add global event listeners
+    document.addEventListener('click', globalClickHandler, { passive: true });
+    document.addEventListener('keydown', globalKeydownHandler, { passive: true });
+    window.addEventListener('resize', globalResizeHandler, { passive: true });
+    window.addEventListener('scroll', globalScrollHandler, { passive: true });
+
+    globalEventHandlers.push(
+      { element: document, type: 'click', handler: globalClickHandler },
+      { element: document, type: 'keydown', handler: globalKeydownHandler },
+      { element: window, type: 'resize', handler: globalResizeHandler },
+      { element: window, type: 'scroll', handler: globalScrollHandler }
+    );
+
+    // Enhanced cleanup function for memory management
+    var cleanup = function() {
+      try {
+        console.info('[SINO-HEADER] Starting cleanup...');
+
+        // Call custom cleanup functions first
+        eventHandlers.forEach(function(handler) {
+          if (handler.cleanup && typeof handler.cleanup === 'function') {
+            try {
+              handler.cleanup();
+            } catch (e) {
+              console.warn('[SINO-HEADER] Error in custom cleanup:', e);
+            }
+          }
+        });
+
+        // Remove all event handlers
+        eventHandlers.forEach(function(handler) {
+          if (handler.element && handler.element.removeEventListener && handler.handler) {
+            try {
+              handler.element.removeEventListener(handler.type, handler.handler);
+            } catch (e) {
+              console.warn('[SINO-HEADER] Error removing event handler:', e);
+            }
+          }
+        });
+
+        globalEventHandlers.forEach(function(handler) {
+          if (handler.element && handler.element.removeEventListener && handler.handler) {
+            try {
+              handler.element.removeEventListener(handler.type, handler.handler);
+            } catch (e) {
+              console.warn('[SINO-HEADER] Error removing global event handler:', e);
+            }
+          }
+        });
+
+        // Clear timeouts and intervals
+        if (globalResizeHandler.timeout) {
+          clearTimeout(globalResizeHandler.timeout);
+          globalResizeHandler.timeout = null;
+        }
+
+        // Clear all references
+        eventHandlers.length = 0;
+        globalEventHandlers.length = 0;
+        navItems.length = 0;
+
+        // Remove global reference
+        if (window.sinoHeaderCleanup) {
+          delete window.sinoHeaderCleanup;
+        }
+
+        // Reset initialization flag
+        window.sinoHeaderInitialized = false;
+
+        console.info('[SINO-HEADER] Cleanup completed successfully');
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error during cleanup:', e);
+      }
+    };
+
+    // Expose cleanup function globally for debugging and external access
+    window.sinoHeaderCleanup = cleanup;
+
+    // Auto-cleanup on page unload and visibility change
+    var visibilityChangeHandler = function() {
+      try {
+        // Close all dropdowns when page becomes hidden (mobile optimization)
+        if (document.hidden) {
+          closeAll();
+        }
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error in visibility change handler:', e);
+      }
+    };
+
+    window.addEventListener('beforeunload', function() {
+      try {
+        cleanup();
+      } catch (e) {
+        console.warn('[SINO-HEADER] Error during auto-cleanup:', e);
+      }
+    });
+
+    document.addEventListener('visibilitychange', visibilityChangeHandler, { passive: true });
+    globalEventHandlers.push({ element: document, type: 'visibilitychange', handler: visibilityChangeHandler });
+
+    // Mutation observer to handle dynamic DOM changes
+    if (typeof MutationObserver === 'function') {
+      var observer = new MutationObserver(function(mutations) {
+        try {
+          var shouldReinitialize = false;
+
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && mutation.target.classList) {
+              // Check if navigation structure has changed
+              if (mutation.target.classList.contains('sino-nav') ||
+                  mutation.target.closest('.sino-nav')) {
+                shouldReinitialize = true;
+              }
+            }
+          });
+
+          if (shouldReinitialize) {
+            console.warn('[SINO-HEADER] Navigation structure changed, reinitializing...');
+            cleanup();
+            // Delay reinitialization to avoid conflicts
+            setTimeout(function() {
+              try {
+                if (!window.sinoHeaderInitialized) {
+                  init();
+                }
+              } catch (e) {
+                console.warn('[SINO-HEADER] Error during reinitialization:', e);
+              }
+            }, 100);
+          }
+        } catch (e) {
+          console.warn('[SINO-HEADER] Error in mutation observer:', e);
+        }
+      });
+
+      var navContainer = document.querySelector('.sino-nav');
+      if (navContainer) {
+        observer.observe(navContainer, {
+          childList: true,
+          subtree: true
+        });
+      }
+    }
+
+    console.info('[SINO-HEADER] Initialization completed successfully');
+
+    /* CTA wiring + tracking - Enhanced robustness */
+    try {
+      var ctaNodes = $$('[data-nav="cta"]');
+      if (ctaNodes && ctaNodes.length > 0) {
+        ctaNodes.forEach(function (node) {
+          if (!node || !isValidElement(node)) return;
+
+          try {
+            var ctaLabel = (NAV_DATA.cta && NAV_DATA.cta.label) || 'Get a Quote';
+            var QUOTE_URL = (window && window.SINO_QUOTE_URL) ||
+                           (NAV_DATA.cta && NAV_DATA.cta.url) ||
+                           'https://www.sino-shipping.com/contact-us/';
+
+            if (node.textContent !== undefined) {
+              node.textContent = ctaLabel;
+            }
+
+            // Ne pas modifier l'href si le bouton utilise le formulaire popup
+            if (node.setAttribute && !node.hasAttribute('data-sino-form')) {
+              node.setAttribute('href', QUOTE_URL);
+
+              // Enhanced URL validation
+              if (/^https?:\/\/.+/i.test(QUOTE_URL)) {
+                node.setAttribute('target', '_blank');
+                node.setAttribute('rel', 'noopener noreferrer');
+              }
+            }
+
+            // Safe event listener attachment
+            var clickHandler = function(e) {
+              // Ne pas gérer les clics si le bouton utilise le formulaire popup
+              if (node.hasAttribute('data-sino-form')) {
+                return;
+              }
+              
+              try {
+                if (e) e.preventDefault();
+                trackNav({ section: 'cta', item: ctaLabel });
+
+                // Add a small delay to ensure tracking is sent
+                setTimeout(function() {
+                  if (QUOTE_URL && QUOTE_URL !== '#') {
+                    window.location.href = QUOTE_URL;
+                  }
+                }, 10);
+              } catch (error) {
+                console.warn('[SINO-HEADER] Error in CTA click handler:', error);
+                // Fallback: direct navigation
+                if (QUOTE_URL && QUOTE_URL !== '#') {
+                  window.location.href = QUOTE_URL;
+                }
+              }
+            };
+
+            node.addEventListener('click', clickHandler, { passive: false });
+            eventHandlers.push({ element: node, type: 'click', handler: clickHandler });
+
+          } catch (error) {
+            console.warn('[SINO-HEADER] Error setting up CTA node:', error);
+          }
+        });
+      }
+    } catch (e) {
+      console.warn('[SINO-HEADER] Error in CTA setup:', e);
+    }
+
+    /* Mobile drawer logic */
+    var burger = $('.sino-burger');
+    var overlay = $('#sino-overlay');
+    var drawer = $('#sino-drawer');
+    var closeBtn = $('.sino-close');
+    var lastFocused = null;
+
+    var setScrollLock = function (on) { var root = document.documentElement; if (on) root.classList.add('sino-scroll-lock'); else root.classList.remove('sino-scroll-lock'); };
+    var openDrawer = function () {
+      lastFocused = document.activeElement; 
+      overlay.classList.add('sino-active'); 
+      drawer.classList.add('sino-active');
+      drawer.setAttribute('aria-hidden', 'false'); 
+      overlay.setAttribute('aria-hidden', 'false'); 
+      if (burger) burger.setAttribute('aria-expanded', 'true'); 
+      setScrollLock(true);
+      var focusables = drawer.querySelectorAll('button, a, input, [tabindex]:not([tabindex="-1"])');
+      var first = Array.prototype.find.call(focusables, function (el) { return !el.disabled && el.offsetParent !== null; });
+      (first || drawer).focus();
+    };
+    var closeDrawer = function () {
+      overlay.classList.remove('sino-active'); drawer.classList.remove('sino-active');
+      drawer.setAttribute('aria-hidden', 'true'); overlay.setAttribute('aria-hidden', 'true'); if (burger) burger.setAttribute('aria-expanded', 'false'); setScrollLock(false);
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    };
+    var onKeydownTrap = function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); closeDrawer(); return; }
+      if (e.key !== 'Tab') return;
+      var focusables = Array.prototype.filter.call(drawer.querySelectorAll('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'), function (el) { return !el.disabled && el.offsetParent !== null; });
+      if (!focusables.length) return; var first = focusables[0]; var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    if (overlay) { overlay.addEventListener('click', closeDrawer); }
+    if (overlay) { overlay.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false }); }
+    if (burger) burger.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', function (e) { var isOpen = drawer.classList.contains('sino-active'); if (isOpen) onKeydownTrap(e); });
+    if (overlay) { overlay.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false }); }
+
+    /* Topbar cities popover behavior */
+    (function(){
+      var wrapper = document.getElementById('sino-cities');
+      if (!wrapper) return;
+      var btn = wrapper.querySelector('button.sino-chip');
+      var pop = document.getElementById('sino-cities-popover');
+      if (!btn || !pop) return;
+      // Move popover to body to escape stacking contexts
+      try { if (pop.parentElement !== document.body) document.body.appendChild(pop); } catch (_) {}
+      var open = false;
+      var placePopover = function() {
+        var r = btn.getBoundingClientRect();
+        var top = r.bottom + 8; // open below the chip
+        var width = pop.offsetWidth || pop.getBoundingClientRect().width || 280;
+        var left = Math.min(Math.max(r.right - width + 4, 8), window.innerWidth - width - 8);
+        pop.style.top = top + 'px';
+        pop.style.left = left + 'px';
+      };
+      var setOpen = function (v) {
+        open = v;
+        if (v) { 
+          // Make it renderable for accurate measurement without flashing
+          pop.style.visibility = 'hidden';
+          wrapper.classList.add('sino-open');
+          pop.classList.add('is-open');
+          if (typeof requestAnimationFrame === 'function') {
+            requestAnimationFrame(function(){
+              placePopover();
+              pop.style.visibility = '';
+            });
+          } else {
+            placePopover();
+            pop.style.visibility = '';
+          }
+        } else { 
+          wrapper.classList.remove('sino-open'); 
+          pop.classList.remove('is-open');
+        }
+        btn.setAttribute('aria-expanded', v ? 'true' : 'false');
+      };
+      var onDocClick = function (e) { if (!wrapper.contains(e.target) && !pop.contains(e.target)) setOpen(false); };
+      btn.addEventListener('click', function (e) { e.preventDefault(); setOpen(!open); });
+      document.addEventListener('click', onDocClick);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+      window.addEventListener('resize', function(){ if (open) placePopover(); }, { passive: true });
+      window.addEventListener('scroll', function(){ if (open) placePopover(); }, { passive: true });
+    })();
+
+    /* Mobile accordions: only one open at a time */
+    $$('.sino-acc-item').forEach(function (item) {
+      var btn = $('.sino-acc-btn', item); var panel = $('.sino-acc-panel', item); if (!btn || !panel) return;
+      btn.addEventListener('click', function () {
+        var isOpening = !item.classList.contains('sino-open');
+        $$('.sino-acc-item').forEach(function (sibling) { sibling.classList.remove('sino-open'); var sb = $('.sino-acc-btn', sibling); if (sb) sb.setAttribute('aria-expanded', 'false'); });
+        if (isOpening) { item.classList.add('sino-open'); btn.setAttribute('aria-expanded', 'true'); }
+      });
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+
+    /* Populate mobile lists */
+    var mobileServices = $('[data-mobile-services]');
+    var mobileGuides = $('[data-mobile-guides]');
+    var mobileCompany = $('[data-mobile-company]');
+    var mobileContact = $('[data-mobile-contact]');
+    var appendList = function (ul, items, section) { if (!ul) return; ul.innerHTML = ''; items.forEach(function (it) { var li = document.createElement('li'); var a = createLink(it.label, it.url, section); li.appendChild(a); ul.appendChild(li); }); };
+    // Mobile services: up to servicesMax then View all services
+    if (mobileServices) {
+      var maxServicesMobile = (typeof NAV_DATA.servicesMax === 'number') ? NAV_DATA.servicesMax : 6;
+      appendList(mobileServices, (NAV_DATA.services || []).slice(0, maxServicesMobile), 'Services');
+      var liAll = document.createElement('li');
+      var allLabelM = NAV_DATA.servicesAllLabel || 'View all services →';
+      var allUrlM = NAV_DATA.servicesAllUrl || '#';
+      var aAllM = createLink(allLabelM, allUrlM, 'Services');
+      aAllM.dataset.item = 'View all services';
+      aAllM.addEventListener('click', function () { trackNav({ section: 'Services', item: 'View all services' }); });
+      liAll.appendChild(aAllM);
+      mobileServices.appendChild(liAll);
+    }
+    appendList(mobileGuides, (NAV_DATA.practicalGuides || []).slice(0, 12), 'Practical Guides');
+    appendList(mobileCompany, NAV_DATA.company, 'Company');
+    
+    // Mobile contact section
+    if (mobileContact) {
+      var contactItems = [
+        { label: 'WhatsApp', url: 'https://chat.whatsapp.com/EcOPbD18vFxHTVjECQVsRE?mode=ems_copy_h_t' },
+        { label: 'Email: info@sino-shipping.com', url: 'mailto:info@sino-shipping.com' }
+      ];
+      appendList(mobileContact, contactItems, 'Contact');
+    }
+
+    /* Admin bar offset (wpadminbar) */
+    var applyAdminOffset = function () { var bar = document.getElementById('wpadminbar'); var h = bar ? bar.offsetHeight || 0 : 0; ROOT.style.setProperty('--sino-admin-offset', h + 'px'); };
+    applyAdminOffset();
+    window.addEventListener('resize', applyAdminOffset, { passive: true });
+
+    /* Enhanced condensed header on scroll with progressive transition */
+    var lastScrollDirection = 'down';
+    var lastScrollY = 0;
+    var isCondensed = false;
+    var stableZone = { min: 17, max: 47 }; // Zone morte de 30px
+    
+    var handleScroll = function () {
+      var scrollY = window.scrollY || window.pageYOffset;
+      var threshold = 32;
+      var maxThreshold = 120;
+      
+      // Déterminer la direction du scroll
+      var scrollDirection = scrollY > lastScrollY ? 'down' : 'up';
+      lastScrollY = scrollY;
+      
+      // Système d'hystérésis avancé avec zone morte
+      var shouldCondense = false;
+      var shouldExpand = false;
+      
+      if (isCondensed) {
+        // Si déjà condensé, il faut descendre plus bas pour revenir à l'état normal
+        shouldExpand = scrollY < stableZone.min;
+      } else {
+        // Si pas condensé, il faut monter plus haut pour condenser
+        shouldCondense = scrollY > stableZone.max;
+      }
+      
+      // Progressive transition based on scroll position with advanced hysteresis
+      if (shouldCondense && !isCondensed) {
+        isCondensed = true;
+        ROOT.classList.add('sino-condensed');
+      } else if (shouldExpand && isCondensed) {
+        isCondensed = false;
+        ROOT.classList.remove('sino-condensed');
+      }
+      
+      // Calcul de la progression seulement si on n'est pas dans la zone morte
+      if (scrollY > stableZone.max || scrollY < stableZone.min) {
+        var rawProgress = (scrollY - threshold) / (maxThreshold - threshold);
+        var progress = Math.min(Math.max(rawProgress, 0), 1);
+        
+        // Courbe d'easing plus douce pour une transition plus longue et élégante
+        var easedProgress = progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        
+        ROOT.style.setProperty('--scroll-progress', easedProgress);
+      } else {
+        // Dans la zone morte, maintenir l'état actuel
+        ROOT.style.setProperty('--scroll-progress', isCondensed ? '1' : '0');
+      }
+    };
+    
+    // Ultra-optimized scroll handling with hysteresis and stabilization
+    var ticking = false;
+    var lastStableScrollY = 0;
+    var stabilizationTimer = null;
+    
+    var throttledScroll = function() {
+      var currentScrollY = window.scrollY || window.pageYOffset;
+      
+      // Update on every pixel change for smooth transitions with longer duration
+      if (Math.abs(currentScrollY - lastScrollY) >= 0.2) {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+        
+        // Système de stabilisation pour éviter les micro-mouvements
+        clearTimeout(stabilizationTimer);
+        stabilizationTimer = setTimeout(function() {
+          if (Math.abs(currentScrollY - lastStableScrollY) < 2) {
+            // Position stable, ajuster finement
+            handleScroll();
+          }
+          lastStableScrollY = currentScrollY;
+        }, 50);
+      }
+    };
+    
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    handleScroll(); // Check initial state
+
+    /* Validation: unresolved URLs + mount recap */
+    var unresolved = 0;
+    var anchors = ROOT.querySelectorAll('a');
+    anchors.forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (!href || href === '#' || /^\s*$/.test(href) || /^javascript:/i.test(href)) {
+        unresolved++; a.classList.add('sino-link-warning'); console.warn('[SINO-HEADER] Unresolved URL', a);
+      }
+    });
+    console.info('[SINO-HEADER] Mount summary', {
+      services: (NAV_DATA.services || []).length,
+      practicalGuides: (NAV_DATA.practicalGuides || []).length,
+      company: (NAV_DATA.company || []).length,
+      unresolved: unresolved,
+      servicesAllUrlSet: Boolean(NAV_DATA.servicesAllUrl && NAV_DATA.servicesAllUrl !== '#')
+    });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Universal CTA Section (Our Story style) -->
+<style>
+  .cta-band { position: relative; padding: 64px 0; background: linear-gradient(135deg, #003875 0%, #0050a3 50%, #0066cc 100%); overflow: hidden; }
+  /* Use the same font stack as the header */
+  .cta-band, .cta-band * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; }
+  .cta-band .cta-bg { position:absolute; inset:0; opacity:.10; background-image:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAwIDBoMTAwdjEwMEgxMDBWMFptMCAxMDBoMTAwdjEwMEgxMDBWMTAwWm0tMTAwIDBoMTAwdjEwMEgwVjEwMFptMC0xMDBoMTAwdjEwMEgwVjBaIiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4wNSIvPjwvc3ZnPg=='); }
+  .cta-container { max-width: 1280px; margin: 0 auto; padding-left: 24px; padding-right: 24px; position: relative; }
+  .cta-card { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.20); border-radius: 24px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 48px 32px; margin: 0 auto 16px; max-width: 880px; box-shadow: 0 24px 60px rgba(0,0,0,0.25); text-align: center; }
+  .cta-card h2 { color: #fff; font-weight: 800; font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.12; margin: 0 0 12px; letter-spacing: -0.015em; text-shadow: 0 4px 18px rgba(0,0,0,0.25); }
+  .cta-card p { color: rgba(255,255,255,0.94); font-size: clamp(1.02rem, 2.2vw, 1.28rem); line-height: 1.68; margin: 0 0 22px; letter-spacing: .005em; }
+  .cta-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; border-radius: 9999px; text-decoration: none; font-weight: 700; font-size: 1rem; border: 1px solid transparent; transition: all .25s ease; box-shadow: 0 10px 26px rgba(0,0,0,0.18); position: relative; overflow: hidden; }
+  .cta-btn svg { width: 18px; height: 18px; }
+  /* Match header button style */
+  .cta-btn-primary { height: 48px; padding: 0 24px; background: linear-gradient(135deg, var(--sino-green, #D6DF20) 0%, var(--sino-green-light, #E8F032) 100%); color: #000; border-radius: var(--radius-16, 16px); box-shadow: var(--shadow-green, 0 8px 32px rgba(214,223,32,0.30)); border-color: rgba(0,0,0,0.06); }
+  .cta-btn-primary::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%); opacity: 0; transition: opacity .3s ease; }
+  .cta-btn-primary:hover::before { opacity: 1; }
+  .cta-btn-primary::after { content: "→"; display: inline-block; font-weight: 700; margin-left: 8px; transition: transform .3s ease; }
+  .cta-btn-primary:hover::after { transform: translateX(4px); }
+  .cta-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(214,223,32,0.40); }
+  .cta-btn-ghost { background: rgba(255,255,255,0.30); color: #fff; border-color: rgba(255,255,255,0.50); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .cta-btn-ghost:hover { background: rgba(255,255,255,0.40); box-shadow: 0 10px 28px rgba(0,0,0,0.20); }
+  .cta-trust { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 16px; margin: 0 auto; max-width: 760px; }
+  .cta-trust .trust-row { display:flex; align-items:center; justify-content:center; gap: 10px; color: rgba(255,255,255,0.94); letter-spacing: .01em; }
+  .cta-trust .trust-ico { width: 32px; height: 32px; border-radius: 9999px; background: rgba(214,223,32,0.20); display:flex; align-items:center; justify-content:center; }
+  .cta-trust .trust-ico svg { width: 16px; height: 16px; color: #D6DF20; }
+  @media (max-width: 640px){ .cta-card{ padding: 36px 20px; } .cta-actions{ flex-direction: column; } .cta-btn{ width: 100%; } }
+  </style>
+<section class="cta-band" role="region" aria-label="Get started with SINO Shipping">
+  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="cta-container">
+    <div class="cta-card">
+      <h2>Ship with confidence.</h2>
+      <p>Solid plans. Clear updates. Fewer surprises.</p>
+      <div class="cta-actions">
+        <a href="#" data-sino-form="open" class="cta-btn cta-btn-primary" data-cta="get-quote-menu" aria-label="Get a free quote">Get a Quote</a>
+        <a href="https://www.sino-shipping.com/international-shipping-knowledge-base/" class="cta-btn cta-btn-ghost" aria-label="Explore more">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Explore our guides
+        </a>
+      </div>
+    </div>
+    <div class="cta-trust" aria-label="Trust note">
+      <div class="trust-row">
+        <span class="trust-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>Backed by FS International (operating since 1989)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SINO Footer v1.1 — Modern Design START -->
+<style>
+  /* SINO Footer v1.1 — Modern Design (.sinfoot-*) */
+  .sino-footer-root {
+    --sinfoot-blue: #001C38;
+    --sinfoot-green: #D6DF20;
+    --sinfoot-green-light: #E8F032;
+    --sinfoot-blue-light: #1A365D;
+    --sinfoot-text: #1A202C;
+    --sinfoot-text-light: #4A5568;
+    --sinfoot-bg: #ffffff;
+    --sinfoot-bg-glass: rgba(255, 255, 255, 0.98);
+    --sinfoot-bg-light: #F7FAFC;
+    --sinfoot-bg-dark: #F1F5F9;
+    --sinfoot-border: rgba(226, 232, 240, 0.8);
+    --sinfoot-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --sinfoot-shadow-2: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.06);
+    --sinfoot-shadow-green: 0 8px 32px rgba(214, 223, 32, 0.25);
+    --sinfoot-radius: 12px;
+    --sinfoot-radius-lg: 16px;
+    --sinfoot-radius-xl: 20px;
+    --sinfoot-ring: var(--sinfoot-green);
+    color: var(--sinfoot-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+    font-size: clamp(14px, 1.6vw, 16px);
+    line-height: 1.5;
+    padding-bottom: env(safe-area-inset-bottom);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* SINO Footer Trust Strip — Modern Design (.sino-f-*) */
+  .sino-f-trust {
+    --f-bg: #ffffff;
+    --f-bg-light: #F7FAFC;
+    --f-text: #1A202C;
+    --f-text-light: #4A5568;
+    --f-border: rgba(226, 232, 240, 0.8);
+    --f-green: #D6DF20;
+    background: linear-gradient(135deg, var(--f-bg-light) 0%, #EDF2F7 100%);
+    border-top: 1px solid var(--f-border);
+    padding: 20px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sino-f-trust::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(214, 223, 32, 0.03) 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .sino-f-trust__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sino-f-trust__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .sino-f-trust__text {
+    flex-shrink: 0;
+  }
+
+  .sino-f-trust__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--f-text);
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+
+  .sino-f-trust__subtitle {
+    color: var(--f-text-light);
+    font-size: 0.8125rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .sino-f-trust__logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .sino-f-trust__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 6px 12px;
+    border-radius: var(--sinfoot-radius);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: var(--sinfoot-shadow);
+  }
+
+  .sino-f-trust__logo:focus {
+    outline: 2px solid var(--f-green);
+    outline-offset: 2px;
+  }
+
+  .sino-f-trust__logo img {
+    height: auto;
+    max-height: 32px;
+    width: auto;
+    max-width: 150px;
+    filter: grayscale(100%) opacity(0.75);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sino-f-trust__logo:hover img,
+  .sino-f-trust__logo:focus img {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .sino-f-trust__logo:hover,
+  .sino-f-trust__logo:focus {
+    transform: translateY(-2px);
+    box-shadow: var(--sinfoot-shadow-2);
+    border-color: var(--sinfoot-green);
+    background: rgba(255, 255, 255, 1);
+  }
+
+  .sino-f-trust__link {
+    flex-shrink: 0;
+  }
+
+  .sino-f-trust__certificates {
+    color: var(--sinfoot-blue);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px 12px;
+    border-radius: var(--sinfoot-radius);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sino-f-trust__certificates::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(214, 223, 32, 0.1) 0%, rgba(214, 223, 32, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sino-f-trust__certificates:hover::before {
+    opacity: 1;
+  }
+  
+  .sino-f-trust__certificates:hover {
+    color: var(--sinfoot-green);
+    transform: translateY(-1px);
+  }
+
+  .sino-f-trust__certificates:focus {
+    outline: 2px solid var(--f-green);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .sino-f-trust__certificates:hover {
+    color: var(--f-green);
+  }
+
+  .sinfoot-container { 
+    max-width: 1280px; 
+    margin: 0 auto; 
+    padding-left: 24px; 
+    padding-right: 24px; 
+  }
+
+  .sinfoot-sr-only { 
+    position: absolute; 
+    width: 1px; 
+    height: 1px; 
+    padding: 0; 
+    margin: -1px; 
+    overflow: hidden; 
+    clip: rect(0, 0, 0, 0); 
+    white-space: nowrap; 
+    border: 0; 
+  }
+
+  /* CTA Band - Modern & Compact */
+  .sinfoot-cta-band {
+    background: linear-gradient(135deg, #001C38 0%, #1A365D 50%, #2A4A7A 100%);
+    color: #ffffff;
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Texture "Blueprint Grid" moderne pour le CTA */
+  .sinfoot-cta-band::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), 
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .sinfoot-cta-band::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(214, 223, 32, 0.15) 0%, transparent 50%, rgba(214, 223, 32, 0.08) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .sinfoot-cta-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .sinfoot-cta-content h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin: 0 0 24px;
+    color: #ffffff;
+    line-height: 1.2;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.02em;
+  }
+
+  .sinfoot-cta-chips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 0 32px;
+    flex-wrap: wrap;
+  }
+  
+  .sinfoot-cta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 22px;
+    background: #ffffff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #001C38;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sinfoot-cta-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--sinfoot-green);
+    background: #ffffff;
+    color: #001C38;
+  }
+
+  .sinfoot-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 36px;
+    background: linear-gradient(135deg, var(--sinfoot-green) 0%, var(--sinfoot-green-light) 100%);
+    color: #000000;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 8px 24px rgba(214, 223, 32, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sinfoot-cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .sinfoot-cta-btn:hover::before {
+    left: 100%;
+  }
+
+  .sinfoot-cta-btn:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: 2px;
+  }
+
+  .sinfoot-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(214, 223, 32, 0.4);
+  }
+  
+  .sinfoot-cta-btn::after {
+    content: "→";
+    display: inline-block;
+    font-weight: 700;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .sinfoot-cta-btn:hover::after {
+    transform: translateX(4px);
+  }
+
+  /* Mega Footer - Compact */
+  .sinfoot-mega {
+    background: var(--sinfoot-bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 40px 0 30px;
+    border-bottom: 1px solid var(--sinfoot-border);
+    position: relative;
+  }
+  
+  .sinfoot-mega::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(214, 223, 32, 0.2) 50%, transparent 100%);
+  }
+
+  .sinfoot-mega-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 32px;
+  }
+
+  .sinfoot-column h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sinfoot-text);
+    margin: 0 0 16px;
+    line-height: 1.2;
+    position: relative;
+  }
+  
+  .sinfoot-column h3::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--sinfoot-green) 0%, var(--sinfoot-green-light) 100%);
+    border-radius: 1px;
+  }
+
+  .sinfoot-column nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sinfoot-column a {
+    color: var(--sinfoot-text-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    padding: 2px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sinfoot-column a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--sinfoot-green) 0%, var(--sinfoot-green-light) 100%);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sinfoot-column a:hover::before {
+    width: 100%;
+  }
+
+  .sinfoot-column a:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .sinfoot-column a:hover {
+    color: var(--sinfoot-text);
+    transform: translateX(4px);
+  }
+
+  .sinfoot-column a.sinfoot-view-all {
+    font-weight: 600;
+    color: var(--sinfoot-blue);
+    margin-top: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(214, 223, 32, 0.05);
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.8rem;
+  }
+  
+  .sinfoot-column a.sinfoot-view-all:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .sinfoot-column a.sinfoot-view-all:hover {
+    color: var(--sinfoot-green);
+    background: rgba(214, 223, 32, 0.1);
+    border-color: var(--sinfoot-green);
+    transform: translateX(4px);
+  }
+
+  /* Trade Corridors - Compact */
+  .sinfoot-corridors {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sinfoot-regions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sinfoot-region {
+    background: rgba(248, 250, 252, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--sinfoot-text);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--sinfoot-border);
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--sinfoot-shadow);
+  }
+  
+  .sinfoot-region:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--sinfoot-green);
+    transform: translateY(-2px);
+    box-shadow: var(--sinfoot-shadow-2);
+  }
+
+  .sinfoot-countries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sinfoot-country {
+    color: var(--sinfoot-text-light);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  /* Contact Section - Compact */
+  .sinfoot-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sinfoot-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--sinfoot-text-light);
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sinfoot-contact-item:hover {
+    background: rgba(214, 223, 32, 0.05);
+    transform: translateX(4px);
+  }
+
+  .sinfoot-contact-item a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .sinfoot-contact-item a:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .sinfoot-contact-item a:hover {
+    color: var(--sinfoot-green);
+    transform: translateX(2px);
+  }
+
+  .sinfoot-cities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .sinfoot-city {
+    background: #F8FAFC;
+    color: var(--sinfoot-text);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--sinfoot-border);
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    box-shadow: none;
+  }
+  /* Ensure footer city chips match Trade Corridors and are not affected by generic link styles */
+  .sinfoot-cities a.sinfoot-city {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 9999px;
+  }
+  .sinfoot-cities a.sinfoot-city::before { content: none; }
+  
+  .sinfoot-city:hover {
+    background: #EEF2F7;
+    border-color: var(--sinfoot-green);
+  }
+  .sinfoot-cities a.sinfoot-city:hover { color: var(--sinfoot-text); }
+
+
+
+  /* Trust Strip - Certifications - Compact */
+  .sinfoot-trust {
+    background: var(--sinfoot-bg-light);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--sinfoot-border);
+    border-top: 1px solid var(--sinfoot-border);
+  }
+
+  .sinfoot-trust-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .sinfoot-certifications {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sinfoot-cert {
+    color: var(--sinfoot-text-light);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--sinfoot-border);
+    transition: all 0.2s ease;
+  }
+  
+  .sinfoot-cert:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: var(--sinfoot-green);
+  }
+
+  .sinfoot-security {
+    color: var(--sinfoot-text-light);
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--sinfoot-border);
+  }
+
+  .sinfoot-security-payments {
+    position: relative;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+
+  .sinfoot-security-payments::after {
+    content: "Payment Security Notice: To safeguard against email fraud altering bank details, please ensure payments are made only to our designated accounts, registered to FS International Ltd. Always verify payment details directly with our team. If there are changes in the payment, FS International Ltd. will inform our business partners directly by email or fax with our official chop and signature.";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background: var(--sinfoot-bg);
+    border: 1px solid var(--sinfoot-border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--sinfoot-text);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(8px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    white-space: normal;
+  }
+
+  .sinfoot-security-payments::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--sinfoot-bg);
+  }
+
+  .sinfoot-security-payments:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Legal Bar - Compact */
+  .sinfoot-legal {
+    background: var(--sinfoot-bg);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--sinfoot-border);
+  }
+
+  .sinfoot-legal-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .sinfoot-copyright {
+    color: var(--sinfoot-text-light);
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(248, 250, 252, 0.8);
+    border: 1px solid var(--sinfoot-border);
+  }
+
+  .sinfoot-legal-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sinfoot-legal-links a {
+    color: var(--sinfoot-text-light);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
+  .sinfoot-legal-links a:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .sinfoot-legal-links a:hover {
+    color: var(--sinfoot-text);
+  }
+
+  /* Mobile Accordions */
+  .sinfoot-accordion {
+    border-radius: var(--sinfoot-radius);
+    overflow: hidden;
+    border: 1px solid var(--sinfoot-border);
+    background: var(--sinfoot-bg);
+    margin: 8px 0;
+  }
+
+  .sinfoot-acc-item + .sinfoot-acc-item {
+    border-top: 1px solid var(--sinfoot-border);
+  }
+
+  .sinfoot-acc-btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    padding: 16px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sinfoot-text);
+  }
+
+  .sinfoot-acc-btn:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: -2px;
+  }
+
+  .sinfoot-acc-panel {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--sinfoot-bg-light);
+    transition: max-height 0.3s ease;
+  }
+
+  .sinfoot-acc-item.sinfoot-open .sinfoot-acc-panel {
+    max-height: 640px;
+  }
+
+  .sinfoot-acc-list {
+    list-style: none;
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sinfoot-acc-list a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: var(--sinfoot-radius);
+    text-decoration: none;
+    color: var(--sinfoot-text-light);
+    background: var(--sinfoot-bg);
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+
+  .sinfoot-acc-list a:focus {
+    outline: 2px solid var(--sinfoot-ring);
+    outline-offset: 2px;
+  }
+
+  .sinfoot-acc-list a:hover {
+    color: var(--sinfoot-text);
+    background: rgba(214, 223, 32, 0.1);
+  }
+
+  .sinfoot-chevron {
+    width: 18px;
+    height: 18px;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+  }
+
+  .sinfoot-acc-item.sinfoot-open .sinfoot-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Link warning */
+  .sinfoot-link-warning:focus,
+  .sinfoot-link-warning:hover {
+    box-shadow: 0 0 0 2px #FFB200 inset;
+  }
+
+  /* Responsive */
+  @media (max-width: 1279px) {
+    .sinfoot-mega-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .sinfoot-mega-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    
+    /* Trust Strip Tablet */
+    .sino-f-trust__content {
+      gap: 16px;
+    }
+    
+    .sino-f-trust__logos {
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .sinfoot-mega-grid {
+      display: none;
+    }
+
+    .sinfoot-mobile-accordions {
+      display: block;
+    }
+
+    .sinfoot-cta-band {
+      padding: 48px 0;
+    }
+
+    .sinfoot-cta-content h2 {
+      font-size: 1.8rem;
+    }
+
+    .sinfoot-cta-content p {
+      font-size: 0.95rem;
+    }
+
+    .sinfoot-cta-btn {
+      padding: 16px 28px;
+      font-size: 1.05rem;
+    }
+
+    /* Trust Strip Mobile */
+    .sino-f-trust {
+      padding: 12px 0;
+    }
+
+    .sino-f-trust__content {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .sino-f-trust__text {
+      order: 1;
+    }
+
+    .sino-f-trust__logos {
+      order: 2;
+      gap: 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
+      padding: 0 4px;
+      max-width: 100%;
+    }
+
+    .sino-f-trust__link {
+      order: 3;
+    }
+
+    .sino-f-trust__security {
+      order: 4;
+      margin-top: 8px;
+    }
+
+    .sino-f-trust__title {
+      font-size: 0.875rem;
+    }
+
+    .sino-f-trust__subtitle {
+      font-size: 0.75rem;
+    }
+
+    .sino-f-trust__logo {
+      height: 32px;
+      padding: 3px 6px;
+    }
+
+    .sino-f-trust__logo img {
+      max-height: 24px;
+      max-width: 120px;
+    }
+
+    .sino-f-trust__certificates {
+      font-size: 0.8125rem;
+    }
+
+
+
+    .sinfoot-trust-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .sinfoot-legal-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .sinfoot-certifications {
+      gap: 16px;
+    }
+
+    .sinfoot-legal-links {
+      gap: 16px;
+    }
+
+    /* Mobile chips improvements */
+    .sinfoot-regions {
+      gap: 6px;
+    }
+
+    .sinfoot-region {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+    }
+
+    .sinfoot-cities {
+      gap: 6px;
+    }
+
+    .sinfoot-city {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+    }
+
+    /* Mobile accordion improvements */
+    .sinfoot-acc-btn {
+      padding: 20px 16px;
+      min-height: 48px;
+    }
+
+    .sinfoot-acc-list {
+      padding: 20px 16px;
+    }
+
+    .sinfoot-acc-list a {
+      padding: 12px 16px;
+      min-height: 44px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .sinfoot-mobile-accordions {
+      display: none;
+    }
+  }
+
+  /* Tablet specific improvements */
+  @media (max-width: 1023px) and (min-width: 768px) {
+    .sinfoot-regions {
+      gap: 10px;
+    }
+
+    .sinfoot-region {
+      font-size: 0.9rem;
+      padding: 6px 14px;
+    }
+
+    .sinfoot-cities {
+      gap: 10px;
+    }
+
+    .sinfoot-city {
+      font-size: 0.85rem;
+      padding: 4px 10px;
+    }
+  }
+
+  /* Motion preferences */
+  @media (prefers-reduced-motion: no-preference) {
+    .sinfoot-cta-btn {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sinfoot-column a {
+      transition: color 0.2s ease;
+    }
+
+    .sinfoot-legal-links a {
+      transition: color 0.2s ease;
+    }
+
+    .sinfoot-acc-panel {
+      transition: max-height 0.3s ease;
+    }
+
+    .sinfoot-chevron {
+      transition: transform 0.2s ease;
+    }
+
+    .sino-f-trust__logo {
+      transition: transform 0.2s ease;
+    }
+
+    .sino-f-trust__logo img {
+      transition: filter 0.2s ease, opacity 0.2s ease;
+    }
+
+    .sino-f-trust__certificates {
+      transition: color 0.2s ease;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sino-footer-root * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<footer class="sino-footer-root" role="contentinfo">
+  <!-- Trust Strip - Alliances & Accreditations -->
+  <div class="sino-f-trust">
+    <div class="sino-f-trust__inner">
+      <div class="sino-f-trust__content">
+        <div class="sino-f-trust__text">
+          <h3 class="sino-f-trust__title">Alliances & accreditations</h3>
+                      <p class="sino-f-trust__subtitle">Audited & verified partners — part of FS INTERNATIONAL LTD. 1989.</p>
+        </div>
+        <div class="sino-f-trust__logos">
+          <a href="https://fschina.com/" target="_blank" rel="noopener" class="sino-f-trust__logo" aria-label="Visit FS China (opens in a new tab)" data-ga4-label="FS China">
+            <img src="https://www.sino-shipping.com/wp-content/uploads/2023/03/logo_FS-2.png" alt="FS China — strategic partner" loading="lazy" decoding="async" width="140" height="28">
+          </a>
+          <a href="https://eaanetwork.com/" target="_blank" rel="noopener" class="sino-f-trust__logo" aria-label="Visit EAA (opens in a new tab)" data-ga4-label="EAA">
+            <img src="https://eaanetwork.com/static/images/logo.png" alt="EAA network — partner" loading="lazy" decoding="async" width="100" height="24">
+          </a>
+          <a href="https://can-qianhai.com/en/" target="_blank" rel="noopener" class="sino-f-trust__logo" aria-label="Visit CAN (opens in a new tab)" data-ga4-label="CAN">
+            <img src="https://fschina.com/wp-content/uploads/2024/12/%E5%9C%96%E7%89%87_20241220174534.png" alt="CAN Qianhai — partner" loading="lazy" decoding="async" width="130" height="26">
+          </a>
+          <a href="https://moreplus.ai/" target="_blank" rel="noopener" class="sino-f-trust__logo" aria-label="Visit MorePlus (opens in a new tab)" data-ga4-label="MorePlus">
+            <img src="https://moreplus.ai/wp-content/uploads/2023/05/cropped-MorePlus-Logo.webp" alt="MorePlus — AI partner" loading="lazy" decoding="async" width="150" height="30">
+          </a>
+          <a href="https://mcc-qianhai.com/" target="_blank" rel="noopener" class="sino-f-trust__logo" aria-label="Visit MCC (opens in a new tab)" data-ga4-label="MCC">
+            <img src="https://fschina.com/wp-content/uploads/2025/07/MCC-Buttom.png" alt="MCC Qianhai — partner" loading="lazy" decoding="async" width="135" height="28">
+          </a>
+        </div>
+        <div class="sino-f-trust__link">
+          <a href="#" class="sino-f-trust__certificates" data-ga4-label="certificates">View certificates →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega Footer -->
+  <div class="sinfoot-mega">
+    <div class="sinfoot-container">
+      <div class="sinfoot-mega-grid">
+        <!-- Services -->
+        <div class="sinfoot-column">
+          <h3 id="sinfoot-services-title">Services</h3>
+          <nav aria-labelledby="sinfoot-services-title">
+            <a href="#" data-nav="Footer Services" data-item="Sea Freight (FCL & LCL)">Sea Freight (FCL & LCL)</a>
+            <a href="#" data-nav="Footer Services" data-item="Air Freight">Air Freight</a>
+            <a href="#" data-nav="Footer Services" data-item="Rail Freight (China–Europe)">Rail Freight (China–Europe)</a>
+            <a href="#" data-nav="Footer Services" data-item="Customs & Compliance">Customs & Compliance</a>
+            <a href="#" data-nav="Footer Services" data-item="Warehousing & Fulfillment (China)">Warehousing & Fulfillment (China)</a>
+            <a href="#" data-nav="Footer Services" data-item="E-commerce Logistics">E-commerce Logistics</a>
+            <a href="#" data-nav="Footer Services" data-item="Sourcing & Procurement (MorePlus)">Sourcing & Procurement (MorePlus)</a>
+            <a href="#" class="sinfoot-view-all" data-nav="Footer Services" data-item="View all services">View all services →</a>
+          </nav>
+        </div>
+
+        <!-- Practical Guides -->
+        <div class="sinfoot-column">
+          <h3 id="sinfoot-guides-title">Practical Guides</h3>
+          <nav aria-labelledby="sinfoot-guides-title">
+            <a href="https://www.sino-shipping.com/shipping-from-china/" data-nav="Footer Guides" data-item="Shipping from China: Complete Guide Hub">Shipping from China: Complete Guide Hub</a>
+            <a href="https://www.sino-shipping.com/sea-freight-china/" data-nav="Footer Guides" data-item="Sea Freight">Sea Freight</a>
+            <a href="https://www.sino-shipping.com/air-freight-china/" data-nav="Footer Guides" data-item="Air Freight">Air Freight</a>
+            <a href="https://www.sino-shipping.com/rail-freight-china/" data-nav="Footer Guides" data-item="Rail Freight">Rail Freight</a>
+            <a href="https://www.sino-shipping.com/trucking-service-china/" data-nav="Footer Guides" data-item="Road & Inland Trucking">Road & Inland Trucking</a>
+            <a href="https://www.sino-shipping.com/express-shipping-china/" data-nav="Footer Guides" data-item="Express & Courier">Express & Courier</a>
+            <a href="#" data-nav="Footer Guides" data-item="Freight Costs">Freight Costs</a>
+            <a href="https://www.sino-shipping.com/customs-clearance-china/" data-nav="Footer Guides" data-item="Customs & Duties">Customs & Duties</a>
+            <a href="https://www.sino-shipping.com/export-license/" data-nav="Footer Guides" data-item="Licensing & Compliance">Licensing & Compliance</a>
+            <a href="https://www.sino-shipping.com/warehousing-china/" data-nav="Footer Guides" data-item="Warehousing & Fulfillment">Warehousing & Fulfillment</a>
+            <a href="#" data-nav="Footer Guides" data-item="Cargo Services">Cargo Services</a>
+            <a href="#" data-nav="Footer Guides" data-item="E-commerce & Amazon FBA">E-commerce & Amazon FBA</a>
+            <a href="https://www.sino-shipping.com/international-shipping-knowledge-base/" class="sinfoot-view-all" data-nav="Footer Guides" data-item="View all guides">View all guides →</a>
+          </nav>
+        </div>
+
+        <!-- Trade Corridors -->
+        <div class="sinfoot-column">
+          <h3 id="sinfoot-corridors-title">Trade Corridors</h3>
+          <nav aria-labelledby="sinfoot-corridors-title" class="sinfoot-corridors">
+            <div class="sinfoot-regions">
+              <span class="sinfoot-region" data-nav="Footer Corridors" data-item="North America">North America</span>
+              <span class="sinfoot-region" data-nav="Footer Corridors" data-item="Europe">Europe</span>
+              <span class="sinfoot-region" data-nav="Footer Corridors" data-item="Middle East">Middle East</span>
+              <span class="sinfoot-region" data-nav="Footer Corridors" data-item="Africa">Africa</span>
+              <span class="sinfoot-region" data-nav="Footer Corridors" data-item="Latin America">Latin America</span>
+              <span class="sinfoot-region" data-nav="Footer Corridors" data-item="Asia Pacific">Asia Pacific</span>
+            </div>
+            <div class="sinfoot-countries">
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/shipping-from-china-to-usa/">USA</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/shipping-from-china-to-uk/">UK</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/freight-china-germany/">Germany</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/shipping-from-china-to-france/">France</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/freight-from-china-to-uae/">UAE</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/freight-from-china-to-saudi-arabia/">Saudi Arabia</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/freight-china-south-africa/">South Africa</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/freight-from-china-to-brazil/">Brazil</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides-freight-from-china-to-india/">India</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/freight-china-mexico/">Mexico</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/freight-from-china-to-indonesia/">Indonesia</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/freight-from-china-to-australia/">Australia</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/shipping-from-china-to-canada/">Canada</a>
+              <a class="sinfoot-country" href="https://www.sino-shipping.com/country-guides/shipping-from-china-to-pakistan/">Pakistan</a>
+            </div>
+            <a href="#" class="sinfoot-view-all" data-nav="Footer Corridors" data-item="View all countries & corridors">View all countries & corridors →</a>
+          </nav>
+        </div>
+
+        <!-- Company -->
+        <div class="sinfoot-column">
+          <h3 id="sinfoot-company-title">Company</h3>
+          <nav aria-labelledby="sinfoot-company-title">
+            <a href="https://www.sino-shipping.com/our-story/" data-nav="Footer Company" data-item="Our Story & Mission">Our Story & Mission</a>
+            <a href="#" data-nav="Footer Company" data-item="Leadership & Team">Leadership & Team</a>
+            <a href="#" data-nav="Footer Company" data-item="Our Global Network">Our Global Network</a>
+            <a href="#" data-nav="Footer Company" data-item="Certifications & Accreditations">Certifications & Accreditations</a>
+            <a href="#" data-nav="Footer Company" data-item="Why Choose SINO Shipping">Why Choose SINO Shipping</a>
+            <a href="#" data-nav="Footer Company" data-item="Contact & Offices">Contact & Offices</a>
+          </nav>
+        </div>
+
+        <!-- Contact & Offices -->
+        <div class="sinfoot-column">
+          <h3 id="sinfoot-contact-title">Contact & Offices</h3>
+          <nav aria-labelledby="sinfoot-contact-title" class="sinfoot-contact-info">
+            <div class="sinfoot-contact-item">
+              <span>Email</span>
+              <a href="mailto:info@sino-shipping.com" data-nav="Footer Contact" data-item="Email info@sino-shipping.com">info@sino-shipping.com</a>
+            </div>
+            <div class="sinfoot-cities">
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-guangzhou/">Guangzhou</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-shenzhen/">Shenzhen</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-hong-kong/">Hong Kong</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-ningbo/">Ningbo</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-shanghai/">Shanghai</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/shipping-company-qingdao/">Qingdao</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-tianjin/">Tianjin</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-xiamen/">Xiamen</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-bangkok/">Bangkok</a>
+              <a class="sinfoot-city" href="https://www.sino-shipping.com/freight-forwarder-yiwu/">Yiwu</a>
+            </div>
+            <a href="#" class="sinfoot-view-all" data-nav="Footer Contact" data-item="All offices">All offices →</a>
+          </nav>
+        </div>
+
+
+      </div>
+
+      <!-- Mobile Accordions -->
+      <div class="sinfoot-mobile-accordions">
+        <div class="sinfoot-accordion">
+          <div class="sinfoot-acc-item" id="sinfoot-acc-services">
+            <button class="sinfoot-acc-btn" aria-expanded="false" aria-controls="sinfoot-acc-panel-services">
+              <span>Services</span>
+              <svg class="sinfoot-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="sinfoot-acc-panel" id="sinfoot-acc-panel-services">
+              <ul class="sinfoot-acc-list">
+                <li><a href="#" data-nav="Footer Services" data-item="Sea Freight (FCL & LCL)">Sea Freight (FCL & LCL)</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="Air Freight">Air Freight</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="Rail Freight (China–Europe)">Rail Freight (China–Europe)</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="Customs & Compliance">Customs & Compliance</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="Warehousing & Fulfillment (China)">Warehousing & Fulfillment (China)</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="E-commerce Logistics">E-commerce Logistics</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="Sourcing & Procurement (MorePlus)">Sourcing & Procurement (MorePlus)</a></li>
+                <li><a href="#" data-nav="Footer Services" data-item="View all services">View all services →</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sinfoot-acc-item" id="sinfoot-acc-guides">
+            <button class="sinfoot-acc-btn" aria-expanded="false" aria-controls="sinfoot-acc-panel-guides">
+              <span>Practical Guides</span>
+              <svg class="sinfoot-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="sinfoot-acc-panel" id="sinfoot-acc-panel-guides">
+              <ul class="sinfoot-acc-list">
+                <li><a href="https://www.sino-shipping.com/shipping-from-china/" data-nav="Footer Guides" data-item="Shipping from China: Complete Guide Hub">Shipping from China: Complete Guide Hub</a></li>
+                <li><a href="https://www.sino-shipping.com/sea-freight-china/" data-nav="Footer Guides" data-item="Sea Freight">Sea Freight</a></li>
+                <li><a href="https://www.sino-shipping.com/air-freight-china/" data-nav="Footer Guides" data-item="Air Freight">Air Freight</a></li>
+                                            <li><a href="https://www.sino-shipping.com/rail-freight-china/" data-nav="Footer Guides" data-item="Rail Freight">Rail Freight</a></li>
+                <li><a href="https://www.sino-shipping.com/trucking-service-china/" data-nav="Footer Guides" data-item="Road & Inland Trucking">Road & Inland Trucking</a></li>
+                <li><a href="https://www.sino-shipping.com/express-shipping-china/" data-nav="Footer Guides" data-item="Express & Courier">Express & Courier</a></li>
+                <li><a href="#" data-nav="Footer Guides" data-item="Freight Costs">Freight Costs</a></li>
+                <li><a href="https://www.sino-shipping.com/customs-clearance-china/" data-nav="Footer Guides" data-item="Customs & Duties">Customs & Duties</a></li>
+                <li><a href="https://www.sino-shipping.com/export-license/" data-nav="Footer Guides" data-item="Licensing & Compliance">Licensing & Compliance</a></li>
+                <li><a href="https://www.sino-shipping.com/warehousing-china/" data-nav="Footer Guides" data-item="Warehousing & Fulfillment">Warehousing & Fulfillment</a></li>
+                <li><a href="#" data-nav="Footer Guides" data-item="Cargo Services">Cargo Services</a></li>
+                <li><a href="#" data-nav="Footer Guides" data-item="E-commerce & Amazon FBA">E-commerce & Amazon FBA</a></li>
+                <li><a href="https://www.sino-shipping.com/international-shipping-knowledge-base/" data-nav="Footer Guides" data-item="View all guides">View all guides →</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sinfoot-acc-item" id="sinfoot-acc-corridors">
+            <button class="sinfoot-acc-btn" aria-expanded="false" aria-controls="sinfoot-acc-panel-corridors">
+              <span>Trade Corridors</span>
+              <svg class="sinfoot-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="sinfoot-acc-panel" id="sinfoot-acc-panel-corridors">
+              <ul class="sinfoot-acc-list">
+                <li><a href="#" data-nav="Footer Corridors" data-item="North America">North America</a></li>
+                <li><a href="#" data-nav="Footer Corridors" data-item="Europe">Europe</a></li>
+                <li><a href="#" data-nav="Footer Corridors" data-item="Middle East">Middle East</a></li>
+                <li><a href="#" data-nav="Footer Corridors" data-item="Africa">Africa</a></li>
+                <li><a href="#" data-nav="Footer Corridors" data-item="Latin America">Latin America</a></li>
+                <li><a href="#" data-nav="Footer Corridors" data-item="Asia Pacific">Asia Pacific</a></li>
+                <li><a href="#" data-nav="Footer Corridors" data-item="View all countries & corridors">View all countries & corridors →</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sinfoot-acc-item" id="sinfoot-acc-company">
+            <button class="sinfoot-acc-btn" aria-expanded="false" aria-controls="sinfoot-acc-panel-company">
+              <span>Company</span>
+              <svg class="sinfoot-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="sinfoot-acc-panel" id="sinfoot-acc-panel-company">
+              <ul class="sinfoot-acc-list">
+                <li><a href="#" data-nav="Footer Company" data-item="Our Story & Mission">Our Story & Mission</a></li>
+                <li><a href="#" data-nav="Footer Company" data-item="Leadership & Team">Leadership & Team</a></li>
+                <li><a href="#" data-nav="Footer Company" data-item="Our Global Network">Our Global Network</a></li>
+                <li><a href="#" data-nav="Footer Company" data-item="Certifications & Accreditations">Certifications & Accreditations</a></li>
+                <li><a href="#" data-nav="Footer Company" data-item="Why Choose SINO Shipping">Why Choose SINO Shipping</a></li>
+                <li><a href="#" data-nav="Footer Company" data-item="Contact & Offices">Contact & Offices</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sinfoot-acc-item" id="sinfoot-acc-contact">
+            <button class="sinfoot-acc-btn" aria-expanded="false" aria-controls="sinfoot-acc-panel-contact">
+              <span>Contact & Offices</span>
+              <svg class="sinfoot-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="sinfoot-acc-panel" id="sinfoot-acc-panel-contact">
+              <ul class="sinfoot-acc-list">
+                <li><a href="mailto:info@sino-shipping.com" data-nav="Footer Contact" data-item="Email info@sino-shipping.com">Email: info@sino-shipping.com</a></li>
+                <li><a href="#" data-nav="Footer Contact" data-item="All offices">All offices →</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust Strip -->
+  <div class="sinfoot-trust">
+    <div class="sinfoot-container">
+      <div class="sinfoot-trust-content">
+        <div class="sinfoot-certifications">
+          <span class="sinfoot-cert">FIATA</span>
+          <span class="sinfoot-cert">WCA</span>
+          <span class="sinfoot-cert">CIFA</span>
+          <span class="sinfoot-cert">ISO 9001</span>
+        </div>
+        <div class="sinfoot-security">
+          <span class="sinfoot-security-payments">Payments secured</span> • GDPR-compliant data protection
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legal Bar -->
+  <div class="sinfoot-legal">
+    <div class="sinfoot-container">
+      <div class="sinfoot-legal-content">
+        <div class="sinfoot-copyright">
+          © SINO Shipping <span id="sinfoot-year"></span>
+        </div>
+        <div class="sinfoot-legal-links">
+          <a href="#" data-nav="Footer Legal" data-item="Terms">Terms</a>
+          <a href="https://www.sino-shipping.com/privacy-policy/" data-nav="Footer Legal" data-item="Privacy">Privacy</a>
+          <a href="#" data-nav="Footer Legal" data-item="Cookie Policy">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    'use strict';
+    var init = function initSinoFooter() {
+      var ROOT = document.querySelector('.sino-footer-root');
+      if (!ROOT || ROOT.dataset.sinoFooterInit === '1') return;
+      ROOT.dataset.sinoFooterInit = '1';
+
+      /* Config: read window.SINO_FOOTER_CONFIG if present */
+      var deepMerge = function (base, override) {
+        if (!override) return base;
+        var out = Array.isArray(base) ? base.slice() : Object.assign({}, base);
+        Object.keys(override).forEach(function (k) {
+          var bv = base ? base[k] : undefined;
+          var ov = override[k];
+          if (ov && typeof ov === 'object' && !Array.isArray(ov)) {
+            out[k] = deepMerge(bv || {}, ov);
+          } else {
+            out[k] = ov;
+          }
+        });
+        return out;
+      };
+
+      var DEFAULTS = {
+        cta: { title: 'Get a freight quote today', chips: ['24/7 support', 'Response <24h', '55,000+ importers'], button: 'Get a Quote', url: '#' },
+        services: [
+          { label: 'Sea Freight (FCL & LCL)', url: '#' },
+          { label: 'Air Freight', url: '#' },
+          { label: 'Rail Freight (China–Europe)', url: '#' },
+          { label: 'Customs & Compliance', url: '#' },
+          { label: 'Warehousing & Fulfillment (China)', url: '#' },
+          { label: 'E-commerce Logistics', url: '#' },
+          { label: 'Sourcing & Procurement (MorePlus)', url: '#' }
+        ],
+        guides: [
+          { label: 'Shipping from China: Complete Guide Hub', url: 'https://www.sino-shipping.com/shipping-from-china/' },
+          { label: 'Sea Freight', url: '#' },
+          { label: 'Air Freight', url: '#' },
+          { label: 'Rail Freight', url: 'https://sino-shipping.com/rail-freight-china/' },
+          { label: 'Road & Inland Trucking', url: '#' },
+          { label: 'Express & Courier', url: '#' },
+          { label: 'Freight Costs', url: '#' },
+          { label: 'Customs & Duties', url: '#' },
+          { label: 'Licensing & Compliance', url: '#' },
+          { label: 'Warehousing & Fulfillment', url: '#' },
+          { label: 'Cargo Services', url: '#' },
+          { label: 'E-commerce & Amazon FBA', url: '#' }
+        ],
+        corridors: {
+          regions: ['North America', 'Europe', 'Middle East', 'Africa', 'Latin America', 'Asia Pacific'],
+          countries: 'USA, UK, Germany, France, UAE, Saudi Arabia, South Africa, Brazil, India, Mexico, Indonesia, Australia, Canada, Pakistan'
+        },
+        company: [
+          { label: 'Our Story & Mission', url: '#' },
+          { label: 'Leadership & Team', url: '#' },
+          { label: 'Our Global Network', url: '#' },
+          { label: 'Certifications & Accreditations', url: '#' },
+          { label: 'Why Choose SINO Shipping', url: '#' },
+          { label: 'Contact & Offices', url: '#' }
+        ],
+        contact: {
+          email: 'info@sino-shipping.com',
+          whatsapp: 'https://chat.whatsapp.com/EcOPbD18vFxHTVjECQVsRE?mode=ems_copy_h_t',
+          wechat: 'SINO-care',
+          cities: ['Guangzhou', 'Shenzhen', 'Ningbo', 'Shanghai', 'Qingdao', 'Tianjin', 'Xiamen', 'Yiwu']
+        },
+        trust: {
+          certifications: ['FIATA', 'WCA', 'CIFA', 'ISO 9001'],
+          security: 'Payments secured • GDPR-compliant data protection'
+        },
+        legal: {
+          company: 'SINO Shipping',
+          links: [
+            { label: 'Terms', url: '#' },
+            { label: 'Privacy', url: '#' },
+            { label: 'Cookie Policy', url: '#' }
+          ]
+        }
+      };
+
+      var EXTERNAL = (typeof window !== 'undefined' && window.SINO_FOOTER_CONFIG) ? window.SINO_FOOTER_CONFIG : null;
+      var FOOTER_DATA = deepMerge(DEFAULTS, EXTERNAL || {});
+
+      /* Utilities */
+      var $ = function (sel, root) { return (root || document).querySelector(sel); };
+      var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+      var now = function () { return (window.performance && performance.now) ? performance.now() : Date.now(); };
+
+      /* Analytics tracking */
+      var lastTrackTimes = new Map();
+      var trackFooter = function (opts) {
+        var section = (opts && opts.section) || '';
+        var item = (opts && opts.item) || '';
+        var locationLabel = (opts && opts.location) || 'footer';
+        var key = section + '|' + item + '|' + locationLabel;
+        var t = now();
+        var last = lastTrackTimes.get(key) || 0;
+        if (t - last < 50) return; // debounce duplicates
+        lastTrackTimes.set(key, t);
+        if (typeof window.gtag === 'function') {
+          try {
+            if (section === 'Footer CTA') window.gtag('event', 'cta_click', { label: item, location: locationLabel });
+            else window.gtag('event', 'nav_click', { label: section, item: item, location: locationLabel });
+          } catch (_) {}
+        }
+      };
+
+      /* Mobile accordions: only one open at a time */
+      $$('.sinfoot-acc-item').forEach(function (item) {
+        var btn = $('.sinfoot-acc-btn', item);
+        var panel = $('.sinfoot-acc-panel', item);
+        if (!btn || !panel) return;
+
+        btn.addEventListener('click', function () {
+          var isOpening = !item.classList.contains('sinfoot-open');
+          
+          // Close all other accordions
+          $$('.sinfoot-acc-item').forEach(function (sibling) {
+            sibling.classList.remove('sinfoot-open');
+            var sb = $('.sinfoot-acc-btn', sibling);
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+          });
+          
+          if (isOpening) {
+            item.classList.add('sinfoot-open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+
+        btn.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            btn.click();
+          }
+        });
+      });
+
+      /* Wire all links and interactive elements with tracking */
+      $$('a[data-nav], span[data-nav]').forEach(function (element) {
+        element.addEventListener('click', function (e) {
+          var section = element.getAttribute('data-nav');
+          var item = element.getAttribute('data-item');
+          if (section && item) {
+            trackFooter({ section: section, item: item, location: 'footer' });
+          }
+        });
+      });
+
+      /* Trust Strip GA4 tracking */
+      $$('.sino-f-trust__logo').forEach(function (logo) {
+        logo.addEventListener('click', function (e) {
+          var label = logo.getAttribute('data-ga4-label');
+          if (label && typeof window.gtag === 'function') {
+            try {
+              window.gtag('event', 'footer_trust_logo_click', { label: label });
+            } catch (_) {}
+          }
+        });
+      });
+
+      $$('.sino-f-trust__certificates').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          if (typeof window.gtag === 'function') {
+            try {
+              window.gtag('event', 'footer_trust_certificates_click');
+            } catch (_) {}
+          }
+        });
+      });
+
+      /* Dynamic year in legal bar */
+      var yearSpan = $('#sinfoot-year');
+      if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+
+      /* Link validation: unresolved URLs */
+      var unresolved = 0;
+      var anchors = ROOT.querySelectorAll('a');
+      anchors.forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (!href || href === '#' || /^\s*$/.test(href) || /^javascript:/i.test(href)) {
+          unresolved++;
+          a.classList.add('sinfoot-link-warning');
+          console.warn('[SINO-FOOTER] Unresolved URL', a);
+        }
+      });
+
+      console.info('[SINO-FOOTER] Mount summary', {
+        services: (FOOTER_DATA.services || []).length,
+        guides: (FOOTER_DATA.guides || []).length,
+        company: (FOOTER_DATA.company || []).length,
+        unresolved: unresolved
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>
+<!-- SINO Footer v1.1 — Modern Design END -->
+
+<!-- SINO Form Popup Script - Global Integration -->
+<script>
+(function() {
+    'use strict';
+    
+    // Vérifier si déjà initialisé
+    if (window.sinoform && window.sinoform.initialized) return;
+    
+    // CSS styles injectés dynamiquement
+    const styles = `
+        .sinoform-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease;
+        }
+        .sinoform-popup-overlay.active {
+            display: flex;
+        }
+        .sinoform-popup-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            min-width: 800px;
+            background: transparent;
+            border-radius: 20px;
+            overflow: visible;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            border: none;
+        }
+        .sinoform-popup-close {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0;
+            line-height: 1;
+            z-index: 100001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15),
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            padding: 0;
+            margin: 0;
+        }
+        .sinoform-popup-close svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sinoform-popup-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        }
+        .sinoform-popup-close:hover svg {
+            transform: rotate(90deg);
+        }
+        .sinoform-popup-close:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .sinoform-popup-content {
+            width: 100%;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .sinoform-popup-iframe {
+            width: 100%;
+            height: 90vh;
+            min-height: 600px;
+            max-height: 95vh;
+            border: none;
+            display: block;
+            transition: height 0.3s ease;
+            background: transparent;
+        }
+        @media (max-width: 900px) {
+            .sinoform-popup-overlay {
+                padding: 10px;
+            }
+            .sinoform-popup-container {
+                max-width: 100%;
+                min-width: 95vw;
+                border-radius: 8px;
+            }
+            .sinoform-popup-iframe {
+                height: 90vh;
+                min-height: 500px;
+            }
+        }
+    `;
+
+    // Injecter les styles (une seule fois)
+    if (!document.getElementById('sinoform-styles')) {
+        const styleSheet = document.createElement('style');
+        styleSheet.id = 'sinoform-styles';
+        styleSheet.textContent = styles;
+        document.head.appendChild(styleSheet);
+    }
+
+    // Créer le HTML du popup (une seule fois)
+    function createPopup() {
+        if (document.getElementById('sinoformPopup')) return;
+        
+        const popupHTML = `
+            <div class="sinoform-popup-overlay" id="sinoformPopup">
+                <div class="sinoform-popup-container">
+                    <button class="sinoform-popup-close" onclick="sinoform.closePopup()" aria-label="Fermer le formulaire">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="sinoform-popup-content" id="sinoformContent">
+                    <iframe 
+                            src="https://lucasarlot.github.io/form-sino-nov/embed.html" 
+                        class="sinoform-popup-iframe"
+                            id="sinoformIframe"
+                            title="Formulaire SINOFORM"
+                            scrolling="no">
+                    </iframe>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHTML);
+        
+    }
+    
+    // Ajuster la taille de l'iframe selon le contenu
+    function setupIframeResize() {
+        const iframe = document.getElementById('sinoformIframe');
+        if (!iframe) return;
+        
+        // Écouter les messages postMessage du formulaire pour ajuster la taille
+        window.addEventListener('message', function(event) {
+            // Vérifier l'origine pour la sécurité
+            if (event.origin !== 'https://www.sino-shipping.com') return;
+            
+            // Si le formulaire envoie sa hauteur
+            if (event.data && typeof event.data === 'object') {
+                if (event.data.type === 'resize' && event.data.height) {
+                    iframe.style.height = event.data.height + 'px';
+                } else if (event.data.height) {
+                    // Format alternatif : juste la hauteur
+                    iframe.style.height = event.data.height + 'px';
+                }
+            } else if (typeof event.data === 'number') {
+                // Si c'est juste un nombre (hauteur en pixels)
+                iframe.style.height = event.data + 'px';
+            }
+        });
+        
+        // Détecter la taille du contenu de l'iframe (embed.html utilise #root)
+        iframe.onload = function() {
+            try {
+                // Si on peut accéder au contenu (même origine)
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                if (iframeDoc) {
+                    // Injecter le CSS glassmorphism dans l'iframe
+                    const glassmorphismStyles = iframeDoc.createElement('style');
+                    glassmorphismStyles.id = 'sinoform-glassmorphism';
+                    glassmorphismStyles.textContent = `
+                        /* Rendre le background de la page invisible/transparent */
+                        html, body {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                        }
+                        
+                        /* Forcer TOUS les éléments avec background #f9fafb ou var(--gray-50) à être transparents */
+                        /* Sauf ceux qui font partie du formulaire */
+                        *:not([class*="QuoteForm"]):not([class*="form"]):not([class*="Form"]):not([class*="card"]):not([class*="Card"]):not(.quote-form-container):not(.quote-form-wrapper) {
+                            background-image: none !important;
+                        }
+                        
+                        /* Règle globale : forcer la transparence sur tous les éléments parents du formulaire */
+                        body > div,
+                        body > div > div,
+                        #root > div,
+                        #root > div > div,
+                        #root > div > div > div:not(.quote-form-container) {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                            background-image: none !important;
+                        }
+                        
+                        /* Force la transparence sur les divs qui ont un background gradient avec gray-50 */
+                        div[style*="background"]:not([class*="QuoteForm"]):not([class*="form"]):not([class*="Form"]) {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                            background-image: none !important;
+                        }
+                        
+                        /* Rendre aussi transparent le conteneur root si besoin */
+                        #root {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                        }
+                        
+                        /* Rendre transparents tous les divs parents qui ne sont pas le formulaire */
+                        /* Cibler les divs de EmbedApp qui entourent le formulaire */
+                        #root > div,
+                        #root > div > div:first-child,
+                        body > div:first-child {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                            background-image: none !important;
+                        }
+                        
+                        /* Forcer la transparence sur le wrapper du formulaire pour éviter le fond gris */
+                        .quote-form-wrapper {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                            background-image: none !important;
+                        }
+                        
+                        /* Forcer la transparence sur tous les divs parents jusqu'au formulaire */
+                        #root > div > div > div:not(.quote-form-container) {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                            background-image: none !important;
+                        }
+                        
+                        /* Forcer la transparence sur tous les conteneurs parents qui peuvent avoir le background #f9fafb */
+                        /* Sauf ceux qui contiennent directement le formulaire */
+                        body > div:not([class*="Quote"]):not([class*="form"]):not([class*="Form"]) {
+                            background: transparent !important;
+                            background-color: transparent !important;
+                        }
+                        
+                        /* Glassmorphism pour le conteneur principal du formulaire */
+                        /* Cibler spécifiquement le formulaire avec une classe ou un sélecteur plus précis */
+                        #root > *:first-child,
+                        [class*="QuoteForm"],
+                        [class*="quote-form"],
+                        .quote-form-container {
+                            background: #ffffff !important;
+                            background-color: #ffffff !important;
+                            backdrop-filter: none !important;
+                            -webkit-backdrop-filter: none !important;
+                            border-radius: 24px !important;
+                            padding: 20px !important;
+                            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15),
+                                        0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
+                            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+                        }
+                        
+                        /* Glassmorphism pour les cartes/conteneurs du formulaire */
+                        [class*="card"], [class*="Card"], 
+                        [class*="container"], [class*="Container"],
+                        [class*="form"], [class*="Form"],
+                        div[class*="step"], section {
+                            background: rgba(255, 255, 255, 0.6) !important;
+                            backdrop-filter: blur(10px) saturate(170%) !important;
+                            -webkit-backdrop-filter: blur(10px) saturate(170%) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                            border-radius: 16px !important;
+                            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+                        }
+                        
+                        /* Glassmorphism pour les inputs */
+                        input, textarea, select {
+                            background: rgba(255, 255, 255, 0.8) !important;
+                            backdrop-filter: blur(5px) !important;
+                            -webkit-backdrop-filter: blur(5px) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05),
+                                        0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+                        }
+                        
+                        input:focus, textarea:focus, select:focus {
+                            background: rgba(255, 255, 255, 0.95) !important;
+                            border-color: rgba(214, 223, 32, 0.5) !important;
+                            box-shadow: 0 4px 16px rgba(214, 223, 32, 0.2),
+                                        0 0 0 2px rgba(214, 223, 32, 0.3) !important;
+                        }
+                        
+                        /* Glassmorphism pour les boutons */
+                        button, [role="button"], [class*="button"], [class*="Button"] {
+                            background: linear-gradient(135deg, rgba(214, 223, 32, 0.9) 0%, rgba(232, 240, 50, 0.9) 100%) !important;
+                            backdrop-filter: blur(10px) saturate(180%) !important;
+                            -webkit-backdrop-filter: blur(10px) saturate(180%) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+                            box-shadow: 0 4px 16px rgba(214, 223, 32, 0.3),
+                                        0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+                        }
+                        
+                        button:hover, [role="button"]:hover, [class*="button"]:hover, [class*="Button"]:hover {
+                            background: linear-gradient(135deg, rgba(214, 223, 32, 1) 0%, rgba(232, 240, 50, 1) 100%) !important;
+                            box-shadow: 0 6px 20px rgba(214, 223, 32, 0.4),
+                                        0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
+                            transform: translateY(-2px) !important;
+                        }
+                    `;
+                    
+                    if (!iframeDoc.getElementById('sinoform-glassmorphism')) {
+                        iframeDoc.head.appendChild(glassmorphismStyles);
+                    }
+                    
+                    // Injecter un script pour rendre transparents les éléments avec background #f9fafb
+                    const transparentScript = iframeDoc.createElement('script');
+                    transparentScript.id = 'sinoform-transparent-bg';
+                    transparentScript.textContent = `
+                        (function() {
+                            function makeBackgroundsTransparent() {
+                                const allElements = document.querySelectorAll('*');
+                                const formElement = document.querySelector('[class*="QuoteForm"], [class*="form"], [class*="Form"], [class*="Quote"]');
+                                
+                                allElements.forEach(function(el) {
+                                    try {
+                                        const computedStyle = window.getComputedStyle(el);
+                                        const bgColor = computedStyle.backgroundColor;
+                                        const bgImage = computedStyle.backgroundImage;
+                                        
+                                        // Vérifier si l'élément a un background #f9fafb (rgb(249, 250, 251) ou proche)
+                                        const isF9fafb = bgColor && (
+                                            bgColor.includes('249, 250, 251') || 
+                                            bgColor === 'rgb(249, 250, 251)' ||
+                                            bgColor === 'rgba(249, 250, 251, 1)' ||
+                                            bgColor.includes('rgb(249, 250, 251)')
+                                        );
+                                        
+                                        // Vérifier si l'élément est le formulaire ou à l'intérieur du formulaire
+                                        const isFormElement = formElement && (
+                                            el === formElement || 
+                                            formElement.contains(el) ||
+                                            el.closest('[class*="form"]') ||
+                                            el.closest('[class*="Form"]') ||
+                                            el.closest('[class*="card"]') ||
+                                            el.closest('[class*="Card"]')
+                                        );
+                                        
+                                        // Si l'élément a le background #f9fafb ET n'est pas le formulaire lui-même
+                                        if (isF9fafb && !isFormElement) {
+                                            el.style.backgroundColor = 'transparent';
+                                            el.style.background = 'transparent';
+                                        }
+                                        
+                                        // Forcer la suppression des gradients avec var(--gray-50)
+                                        if (bgImage && (bgImage.includes('var(--gray-50)') || bgImage.includes('F9FAFB') || bgImage.includes('249, 250, 251'))) {
+                                            if (!isFormElement) {
+                                                el.style.backgroundImage = 'none';
+                                                el.style.background = 'transparent';
+                                            }
+                                        }
+                                    } catch(e) {}
+                                });
+                                
+                                // Forcer html, body et #root à être transparents
+                                const htmlEl = document.documentElement;
+                                const bodyEl = document.body;
+                                const rootEl = document.getElementById('root');
+                                
+                                if (htmlEl) {
+                                    htmlEl.style.backgroundColor = 'transparent';
+                                    htmlEl.style.background = 'transparent';
+                                    htmlEl.style.backgroundImage = 'none';
+                                }
+                                if (bodyEl) {
+                                    bodyEl.style.backgroundColor = 'transparent';
+                                    bodyEl.style.background = 'transparent';
+                                    bodyEl.style.backgroundImage = 'none';
+                                }
+                                if (rootEl) {
+                                    rootEl.style.backgroundColor = 'transparent';
+                                    rootEl.style.background = 'transparent';
+                                    rootEl.style.backgroundImage = 'none';
+                                    
+                                    // Forcer aussi tous les enfants directs de root
+                                    Array.from(rootEl.children).forEach(function(child) {
+                                        if (child && !child.querySelector('.quote-form-container')) {
+                                            child.style.backgroundColor = 'transparent';
+                                            child.style.background = 'transparent';
+                                            child.style.backgroundImage = 'none';
+                                        }
+                                    });
+                                }
+                                
+                                // Forcer la transparence sur le wrapper du formulaire
+                                // Le wrapper doit être transparent mais garder son padding
+                                const wrapperEl = document.querySelector('.quote-form-wrapper');
+                                if (wrapperEl) {
+                                    wrapperEl.style.backgroundColor = 'transparent';
+                                    wrapperEl.style.background = 'transparent';
+                                    wrapperEl.style.backgroundImage = 'none';
+                                }
+                                
+                                // Forcer aussi tous les parents du wrapper à être transparents
+                                const allDivs = document.querySelectorAll('div');
+                                allDivs.forEach(function(div) {
+                                    // Si c'est un parent du wrapper mais pas le formulaire lui-même
+                                    if (wrapperEl && (wrapperEl.contains(div) || div.contains(wrapperEl))) {
+                                        if (!div.closest('.quote-form-container') && div !== wrapperEl) {
+                                            const hasFormContainer = div.querySelector('.quote-form-container');
+                                            if (!hasFormContainer && div !== document.querySelector('.quote-form-container')) {
+                                                div.style.backgroundColor = 'transparent';
+                                                div.style.background = 'transparent';
+                                                div.style.backgroundImage = 'none';
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            // Exécuter après le chargement
+                            setTimeout(makeBackgroundsTransparent, 200);
+                            setTimeout(makeBackgroundsTransparent, 500);
+                            setTimeout(makeBackgroundsTransparent, 1000);
+                            setTimeout(makeBackgroundsTransparent, 2000);
+                            // Observer les changements
+                            const observer = new MutationObserver(function() {
+                                setTimeout(makeBackgroundsTransparent, 100);
+                            });
+                            if (document.body) {
+                                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+                            }
+                        })();
+                    `;
+                    if (!iframeDoc.getElementById('sinoform-transparent-bg')) {
+                        iframeDoc.body.appendChild(transparentScript);
+                    }
+                    
+                    // embed.html a déjà un body transparent et #root comme conteneur
+                    const rootContainer = iframeDoc.querySelector('#root');
+                    const body = iframeDoc.body;
+                    
+                    const updateHeight = function() {
+                        // Utiliser #root si disponible, sinon le body
+                        const container = rootContainer || body;
+                        if (!container) return;
+                        
+                        // Calculer la hauteur réelle du contenu
+                        const rect = container.getBoundingClientRect();
+                        const scrollHeight = container.scrollHeight || 0;
+                        const clientHeight = rect.height || 0;
+                        
+                        // Prendre la plus grande valeur
+                        const height = Math.max(scrollHeight, clientHeight);
+                        
+                        if (height > 100) {
+                            // Ajuster la hauteur de l'iframe au contenu + padding
+                            iframe.style.height = (height + 40) + 'px';
+                        }
+                    };
+                    
+                    // Attendre que React charge le contenu
+                    setTimeout(updateHeight, 500);
+                    setTimeout(updateHeight, 1000);
+                    setTimeout(updateHeight, 2000);
+                    
+                    // Surveiller les changements de taille avec un throttling
+                    let heightUpdateTimeout;
+                    const observer = new MutationObserver(function() {
+                        clearTimeout(heightUpdateTimeout);
+                        heightUpdateTimeout = setTimeout(function() {
+                            updateHeight();
+                            // Ré-injecter le CSS si nécessaire
+                            if (!iframeDoc.getElementById('sinoform-glassmorphism')) {
+                                iframeDoc.head.appendChild(glassmorphismStyles);
+                            }
+                        }, 100);
+                    });
+                    
+                    // Surveiller aussi les changements de taille de window
+                    let resizeTimeout;
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.addEventListener('resize', function() {
+                            clearTimeout(resizeTimeout);
+                            resizeTimeout = setTimeout(updateHeight, 150);
+                        });
+                    }
+                    
+                    if (rootContainer) {
+                        observer.observe(rootContainer, {
+                            childList: true,
+                            subtree: true,
+                            attributes: true,
+                            attributeFilter: ['style', 'class']
+                        });
+                    } else if (body) {
+                        observer.observe(body, {
+                            childList: true,
+                            subtree: true
+                        });
+                    }
+                    
+                    // Écouter les redimensionnements
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.addEventListener('resize', updateHeight);
+                    }
+                }
+            } catch (e) {
+                // Cross-origin : on ne peut pas accéder au contenu
+                // On s'appuie sur postMessage du formulaire
+                console.log('Cross-origin iframe, waiting for postMessage from form');
+            }
+        };
+    }
+
+    // Objet principal avec toutes les fonctions
+    window.sinoform = {
+        initialized: false,
+        
+        // Ouvrir le popup
+        openPopup: function() {
+            createPopup();
+            const popup = document.getElementById('sinoformPopup');
+            if (!popup) return;
+            
+            popup.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Configurer le redimensionnement automatique de l'iframe
+            setupIframeResize();
+        },
+
+        // Fermer le popup
+        closePopup: function() {
+            const popup = document.getElementById('sinoformPopup');
+            if (!popup) return;
+            
+            popup.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Optionnel: vider le contenu pour le recharger à la prochaine ouverture
+            // const contentDiv = document.getElementById('sinoformContent');
+            // if (contentDiv) {
+            //     contentDiv.innerHTML = '';
+            // }
+        },
+
+        // Initialiser les événements
+        init: function() {
+            if (this.initialized) return;
+            this.initialized = true;
+            
+            // Créer le popup
+            createPopup();
+            
+            // Fermer avec Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    window.sinoform.closePopup();
+                }
+            });
+
+            // Fermer en cliquant sur l'overlay
+            setTimeout(function() {
+                const popup = document.getElementById('sinoformPopup');
+                if (popup) {
+                    popup.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            window.sinoform.closePopup();
+                        }
+                    });
+                }
+            }, 100);
+
+            // Connecter tous les boutons avec data-sino-form="open"
+            // Utiliser capture: true pour s'exécuter AVANT les autres handlers
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('[data-sino-form="open"]');
+                if (button) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation(); // Empêcher tous les autres handlers
+                    window.sinoform.openPopup();
+                    return false;
+                }
+            }, true); // capture: true pour s'exécuter en premier
+        }
+    };
+
+    // Initialiser automatiquement après le chargement du DOM
+    function initForm() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                window.sinoform.init();
+            });
+        } else {
+            window.sinoform.init();
+        }
+    }
+
+    initForm();
+})();
+</script>
+
+
