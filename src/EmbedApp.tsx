@@ -145,21 +145,18 @@ function EmbedApp() {
         console.log(
           '📏 Envoi hauteur au parent:',
           heightWithMargin,
-          'px (container offset:',
+          'px (container max:',
+          containerMaxHeight,
+          'px + footer:',
+          actualFooterHeight,
+          'px + marge: 400px)',
+          '| Détails: container offset:',
           containerHeight,
           'px, container scroll:',
           containerScrollHeight,
-          'px, container rect:',
-          containerRect.height,
-          'px, body scroll:',
-          bodyHeight,
-          'px, wrapper offset:',
-          wrapperHeight,
-          'px, wrapper scroll:',
-          wrapperScrollHeight,
           'px, footer:',
-          footerHeight,
-          'px)'
+          actualFooterHeight,
+          'px'
         );
       }
     };
