@@ -126,32 +126,47 @@ function EmbedApp() {
         // CRITIQUE: Le container a un transform: scale() appliqué via CSS
         // getBoundingClientRect() retourne la hauteur VISUELLE après le scale
         // offsetHeight/scrollHeight retournent la hauteur RÉELLE (non scalée)
-        // On doit utiliser la hauteur VISUELLE pour calculer correctement l'espace nécessaire
-        const containerRect = formContainer.getBoundingClientRect();
-        const containerVisualHeight = containerRect.height; // Hauteur visuelle après scale
+        // IMPORTANT: scrollHeight inclut TOUT le contenu, y compris le padding-bottom ajouté dynamiquement
 
-        // Vérifier aussi scrollHeight pour capturer TOUT le contenu (même overflow)
+        // Attendre un peu pour que le padding-bottom soit appliqué avant de mesurer
+        // Utiliser scrollHeight qui capture TOUT le contenu réel, y compris le padding
         const containerScrollHeight = containerElement.scrollHeight;
+        const containerOffsetHeight = containerElement.offsetHeight;
 
-        // Si le scale est < 1, la hauteur visuelle est réduite mais scrollHeight reste à la taille réelle
-        // On doit prendre le MAXIMUM entre:
-        // - La hauteur visuelle (pour l'espace réellement occupé)
-        // - La hauteur scroll (pour s'assurer que tout le contenu est visible)
-        // Mais comme le scale réduit visuellement, on doit multiplier scrollHeight par le scale
-        // OU utiliser la hauteur visuelle + vérifier qu'on a assez d'espace pour le scroll
-        const containerMaxHeight = Math.max(
-          containerVisualHeight, // Hauteur visuelle après scale
-          containerScrollHeight * scale, // Hauteur scroll ajustée au scale
-          containerElement.offsetHeight * scale // Hauteur offset ajustée au scale
+        // Vérifier aussi la hauteur du body et du wrapper pour être sûr
+        const bodyScrollHeight = document.body.scrollHeight;
+        const wrapper = document.querySelector('.quote-form-wrapper');
+        const wrapperScrollHeight = wrapper ? (wrapper as HTMLElement).scrollHeight : 0;
+
+        // Prendre la hauteur RÉELLE la plus grande (avant scale)
+        // Cela inclut le padding-bottom ajouté dynamiquement
+        const containerRealHeight = Math.max(
+          containerScrollHeight, // Inclut TOUT, y compris padding-bottom
+          containerOffsetHeight, // Inclut padding mais pas overflow
+          bodyScrollHeight,
+          wrapperScrollHeight
         );
+
+        // Appliquer le scale pour obtenir la hauteur VISUELLE
+        // C'est la hauteur que l'utilisateur voit réellement
+        const containerVisualHeight = containerRealHeight * scale;
+
+        // Vérifier aussi getBoundingClientRect() pour comparaison
+        const containerRect = formContainer.getBoundingClientRect();
+        const containerRectHeight = containerRect.height;
+
+        // Prendre le MAXIMUM entre la hauteur calculée et la hauteur rect
+        // (au cas où getBoundingClientRect() capture quelque chose de plus)
+        const containerMaxHeight = Math.max(containerVisualHeight, containerRectHeight);
 
         // La hauteur totale = hauteur visuelle du container (après scale) + hauteur du footer (non scalé car fixed)
         // Le footer fixed n'est PAS scalé, donc on l'ajoute tel quel
         const maxHeight = containerMaxHeight + actualFooterHeight;
 
-        // Marge de sécurité généreuse, surtout importante sur petits écrans avec scale < 1
-        // Sur un 14 pouces avec scale ~0.77, on a besoin de plus de marge
-        const extraMargin = scale < 0.8 ? 300 : scale < 0.9 ? 200 : 150;
+        // Marge de sécurité TRÈS généreuse, surtout importante sur petits écrans avec scale < 1
+        // Sur un 14 pouces avec scale ~0.77, on a besoin de beaucoup plus de marge
+        // Augmenter significativement les marges pour éviter toute coupure
+        const extraMargin = scale < 0.8 ? 400 : scale < 0.9 ? 300 : 200;
         const heightWithMargin = maxHeight + extraMargin;
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
@@ -161,21 +176,25 @@ function EmbedApp() {
           heightWithMargin,
           'px (scale:',
           scale,
-          '| container visuel:',
+          '| container réel:',
+          containerRealHeight,
+          'px | container visuel (réel*scale):',
           containerVisualHeight,
-          'px | container scroll*scale:',
-          containerScrollHeight * scale,
+          'px | container rect:',
+          containerRectHeight,
           'px | footer:',
           actualFooterHeight,
           'px | marge:',
           extraMargin,
           'px)',
           '| Détails: container offset:',
-          containerElement.offsetHeight,
+          containerOffsetHeight,
           'px, container scroll:',
           containerScrollHeight,
-          'px, container rect:',
-          containerRect.height,
+          'px, body scroll:',
+          bodyScrollHeight,
+          'px, wrapper scroll:',
+          wrapperScrollHeight,
           'px'
         );
       }
