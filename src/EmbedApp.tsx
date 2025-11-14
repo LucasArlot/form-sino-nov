@@ -6,33 +6,45 @@ import '@/styles/main.css';
 function EmbedApp() {
   const [scale, setScale] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const [parentDimensions, setParentDimensions] = useState({
+    width: window.screen.width,
+    height: window.screen.height,
+  });
+
+  useEffect(() => {
+    // Recevoir les dimensions du parent via postMessage
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'parentDimensions') {
+        setParentDimensions({
+          width: event.data.width,
+          height: event.data.height,
+        });
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    // Demander les dimensions au parent
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'requestDimensions' }, '*');
+    }
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   useEffect(() => {
     // Système de scaling responsive pour maintenir les proportions du formulaire
     function applyResponsiveScaling() {
-      let parentWidth;
-      let parentHeight;
+      const parentWidth = parentDimensions.width;
+      const parentHeight = parentDimensions.height;
 
-      try {
-        // Essayer de détecter la largeur/hauteur de l'écran parent
-        if (window.parent && window.parent !== window) {
-          parentWidth = window.parent.innerWidth;
-          parentHeight = window.parent.innerHeight;
-        } else if (window.top && window.top !== window) {
-          parentWidth = window.top.innerWidth;
-          parentHeight = window.top.innerHeight;
-        } else {
-          parentWidth = window.innerWidth;
-          parentHeight = window.innerHeight;
-        }
-      } catch {
-        // Fallback si on ne peut pas accéder au parent
-        parentWidth = window.innerWidth;
-        parentHeight = window.innerHeight;
-      }
+      // Détecter mobile - utiliser aussi screen.width comme fallback
+      const screenWidth = window.screen.width;
+      const detectionWidth = Math.max(parentWidth, screenWidth);
+      const mobile = detectionWidth <= 900;
 
-      // Détecter mobile
-      const mobile = parentWidth <= 900;
       setIsMobile(mobile);
 
       if (mobile) {
@@ -62,16 +74,9 @@ function EmbedApp() {
       }
     }
 
-    // Appliquer le scaling au chargement
+    // Appliquer le scaling
     applyResponsiveScaling();
-
-    // Réappliquer le scaling si la fenêtre est redimensionnée
-    window.addEventListener('resize', applyResponsiveScaling);
-
-    return () => {
-      window.removeEventListener('resize', applyResponsiveScaling);
-    };
-  }, []);
+  }, [parentDimensions]);
 
   return (
     <div
