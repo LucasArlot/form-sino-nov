@@ -95,8 +95,25 @@ function EmbedApp() {
     const sendHeightToParent = () => {
       const formContainer = document.querySelector('.quote-form-container');
       if (formContainer && window.parent && window.parent !== window) {
+        // IMPORTANT: Le footer est en position: fixed, donc il ne prend pas d'espace dans le flux
+        // Il faut ajouter un padding-bottom au container pour que le contenu ne soit pas caché
+        const footer = document.querySelector('.form-footer');
+        const footerHeight = footer ? (footer as HTMLElement).offsetHeight : 0;
+        const footerRect = footer ? footer.getBoundingClientRect().height : 0;
+        const actualFooterHeight = Math.max(footerHeight, footerRect, 100); // Au moins 100px pour le footer
+
+        // Ajouter un padding-bottom dynamique au container pour compenser le footer fixed
+        const containerElement = formContainer as HTMLElement;
+        const currentPaddingBottom =
+          parseInt(window.getComputedStyle(containerElement).paddingBottom) || 60;
+        const requiredPaddingBottom = actualFooterHeight + 40; // Footer + marge de sécurité
+
+        if (requiredPaddingBottom > currentPaddingBottom) {
+          containerElement.style.paddingBottom = requiredPaddingBottom + 'px';
+        }
+
         // Capturer la hauteur du container avec offsetHeight pour inclure TOUT (même overflow)
-        const containerHeight = (formContainer as HTMLElement).offsetHeight;
+        const containerHeight = containerElement.offsetHeight;
         const containerRect = formContainer.getBoundingClientRect();
 
         // Vérifier aussi la hauteur du body et du wrapper avec scrollHeight pour capturer TOUT
@@ -108,15 +125,7 @@ function EmbedApp() {
         const wrapperRect = wrapper ? wrapper.getBoundingClientRect().height : 0;
 
         // Vérifier aussi le container scrollHeight
-        const containerScrollHeight = (formContainer as HTMLElement).scrollHeight;
-
-        // Vérifier aussi le footer pour être sûr qu'il est inclus
-        // IMPORTANT: Le footer est en position: fixed, donc il n'est PAS dans la hauteur du container
-        // Il faut l'ajouter manuellement à la hauteur totale
-        const footer = document.querySelector('.form-footer');
-        const footerHeight = footer ? (footer as HTMLElement).offsetHeight : 0;
-        const footerRect = footer ? footer.getBoundingClientRect().height : 0;
-        const actualFooterHeight = Math.max(footerHeight, footerRect, 100); // Au moins 100px pour le footer
+        const containerScrollHeight = containerElement.scrollHeight;
 
         // Prendre la hauteur la plus grande pour être sûr de tout capturer
         // Utiliser scrollHeight qui inclut TOUT le contenu même si overflow
