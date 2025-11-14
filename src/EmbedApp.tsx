@@ -6,7 +6,7 @@ import '@/styles/main.css';
 function EmbedApp() {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Détecter mobile basé sur la largeur de la fenêtre
+  // Détecter mobile simplement
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 900);
@@ -14,29 +14,25 @@ function EmbedApp() {
 
     checkMobile();
     window.addEventListener('resize', checkMobile);
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Envoyer la hauteur réelle du formulaire au parent pour ajuster l'iframe
+  // Envoyer simplement la hauteur totale du document au parent
   useEffect(() => {
     if (isMobile) return; // Pas besoin sur mobile (fullscreen)
 
     const sendHeightToParent = () => {
       if (window.parent && window.parent !== window) {
-        // Mesurer la hauteur totale du document - SIMPLE et DIRECT
-        // scrollHeight inclut TOUT le contenu, y compris le padding-bottom
-        const documentHeight = Math.max(
+        // Mesurer simplement la hauteur totale du document
+        const totalHeight = Math.max(
           document.documentElement.scrollHeight,
           document.body.scrollHeight,
           document.documentElement.offsetHeight,
           document.body.offsetHeight
         );
 
-        // Ajouter une marge de sécurité généreuse pour éviter toute coupure
-        const heightWithMargin = documentHeight + 100;
+        // Ajouter une petite marge de sécurité
+        const heightWithMargin = totalHeight + 50;
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
@@ -44,29 +40,19 @@ function EmbedApp() {
           '📏 Envoi hauteur au parent:',
           heightWithMargin,
           'px (document:',
-          documentHeight,
-          'px + marge: 100px)'
+          totalHeight,
+          'px + marge: 50px)'
         );
       }
     };
 
-    // Envoyer après le rendu initial avec des délais progressifs
-    const sendHeightWithRAF = () => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          // Double RAF pour s'assurer que le layout est complètement à jour
-          sendHeightToParent();
-        });
-      });
-    };
+    // Envoyer après le rendu avec quelques délais
+    const timeout1 = setTimeout(sendHeightToParent, 100);
+    const timeout2 = setTimeout(sendHeightToParent, 500);
+    const timeout3 = setTimeout(sendHeightToParent, 1000);
+    const timeout4 = setTimeout(sendHeightToParent, 2000);
 
-    const timeout1 = setTimeout(sendHeightWithRAF, 100);
-    const timeout2 = setTimeout(sendHeightWithRAF, 500);
-    const timeout3 = setTimeout(sendHeightWithRAF, 1000);
-    const timeout4 = setTimeout(sendHeightWithRAF, 2000);
-    const timeout5 = setTimeout(sendHeightWithRAF, 3000);
-
-    // Observer les changements de taille sur le body et le document
+    // Observer les changements de taille
     const resizeObserver = new ResizeObserver(() => {
       sendHeightToParent();
     });
@@ -83,7 +69,6 @@ function EmbedApp() {
       clearTimeout(timeout2);
       clearTimeout(timeout3);
       clearTimeout(timeout4);
-      clearTimeout(timeout5);
       resizeObserver.disconnect();
     };
   }, [isMobile]);
@@ -99,7 +84,7 @@ function EmbedApp() {
         alignItems: isMobile ? 'stretch' : 'center',
         background: 'transparent',
         backgroundColor: 'transparent',
-        padding: '0',
+        padding: isMobile ? '0' : '0',
         overflow: isMobile ? 'auto' : 'visible',
       }}
     >
