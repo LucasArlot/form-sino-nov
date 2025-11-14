@@ -95,39 +95,62 @@ function EmbedApp() {
     const sendHeightToParent = () => {
       const formContainer = document.querySelector('.quote-form-container');
       if (formContainer && window.parent && window.parent !== window) {
+        // Capturer la hauteur du container ET vérifier la hauteur du body pour être sûr
         const rect = formContainer.getBoundingClientRect();
         const actualHeight = rect.height;
 
-        // Envoyer la hauteur réelle + marge de sécurité GÉNÉREUSE pour éviter le clipping
+        // Vérifier aussi la hauteur du body pour capturer tout le contenu
+        const bodyHeight = document.body.scrollHeight;
+        const wrapper = document.querySelector('.quote-form-wrapper');
+        const wrapperHeight = wrapper ? wrapper.getBoundingClientRect().height : 0;
+
+        // Prendre la hauteur la plus grande pour être sûr de tout capturer
+        const maxHeight = Math.max(actualHeight, bodyHeight, wrapperHeight);
+
+        // Envoyer la hauteur réelle + marge de sécurité TRÈS GÉNÉREUSE pour éviter le clipping
         // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge très généreuse
-        const heightWithMargin = actualHeight + 150; // Augmenter à 150px
+        const heightWithMargin = maxHeight + 200; // Augmenter à 200px pour être sûr
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
         console.log(
           '📏 Envoi hauteur au parent:',
           heightWithMargin,
-          'px (réelle:',
+          'px (container:',
           actualHeight,
+          'px, body:',
+          bodyHeight,
+          'px, wrapper:',
+          wrapperHeight,
           'px)'
         );
       }
     };
 
-    // Envoyer après le rendu initial
+    // Envoyer après le rendu initial avec plus de délais pour s'assurer que tout est rendu
     const timeout1 = setTimeout(sendHeightToParent, 100);
     const timeout2 = setTimeout(sendHeightToParent, 500);
     const timeout3 = setTimeout(sendHeightToParent, 1000);
     const timeout4 = setTimeout(sendHeightToParent, 2000);
+    const timeout5 = setTimeout(sendHeightToParent, 3000);
+    const timeout6 = setTimeout(sendHeightToParent, 4000);
 
-    // Observer les changements de taille
+    // Observer les changements de taille sur le container, le wrapper et le body
     const resizeObserver = new ResizeObserver(() => {
       sendHeightToParent();
     });
 
     const formContainer = document.querySelector('.quote-form-container');
+    const wrapper = document.querySelector('.quote-form-wrapper');
+
     if (formContainer) {
       resizeObserver.observe(formContainer);
+    }
+    if (wrapper) {
+      resizeObserver.observe(wrapper);
+    }
+    if (document.body) {
+      resizeObserver.observe(document.body);
     }
 
     return () => {
@@ -135,6 +158,8 @@ function EmbedApp() {
       clearTimeout(timeout2);
       clearTimeout(timeout3);
       clearTimeout(timeout4);
+      clearTimeout(timeout5);
+      clearTimeout(timeout6);
       resizeObserver.disconnect();
     };
   }, [isMobile, scale]);
