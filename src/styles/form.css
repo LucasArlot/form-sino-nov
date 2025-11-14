@@ -27,9 +27,9 @@
   background: linear-gradient(to top, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0));
 }
 
-/* Ensure no content is cut off */
+/* Ensure no content is cut off - padding-bottom pour le footer fixed */
 .quote-form-container {
-  padding-bottom: 60px; /* Space pour éviter la coupure */
+  padding-bottom: 180px; /* Espace généreux pour le footer fixed (120px) + marge */
 }
 
 /* Step 2 (Mode) — compact desktop layout */
@@ -148,7 +148,6 @@
 }
 /* Base styles */
 .quote-form-wrapper {
-  /* Le scale est maintenant géré par EmbedApp.tsx qui définit --form-scale */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,15 +156,11 @@
   box-sizing: border-box;
 }
 
-.quote-form-wrapper .quote-form-container {
-  transform: scale(var(--form-scale, 1));
-  transform-origin: center center;
-}
-
 .quote-form-container {
   width: 880px;
   max-width: 880px;
-  height: 1100px;
+  min-height: 1100px;
+  height: auto; /* Hauteur automatique pour s'adapter au contenu */
   background: var(--surface);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-large);
@@ -181,6 +176,24 @@
   border: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
+}
+
+/* Desktop moyen (14 pouces) - réduire légèrement la taille */
+@media (max-width: 1400px) {
+  .quote-form-container {
+    width: 800px;
+    max-width: 800px;
+    font-size: 0.95em; /* Réduire légèrement la taille de police */
+  }
+}
+
+/* Desktop petit - réduire encore */
+@media (max-width: 1200px) {
+  .quote-form-container {
+    width: 720px;
+    max-width: 720px;
+    font-size: 0.9em;
+  }
 }
 
 .glassmorphism {
