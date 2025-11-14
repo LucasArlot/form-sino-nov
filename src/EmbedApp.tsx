@@ -6,8 +6,8 @@ import '@/styles/main.css';
 function EmbedApp() {
   const [isMobile, setIsMobile] = useState(false);
 
+  // Détecter mobile basé sur la largeur de la fenêtre
   useEffect(() => {
-    // Détecter mobile basé sur la largeur de la fenêtre
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 900);
     };
