@@ -98,9 +98,9 @@ function EmbedApp() {
         const rect = formContainer.getBoundingClientRect();
         const actualHeight = rect.height;
 
-        // Envoyer la hauteur réelle + marge de sécurité pour éviter le clipping
-        // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge généreuse
-        const heightWithMargin = actualHeight + 100;
+        // Envoyer la hauteur réelle + marge de sécurité GÉNÉREUSE pour éviter le clipping
+        // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge très généreuse
+        const heightWithMargin = actualHeight + 150; // Augmenter à 150px
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
@@ -150,7 +150,7 @@ function EmbedApp() {
         alignItems: isMobile ? 'stretch' : 'center',
         background: 'transparent',
         backgroundColor: 'transparent',
-        padding: isMobile ? '0' : '20px 0',
+        padding: isMobile ? '0' : '0', // Retirer le padding vertical sur desktop
         overflow: isMobile ? 'auto' : 'visible',
       }}
     >
