@@ -99,8 +99,8 @@ function EmbedApp() {
         const actualHeight = rect.height;
 
         // Envoyer la hauteur réelle + marge de sécurité pour éviter le clipping
-        // La hauteur réelle inclut déjà le padding et le footer, on ajoute juste une marge
-        const heightWithMargin = actualHeight + 60;
+        // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge généreuse
+        const heightWithMargin = actualHeight + 100;
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
