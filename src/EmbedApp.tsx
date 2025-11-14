@@ -103,68 +103,79 @@ function EmbedApp() {
         const actualFooterHeight = Math.max(footerHeight, footerRect, 100); // Au moins 100px pour le footer
 
         // Ajouter un padding-bottom dynamique au container pour compenser le footer fixed
+        // CRITIQUE: Le container est scalé, donc le padding-bottom visuel = padding réel * scale
+        // Pour avoir assez d'espace visuel pour le footer (non scalé), il faut:
+        // padding réel = (footer height + marge) / scale
         const containerElement = formContainer as HTMLElement;
         const currentPaddingBottom =
           parseInt(window.getComputedStyle(containerElement).paddingBottom) || 60;
-        const requiredPaddingBottom = actualFooterHeight + 40; // Footer + marge de sécurité
+
+        // Le footer n'est PAS scalé, donc on a besoin de sa hauteur complète + marge
+        // Mais le padding est dans le container scalé, donc on doit compenser
+        const footerSpaceNeeded = actualFooterHeight + 40; // Footer + marge de sécurité
+        // Si scale < 1, le padding visuel est réduit, donc on doit augmenter le padding réel
+        const requiredPaddingBottom =
+          scale < 1
+            ? Math.ceil(footerSpaceNeeded / scale) + 20 // Compenser le scale + marge supplémentaire
+            : footerSpaceNeeded;
 
         if (requiredPaddingBottom > currentPaddingBottom) {
           containerElement.style.paddingBottom = requiredPaddingBottom + 'px';
         }
 
-        // Capturer la hauteur du container avec offsetHeight pour inclure TOUT (même overflow)
-        const containerHeight = containerElement.offsetHeight;
+        // CRITIQUE: Le container a un transform: scale() appliqué via CSS
+        // getBoundingClientRect() retourne la hauteur VISUELLE après le scale
+        // offsetHeight/scrollHeight retournent la hauteur RÉELLE (non scalée)
+        // On doit utiliser la hauteur VISUELLE pour calculer correctement l'espace nécessaire
         const containerRect = formContainer.getBoundingClientRect();
+        const containerVisualHeight = containerRect.height; // Hauteur visuelle après scale
 
-        // Vérifier aussi la hauteur du body et du wrapper avec scrollHeight pour capturer TOUT
-        const bodyHeight = document.body.scrollHeight;
-        const bodyOffsetHeight = document.body.offsetHeight;
-        const wrapper = document.querySelector('.quote-form-wrapper');
-        const wrapperHeight = wrapper ? (wrapper as HTMLElement).offsetHeight : 0;
-        const wrapperScrollHeight = wrapper ? (wrapper as HTMLElement).scrollHeight : 0;
-        const wrapperRect = wrapper ? wrapper.getBoundingClientRect().height : 0;
-
-        // Vérifier aussi le container scrollHeight
+        // Vérifier aussi scrollHeight pour capturer TOUT le contenu (même overflow)
         const containerScrollHeight = containerElement.scrollHeight;
 
-        // Prendre la hauteur la plus grande pour être sûr de tout capturer
-        // Utiliser scrollHeight qui inclut TOUT le contenu même si overflow
-        // IMPORTANT: Ajouter TOUJOURS la hauteur du footer car il est en position: fixed
+        // Si le scale est < 1, la hauteur visuelle est réduite mais scrollHeight reste à la taille réelle
+        // On doit prendre le MAXIMUM entre:
+        // - La hauteur visuelle (pour l'espace réellement occupé)
+        // - La hauteur scroll (pour s'assurer que tout le contenu est visible)
+        // Mais comme le scale réduit visuellement, on doit multiplier scrollHeight par le scale
+        // OU utiliser la hauteur visuelle + vérifier qu'on a assez d'espace pour le scroll
         const containerMaxHeight = Math.max(
-          containerHeight,
-          containerScrollHeight, // scrollHeight inclut tout le contenu
-          containerRect.height,
-          bodyHeight,
-          bodyOffsetHeight,
-          wrapperHeight,
-          wrapperScrollHeight, // scrollHeight du wrapper aussi
-          wrapperRect
+          containerVisualHeight, // Hauteur visuelle après scale
+          containerScrollHeight * scale, // Hauteur scroll ajustée au scale
+          containerElement.offsetHeight * scale // Hauteur offset ajustée au scale
         );
 
-        // La hauteur totale = hauteur du container + hauteur du footer (car footer est fixed)
+        // La hauteur totale = hauteur visuelle du container (après scale) + hauteur du footer (non scalé car fixed)
+        // Le footer fixed n'est PAS scalé, donc on l'ajoute tel quel
         const maxHeight = containerMaxHeight + actualFooterHeight;
 
-        // Envoyer la hauteur réelle + marge de sécurité TRÈS GÉNÉREUSE pour éviter le clipping
-        // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge très généreuse
-        // Augmenter à 400px pour être absolument sûr, surtout sur les petits écrans avec scale
-        const heightWithMargin = maxHeight + 400;
+        // Marge de sécurité généreuse, surtout importante sur petits écrans avec scale < 1
+        // Sur un 14 pouces avec scale ~0.77, on a besoin de plus de marge
+        const extraMargin = scale < 0.8 ? 300 : scale < 0.9 ? 200 : 150;
+        const heightWithMargin = maxHeight + extraMargin;
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
         console.log(
           '📏 Envoi hauteur au parent:',
           heightWithMargin,
-          'px (container max:',
-          containerMaxHeight,
-          'px + footer:',
+          'px (scale:',
+          scale,
+          '| container visuel:',
+          containerVisualHeight,
+          'px | container scroll*scale:',
+          containerScrollHeight * scale,
+          'px | footer:',
           actualFooterHeight,
-          'px + marge: 400px)',
+          'px | marge:',
+          extraMargin,
+          'px)',
           '| Détails: container offset:',
-          containerHeight,
+          containerElement.offsetHeight,
           'px, container scroll:',
           containerScrollHeight,
-          'px, footer:',
-          actualFooterHeight,
+          'px, container rect:',
+          containerRect.height,
           'px'
         );
       }
