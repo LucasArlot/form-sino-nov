@@ -7,14 +7,15 @@ function EmbedApp() {
   const [scale, setScale] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [parentDimensions, setParentDimensions] = useState({
-    width: window.screen.width,
-    height: window.screen.height,
+    width: 1920, // Valeur par défaut desktop
+    height: 1080,
   });
 
   useEffect(() => {
     // Recevoir les dimensions du parent via postMessage
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'parentDimensions') {
+        console.log('📏 Dimensions reçues du parent:', event.data.width, 'x', event.data.height);
         setParentDimensions({
           width: event.data.width,
           height: event.data.height,
@@ -24,9 +25,16 @@ function EmbedApp() {
 
     window.addEventListener('message', handleMessage);
 
-    // Demander les dimensions au parent
+    // Demander les dimensions au parent plusieurs fois pour s'assurer
     if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ type: 'requestDimensions' }, '*');
+      const requestDimensions = () => {
+        window.parent.postMessage({ type: 'requestDimensions' }, '*');
+      };
+
+      requestDimensions();
+      setTimeout(requestDimensions, 100);
+      setTimeout(requestDimensions, 300);
+      setTimeout(requestDimensions, 500);
     }
 
     return () => {
@@ -40,10 +48,11 @@ function EmbedApp() {
       const parentWidth = parentDimensions.width;
       const parentHeight = parentDimensions.height;
 
-      // Détecter mobile - utiliser aussi screen.width comme fallback
-      const screenWidth = window.screen.width;
-      const detectionWidth = Math.max(parentWidth, screenWidth);
-      const mobile = detectionWidth <= 900;
+      console.log('🔍 Calcul avec dimensions:', parentWidth, 'x', parentHeight);
+
+      // Détecter mobile
+      const mobile = parentWidth <= 900;
+      console.log('📱 Mode mobile?', mobile);
 
       setIsMobile(mobile);
 
@@ -70,6 +79,7 @@ function EmbedApp() {
         // Limites min/max pour la lisibilité
         newScale = Math.max(0.5, Math.min(1, newScale));
 
+        console.log('📐 Scale calculé:', newScale);
         setScale(newScale);
       }
     }
