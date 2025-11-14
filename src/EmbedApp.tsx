@@ -99,32 +99,42 @@ function EmbedApp() {
         const containerHeight = (formContainer as HTMLElement).offsetHeight;
         const containerRect = formContainer.getBoundingClientRect();
 
-        // Vérifier aussi la hauteur du body et du wrapper
+        // Vérifier aussi la hauteur du body et du wrapper avec scrollHeight pour capturer TOUT
         const bodyHeight = document.body.scrollHeight;
         const bodyOffsetHeight = document.body.offsetHeight;
         const wrapper = document.querySelector('.quote-form-wrapper');
         const wrapperHeight = wrapper ? (wrapper as HTMLElement).offsetHeight : 0;
+        const wrapperScrollHeight = wrapper ? (wrapper as HTMLElement).scrollHeight : 0;
         const wrapperRect = wrapper ? wrapper.getBoundingClientRect().height : 0;
+
+        // Vérifier aussi le container scrollHeight
+        const containerScrollHeight = (formContainer as HTMLElement).scrollHeight;
 
         // Vérifier aussi le footer pour être sûr qu'il est inclus
         const footer = document.querySelector('.form-footer');
         const footerHeight = footer ? (footer as HTMLElement).offsetHeight : 0;
+        const footerRect = footer ? footer.getBoundingClientRect().height : 0;
 
         // Prendre la hauteur la plus grande pour être sûr de tout capturer
-        // Utiliser offsetHeight qui inclut padding, border et contenu overflow
+        // Utiliser scrollHeight qui inclut TOUT le contenu même si overflow
         const maxHeight = Math.max(
           containerHeight,
+          containerScrollHeight, // scrollHeight inclut tout le contenu
           containerRect.height,
           bodyHeight,
           bodyOffsetHeight,
           wrapperHeight,
+          wrapperScrollHeight, // scrollHeight du wrapper aussi
           wrapperRect,
-          containerHeight + footerHeight // Container + footer séparément au cas où
+          containerHeight + footerHeight, // Container + footer séparément
+          containerScrollHeight + footerHeight, // Container scroll + footer
+          containerRect.height + footerRect // Container rect + footer rect
         );
 
         // Envoyer la hauteur réelle + marge de sécurité TRÈS GÉNÉREUSE pour éviter le clipping
         // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge très généreuse
-        const heightWithMargin = maxHeight + 300; // Augmenter à 300px pour être absolument sûr
+        // Augmenter à 400px pour être absolument sûr, surtout sur les petits écrans avec scale
+        const heightWithMargin = maxHeight + 400;
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
@@ -133,12 +143,16 @@ function EmbedApp() {
           heightWithMargin,
           'px (container offset:',
           containerHeight,
+          'px, container scroll:',
+          containerScrollHeight,
           'px, container rect:',
           containerRect.height,
           'px, body scroll:',
           bodyHeight,
           'px, wrapper offset:',
           wrapperHeight,
+          'px, wrapper scroll:',
+          wrapperScrollHeight,
           'px, footer:',
           footerHeight,
           'px)'
