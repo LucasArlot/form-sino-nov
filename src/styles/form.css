@@ -1,32 +1,30 @@
-/* Mobile fullscreen fix */
-@media (max-width: 900px) {
-  html,
-  body {
-    height: 100%;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* Mobile fullscreen fix - controlled by React class instead of media query */
+.sino-form-mobile html,
+.sino-form-mobile body {
+  height: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  .quote-form-container {
-    min-height: 100vh;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 160px !important; /* Encore plus d'espace pour éviter cache par navigateur */
-  }
+.sino-form-mobile .quote-form-container {
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 160px !important; /* Encore plus d'espace pour éviter cache par navigateur */
+}
 
-  .form-content-scroll {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 40px;
-  }
+.sino-form-mobile .form-content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 40px;
+}
 
-  /* Footer fixe avec beaucoup d'espace sur mobile */
-  .form-footer {
-    padding-bottom: calc(env(safe-area-inset-bottom) + 40px) !important;
-    background: linear-gradient(to top, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0));
-  }
+/* Footer fixe avec beaucoup d'espace sur mobile */
+.sino-form-mobile .form-footer {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 40px) !important;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0));
 }
 
 /* Ensure no content is cut off */

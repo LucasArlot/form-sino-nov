@@ -90,6 +90,7 @@ function EmbedApp() {
 
   return (
     <div
+      className={isMobile ? 'sino-form-mobile' : 'sino-form-desktop'}
       style={{
         width: '100%',
         minHeight: isMobile ? '100vh' : 'auto',
