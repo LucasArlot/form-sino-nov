@@ -121,52 +121,70 @@ function EmbedApp() {
 
         if (requiredPaddingBottom > currentPaddingBottom) {
           containerElement.style.paddingBottom = requiredPaddingBottom + 'px';
+          // Le reflow sera déclenché par requestAnimationFrame dans sendHeightWithRAF
         }
 
         // CRITIQUE: Le container a un transform: scale() appliqué via CSS
-        // getBoundingClientRect() retourne la hauteur VISUELLE après le scale
-        // offsetHeight/scrollHeight retournent la hauteur RÉELLE (non scalée)
-        // IMPORTANT: scrollHeight inclut TOUT le contenu, y compris le padding-bottom ajouté dynamiquement
+        // Le container a une hauteur fixe de 1100px dans le CSS, mais le contenu peut dépasser
+        // scrollHeight inclut TOUT le contenu réel, y compris le padding-bottom ajouté dynamiquement
 
-        // Attendre un peu pour que le padding-bottom soit appliqué avant de mesurer
-        // Utiliser scrollHeight qui capture TOUT le contenu réel, y compris le padding
+        // Mesurer la hauteur RÉELLE du container (avant scale)
+        // scrollHeight est la mesure la plus fiable car elle inclut tout, même si le container a height: 1100px fixe
         const containerScrollHeight = containerElement.scrollHeight;
         const containerOffsetHeight = containerElement.offsetHeight;
 
-        // Vérifier aussi la hauteur du body et du wrapper pour être sûr
+        // Vérifier aussi la hauteur du body et du document pour capturer TOUT
         const bodyScrollHeight = document.body.scrollHeight;
+        const bodyOffsetHeight = document.body.offsetHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const documentOffsetHeight = document.documentElement.offsetHeight;
+
         const wrapper = document.querySelector('.quote-form-wrapper');
         const wrapperScrollHeight = wrapper ? (wrapper as HTMLElement).scrollHeight : 0;
+        const wrapperOffsetHeight = wrapper ? (wrapper as HTMLElement).offsetHeight : 0;
 
         // Prendre la hauteur RÉELLE la plus grande (avant scale)
-        // Cela inclut le padding-bottom ajouté dynamiquement
+        // scrollHeight est généralement la meilleure mesure car elle inclut tout le contenu
         const containerRealHeight = Math.max(
-          containerScrollHeight, // Inclut TOUT, y compris padding-bottom
-          containerOffsetHeight, // Inclut padding mais pas overflow
-          bodyScrollHeight,
-          wrapperScrollHeight
+          containerScrollHeight, // Inclut TOUT, y compris padding-bottom et contenu qui dépasse
+          containerOffsetHeight, // Hauteur avec padding mais limitée par height: 1100px
+          bodyScrollHeight, // Hauteur totale du body
+          bodyOffsetHeight,
+          documentHeight, // Hauteur totale du document
+          documentOffsetHeight,
+          wrapperScrollHeight,
+          wrapperOffsetHeight
         );
 
-        // Appliquer le scale pour obtenir la hauteur VISUELLE
-        // C'est la hauteur que l'utilisateur voit réellement
+        // Appliquer le scale pour obtenir la hauteur VISUELLE du container
+        // Le scale réduit visuellement la taille du container
         const containerVisualHeight = containerRealHeight * scale;
 
-        // Vérifier aussi getBoundingClientRect() pour comparaison
+        // Vérifier aussi getBoundingClientRect() qui retourne la hauteur visuelle après scale
         const containerRect = formContainer.getBoundingClientRect();
         const containerRectHeight = containerRect.height;
 
-        // Prendre le MAXIMUM entre la hauteur calculée et la hauteur rect
-        // (au cas où getBoundingClientRect() capture quelque chose de plus)
-        const containerMaxHeight = Math.max(containerVisualHeight, containerRectHeight);
+        // Prendre le MAXIMUM entre toutes les mesures pour être absolument sûr
+        // containerRectHeight peut être plus grand si le contenu dépasse visuellement
+        const containerMaxHeight = Math.max(
+          containerVisualHeight, // Hauteur réelle * scale
+          containerRectHeight, // Hauteur visuelle mesurée
+          containerScrollHeight * scale, // scrollHeight * scale (au cas où)
+          bodyScrollHeight * scale // body scrollHeight * scale (au cas où)
+        );
 
         // La hauteur totale = hauteur visuelle du container (après scale) + hauteur du footer (non scalé car fixed)
-        // Le footer fixed n'est PAS scalé, donc on l'ajoute tel quel
+        // Le footer fixed n'est PAS scalé et n'est pas dans le flux, donc on l'ajoute tel quel
         const maxHeight = containerMaxHeight + actualFooterHeight;
 
         // Marge de sécurité TRÈS généreuse, surtout importante sur petits écrans avec scale < 1
         // Sur un 14 pouces avec scale ~0.77, on a besoin de beaucoup plus de marge
         // Augmenter significativement les marges pour éviter toute coupure
-        const extraMargin = scale < 0.8 ? 400 : scale < 0.9 ? 300 : 200;
+        // Ajouter aussi une marge supplémentaire basée sur la hauteur réelle pour être sûr
+        const baseMargin = scale < 0.8 ? 500 : scale < 0.9 ? 400 : 300;
+        // Ajouter aussi un pourcentage de la hauteur réelle pour les très grands contenus
+        const percentageMargin = Math.ceil(containerRealHeight * 0.1); // 10% de la hauteur réelle
+        const extraMargin = baseMargin + percentageMargin;
         const heightWithMargin = maxHeight + extraMargin;
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
@@ -180,19 +198,27 @@ function EmbedApp() {
           containerRealHeight,
           'px | container visuel (réel*scale):',
           containerVisualHeight,
+          'px | container max:',
+          containerMaxHeight,
           'px | container rect:',
           containerRectHeight,
           'px | footer:',
           actualFooterHeight,
           'px | marge:',
           extraMargin,
-          'px)',
+          'px (base:',
+          baseMargin,
+          'px + %:',
+          percentageMargin,
+          'px))',
           '| Détails: container offset:',
           containerOffsetHeight,
           'px, container scroll:',
           containerScrollHeight,
           'px, body scroll:',
           bodyScrollHeight,
+          'px, document scroll:',
+          documentHeight,
           'px, wrapper scroll:',
           wrapperScrollHeight,
           'px'
@@ -201,12 +227,22 @@ function EmbedApp() {
     };
 
     // Envoyer après le rendu initial avec plus de délais pour s'assurer que tout est rendu
-    const timeout1 = setTimeout(sendHeightToParent, 100);
-    const timeout2 = setTimeout(sendHeightToParent, 500);
-    const timeout3 = setTimeout(sendHeightToParent, 1000);
-    const timeout4 = setTimeout(sendHeightToParent, 2000);
-    const timeout5 = setTimeout(sendHeightToParent, 3000);
-    const timeout6 = setTimeout(sendHeightToParent, 4000);
+    // Utiliser requestAnimationFrame pour s'assurer que le layout est à jour
+    const sendHeightWithRAF = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Double RAF pour s'assurer que le layout est complètement à jour
+          sendHeightToParent();
+        });
+      });
+    };
+
+    const timeout1 = setTimeout(sendHeightWithRAF, 100);
+    const timeout2 = setTimeout(sendHeightWithRAF, 500);
+    const timeout3 = setTimeout(sendHeightWithRAF, 1000);
+    const timeout4 = setTimeout(sendHeightWithRAF, 2000);
+    const timeout5 = setTimeout(sendHeightWithRAF, 3000);
+    const timeout6 = setTimeout(sendHeightWithRAF, 4000);
 
     // Observer les changements de taille sur le container, le wrapper et le body
     const resizeObserver = new ResizeObserver(() => {
