@@ -150,8 +150,9 @@
 .quote-form-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* flex-start pour éviter les espaces vides en haut */
   width: 100%;
+  height: auto; /* Hauteur auto pour s'adapter au contenu */
   padding: 0;
   box-sizing: border-box;
 }
