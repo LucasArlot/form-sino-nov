@@ -9,21 +9,23 @@
 
   .quote-form-container {
     min-height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
-    padding-bottom: 140px !important; /* Plus d'espace pour les boutons fixes */
+    padding-bottom: 160px !important; /* Encore plus d'espace pour éviter cache par navigateur */
   }
 
   .form-content-scroll {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
   }
 
-  /* Footer fixe avec plus d'espace sur mobile */
+  /* Footer fixe avec beaucoup d'espace sur mobile */
   .form-footer {
-    padding-bottom: calc(env(safe-area-inset-bottom) + 20px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 40px) !important;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0));
   }
 }
 
@@ -175,8 +177,8 @@
   padding: var(--space-10);
   padding-bottom: calc(var(--space-10) + var(--dropdown-safe-area, 0px));
   margin: 0 auto;
-  overflow: hidden; /* Ensure floating dropdowns cannot render outside the main container */
-  transition: all var(--duration-normal) var(--ease-out-cubic);
+  overflow: visible; /* Allow dropdowns to render outside - NO scroll interne */
+  transition: none;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   position: relative;
@@ -186,33 +188,13 @@
   flex-direction: column;
 }
 
-.quote-form-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(214, 223, 32, 0.2),
-    rgba(255, 255, 255, 0.1),
-    rgba(0, 28, 56, 0.05)
-  );
-  border-radius: inherit;
-  z-index: -1;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-}
-
-.quote-form-container:hover::before {
-  opacity: 1;
-}
-
 .glassmorphism {
   background: var(--surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-soft);
-  transition: all var(--duration-normal) var(--ease-out-cubic);
+  transition: none;
   outline: none;
 }
 
