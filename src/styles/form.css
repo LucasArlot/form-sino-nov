@@ -155,11 +155,14 @@
   height: auto; /* Hauteur auto pour s'adapter au contenu */
   padding: 0;
   box-sizing: border-box;
+  /* Pas d'ombre sur le wrapper pour éviter les conflits */
+  box-shadow: none !important;
+  transition: none !important;
 }
 
 /* Plus de transform: scale() - on utilise des media queries à la place */
 .quote-form-wrapper .quote-form-container {
-  transform: none;
+  transform: none; /* Pas de transform pour éviter les problèmes de rendu */
 }
 
 .quote-form-container {
@@ -169,19 +172,26 @@
   min-height: auto;
   background: var(--surface);
   border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-large);
+  /* Ombre fixe et stable - définie directement pour éviter tout conflit */
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04) !important;
   padding: var(--space-10);
   padding-bottom: calc(var(--space-10) + var(--dropdown-safe-area, 0px));
   margin: 0 auto;
   overflow: visible; /* Allow dropdowns to render outside - NO scroll interne */
-  transition: none;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  transition: none !important; /* Pas de transition pour éviter les effets intermittents */
+  /* Retirer backdrop-filter qui peut causer des conflits de rendu avec box-shadow */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   position: relative;
   z-index: 1;
   border: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
+  /* Isolation pour créer un contexte d'empilement stable */
+  isolation: isolate;
+  /* Forcer le rendu sur le CPU plutôt que GPU pour plus de stabilité */
+  transform: none !important;
+  will-change: auto !important;
 }
 
 /* Responsive - ajuster la taille du formulaire selon l'écran */
