@@ -1,3 +1,30 @@
+/* Mobile fullscreen fix */
+@media (max-width: 900px) {
+  html,
+  body {
+    height: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .quote-form-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-content-scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Ensure no content is cut off */
+.quote-form-container {
+  padding-bottom: 60px; /* Space pour éviter la coupure */
+}
+
 /* Step 2 (Mode) — compact desktop layout */
 @media (min-width: 1024px) {
   /* A3 variant: single column main area with two stacked rows.

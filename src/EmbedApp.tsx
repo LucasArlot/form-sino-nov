@@ -4,83 +4,82 @@ import { useEffect, useState } from 'react';
 import '@/styles/main.css';
 
 function EmbedApp() {
-  const [scale, setScale] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Système de scaling responsive
-    function applyResponsiveScaling() {
+    // Détecter si on est sur mobile
+    function detectMobile() {
       let parentWidth;
 
       try {
-        // Essayer de détecter la largeur de l'écran parent
         if (window.parent && window.parent !== window) {
           parentWidth = window.parent.innerWidth;
         } else if (window.top && window.top !== window) {
           parentWidth = window.top.innerWidth;
         } else {
-          parentWidth = window.screen.width;
+          parentWidth = window.innerWidth;
         }
       } catch {
-        // Fallback si on ne peut pas accéder au parent
-        parentWidth = window.screen.width;
+        parentWidth = window.innerWidth;
       }
 
-      let newScale = 1;
-
-      // Breakpoints de scaling
-      if (parentWidth >= 2560) {
-        newScale = 1; // 100% - taille optimale pour 32"
-      } else if (parentWidth >= 1920) {
-        newScale = 0.85; // 85% pour 27"
-      } else if (parentWidth >= 1440) {
-        newScale = 0.75; // 75% pour 24"
-      } else {
-        newScale = 0.65; // 65% pour écrans plus petits
-      }
-
-      setScale(newScale);
+      setIsMobile(parentWidth <= 900);
     }
 
-    // Appliquer le scaling au chargement
-    applyResponsiveScaling();
+    detectMobile();
+    window.addEventListener('resize', detectMobile);
 
-    // Réappliquer le scaling si la fenêtre est redimensionnée
-    window.addEventListener('resize', applyResponsiveScaling);
-
-    // Écouter les messages du parent pour les mises à jour
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data && event.data.type === 'resize') {
-        applyResponsiveScaling();
+    // Envoyer la hauteur au parent pour ajuster l'iframe
+    const sendHeight = () => {
+      try {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage(
+          {
+            type: 'resize',
+            height: height,
+          },
+          '*'
+        );
+      } catch (e) {
+        console.log('Cannot send height to parent:', e);
       }
     };
 
-    window.addEventListener('message', handleMessage);
+    // Envoyer la hauteur périodiquement
+    const heightInterval = setInterval(sendHeight, 500);
+
+    // Observer les changements de DOM
+    const observer = new MutationObserver(sendHeight);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
 
     return () => {
-      window.removeEventListener('resize', applyResponsiveScaling);
-      window.removeEventListener('message', handleMessage);
+      window.removeEventListener('resize', detectMobile);
+      clearInterval(heightInterval);
+      observer.disconnect();
     };
   }, []);
 
   return (
     <div
       style={{
-        transform: `scale(${scale})`,
-        transformOrigin: 'top center',
-        transition: 'transform 0.3s ease',
         width: '100%',
-        height: '100vh',
+        minHeight: isMobile ? '100vh' : 'auto',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: isMobile ? 'stretch' : 'flex-start',
         background: 'transparent',
         backgroundColor: 'transparent',
+        padding: isMobile ? '0' : '20px 0',
       }}
     >
       <div
         style={{
           width: '100%',
-          height: '100%',
+          maxWidth: isMobile ? '100%' : '1200px',
           background: 'transparent',
           backgroundColor: 'transparent',
         }}
