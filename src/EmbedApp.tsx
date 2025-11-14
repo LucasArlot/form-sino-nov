@@ -95,33 +95,52 @@ function EmbedApp() {
     const sendHeightToParent = () => {
       const formContainer = document.querySelector('.quote-form-container');
       if (formContainer && window.parent && window.parent !== window) {
-        // Capturer la hauteur du container ET vérifier la hauteur du body pour être sûr
-        const rect = formContainer.getBoundingClientRect();
-        const actualHeight = rect.height;
+        // Capturer la hauteur du container avec offsetHeight pour inclure TOUT (même overflow)
+        const containerHeight = (formContainer as HTMLElement).offsetHeight;
+        const containerRect = formContainer.getBoundingClientRect();
 
-        // Vérifier aussi la hauteur du body pour capturer tout le contenu
+        // Vérifier aussi la hauteur du body et du wrapper
         const bodyHeight = document.body.scrollHeight;
+        const bodyOffsetHeight = document.body.offsetHeight;
         const wrapper = document.querySelector('.quote-form-wrapper');
-        const wrapperHeight = wrapper ? wrapper.getBoundingClientRect().height : 0;
+        const wrapperHeight = wrapper ? (wrapper as HTMLElement).offsetHeight : 0;
+        const wrapperRect = wrapper ? wrapper.getBoundingClientRect().height : 0;
+
+        // Vérifier aussi le footer pour être sûr qu'il est inclus
+        const footer = document.querySelector('.form-footer');
+        const footerHeight = footer ? (footer as HTMLElement).offsetHeight : 0;
 
         // Prendre la hauteur la plus grande pour être sûr de tout capturer
-        const maxHeight = Math.max(actualHeight, bodyHeight, wrapperHeight);
+        // Utiliser offsetHeight qui inclut padding, border et contenu overflow
+        const maxHeight = Math.max(
+          containerHeight,
+          containerRect.height,
+          bodyHeight,
+          bodyOffsetHeight,
+          wrapperHeight,
+          wrapperRect,
+          containerHeight + footerHeight // Container + footer séparément au cas où
+        );
 
         // Envoyer la hauteur réelle + marge de sécurité TRÈS GÉNÉREUSE pour éviter le clipping
         // La hauteur réelle inclut déjà le padding et le footer, on ajoute une marge très généreuse
-        const heightWithMargin = maxHeight + 200; // Augmenter à 200px pour être sûr
+        const heightWithMargin = maxHeight + 300; // Augmenter à 300px pour être absolument sûr
 
         window.parent.postMessage({ type: 'resize', height: heightWithMargin }, '*');
 
         console.log(
           '📏 Envoi hauteur au parent:',
           heightWithMargin,
-          'px (container:',
-          actualHeight,
-          'px, body:',
+          'px (container offset:',
+          containerHeight,
+          'px, container rect:',
+          containerRect.height,
+          'px, body scroll:',
           bodyHeight,
-          'px, wrapper:',
+          'px, wrapper offset:',
           wrapperHeight,
+          'px, footer:',
+          footerHeight,
           'px)'
         );
       }
