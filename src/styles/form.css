@@ -11,12 +11,19 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-bottom: 140px !important; /* Plus d'espace pour les boutons fixes */
   }
 
   .form-content-scroll {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+  }
+
+  /* Footer fixe avec plus d'espace sur mobile */
+  .form-footer {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px) !important;
   }
 }
 
