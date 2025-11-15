@@ -7,48 +7,48 @@
 
 :root {
   /* ===== COULEURS DE MARQUE ===== */
-  --primary: #001C38;          /* Bleu foncé principal */
-  --primary-light: #002A4E;    /* Variante claire */
-  --primary-dark: #001428;     /* Variante foncée */
-  --primary-rgb: 0, 28, 56;    /* Pour rgba() */
-  
-  --accent: #D6DF20;           /* Vert-jaune signature */
-  --accent-light: #E4EA58;     /* Variante claire */
-  --accent-dark: #B6BE1B;      /* Variante foncée */
-  --accent-rgb: 214, 223, 32;  /* Pour rgba() */
+  --primary: #001c38; /* Bleu foncé principal */
+  --primary-light: #002a4e; /* Variante claire */
+  --primary-dark: #001428; /* Variante foncée */
+  --primary-rgb: 0, 28, 56; /* Pour rgba() */
+
+  --accent: #d6df20; /* Vert-jaune signature */
+  --accent-light: #e4ea58; /* Variante claire */
+  --accent-dark: #b6be1b; /* Variante foncée */
+  --accent-rgb: 214, 223, 32; /* Pour rgba() */
 
   /* ===== COULEURS SÉMANTIQUES ===== */
-  --success: #10B981;          /* Succès/validation */
-  --success-light: #ECFDF5;    /* Background succès */
-  --success-dark: #047857;     /* Succès foncé */
+  --success: #10b981; /* Succès/validation */
+  --success-light: #ecfdf5; /* Background succès */
+  --success-dark: #047857; /* Succès foncé */
   --success-rgb: 16, 185, 129;
 
-  --warning: #F59E0B;          /* Avertissement */
-  --warning-light: #FFFBEB;    /* Background avertissement */
-  --warning-dark: #B45309;     /* Avertissement foncé */
+  --warning: #f59e0b; /* Avertissement */
+  --warning-light: #fffbeb; /* Background avertissement */
+  --warning-dark: #b45309; /* Avertissement foncé */
   --warning-rgb: 245, 158, 11;
 
-  --error: #EF4444;            /* Erreur */
-  --error-light: #FEF2F2;      /* Background erreur */
-  --error-dark: #D93D3D;       /* Erreur foncée */
+  --error: #ef4444; /* Erreur */
+  --error-light: #fef2f2; /* Background erreur */
+  --error-dark: #d93d3d; /* Erreur foncée */
   --error-rgb: 239, 68, 68;
 
-  --info: #3B82F6;             /* Information */
-  --info-light: #EFF6FF;       /* Background info */
-  --info-dark: #1E40AF;        /* Info foncée */
+  --info: #3b82f6; /* Information */
+  --info-light: #eff6ff; /* Background info */
+  --info-dark: #1e40af; /* Info foncée */
   --info-rgb: 59, 130, 246;
 
   /* ===== COULEURS NEUTRES ===== */
-  --white: #FFFFFF;
-  --gray-50: #F9FAFB;
-  --gray-100: #F3F4F6;
-  --gray-200: #E5E7EB;
-  --gray-300: #D1D5DB;
-  --gray-400: #9CA3AF;
-  --gray-500: #6B7280;
-  --gray-600: #4B5563;
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
   --gray-700: #374151;
-  --gray-800: #1F2937;
+  --gray-800: #1f2937;
   --gray-900: #111827;
 
   /* ===== SURFACES GLASSMORPHISM ===== */
@@ -56,7 +56,7 @@
   --surface-hover: rgba(255, 255, 255, 0.95);
   --surface-active: rgba(255, 255, 255, 1);
   --surface-blur: blur(16px);
-  
+
   --border-light: rgba(255, 255, 255, 0.2);
   --border-medium: rgba(255, 255, 255, 0.3);
   --border-strong: rgba(255, 255, 255, 0.4);
@@ -65,7 +65,7 @@
   --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
-  --space-2-5: 10px;           /* Micro-espacement */
+  --space-2-5: 10px; /* Micro-espacement */
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 20px;
@@ -78,17 +78,19 @@
 
   /* ===== TYPOGRAPHIE ===== */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-emoji: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  
+  --font-family-emoji:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+
   /* Tailles de police responsive */
-  --text-xs: 0.75rem;          /* 12px */
-  --text-sm: 0.875rem;         /* 14px */
-  --text-base: 1rem;           /* 16px */
-  --text-lg: 1.125rem;         /* 18px */
-  --text-xl: 1.25rem;          /* 20px */
-  --text-2xl: 1.5rem;          /* 24px */
-  --text-3xl: 1.875rem;        /* 30px */
-  --text-4xl: 2.25rem;         /* 36px */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
 
   /* Hauteurs de ligne */
   --line-height-tight: 1.25;
@@ -174,6 +176,13 @@
   --z-max: 999;
 
   /* ===== BREAKPOINTS ===== */
+  /* Système unifié pour tous les écrans */
+  --breakpoint-mobile-small: 374px; /* iPhone SE, petits Androids */
+  --breakpoint-mobile-medium: 414px; /* iPhone standard */
+  --breakpoint-mobile-large: 767px; /* iPhone Pro Max, grands Androids */
+  --breakpoint-tablet: 1023px; /* Tablettes */
+
+  /* Breakpoints hérités pour compatibilité */
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
@@ -188,12 +197,13 @@
   /* Fixed dimensions to match 32" rendering exactly on all screens */
   --form-width-desktop: 880px;
   --form-height-desktop: 1100px;
-  --form-height-mobile: 60vh;
-  
+  --form-height-mobile: 60dvh; /* Utiliser dvh pour s'adapter aux barres du navigateur */
+  --form-height-mobile: 60vh; /* Fallback */
+
   --form-content-gap: var(--space-6);
   --form-sticky-offset: var(--space-6);
   --form-sticky-offset-mobile: var(--space-4);
-  
+
   /* Grid */
   --grid-gap-sm: var(--space-3);
   --grid-gap-md: var(--space-4);
@@ -284,4 +294,4 @@
 5. TYPOGRAPHIE :
    - Utilisez les tailles responsive (--text-responsive-*)
    - Respectez la hiérarchie des line-heights
-*/ 
+*/

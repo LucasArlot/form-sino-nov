@@ -43,9 +43,7 @@ const StepContact: React.FC = () => {
     (text ?? '').replace(/^\p{Extended_Pictographic}+\s*/u, '').trim();
 
   // Display value for phone prefix: keep flag and plus sign visible
-  const selectedPhoneCountry = COUNTRIES.find(
-    (c) => c.phonePrefix === formData.phoneCountryCode
-  );
+  const selectedPhoneCountry = COUNTRIES.find((c) => c.phonePrefix === formData.phoneCountryCode);
   const phonePrefixDisplay = selectedPhoneCountry
     ? `${selectedPhoneCountry.flag} ${selectedPhoneCountry.phonePrefix}`
     : phonePrefixSearch;
@@ -126,8 +124,10 @@ const StepContact: React.FC = () => {
       const above = rect.top - 20;
       const right = vw - rect.left;
       const left = rect.right;
+      const isMobile = window.innerWidth <= 768; // Using the unified breakpoint
       dropdown.classList.remove('show-above', 'adjust-right', 'adjust-left');
-      if (below < dh && above > below) dropdown.classList.add('show-above');
+      // Sur mobile, toujours ouvrir vers le bas
+      if (!isMobile && below < dh && above > below) dropdown.classList.add('show-above');
       if (right < 300) dropdown.classList.add('adjust-right');
       else if (left < 300) dropdown.classList.add('adjust-left');
       dropdown.style.setProperty('--dropdown-top', `${rect.bottom}px`);
@@ -155,6 +155,7 @@ const StepContact: React.FC = () => {
       <div className="step-6-container" style={{ width: 'calc(100% - 16px)', padding: '0 8px' }}>
         {/* Sub-step segmented control */}
         <div
+          className="step-6-segmented-control"
           style={{
             display: 'flex',
             justifyContent: 'flex-start',
@@ -178,68 +179,118 @@ const StepContact: React.FC = () => {
             }}
           >
             {[
-              { n: 1, label: getText('tabContactType', 'Type'), done: !!formData.customerType, onClick: () => setStep6SubStep(1) },
-              { n: 2, label: getText('tabIdentity', 'Identity'), done: !!(formData.firstName && formData.lastName), onClick: () => setStep6SubStep(2), disabled: false }, // Always enabled for minimal validation
-              { n: 3, label: getText('tabExperience', 'Experience'), done: !!formData.shipperType, onClick: () => setStep6SubStep(3), disabled: false }, // Always enabled for minimal validation
+              {
+                n: 1,
+                label: getText('tabContactType', 'Type'),
+                done: !!formData.customerType,
+                onClick: () => setStep6SubStep(1),
+              },
+              {
+                n: 2,
+                label: getText('tabIdentity', 'Identity'),
+                done: !!(formData.firstName && formData.lastName),
+                onClick: () => setStep6SubStep(2),
+                disabled: false,
+              }, // Always enabled for minimal validation
+              {
+                n: 3,
+                label: getText('tabExperience', 'Experience'),
+                done: !!formData.shipperType,
+                onClick: () => setStep6SubStep(3),
+                disabled: false,
+              }, // Always enabled for minimal validation
               // Company sub-step is conditional and only shown for company customers
               ...(formData.customerType === 'company'
-                ? [{ n: 4, label: getText('tabCompany', 'Company'), done: !!formData.companyName, onClick: () => setStep6SubStep(4), disabled: false }] // Always enabled for minimal validation
+                ? [
+                    {
+                      n: 4,
+                      label: getText('tabCompany', 'Company'),
+                      done: !!formData.companyName,
+                      onClick: () => setStep6SubStep(4),
+                      disabled: false,
+                    },
+                  ] // Always enabled for minimal validation
                 : []),
-              { n: (formData.customerType === 'company' ? 5 : 4), label: getText('tabContact', 'Contact'), done: !!(formData.email && formData.phone), onClick: () => setStep6SubStep(formData.customerType === 'company' ? 5 : 4), disabled: false }, // Always enabled for minimal validation
-            ].map(({ n, label, onClick, done, disabled }: any) => {
-              const active = step6SubStep === n;
-              return (
-                <button
-                  key={n}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => !disabled && onClick()}
-                  disabled={disabled}
-                  style={{
-                    width: '100%',
-                    minWidth: 0,
-                    padding: '6px 8px',
-                    fontSize: '0.85rem',
-                    borderRadius: '9999px',
-                    background: active ? '#ffffff' : 'transparent',
-                    color: active ? '#111827' : '#6b7280',
-                    boxShadow: active ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-                    border: active ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    cursor: disabled ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    opacity: disabled ? 0.5 : 1,
-                  }}
-                >
-                  <span
+              {
+                n: formData.customerType === 'company' ? 5 : 4,
+                label: getText('tabContact', 'Contact'),
+                done: !!(formData.email && formData.phone),
+                onClick: () => setStep6SubStep(formData.customerType === 'company' ? 5 : 4),
+                disabled: false,
+              }, // Always enabled for minimal validation
+            ].map(
+              ({
+                n,
+                label,
+                onClick,
+                done,
+                disabled,
+              }: {
+                n: number;
+                label: string;
+                onClick: () => void;
+                done: boolean;
+                disabled?: boolean;
+              }) => {
+                const active = step6SubStep === n;
+                return (
+                  <button
+                    key={n}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => !disabled && onClick()}
+                    disabled={disabled}
                     style={{
-                      width: 18,
-                      height: 18,
+                      width: '100%',
+                      minWidth: 0,
+                      padding: '6px 8px',
+                      fontSize: '0.85rem',
                       borderRadius: '9999px',
-                      background: done ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e7eb',
-                      color: 'white',
-                      fontSize: 12,
-                      display: 'inline-flex',
+                      background: active ? '#ffffff' : 'transparent',
+                      color: active ? '#111827' : '#6b7280',
+                      boxShadow: active ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                      border: active ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent',
+                      display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontWeight: 700,
+                      gap: '6px',
+                      cursor: disabled ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.2s ease',
+                      opacity: disabled ? 0.5 : 1,
                     }}
                   >
-                    {done ? '✓' : n}
-                  </span>
-                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
-                </button>
-              );
-            })}
+                    <span
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: '9999px',
+                        background: done ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e7eb',
+                        color: 'white',
+                        fontSize: 12,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700,
+                      }}
+                    >
+                      {done ? '✓' : n}
+                    </span>
+                    <span
+                      style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                    >
+                      {label}
+                    </span>
+                  </button>
+                );
+              }
+            )}
           </div>
         </div>
 
         {/* Separator below segmented control */}
         <div
+          className="substep-separator"
           style={{
             height: '1px',
             background: 'linear-gradient(90deg, transparent, #e5e7eb, transparent)',
@@ -248,132 +299,132 @@ const StepContact: React.FC = () => {
         />
         {/* Phase 1: Contact Type */}
         {step6SubStep === 1 && (
-        <div className="customer-type-phase animate-slide-in">
-          <div className="phase-header">
-            <h3
-              style={{
-                fontSize: '1.1rem',
-                fontWeight: '600',
-                color: '#1f2937',
-                marginBottom: '0.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}
-            >
-              <span
+          <div className="customer-type-phase animate-slide-in">
+            <div className="phase-header">
+              <h3
                 style={{
-                  backgroundColor: formData.customerType ? '#10b981' : '#6b7280',
-                  color: 'white',
-                  width: '24px',
-                  height: '24px',
-                  borderRadius: '50%',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  color: '#1f2937',
+                  marginBottom: '0.5rem',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '0.8rem',
-                  fontWeight: '600',
-                  transition: 'background-color 0.3s ease',
+                  gap: '0.5rem',
                 }}
               >
-                1
-              </span>
-              {t('customerTypeQuestion', 'Are you shipping as an individual or for a company?')}
-            </h3>
-            <p style={{ fontSize: '0.9rem', color: '#6b7280', margin: '0 0 1.5rem 0' }}>
-              {t(
-                'customerTypeDescription',
-                'This helps us provide the most relevant information fields'
-              )}
-            </p>
-          </div>
-          <div
-            className="customer-type-selection"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '1rem',
-              marginBottom: '2rem',
-            }}
-          >
-            <div
-              className={`customer-type-option ${formData.customerType === 'individual' ? 'selected' : ''}`}
-              onClick={() => {
-                setFormData({ ...formData, customerType: 'individual' });
-                setStep6SubStep(2);
-              }}
-              style={{
-                padding: '1.5rem',
-                border:
-                  formData.customerType === 'individual'
-                    ? '2px solid #10b981'
-                    : '2px solid #e5e7eb',
-                borderRadius: '0.75rem',
-                backgroundColor:
-                  formData.customerType === 'individual'
-                    ? 'rgba(16, 185, 129, 0.05)'
-                    : 'rgba(255, 255, 255, 0.9)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                gap: '0.75rem',
-                transform: formData.customerType === 'individual' ? 'scale(1.02)' : 'scale(1)',
-                boxShadow:
-                  formData.customerType === 'individual'
-                    ? '0 4px 12px rgba(16, 185, 129, 0.15)'
-                    : '0 2px 4px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <div style={{ fontSize: '2rem' }}>👤</div>
-              <h4 style={{ margin: 0, color: '#1f2937', fontWeight: '600' }}>
-                {t('individualCustomer', 'Private individual')}
-              </h4>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280' }}>
-                {t('individualDescription', 'For personal shipments and small volumes')}
+                <span
+                  style={{
+                    backgroundColor: formData.customerType ? '#10b981' : '#6b7280',
+                    color: 'white',
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    transition: 'background-color 0.3s ease',
+                  }}
+                >
+                  1
+                </span>
+                {t('customerTypeQuestion', 'Are you shipping as an individual or for a company?')}
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: '#6b7280', margin: '0 0 1.5rem 0' }}>
+                {t(
+                  'customerTypeDescription',
+                  'This helps us provide the most relevant information fields'
+                )}
               </p>
             </div>
             <div
-              className={`customer-type-option ${formData.customerType === 'company' ? 'selected' : ''}`}
-              onClick={() => {
-                setFormData({ ...formData, customerType: 'company' });
-                setStep6SubStep(2);
-              }}
+              className="customer-type-selection"
               style={{
-                padding: '1.5rem',
-                border:
-                  formData.customerType === 'company' ? '2px solid #10b981' : '2px solid #e5e7eb',
-                borderRadius: '0.75rem',
-                backgroundColor:
-                  formData.customerType === 'company'
-                    ? 'rgba(16, 185, 129, 0.05)'
-                    : 'rgba(255, 255, 255, 0.9)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                gap: '0.75rem',
-                transform: formData.customerType === 'company' ? 'scale(1.02)' : 'scale(1)',
-                boxShadow:
-                  formData.customerType === 'company'
-                    ? '0 4px 12px rgba(16, 185, 129, 0.15)'
-                    : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '1rem',
+                marginBottom: '2rem',
               }}
             >
-              <div style={{ fontSize: '2rem' }}>🏢</div>
-              <h4 style={{ margin: 0, color: '#1f2937', fontWeight: '600' }}>
-                {t('companyCustomer', 'Company')}
-              </h4>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280' }}>
-                {t('companyDescription', 'For business shipments and regular operations')}
-              </p>
+              <div
+                className={`customer-type-option ${formData.customerType === 'individual' ? 'selected' : ''}`}
+                onClick={() => {
+                  setFormData({ ...formData, customerType: 'individual' });
+                  setStep6SubStep(2);
+                }}
+                style={{
+                  padding: '1.5rem',
+                  border:
+                    formData.customerType === 'individual'
+                      ? '2px solid #10b981'
+                      : '2px solid #e5e7eb',
+                  borderRadius: '0.75rem',
+                  backgroundColor:
+                    formData.customerType === 'individual'
+                      ? 'rgba(16, 185, 129, 0.05)'
+                      : 'rgba(255, 255, 255, 0.9)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  gap: '0.75rem',
+                  transform: formData.customerType === 'individual' ? 'scale(1.02)' : 'scale(1)',
+                  boxShadow:
+                    formData.customerType === 'individual'
+                      ? '0 4px 12px rgba(16, 185, 129, 0.15)'
+                      : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                <div style={{ fontSize: '2rem' }}>👤</div>
+                <h4 style={{ margin: 0, color: '#1f2937', fontWeight: '600' }}>
+                  {t('individualCustomer', 'Private individual')}
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280' }}>
+                  {t('individualDescription', 'For personal shipments and small volumes')}
+                </p>
+              </div>
+              <div
+                className={`customer-type-option ${formData.customerType === 'company' ? 'selected' : ''}`}
+                onClick={() => {
+                  setFormData({ ...formData, customerType: 'company' });
+                  setStep6SubStep(2);
+                }}
+                style={{
+                  padding: '1.5rem',
+                  border:
+                    formData.customerType === 'company' ? '2px solid #10b981' : '2px solid #e5e7eb',
+                  borderRadius: '0.75rem',
+                  backgroundColor:
+                    formData.customerType === 'company'
+                      ? 'rgba(16, 185, 129, 0.05)'
+                      : 'rgba(255, 255, 255, 0.9)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  gap: '0.75rem',
+                  transform: formData.customerType === 'company' ? 'scale(1.02)' : 'scale(1)',
+                  boxShadow:
+                    formData.customerType === 'company'
+                      ? '0 4px 12px rgba(16, 185, 129, 0.15)'
+                      : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                <div style={{ fontSize: '2rem' }}>🏢</div>
+                <h4 style={{ margin: 0, color: '#1f2937', fontWeight: '600' }}>
+                  {t('companyCustomer', 'Company')}
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280' }}>
+                  {t('companyDescription', 'For business shipments and regular operations')}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
         )}
 
         {/* Phase 1: Personal Information */}
@@ -471,7 +522,7 @@ const StepContact: React.FC = () => {
         )}
 
         {/* Phase 2: Shipping Experience */}
-        {(formData.firstName && formData.lastName) && step6SubStep === 3 && (
+        {formData.firstName && formData.lastName && step6SubStep === 3 && (
           <div className="shipping-experience-phase animate-slide-in">
             <div className="phase-header">
               <h3
@@ -645,194 +696,202 @@ const StepContact: React.FC = () => {
         )}
 
         {/* Phase 5: Contact Information (or 4 if individual) */}
-        {(formData.firstName && formData.lastName && formData.shipperType) && step6SubStep === (formData.customerType === 'company' ? 5 : 4) && (
-          <div className="contact-info-phase animate-slide-in">
-            <div className="phase-header">
-              <h3
-                style={{
-                  fontSize: '1.1rem',
-                  fontWeight: '600',
-                  color: '#1f2937',
-                  marginBottom: '0.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                }}
-              >
-                <span
+        {formData.firstName &&
+          formData.lastName &&
+          formData.shipperType &&
+          step6SubStep === (formData.customerType === 'company' ? 5 : 4) && (
+            <div className="contact-info-phase animate-slide-in">
+              <div className="phase-header">
+                <h3
                   style={{
-                    backgroundColor: formData.email && formData.phone ? '#10b981' : '#6b7280',
-                    color: 'white',
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    color: '#1f2937',
+                    marginBottom: '0.5rem',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.8rem',
-                    fontWeight: '600',
-                    transition: 'background-color 0.3s ease',
+                    gap: '0.5rem',
                   }}
                 >
-                  {formData.customerType === 'company' ? 5 : 4}
-                </span>
-                {t('contactInformation', 'Contact Information')}
-              </h3>
-              <p style={{ fontSize: '0.9rem', color: '#6b7280', margin: '0 0 1.5rem 0' }}>
-                {t('contactInfoDescription', 'How can we reach you?')}
-              </p>
-            </div>
-            <div
-              className="contact-details"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '1rem',
-                marginBottom: '2rem',
-              }}
-            >
-              <div className="form-control">
-                <label htmlFor="email" className="label-text">
-                  {t('emailAddress', 'Email Address')}
-                </label>
-                <div className="input-wrapper">
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder={t('emailPlaceholder', 'your.email@company.com')}
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className={`input glassmorphism ${fieldValid.email === false ? 'input-error' : ''}`}
+                  <span
                     style={{
-                      transition: 'all 0.3s ease',
-                      transform: formData.email ? 'scale(1.02)' : 'scale(1)',
+                      backgroundColor: formData.email && formData.phone ? '#10b981' : '#6b7280',
+                      color: 'white',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      fontWeight: '600',
+                      transition: 'background-color 0.3s ease',
                     }}
-                  />
-                  {fieldValid.email === true && <CheckCircle className="check-icon" />}
-                </div>
-                <div
-                  className="help-text"
-                  style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.5rem' }}
-                >
-                  📧 {t('emailHelp', 'We will send your quote and updates to this address')}
-                </div>
+                  >
+                    {formData.customerType === 'company' ? 5 : 4}
+                  </span>
+                  {t('contactInformation', 'Contact Information')}
+                </h3>
+                <p style={{ fontSize: '0.9rem', color: '#6b7280', margin: '0 0 1.5rem 0' }}>
+                  {t('contactInfoDescription', 'How can we reach you?')}
+                </p>
               </div>
-              <div className="form-control">
-                <label htmlFor="phone" className="label-text">
-                  {t('phoneNumber', 'Phone Number')}
-                </label>
-                <div
-                  className="phone-input-wrapper"
-                  style={{ display: 'grid', gridTemplateColumns: '105px 1fr', gap: '0.5rem' }}
-                >
-                  <div className="phone-prefix-select" style={{ position: 'relative' }}>
-                    <div className="search-input-wrapper" style={{ position: 'relative' }}>
-                      <input
-                        type="text"
-                        value={phonePrefixDisplay}
-                        onClick={() => {
-                          setIsPhonePrefixListVisible(true);
-                          setPhonePrefixSearch('');
-                        }}
-                        onFocus={() => {
-                          setIsPhonePrefixListVisible(true);
-                          setPhonePrefixSearch('');
-                        }}
-                        readOnly
-                        placeholder="+1"
-                        ref={phonePrefixSearchInputRef}
-                        className="input glassmorphism search-input"
-                        style={{ cursor: 'pointer', fontSize: '0.9rem' }}
-                      />
-                    </div>
-                    <div
-                      ref={phonePrefixListRef}
-                      className={`port-list ${isPhonePrefixListVisible ? 'show' : ''}`}
-                      style={{ zIndex: 1000 }}
-                    >
-                      <div style={{ padding: '0.5rem' }}>
-                        <div className="search-input-wrapper" style={{ position: 'relative' }}>
-                          <input
-                            type="text"
-                            value={phonePrefixSearch}
-                            onChange={(e) => setPhonePrefixSearch(e.target.value)}
-                            placeholder={`${t('search', 'Search')} (+33, France)`}
-                            className="input glassmorphism search-input"
-                            style={{ fontSize: '0.9rem' }}
-                          />
-                        </div>
-                      </div>
-                      {COUNTRIES.filter((c) => {
-                        if (!c.phonePrefix) return false;
-                        const q = (phonePrefixSearch || '').toLowerCase();
-                        const qNorm = q.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                        const nameEn = (c.name || '').toLowerCase();
-                        const nameEnNorm = nameEn.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                        const nameLocal = (getTranslatedCountryName(c.code, userLang) || '').toLowerCase();
-                        const nameLocalNorm = nameLocal.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                        const digits = (phonePrefixSearch || '').replace(/[^\d+]/g, '');
-
-                        const hasText = q.length > 0;
-                        const hasDigits = digits.length > 0;
-
-                        const matchesName =
-                          hasText &&
-                          (nameEn.includes(q) ||
-                            nameLocal.includes(q) ||
-                            nameEnNorm.includes(qNorm) ||
-                            nameLocalNorm.includes(qNorm));
-
-                        const matchesDigits = hasDigits && c.phonePrefix.includes(digits);
-
-                        // If search empty, show all
-                        if (!hasText && !hasDigits) return true;
-                        return matchesName || matchesDigits;
-                      })
-                        .slice(0, 10)
-                        .map((country) => (
-                          <div
-                            key={country.code}
-                            className="port-option"
-                            onClick={() => handlePhonePrefixSelect(country.phonePrefix)}
-                          >
-                            <span className="port-icon">{country.flag}</span>
-                            <div className="port-info">
-                              <span className="port-name">{country.phonePrefix}</span>
-                              <span className="port-region">
-                                {getTranslatedCountryName(country.code, userLang)}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
+              <div
+                className="contact-details"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                  gap: '1rem',
+                  marginBottom: '2rem',
+                }}
+              >
+                <div className="form-control">
+                  <label htmlFor="email" className="label-text">
+                    {t('emailAddress', 'Email Address')}
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      placeholder={t('emailPlaceholder', 'your.email@company.com')}
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={`input glassmorphism ${fieldValid.email === false ? 'input-error' : ''}`}
+                      style={{
+                        transition: 'all 0.3s ease',
+                        transform: formData.email ? 'scale(1.02)' : 'scale(1)',
+                      }}
+                    />
+                    {fieldValid.email === true && <CheckCircle className="check-icon" />}
                   </div>
-                  <input
-                    type="tel"
-                    name="phone"
-                    id="phone"
-                    placeholder={t('phonePlaceholder', 'Your phone number')}
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className={`input glassmorphism ${fieldValid.phone === false ? 'input-error' : ''}`}
-                    style={{
-                      transition: 'all 0.3s ease',
-                      transform: formData.phone ? 'scale(1.02)' : 'scale(1)',
-                    }}
-                  />
+                  <div
+                    className="help-text"
+                    style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.5rem' }}
+                  >
+                    📧 {t('emailHelp', 'We will send your quote and updates to this address')}
+                  </div>
                 </div>
-                {fieldValid.phone === true && <CheckCircle className="check-icon" />}
-                <div
-                  className="help-text"
-                  style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.5rem' }}
-                >
-                  📱 {t('phoneHelp', 'For urgent updates and clarifications')}
+                <div className="form-control">
+                  <label htmlFor="phone" className="label-text">
+                    {t('phoneNumber', 'Phone Number')}
+                  </label>
+                  <div
+                    className="phone-input-wrapper"
+                    style={{ display: 'grid', gridTemplateColumns: '105px 1fr', gap: '0.5rem' }}
+                  >
+                    <div className="phone-prefix-select" style={{ position: 'relative' }}>
+                      <div className="search-input-wrapper" style={{ position: 'relative' }}>
+                        <input
+                          type="text"
+                          value={phonePrefixDisplay}
+                          onClick={() => {
+                            setIsPhonePrefixListVisible(true);
+                            setPhonePrefixSearch('');
+                          }}
+                          onFocus={() => {
+                            setIsPhonePrefixListVisible(true);
+                            setPhonePrefixSearch('');
+                          }}
+                          readOnly
+                          placeholder="+1"
+                          ref={phonePrefixSearchInputRef}
+                          className="input glassmorphism search-input"
+                          style={{ cursor: 'pointer', fontSize: '0.9rem' }}
+                        />
+                      </div>
+                      <div
+                        ref={phonePrefixListRef}
+                        className={`port-list ${isPhonePrefixListVisible ? 'show' : ''}`}
+                        style={{ zIndex: 1000 }}
+                      >
+                        <div style={{ padding: '0.5rem' }}>
+                          <div className="search-input-wrapper" style={{ position: 'relative' }}>
+                            <input
+                              type="text"
+                              value={phonePrefixSearch}
+                              onChange={(e) => setPhonePrefixSearch(e.target.value)}
+                              placeholder={`${t('search', 'Search')} (+33, France)`}
+                              className="input glassmorphism search-input"
+                              style={{ fontSize: '0.9rem' }}
+                            />
+                          </div>
+                        </div>
+                        {COUNTRIES.filter((c) => {
+                          if (!c.phonePrefix) return false;
+                          const q = (phonePrefixSearch || '').toLowerCase();
+                          const qNorm = q.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                          const nameEn = (c.name || '').toLowerCase();
+                          const nameEnNorm = nameEn
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '');
+                          const nameLocal = (
+                            getTranslatedCountryName(c.code, userLang) || ''
+                          ).toLowerCase();
+                          const nameLocalNorm = nameLocal
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '');
+                          const digits = (phonePrefixSearch || '').replace(/[^\d+]/g, '');
+
+                          const hasText = q.length > 0;
+                          const hasDigits = digits.length > 0;
+
+                          const matchesName =
+                            hasText &&
+                            (nameEn.includes(q) ||
+                              nameLocal.includes(q) ||
+                              nameEnNorm.includes(qNorm) ||
+                              nameLocalNorm.includes(qNorm));
+
+                          const matchesDigits = hasDigits && c.phonePrefix.includes(digits);
+
+                          // If search empty, show all
+                          if (!hasText && !hasDigits) return true;
+                          return matchesName || matchesDigits;
+                        })
+                          .slice(0, 10)
+                          .map((country) => (
+                            <div
+                              key={country.code}
+                              className="port-option"
+                              onClick={() => handlePhonePrefixSelect(country.phonePrefix)}
+                            >
+                              <span className="port-icon">{country.flag}</span>
+                              <div className="port-info">
+                                <span className="port-name">{country.phonePrefix}</span>
+                                <span className="port-region">
+                                  {getTranslatedCountryName(country.code, userLang)}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      id="phone"
+                      placeholder={t('phonePlaceholder', 'Your phone number')}
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className={`input glassmorphism ${fieldValid.phone === false ? 'input-error' : ''}`}
+                      style={{
+                        transition: 'all 0.3s ease',
+                        transform: formData.phone ? 'scale(1.02)' : 'scale(1)',
+                      }}
+                    />
+                  </div>
+                  {fieldValid.phone === true && <CheckCircle className="check-icon" />}
+                  <div
+                    className="help-text"
+                    style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.5rem' }}
+                  >
+                    📱 {t('phoneHelp', 'For urgent updates and clarifications')}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
+          )}
 
         {/* Phase 6: Additional Notes (optional) */}
         {formData.email && formData.phone && (

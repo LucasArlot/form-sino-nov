@@ -1,35 +1,81 @@
 /* Mobile fullscreen fix - controlled by React class instead of media query */
+/* Utiliser dvh (dynamic viewport height) qui s'adapte aux barres du navigateur */
 .sino-form-mobile html,
 .sino-form-mobile body {
-  height: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100% !important;
+  /* Fallback pour navigateurs sans support dvh */
+  min-height: 100vh !important;
+  /* Utiliser dvh si supporté (s'adapte aux barres du navigateur) */
+  min-height: 100dvh !important;
+  /* Empêcher le scroll du body et html pour éviter le double scroll */
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  /* Empêcher le scroll bounce sur iOS */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto;
+  /* Position fixe pour éviter le scroll du body */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 
 .sino-form-mobile .quote-form-container {
+  /* Utiliser la variable CSS du viewport réel si disponible, sinon dvh */
+  min-height: var(--viewport-height, 100dvh);
+  /* Fallback pour navigateurs sans support */
   min-height: 100vh;
+  min-height: 100dvh;
   height: auto;
   display: flex;
   flex-direction: column;
-  padding-bottom: 160px !important; /* Encore plus d'espace pour éviter cache par navigateur */
+  /* Plus besoin de padding-bottom ici, géré par form-content-scroll uniquement */
+  padding-bottom: 0;
 }
 
 .sino-form-mobile .form-content-scroll {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 40px;
+  /* Empêcher le scroll bounce sur iOS */
+  overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
+  /* Améliorer les performances de scroll */
+  will-change: scroll-position;
+  transform: translateZ(0); /* Force GPU acceleration */
+  -webkit-transform: translateZ(0);
+  /* Padding pour éviter que le contenu soit caché par le footer fixe */
+  /* Calculer le padding en fonction de la hauteur du footer + safe areas */
+  padding-bottom: calc(
+    var(--footer-height, 100px) + env(safe-area-inset-bottom, 0px) + 60px
+      /* buffer supplémentaire pour être sûr */
+  );
+  /* Empêcher le scroll horizontal */
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Assurer que le contenu peut scroller jusqu'en bas */
+  min-height: 0;
 }
 
-/* Footer fixe avec beaucoup d'espace sur mobile */
+/* Footer fixe avec gestion complète des safe areas sur mobile */
 .sino-form-mobile .form-footer {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 40px) !important;
+  /* Gérer toutes les safe areas pour les notches et zones sûres */
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--space-3, 12px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 40px) !important;
+  /* Padding horizontal pour éviter que les boutons touchent les bords */
+  padding-left: calc(env(safe-area-inset-left, 0px) + var(--space-4, 16px));
+  padding-right: calc(env(safe-area-inset-right, 0px) + var(--space-4, 16px));
   background: linear-gradient(to top, rgba(255, 255, 255, 1) 70%, rgba(255, 255, 255, 0));
 }
 
 /* Ensure no content is cut off - padding pour le footer fixed */
 .sino-form-desktop .quote-form-container {
-  padding-bottom: 160px; /* Espace généreux pour le footer fixed (non scalé) */
+  padding-bottom: 0; /* Plus besoin de padding car le footer est dans le flex */
+  min-height: 600px; /* Hauteur minimale pour que le footer soit visible en bas */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Step 2 (Mode) — compact desktop layout */
@@ -158,6 +204,9 @@
   /* Pas d'ombre sur le wrapper pour éviter les conflits */
   box-shadow: none !important;
   transition: none !important;
+  /* Empêcher le scroll horizontal */
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Plus de transform: scale() - on utilise des media queries à la place */
@@ -173,7 +222,9 @@
   background: var(--surface);
   border-radius: var(--radius-2xl);
   /* Ombre fixe et stable - définie directement pour éviter tout conflit */
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04) !important;
+  box-shadow:
+    0 20px 25px rgba(0, 0, 0, 0.1),
+    0 10px 10px rgba(0, 0, 0, 0.04) !important;
   padding: var(--space-10);
   padding-bottom: calc(var(--space-10) + var(--dropdown-safe-area, 0px));
   margin: 0 auto;
@@ -186,7 +237,7 @@
   z-index: 1;
   border: 1px solid var(--border-light);
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Flex column pour que le footer soit en bas */
   /* Isolation pour créer un contexte d'empilement stable */
   isolation: isolate;
   /* Forcer le rendu sur le CPU plutôt que GPU pour plus de stabilité */
@@ -252,24 +303,80 @@
 
 /* MOBILE RESPONSIVE - Keep mobile optimizations */
 @media (max-width: 767px) {
+  /* Empêcher le scroll horizontal sur mobile - règles globales */
+  *,
+  *::before,
+  *::after {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  /* Empêcher le scroll horizontal au niveau racine */
+  html,
+  body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100vw !important;
+    position: relative;
+  }
+
   .quote-form-wrapper {
-    padding: var(--space-4);
+    padding: 0; /* Pas de padding externe sur mobile, le container gère */
     --form-scale: 1;
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100vw !important;
+    position: relative;
   }
 
   .quote-form-wrapper .quote-form-container {
     transform: none;
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100vw !important;
+    position: relative;
+  }
+
+  /* S'assurer que tous les enfants respectent les contraintes */
+  .quote-form-container > * {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Empêcher les éléments qui dépassent */
+  .form-step,
+  .form-content-scroll > * {
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .quote-form-container {
     width: 100vw;
     max-width: 100vw;
     height: auto;
-    min-height: 100vh;
+    /* Utiliser dvh au lieu de vh pour prendre en compte les barres du navigateur */
+    min-height: var(--viewport-height, 100dvh);
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Dynamic viewport height */
+    max-height: var(--viewport-height, 100dvh);
+    max-height: 100dvh;
     margin: 0;
     border-radius: 0;
     padding: var(--space-4);
-    padding-bottom: calc(var(--space-4) + var(--dropdown-safe-area, 0px));
+    /* Gérer les safe areas latérales pour les appareils avec notches */
+    padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+    padding-top: calc(var(--space-4) + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(
+      var(--space-4) + env(safe-area-inset-bottom, 0px) + var(--dropdown-safe-area, 0px)
+    );
+    /* Empêcher le scroll horizontal */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* Le scroll est géré par form-content-scroll */
+    box-sizing: border-box;
+    /* Empêcher le dépassement horizontal */
+    position: relative;
   }
 
   .form-title,
@@ -292,7 +399,18 @@
 
   /* Compact header mobile spacing */
   .form-header-compact {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-4); /* Optimisé pour mobile */
+    padding-bottom: var(--space-4); /* Padding pour la séparation visuelle */
+    border-bottom: 2px solid rgba(229, 231, 235, 0.7); /* Bordure plus visible sur mobile */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03); /* Ombre légère sur mobile */
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Sur mobile, réduire le padding-top du form-content-scroll */
+  .sino-form-mobile .form-content-scroll {
+    padding-top: var(--space-3); /* Réduit sur mobile */
   }
 
   .form-header-compact .form-header-row {
@@ -327,7 +445,16 @@
 
 /* Compact header layout: inline language selector and reduced spacing */
 .form-header-compact {
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-5); /* Optimisé pour un meilleur équilibre */
+  padding-bottom: var(--space-5); /* Augmenté pour une meilleure séparation */
+  position: relative;
+  /* Séparation visuelle améliorée avec une bordure inférieure plus visible */
+  border-bottom: 2px solid rgba(229, 231, 235, 0.6);
+  /* Ombre subtile pour créer une profondeur visuelle */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  background: rgba(255, 255, 255, 0.98); /* Fond légèrement opaque pour la séparation */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Keep header + timeline together (outside scroll area) */
@@ -341,6 +468,15 @@
   border-bottom: none;
   padding-top: var(--space-2);
   padding-bottom: var(--space-2);
+}
+
+/* Sur mobile, masquer complètement la timeline pour économiser l'espace */
+@media (max-width: 768px) {
+  .timeline-container,
+  .form-header + .timeline-container,
+  .sino-form-mobile .form-header + .timeline-container {
+    display: none !important;
+  }
 }
 
 .form-header-compact .form-header-row {
@@ -545,7 +681,87 @@
   }
 }
 
-/* Very small screens optimization */
+/* ===== ADAPTATION PAR TAILLE D'ÉCRAN MOBILE ===== */
+
+/* Très petits écrans (< 375px) - iPhone SE, petits Androids */
+@media (max-width: 374px) {
+  .sino-form-mobile .quote-form-container {
+    padding: var(--space-2);
+    font-size: 0.9em;
+    /* Empêcher le dépassement horizontal */
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  .sino-form-mobile .form-header-compact {
+    margin-bottom: var(--space-2);
+  }
+
+  .sino-form-mobile .form-header-compact .form-title {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    line-height: 1.2;
+    /* Empêcher le débordement du texte */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .sino-form-mobile .form-content-scroll {
+    /* Sur très petits écrans, garder le padding pour le footer mais l'ajuster */
+    padding-bottom: calc(var(--footer-height, 90px) + env(safe-area-inset-bottom, 0px) + 40px);
+    /* Empêcher le scroll horizontal */
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* Réduire les espacements sur très petits écrans */
+  .sino-form-mobile .form-step {
+    gap: var(--space-3);
+    /* Empêcher le dépassement */
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Réduire la taille des boutons pour économiser l'espace mais garder les touch targets */
+  .sino-form-mobile .form-navigation button,
+  .sino-form-mobile .form-navigation .btn {
+    min-height: 44px !important; /* Toujours respecter les touch targets */
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.9rem;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* S'assurer que tous les éléments respectent les contraintes */
+  .sino-form-mobile * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+}
+
+/* Petits écrans (375px - 414px) - iPhone standard */
+@media (min-width: 375px) and (max-width: 414px) {
+  .sino-form-mobile .quote-form-container {
+    padding: var(--space-3);
+  }
+
+  .sino-form-mobile .form-header-compact {
+    margin-bottom: var(--space-3);
+  }
+}
+
+/* Grands mobiles (414px - 767px) - iPhone Pro Max, grands Androids */
+@media (min-width: 414px) and (max-width: 767px) {
+  .sino-form-mobile .quote-form-container {
+    padding: var(--space-4);
+  }
+
+  .sino-form-mobile .form-header-compact {
+    margin-bottom: var(--space-4);
+  }
+}
+
+/* Very small screens optimization (compatibilité) */
 @media (max-width: 480px) {
   .form-header-compact .form-header-row {
     gap: var(--space-2);
@@ -766,7 +982,12 @@
 
 /* Form layout */
 .quote-form {
-  margin-top: var(--space-4);
+  margin-top: var(--space-4); /* Réduit pour moins d'espace au-dessus du premier step */
+  padding-top: 0; /* Supprimé, géré par form-content-scroll */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 /* Scrollable inner content area for fixed-height container */
 .form-content-scroll {
@@ -776,11 +997,33 @@
   overflow-x: hidden; /* prevent subtle horizontal scroll on hover transforms */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding-bottom: calc(
-    var(--space-20) + env(safe-area-inset-bottom, 0px)
-  ); /* Augmenter l'espace en bas */
+  overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
+  padding-bottom: 0; /* Plus besoin car le footer est en dehors maintenant */
+  padding-top: var(--space-4); /* Padding pour la séparation depuis l'en-tête */
   /* Prevent scroll on hover interactions */
   scroll-behavior: auto;
+  display: flex;
+  flex-direction: column; /* Flex pour que le footer soit en bas */
+  /* Empêcher le scroll horizontal */
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Améliorer les performances de scroll */
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Séparation visuelle avec l'en-tête - ombre subtile */
+  position: relative;
+  /* Légère ombre pour créer une séparation visuelle élégante */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* Le form à l'intérieur doit aussi être flex */
+.form-content-scroll .quote-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Responsive two-column grid for location types (max 2 cols on desktop to avoid overcrowding) */
@@ -841,6 +1084,11 @@
   justify-content: center;
   text-align: center;
   box-sizing: border-box;
+  /* Améliorer les touch targets sur mobile - au moins 44px de hauteur cliquable */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Empêcher le dépassement */
+  max-width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -857,9 +1105,155 @@
   .location-types.grid-2cols {
     grid-template-columns: 1fr !important;
     width: 100%;
-    padding: 0 6px; /* padding latéral minimal sur mobile */
+    /* Gestion des safe areas pour éviter que le contenu touche les bords sur les appareils avec notches */
+    padding-left: calc(6px + env(safe-area-inset-left, 0px));
+    padding-right: calc(6px + env(safe-area-inset-right, 0px));
     box-sizing: border-box;
     max-width: 100%;
+  }
+}
+
+/* Sur mobile, ajouter les safe areas aussi pour les écrans plus grands */
+@media (max-width: 768px) {
+  .location-types.grid-2cols {
+    padding-left: calc(12px + env(safe-area-inset-left, 0px));
+    padding-right: calc(12px + env(safe-area-inset-right, 0px));
+  }
+
+  /* Segmented control responsive sur mobile */
+  .step-3-segmented-control {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: calc(4px + env(safe-area-inset-left, 0px));
+    padding-right: calc(4px + env(safe-area-inset-right, 0px));
+    box-sizing: border-box;
+  }
+
+  /* Masquer tous les segmented controls (substeps) sur mobile pour économiser l'espace */
+  .step-1-segmented-control,
+  .step-3-segmented-control,
+  .step-4-segmented-control,
+  .step-5-segmented-control,
+  .step-6-segmented-control {
+    display: none !important;
+  }
+
+  /* Masquer les séparateurs en dessous des segmented controls sur mobile */
+  .substep-separator {
+    display: none !important;
+  }
+
+  /* Customer type selection - responsive grid */
+  .customer-type-selection {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-4) !important;
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px)) !important;
+  }
+
+  /* Customer type option - désactiver les transforms sur mobile */
+  .customer-type-option {
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    padding: var(--space-4) !important;
+    min-height: 140px; /* Touch target minimum */
+  }
+
+  .customer-type-option.selected {
+    transform: none !important;
+  }
+
+  /* Personal details - responsive grid */
+  .personal-details,
+  .contact-details,
+  .business-details,
+  .experience-details {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-4) !important;
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px)) !important;
+  }
+
+  /* Step 6 container - safe areas */
+  .step-6-container {
+    width: 100% !important;
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px)) !important;
+    box-sizing: border-box;
+  }
+
+  /* Contact summary banner - safe areas */
+  .contact-summary-banner {
+    margin-top: var(--space-4) !important;
+    padding: var(--space-4) calc(var(--space-4) + env(safe-area-inset-right, 0px)) var(--space-4)
+      calc(var(--space-4) + env(safe-area-inset-left, 0px)) !important;
+    margin-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px)) !important;
+    flex-direction: column !important;
+    gap: var(--space-3) !important;
+  }
+
+  .contact-summary-banner h4 {
+    font-size: 1rem !important;
+    margin-bottom: var(--space-2) !important;
+  }
+
+  .contact-summary-banner p {
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Textarea - meilleur espacement sur mobile */
+  textarea.input {
+    min-height: 120px !important;
+    font-size: 16px; /* Prevent iOS zoom */
+    padding: var(--space-3) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-3)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px)) !important;
+  }
+
+  /* Inputs avec transforms - désactiver sur mobile */
+  .personal-info-phase .input,
+  .contact-info-phase .input,
+  .business-info-phase .input {
+    transform: none !important;
+  }
+
+  /* Experience select - optimiser pour mobile */
+  .timing-select.input-wrapper {
+    width: 100% !important;
+  }
+
+  /* Phase headers dans step 6 - améliorer l'espacement */
+  .customer-type-phase .phase-header,
+  .personal-info-phase .phase-header,
+  .shipping-experience-phase .phase-header,
+  .business-info-phase .phase-header,
+  .contact-info-phase .phase-header,
+  .additional-notes-phase .phase-header {
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .customer-type-phase .phase-header h3,
+  .personal-info-phase .phase-header h3,
+  .shipping-experience-phase .phase-header h3,
+  .business-info-phase .phase-header h3,
+  .contact-info-phase .phase-header h3,
+  .additional-notes-phase .phase-header h3 {
+    font-size: 1rem !important;
+    margin-bottom: var(--space-2) !important;
+  }
+
+  .customer-type-phase .phase-header p,
+  .personal-info-phase .phase-header p,
+  .shipping-experience-phase .phase-header p,
+  .business-info-phase .phase-header p,
+  .contact-info-phase .phase-header p,
+  .additional-notes-phase .phase-header p {
+    font-size: 0.8125rem !important;
+    margin-bottom: var(--space-4) !important;
+    line-height: 1.4 !important;
   }
 }
 
@@ -890,10 +1284,26 @@
   position: relative;
   z-index: 1;
   padding-bottom: 2rem; /* Ajouter de l'espace en bas de chaque étape */
+  /* Réduire l'espace en haut pour le premier step */
+  margin-top: 0;
+}
+
+/* Premier step - réduire l'espace au-dessus */
+.form-step:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.form-step:first-of-type .step-header {
+  margin-top: 0; /* Pas d'espace au-dessus du premier step */
 }
 
 .step-header {
   margin-bottom: var(--space-6);
+  /* Ajout d'une séparation visuelle subtile */
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+  margin-top: 0; /* Supprimé pour réduire l'espace au-dessus */
 }
 
 .step-header h2 {
@@ -924,6 +1334,12 @@
 .form-control {
   position: relative;
   margin-bottom: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .form-control {
+    margin-bottom: var(--space-5);
+  }
 }
 .input {
   width: 100%;
@@ -1034,11 +1450,18 @@
 }
 
 .search-input {
-  padding-left: var(--space-10);
+  /* Augmenter le padding pour éviter que l'icône chevauche le texte */
+  /* Icône à 16px (--space-4) + 18px (taille icône) + 8px (espace) = 42px minimum */
+  padding-left: calc(var(--space-4) + 18px + var(--space-2)) !important;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* S'assurer que le padding est bien appliqué même si .input est défini après */
+.input.search-input {
+  padding-left: calc(var(--space-4) + 18px + var(--space-2)) !important;
 }
 
 .search-input:focus {
@@ -1068,7 +1491,7 @@
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
+  z-index: 250; /* Au-dessus du footer fixe (200) sur mobile */
   /* removed backdrop blur for clearer dropdown */
   pointer-events: none;
 
@@ -1076,13 +1499,24 @@
   max-width: 100vw;
   min-width: 200px;
 
-  /* Calcul dynamique de la hauteur maximale */
-  --available-space-bottom: calc(100vh - var(--dropdown-top, 0px) - 20px);
+  /* Calcul dynamique de la hauteur maximale - utiliser viewport réel */
+  --available-space-bottom: calc(var(--viewport-height, 100dvh) - var(--dropdown-top, 0px) - 20px);
+  --available-space-bottom: calc(100vh - var(--dropdown-top, 0px) - 20px); /* Fallback */
+  --available-space-bottom: calc(100dvh - var(--dropdown-top, 0px) - 20px); /* Dynamic viewport */
   --available-space-top: calc(var(--dropdown-top, 0px) - 20px);
   --dropdown-max-height: min(400px, var(--available-space-bottom));
 }
 
 /* Variante pour afficher le dropdown au-dessus quand il n'y a pas assez d'espace en bas */
+/* Sur mobile, forcer l'ouverture vers le bas - désactiver show-above */
+@media (max-width: 768px) {
+  .country-list.show-above {
+    top: calc(100% + var(--space-2)) !important;
+    bottom: auto !important;
+    transform: translateY(0) !important;
+  }
+}
+
 .country-list.show-above {
   top: auto;
   bottom: calc(100% + var(--space-2));
@@ -1241,7 +1675,7 @@
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
+  z-index: 250; /* Au-dessus du footer fixe (200) sur mobile */
   /* removed backdrop blur for clearer dropdown */
   pointer-events: none;
 
@@ -1249,13 +1683,24 @@
   max-width: 100vw;
   min-width: 200px;
 
-  /* Calcul dynamique de la hauteur maximale */
-  --available-space-bottom: calc(100vh - var(--dropdown-top, 0px) - 20px);
+  /* Calcul dynamique de la hauteur maximale - utiliser viewport réel */
+  --available-space-bottom: calc(var(--viewport-height, 100dvh) - var(--dropdown-top, 0px) - 20px);
+  --available-space-bottom: calc(100vh - var(--dropdown-top, 0px) - 20px); /* Fallback */
+  --available-space-bottom: calc(100dvh - var(--dropdown-top, 0px) - 20px); /* Dynamic viewport */
   --available-space-top: calc(var(--dropdown-top, 0px) - 20px);
   --dropdown-max-height: min(400px, var(--available-space-bottom));
 }
 
 /* Variante pour afficher le dropdown au-dessus quand il n'y a pas assez d'espace en bas */
+/* Sur mobile, forcer l'ouverture vers le bas - désactiver show-above */
+@media (max-width: 768px) {
+  .port-list.show-above {
+    top: calc(100% + var(--space-2)) !important;
+    bottom: auto !important;
+    transform: translateY(0) !important;
+  }
+}
+
 .port-list.show-above {
   top: auto;
   bottom: calc(100% + var(--space-2));
@@ -1581,16 +2026,21 @@
   grid-template-columns: 1fr;
   gap: 0.5rem; /* reduced from 0.75rem to 0.5rem */
   margin-bottom: var(--space-4);
-  width: calc(100% - 16px); /* side padding like Step 1/3 */
-  padding: 0 8px;
+  width: 100%; /* Utiliser 100% et laisser le parent gérer le padding */
+  padding: 0; /* Pas de padding ici, géré par le container parent */
+  box-sizing: border-box;
+  /* Empêcher le dépassement horizontal sur mobile */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 @media (min-width: 640px) {
   .shipping-modes {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem; /* reduced from 0.75rem to 0.5rem */
-    width: calc(100% - 16px);
-    padding: 0 8px;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
   }
 }
 
@@ -1610,6 +2060,28 @@
   /* no backdrop blur to keep content behind crisp, like step 1 */
   box-shadow: var(--shadow-soft);
   user-select: none;
+  /* Améliorer les touch targets sur mobile - hauteur minimale pour visibilité du contenu */
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Empêcher le dépassement */
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* Sur mobile, augmenter la hauteur minimale pour s'assurer que tout le contenu est visible */
+@media (max-width: 768px) {
+  .mode-option {
+    min-height: 120px; /* Hauteur minimale pour afficher icône + nom + description */
+    padding: var(--space-4); /* Padding légèrement augmenté pour meilleure lisibilité */
+  }
+
+  /* Gestion des safe areas pour .shipping-modes sur mobile */
+  .shipping-modes {
+    padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+    box-sizing: border-box;
+  }
 }
 .mode-option::before {
   content: '';
@@ -1926,10 +2398,7 @@
 
 /* Unified sticky footer (trust badge + navigation) */
 .form-footer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative; /* Position relative pour être dans le flux normal */
   z-index: var(--z-fixed);
   display: flex;
   align-items: center;
@@ -1947,8 +2416,24 @@
   backdrop-filter: blur(10px);
   border-top: 1px solid #e5e7eb;
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04);
-  max-width: 1000px;
-  margin: 0 auto; /* center footer to container */
+  width: 100%;
+  margin-top: auto; /* Pousse le footer en bas du conteneur flex */
+  flex-shrink: 0; /* Empêche le footer de rétrécir */
+}
+
+/* Pour desktop standalone, le footer est en bas du conteneur */
+.sino-form-desktop .form-footer {
+  position: relative;
+  margin-top: auto;
+}
+
+/* Pour mobile, garder le footer fixe à l'écran */
+.sino-form-mobile .form-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 0;
 }
 
 .trust-badge.compact {
@@ -1974,6 +2459,11 @@
     padding: var(--space-1) var(--space-2);
     line-height: 1.2;
   }
+  .sino-form-mobile .form-footer {
+    /* Assurer un padding horizontal sur écrans moyens */
+    padding-left: calc(env(safe-area-inset-left, 0px) + var(--space-3, 12px)) !important;
+    padding-right: calc(env(safe-area-inset-right, 0px) + var(--space-3, 12px)) !important;
+  }
   .form-footer {
     padding: var(--space-2) var(--space-3);
   }
@@ -1981,6 +2471,12 @@
 
 /* Extra small devices: stack content for clarity and make buttons full width */
 @media (max-width: 480px) {
+  .sino-form-mobile .form-footer {
+    /* Assurer un padding horizontal même sur très petits écrans */
+    padding-left: calc(env(safe-area-inset-left, 0px) + var(--space-3, 12px)) !important;
+    padding-right: calc(env(safe-area-inset-right, 0px) + var(--space-3, 12px)) !important;
+  }
+
   .form-footer {
     flex-direction: column;
     align-items: stretch;
@@ -2298,6 +2794,28 @@
   transform: none; /* keep size stable to avoid cropping against container edges */
 }
 
+/* Désactiver les transforms sur mobile pour éviter le dépassement horizontal */
+@media (max-width: 768px) {
+  .location-type-option:hover {
+    transform: none !important;
+  }
+
+  .location-type-option[data-id='factory'].selected,
+  .location-type-option[data-id='port'].selected,
+  .location-type-option[data-id='business'].selected,
+  .location-type-option[data-id='residential'].selected {
+    transform: none !important;
+  }
+
+  .location-type-option.selected svg {
+    transform: none !important;
+  }
+
+  .location-type-option.selected span {
+    transform: none !important;
+  }
+}
+
 .location-type-option svg {
   width: 22px; /* réduit pour correspondre aux mode-option */
   height: 22px;
@@ -2347,11 +2865,16 @@
   padding: var(--space-3);
   border-radius: var(--radius-lg);
   font-weight: 500;
-  font-size: 0.875rem;
-  color: var(--gray-700);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .security-badge {
+    margin-top: var(--space-5);
+    padding: var(--space-3) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-3)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px));
+    margin-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    font-size: 0.875rem;
+  }
 }
 
 .security-badge:hover {
@@ -2591,6 +3114,7 @@
   font-size: 0.875rem;
   line-height: 1.6;
   margin-bottom: var(--space-6);
+  margin-top: var(--space-4);
 }
 
 .info-banner svg {
@@ -2598,6 +3122,22 @@
   margin-right: var(--space-3);
   margin-top: 2px; /* Fine-tune vertical alignment */
   color: #3b82f6; /* Blue icon color */
+}
+
+@media (max-width: 768px) {
+  .info-banner {
+    padding: var(--space-3) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-3)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px));
+    margin-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+    margin-top: var(--space-3);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .info-banner svg {
+    margin-right: var(--space-2);
+    margin-top: 0.15rem;
+  }
 }
 
 .container-details .button-group {
@@ -2616,6 +3156,23 @@
   font-weight: 500;
   color: var(--gray-700);
   font-size: 0.9rem;
+  min-height: 48px; /* Touch target minimum */
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .checkbox-label {
+    padding: var(--space-3) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-3)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px));
+    min-height: 52px; /* Larger touch target on mobile */
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .checkbox-label input[type='checkbox'] {
+    transform: scale(1.3); /* Larger checkbox on mobile */
+    margin-right: var(--space-3);
+  }
 }
 .checkbox-label:hover {
   background-color: rgba(255, 255, 255, 0.9);
@@ -3673,14 +4230,39 @@
 
 .phase-header {
   margin-bottom: 1.5rem;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.4);
 }
 
 .phase-header h3 {
   animation: slideInFromLeft 0.5s ease-out;
+  margin-bottom: var(--space-2);
 }
 
 .phase-header p {
   animation: fadeIn 0.6s ease-out 0.1s both;
+  margin-top: 0;
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .phase-header {
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  }
+
+  .phase-header h3 {
+    margin-bottom: var(--space-1);
+    font-size: 1rem;
+  }
+
+  .phase-header p {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
 }
 
 /* Country search animations */
@@ -3833,11 +4415,15 @@
   .beginner-option-section-bottom {
     margin-top: 0.75rem;
     margin-bottom: 2rem; /* Augmenter l'espace en dessous sur mobile */
+    padding: 0 var(--space-4); /* Utiliser padding au lieu de margin sur les enfants */
+    box-sizing: border-box;
   }
 
   .beginner-option-section-bottom .mode-option {
     max-width: 100%;
-    margin: 0 1rem;
+    margin: 0; /* Supprimer le margin qui peut causer un dépassement */
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .options-separator-bottom {
@@ -4662,6 +5248,66 @@
     flex-direction: column;
     gap: var(--space-6);
   }
+
+  /* Segmented control responsive sur mobile */
+  .step-5-segmented-control {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: calc(4px + env(safe-area-inset-left, 0px));
+    padding-right: calc(4px + env(safe-area-inset-right, 0px));
+    box-sizing: border-box;
+  }
+
+  /* Phases avec safe areas */
+  .goods-value-phase,
+  .shipment-timing-phase,
+  .additional-info-phase {
+    width: 100% !important;
+    padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px)) !important;
+    padding-top: var(--space-2) !important;
+    padding-bottom: var(--space-4) !important;
+    box-sizing: border-box;
+  }
+
+  /* Désactiver les transforms sur mobile */
+  .total-input-compact:hover,
+  .weight-input-compact:hover {
+    transform: none !important;
+  }
+
+  /* Goods value + currency selector sur mobile */
+  .goods-value-input-row {
+    flex-direction: column !important;
+    gap: var(--space-4) !important;
+    align-items: stretch !important;
+  }
+
+  .goods-value-input-row .currency-select {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  /* Améliorer l'espacement des help texts sur mobile */
+  .form-control .help-text {
+    margin-top: var(--space-2) !important;
+    font-size: 0.75rem !important;
+    line-height: 1.4 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Améliorer l'espacement des labels sur mobile */
+  .form-control .label-text {
+    margin-bottom: var(--space-2) !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Timing et requirements selects - meilleur espacement sur mobile */
+  .timing-select,
+  .requirements-select {
+    margin-top: var(--space-2);
+  }
 }
 
 .total-volume-section,
@@ -5075,12 +5721,43 @@
 
 /* Better touch targets for mobile */
 @media (max-width: 768px) {
+  /* Tous les éléments interactifs doivent avoir au moins 44px de hauteur */
   .btn,
   .input,
   .mode-option,
-  .location-type-option {
+  .location-type-option,
+  .location-type-option,
+  .custom-dropdown-trigger,
+  .custom-select-trigger,
+  .btn-tab,
+  button,
+  [role='button'],
+  a[href] {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Espacement supplémentaire pour les touch targets */
+  .btn {
+    padding: var(--space-3) var(--space-5);
     min-height: 48px;
-    min-width: 48px;
+  }
+
+  .input,
+  input[type='text'],
+  input[type='number'],
+  input[type='email'],
+  input[type='tel'],
+  textarea,
+  select {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-4);
+    font-size: 16px; /* Éviter le zoom automatique sur iOS */
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
   }
 
   .btn-tab {
@@ -5088,14 +5765,37 @@
     min-height: 48px;
   }
 
-  .radio-label {
-    padding: var(--space-4);
-    min-height: 48px;
+  .radio-label,
+  label {
+    padding: var(--space-3) 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 
-  /* Augmenter l'espace en bas des étapes sur mobile */
+  /* Augmenter l'espace en bas des étapes sur mobile pour éviter que le contenu soit caché */
   .form-step {
-    padding-bottom: 1.5rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    margin-bottom: var(--space-4);
+  }
+
+  /* S'assurer que les dropdowns ont aussi des touch targets suffisants */
+  .custom-dropdown-option,
+  .custom-select-option,
+  .country-option,
+  .port-option {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-4);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Améliorer l'espacement entre les éléments cliquables */
+  .location-types,
+  .shipping-modes,
+  .mode-option,
+  .location-type-option {
+    margin-bottom: var(--space-2);
   }
 }
 
@@ -5117,6 +5817,16 @@
 
   .step-header {
     margin-bottom: var(--space-4);
+    /* Ajuster la séparation visuelle sur mobile */
+    padding-bottom: var(--space-3);
+    margin-top: 0; /* Supprimé pour réduire l'espace au-dessus */
+    border-bottom: 1px solid rgba(229, 231, 235, 0.4); /* Légèrement plus visible sur mobile */
+  }
+
+  /* Premier step sur mobile - pas d'espace au-dessus */
+  .sino-form-mobile .form-step:first-of-type .step-header {
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .step-header h2 {
@@ -5608,6 +6318,32 @@ input[type='url'] {
   padding-left: 1rem;
 }
 
+@media (max-width: 768px) {
+  .timing-select input.search-input,
+  .requirements-select input.search-input,
+  .currency-select input.search-input {
+    min-height: 48px;
+    font-size: 16px; /* Prevent iOS zoom */
+    padding-left: calc(
+      var(--space-4) + 18px + var(--space-2)
+    ) !important; /* Prevent icon overlap */
+  }
+
+  .timing-select input.search-input[value*='📅'],
+  .timing-select input.search-input[value*='🟢'],
+  .timing-select input.search-input[value*='❔'],
+  .requirements-select input.search-input[value*='🟢'],
+  .requirements-select input.search-input[value*='📦'],
+  .requirements-select input.search-input[value*='🧊'],
+  .requirements-select input.search-input[value*='🚀'],
+  .requirements-select input.search-input[value*='💎'],
+  .requirements-select input.search-input[value*='➕'],
+  .currency-select input.search-input[value*='🇺🇸'],
+  .currency-select input.search-input[value*='🇪🇺'] {
+    padding-left: calc(var(--space-4) + 18px + var(--space-2)) !important;
+  }
+}
+
 /* ===== PHONE INPUT STYLES ===== */
 
 /* Phone input wrapper */
@@ -5615,6 +6351,32 @@ input[type='url'] {
   display: grid;
   grid-template-columns: 105px 1fr;
   gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .phone-input-wrapper {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .phone-prefix-select {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .phone-prefix-select .input {
+    width: 100%;
+    text-align: left; /* Left align on mobile for better UX */
+    font-size: 16px; /* Prevent iOS zoom */
+    min-height: 48px;
+  }
+
+  input[type='tel']#phone {
+    width: 100%;
+    text-align: left; /* Left align on mobile for better UX */
+    font-size: 16px; /* Prevent iOS zoom */
+    min-height: 48px;
+  }
 }
 
 /* Phone prefix selector - centered text */
@@ -6053,7 +6815,7 @@ setTimeout(() => {
   pointer-events: none;
   transform: translateY(-20px) scale(0.95);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
+  z-index: 250; /* Au-dessus du footer fixe (200) sur mobile, utilise var(--z-popover) sur desktop */
   /* no backdrop blur */
   border: 1px solid rgba(214, 223, 32, 0.1);
 
@@ -6061,13 +6823,24 @@ setTimeout(() => {
   max-width: 100vw;
   min-width: 120px;
 
-  /* Calcul dynamique de la hauteur maximale */
-  --available-space-bottom: calc(100vh - var(--dropdown-top, 0px) - 20px);
+  /* Calcul dynamique de la hauteur maximale - utiliser viewport réel */
+  --available-space-bottom: calc(var(--viewport-height, 100dvh) - var(--dropdown-top, 0px) - 20px);
+  --available-space-bottom: calc(100vh - var(--dropdown-top, 0px) - 20px); /* Fallback */
+  --available-space-bottom: calc(100dvh - var(--dropdown-top, 0px) - 20px); /* Dynamic viewport */
   --available-space-top: calc(var(--dropdown-top, 0px) - 20px);
   --dropdown-max-height: min(250px, var(--available-space-bottom));
 }
 
 /* Variante pour afficher le dropdown au-dessus quand il n'y a pas assez d'espace en bas */
+/* Sur mobile, forcer l'ouverture vers le bas - désactiver show-above */
+@media (max-width: 768px) {
+  .custom-dropdown-list.show-above {
+    top: calc(100% + var(--space-2)) !important;
+    bottom: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+}
+
 .custom-dropdown-list.show-above {
   top: auto;
   bottom: calc(100% + var(--space-2));
@@ -6161,10 +6934,17 @@ setTimeout(() => {
 
 .custom-dropdown-option:hover {
   background: linear-gradient(135deg, rgba(214, 223, 32, 0.12), rgba(255, 255, 255, 0.1));
-  transform: translateX(var(--space-1));
+  /* Désactiver transform sur mobile pour éviter le scroll horizontal */
+  transform: none;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 2px 8px rgba(214, 223, 32, 0.1);
+}
+
+@media (min-width: 769px) {
+  .custom-dropdown-option:hover {
+    transform: translateX(var(--space-1));
+  }
 }
 
 .custom-dropdown-option:hover::before {
@@ -6183,7 +6963,14 @@ setTimeout(() => {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.5),
     0 2px 8px rgba(214, 223, 32, 0.15);
-  transform: translateX(var(--space-2));
+  /* Désactiver transform sur mobile pour éviter le scroll horizontal */
+  transform: none;
+}
+
+@media (min-width: 769px) {
+  .custom-dropdown-option.selected {
+    transform: translateX(var(--space-2));
+  }
 }
 
 .custom-dropdown-option.selected::before {
@@ -6320,11 +7107,11 @@ setTimeout(() => {
 /* Z-index mobile pour s'assurer que les dropdowns sont au-dessus de la timeline */
 @media (max-width: 768px) {
   .custom-dropdown-list {
-    z-index: 150;
+    z-index: 250; /* Au-dessus du footer fixe (200) */
   }
 
   .custom-dropdown-list.show {
-    z-index: 150;
+    z-index: 250; /* Au-dessus du footer fixe (200) */
   }
 
   /* Language selector spécifique - z-index très élevé sur mobile */
@@ -9266,6 +10053,141 @@ setTimeout(() => {
 
   .confirmation-links__icon {
     font-size: 0.8rem;
+  }
+
+  /* Confirmation layout - safe areas */
+  .confirmation-layout {
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px));
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Confirmation hero - safe areas */
+  .confirmation-hero {
+    padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px)) !important;
+    margin-bottom: var(--space-3);
+  }
+
+  /* Confirmation grid - responsive */
+  .confirmation-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-4) !important;
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px)) !important;
+  }
+
+  /* Confirmation body - safe areas */
+  .confirmation-body {
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px));
+  }
+
+  /* Confirmation cards - safe areas */
+  .confirmation-card {
+    padding: var(--space-4) !important;
+    padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px)) !important;
+  }
+
+  /* Confirmation sections - safe areas */
+  .confirmation-section {
+    padding-left: calc(var(--space-2) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-2) + env(safe-area-inset-right, 0px)) !important;
+  }
+
+  /* Confirmation company - responsive grid */
+  .confirmation-company__intro {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-3) !important;
+  }
+
+  .confirmation-company__metrics {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-3) !important;
+  }
+
+  .confirmation-company__network ul {
+    gap: var(--space-2);
+  }
+
+  /* Confirmation next steps - safe areas */
+  .confirmation-next {
+    padding-left: calc(var(--space-3) + env(safe-area-inset-left, 0px)) !important;
+    padding-right: calc(var(--space-3) + env(safe-area-inset-right, 0px)) !important;
+  }
+
+  /* Confirmation reference - safe areas */
+  .confirmation-reference {
+    min-height: 48px; /* Touch target minimum */
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+
+  /* Confirmation actions - safe areas */
+  .confirmation-actions {
+    gap: var(--space-3);
+  }
+
+  .confirmation-actions__button {
+    min-height: 48px; /* Touch target minimum */
+    font-size: 16px; /* Prevent iOS zoom */
+    width: 100% !important;
+    padding: var(--space-3) calc(var(--space-4) + env(safe-area-inset-right, 0px)) var(--space-3)
+      calc(var(--space-4) + env(safe-area-inset-left, 0px)) !important;
+  }
+
+  .confirmation-actions__link {
+    min-height: 44px; /* Touch target minimum */
+    width: 100% !important;
+    padding: var(--space-2) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-2)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px)) !important;
+  }
+
+  /* Support chips - safe areas */
+  .support-chip {
+    min-height: 44px; /* Touch target minimum */
+    padding: var(--space-2) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-2)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px)) !important;
+  }
+
+  /* Confirmation links - safe areas */
+  .confirmation-links a {
+    min-height: 44px; /* Touch target minimum */
+    padding: var(--space-2) calc(var(--space-3) + env(safe-area-inset-right, 0px)) var(--space-2)
+      calc(var(--space-3) + env(safe-area-inset-left, 0px)) !important;
+  }
+
+  /* Hero stats - responsive */
+  .confirmation-hero__stats {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-2) !important;
+  }
+
+  .hero-stat {
+    padding: var(--space-3) var(--space-4) !important;
+    min-height: 48px; /* Touch target minimum */
+  }
+
+  /* Hero highlights - responsive */
+  .confirmation-hero__highlights {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .confirmation-highlight {
+    width: 100% !important;
+    justify-content: center;
+    min-height: 44px; /* Touch target minimum */
+    padding: var(--space-2) var(--space-3);
+  }
+
+  /* Confirmation hero title/subtitle - better spacing */
+  .confirmation-hero__title {
+    margin-bottom: var(--space-2) !important;
+  }
+
+  .confirmation-hero__subtitle {
+    margin-bottom: var(--space-3) !important;
   }
 }
 

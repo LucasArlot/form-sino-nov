@@ -15,7 +15,6 @@ const StepGoodsDetails: React.FC = () => {
     handleInputChange,
     step5SubStep,
     setStep5SubStep,
-    nextStep,
 
     // Currency (from context)
     currencySearch,
@@ -26,7 +25,10 @@ const StepGoodsDetails: React.FC = () => {
   } = useQuoteForm();
 
   // Safe translator with fallback to English and a provided default
-  const t = useCallback((key: string, fallback: string): string => getText(key, fallback), [getText]);
+  const t = useCallback(
+    (key: string, fallback: string): string => getText(key, fallback),
+    [getText]
+  );
 
   // Local UI states for Step 5 dropdowns
   const [timingSearch, setTimingSearch] = useState('');
@@ -61,7 +63,12 @@ const StepGoodsDetails: React.FC = () => {
         description: 'goods are available for immediate pickup',
         icon: '🟢',
       },
-      { code: 'no_in_1_week', name: 'Within 1 week', description: 'currently preparing', icon: '🗓️' },
+      {
+        code: 'no_in_1_week',
+        name: 'Within 1 week',
+        description: 'currently preparing',
+        icon: '🗓️',
+      },
       {
         code: 'no_in_2_weeks',
         name: 'Within 2 weeks',
@@ -129,7 +136,7 @@ const StepGoodsDetails: React.FC = () => {
     }
     setTimingSearch(timing ? `${timing.icon}  ${translatedName}` : timingCode);
     setIsTimingListVisible(false);
-    
+
     // Automatically advance to substep 3 (Details) after timing selection
     setStep5SubStep(3);
   };
@@ -302,7 +309,10 @@ const StepGoodsDetails: React.FC = () => {
       dropdown.classList.remove('show-above', 'adjust-right', 'adjust-left');
 
       const estimatedHeight = Math.min(300, dropdown.scrollHeight || 300);
-      if (spaceBelow < estimatedHeight && spaceAbove > spaceBelow) dropdown.classList.add('show-above');
+      // Sur mobile, toujours ouvrir vers le bas
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile && spaceBelow < estimatedHeight && spaceAbove > spaceBelow)
+        dropdown.classList.add('show-above');
       if (spaceRight < 200) dropdown.classList.add('adjust-right');
       else if (spaceLeft < 200) dropdown.classList.add('adjust-left');
 
@@ -319,7 +329,7 @@ const StepGoodsDetails: React.FC = () => {
 
     if (isCurrencyListVisible && currencyListRef.current) {
       if (!currencyListRef.current.dataset.debugAdjustLogged) {
-        // eslint-disable-next-line no-console
+         
         console.log('[dropdown-debug] adjust run - port-list (currency)');
         currencyListRef.current.dataset.debugAdjustLogged = '1';
       }
@@ -327,21 +337,27 @@ const StepGoodsDetails: React.FC = () => {
       adjustDropdownPosition(currencyListRef.current, currencyInput);
 
       // Verify CSS vars on element vs parent
-      // eslint-disable-next-line no-console
+       
       console.log('[dropdown-debug] vars on element', {
         onElement: {
-          '--available-space-bottom': currencyListRef.current.style.getPropertyValue('--available-space-bottom') || null,
-          '--dropdown-top': currencyListRef.current.style.getPropertyValue('--dropdown-top') || null,
+          '--available-space-bottom':
+            currencyListRef.current.style.getPropertyValue('--available-space-bottom') || null,
+          '--dropdown-top':
+            currencyListRef.current.style.getPropertyValue('--dropdown-top') || null,
         },
         onParent: {
-          '--available-space-bottom': currencyListRef.current.parentElement?.style.getPropertyValue('--available-space-bottom') || null,
-          '--dropdown-top': currencyListRef.current.parentElement?.style.getPropertyValue('--dropdown-top') || null,
+          '--available-space-bottom':
+            currencyListRef.current.parentElement?.style.getPropertyValue(
+              '--available-space-bottom'
+            ) || null,
+          '--dropdown-top':
+            currencyListRef.current.parentElement?.style.getPropertyValue('--dropdown-top') || null,
         },
       });
     }
     if (isTimingListVisible && timingListRef.current) {
       if (!timingListRef.current.dataset.debugAdjustLogged) {
-        // eslint-disable-next-line no-console
+         
         console.log('[dropdown-debug] adjust run - port-list (timing)');
         timingListRef.current.dataset.debugAdjustLogged = '1';
       }
@@ -349,21 +365,26 @@ const StepGoodsDetails: React.FC = () => {
       adjustDropdownPosition(timingListRef.current, timingInput);
 
       // Verify CSS vars on element vs parent
-      // eslint-disable-next-line no-console
+       
       console.log('[dropdown-debug] vars on element', {
         onElement: {
-          '--available-space-bottom': timingListRef.current.style.getPropertyValue('--available-space-bottom') || null,
+          '--available-space-bottom':
+            timingListRef.current.style.getPropertyValue('--available-space-bottom') || null,
           '--dropdown-top': timingListRef.current.style.getPropertyValue('--dropdown-top') || null,
         },
         onParent: {
-          '--available-space-bottom': timingListRef.current.parentElement?.style.getPropertyValue('--available-space-bottom') || null,
-          '--dropdown-top': timingListRef.current.parentElement?.style.getPropertyValue('--dropdown-top') || null,
+          '--available-space-bottom':
+            timingListRef.current.parentElement?.style.getPropertyValue(
+              '--available-space-bottom'
+            ) || null,
+          '--dropdown-top':
+            timingListRef.current.parentElement?.style.getPropertyValue('--dropdown-top') || null,
         },
       });
     }
     if (isRequirementsListVisible && requirementsListRef.current) {
       if (!requirementsListRef.current.dataset.debugAdjustLogged) {
-        // eslint-disable-next-line no-console
+         
         console.log('[dropdown-debug] adjust run - port-list (requirements)');
         requirementsListRef.current.dataset.debugAdjustLogged = '1';
       }
@@ -371,15 +392,22 @@ const StepGoodsDetails: React.FC = () => {
       adjustDropdownPosition(requirementsListRef.current, requirementsInput);
 
       // Verify CSS vars on element vs parent
-      // eslint-disable-next-line no-console
+       
       console.log('[dropdown-debug] vars on element', {
         onElement: {
-          '--available-space-bottom': requirementsListRef.current.style.getPropertyValue('--available-space-bottom') || null,
-          '--dropdown-top': requirementsListRef.current.style.getPropertyValue('--dropdown-top') || null,
+          '--available-space-bottom':
+            requirementsListRef.current.style.getPropertyValue('--available-space-bottom') || null,
+          '--dropdown-top':
+            requirementsListRef.current.style.getPropertyValue('--dropdown-top') || null,
         },
         onParent: {
-          '--available-space-bottom': requirementsListRef.current.parentElement?.style.getPropertyValue('--available-space-bottom') || null,
-          '--dropdown-top': requirementsListRef.current.parentElement?.style.getPropertyValue('--dropdown-top') || null,
+          '--available-space-bottom':
+            requirementsListRef.current.parentElement?.style.getPropertyValue(
+              '--available-space-bottom'
+            ) || null,
+          '--dropdown-top':
+            requirementsListRef.current.parentElement?.style.getPropertyValue('--dropdown-top') ||
+            null,
         },
       });
     }
@@ -398,37 +426,48 @@ const StepGoodsDetails: React.FC = () => {
         adjustDropdownPosition(requirementsListRef.current, requirementsInput);
       }
     };
-    window.addEventListener('resize', handleResize, { passive: true } as any);
-    window.addEventListener('scroll', handleResize, { passive: true, capture: true } as any);
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('scroll', handleResize, { passive: true, capture: true });
 
     // Attach debug while visible
-    const detachCurrencyDebug = isCurrencyListVisible && currencyListRef.current
-      ? attachDropdownDebug({
-          listEl: currencyListRef.current,
-          triggerEl: currencyListRef.current.previousElementSibling as HTMLElement,
-          containerEl: (currencyListRef.current.closest('.quote-form-container') as HTMLElement | null),
-          type: 'port-list',
-        })
-      : () => {};
-    const detachTimingDebug = isTimingListVisible && timingListRef.current
-      ? attachDropdownDebug({
-          listEl: timingListRef.current,
-          triggerEl: timingListRef.current.previousElementSibling as HTMLElement,
-          containerEl: (timingListRef.current.closest('.quote-form-container') as HTMLElement | null),
-          type: 'port-list',
-        })
-      : () => {};
-    const detachReqDebug = isRequirementsListVisible && requirementsListRef.current
-      ? attachDropdownDebug({
-          listEl: requirementsListRef.current,
-          triggerEl: requirementsListRef.current.previousElementSibling as HTMLElement,
-          containerEl: (requirementsListRef.current.closest('.quote-form-container') as HTMLElement | null),
-          type: 'port-list',
-        })
-      : () => {};
+    const detachCurrencyDebug =
+      isCurrencyListVisible && currencyListRef.current
+        ? attachDropdownDebug({
+            listEl: currencyListRef.current,
+            triggerEl: currencyListRef.current.previousElementSibling as HTMLElement,
+            containerEl: currencyListRef.current.closest(
+              '.quote-form-container'
+            ) as HTMLElement | null,
+            type: 'port-list',
+          })
+        : () => {};
+    const detachTimingDebug =
+      isTimingListVisible && timingListRef.current
+        ? attachDropdownDebug({
+            listEl: timingListRef.current,
+            triggerEl: timingListRef.current.previousElementSibling as HTMLElement,
+            containerEl: timingListRef.current.closest(
+              '.quote-form-container'
+            ) as HTMLElement | null,
+            type: 'port-list',
+          })
+        : () => {};
+    const detachReqDebug =
+      isRequirementsListVisible && requirementsListRef.current
+        ? attachDropdownDebug({
+            listEl: requirementsListRef.current,
+            triggerEl: requirementsListRef.current.previousElementSibling as HTMLElement,
+            containerEl: requirementsListRef.current.closest(
+              '.quote-form-container'
+            ) as HTMLElement | null,
+            type: 'port-list',
+          })
+        : () => {};
     return () => {
-      window.removeEventListener('resize', handleResize as any);
-      window.removeEventListener('scroll', handleResize as any, true);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleResize, {
+        capture: true,
+      } as AddEventListenerOptions);
       const containerEl = document.querySelector('.quote-form-container') as HTMLElement | null;
       if (containerEl) containerEl.style.setProperty('--dropdown-safe-area', '0px');
       detachCurrencyDebug();
@@ -446,6 +485,7 @@ const StepGoodsDetails: React.FC = () => {
     >
       {/* Segmented control: Value · Timing · Details */}
       <div
+        className="step-5-segmented-control"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
@@ -455,11 +495,10 @@ const StepGoodsDetails: React.FC = () => {
           borderRadius: '9999px',
           padding: '4px',
           border: '1px solid rgba(229, 231, 235, 0.7)',
-          width: 'calc(100% - 16px)',
-          paddingLeft: '8px',
-          paddingRight: '8px',
+          width: '100%',
           maxWidth: '640px',
           margin: '0 0 0.75rem 0',
+          boxSizing: 'border-box',
         }}
       >
         {[
@@ -492,15 +531,25 @@ const StepGoodsDetails: React.FC = () => {
                 transition: 'all 0.2s ease',
               }}
             >
-              <span style={{
-                width: '16px', height: '16px', borderRadius: '50%',
-                background: step5SubStep >= n ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e7eb',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff', fontSize: '0.7rem',
-              }}>
+              <span
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  background:
+                    step5SubStep >= n ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e7eb',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontSize: '0.7rem',
+                }}
+              >
                 {step5SubStep > n ? '✓' : n}
               </span>
-              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</span>
+              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {label}
+              </span>
             </button>
           );
         })}
@@ -508,6 +557,7 @@ const StepGoodsDetails: React.FC = () => {
 
       {/* Separator below segmented control */}
       <div
+        className="substep-separator"
         style={{
           height: '1px',
           background: 'linear-gradient(90deg, transparent, #e5e7eb, transparent)',
@@ -517,9 +567,20 @@ const StepGoodsDetails: React.FC = () => {
 
       {/* Sub-step 1: Goods Value and Declaration */}
       {step5SubStep === 1 && (
-        <div className="goods-value-phase animate-slide-in" style={{ width: 'calc(100% - 16px)', padding: '0 8px' }}>
+        <div
+          className="goods-value-phase animate-slide-in"
+          style={{ width: '100%', padding: '0', boxSizing: 'border-box' }}
+        >
           <div className="phase-header">
-            <h3 className="phase-header-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+            <h3
+              className="phase-header-title"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '0.25rem',
+              }}
+            >
               <span className="step-indicator">1</span>
               {t('goodsValueDeclaration', 'Goods Value & Declaration')}
             </h3>
@@ -535,7 +596,7 @@ const StepGoodsDetails: React.FC = () => {
             <label htmlFor="goodsValue" className="label-text">
               {t('commercialValue', 'Commercial value of goods')}
             </label>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 goods-value-input-row">
               <input
                 type="number"
                 name="goodsValue"
@@ -553,11 +614,20 @@ const StepGoodsDetails: React.FC = () => {
                   fontSize: '0.9rem',
                   padding: '0.75rem 1rem',
                   transition: 'all 0.3s ease',
+                  flex: window.innerWidth <= 768 ? '1 1 100%' : '1 1 0',
+                  width: window.innerWidth <= 768 ? '100%' : 'auto',
+                  boxSizing: 'border-box',
                 }}
               />
               <div
                 className="currency-select"
-                style={{ minWidth: '120px', margin: 0, position: 'relative' }}
+                style={{
+                  minWidth: window.innerWidth <= 768 ? '100%' : '120px',
+                  width: window.innerWidth <= 768 ? '100%' : 'auto',
+                  margin: 0,
+                  position: 'relative',
+                  boxSizing: 'border-box',
+                }}
               >
                 <div className="search-input-wrapper" style={{ position: 'relative' }}>
                   <input
@@ -637,9 +707,20 @@ const StepGoodsDetails: React.FC = () => {
 
       {/* Sub-step 2: Shipment Timing */}
       {step5SubStep === 2 && (
-        <div className="shipment-timing-phase animate-slide-in" style={{ width: 'calc(100% - 16px)', padding: '0 8px' }}>
+        <div
+          className="shipment-timing-phase animate-slide-in"
+          style={{ width: '100%', padding: '0', boxSizing: 'border-box' }}
+        >
           <div className="phase-header">
-            <h3 className="phase-header-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+            <h3
+              className="phase-header-title"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '0.25rem',
+              }}
+            >
               <span className="step-indicator">2</span>
               {t('shipmentReadiness', 'Shipment Readiness')}
             </h3>
@@ -716,9 +797,20 @@ const StepGoodsDetails: React.FC = () => {
 
       {/* Sub-step 3: Additional Information */}
       {step5SubStep === 3 && (
-        <div className="additional-info-phase animate-slide-in" style={{ width: 'calc(100% - 16px)', padding: '0 8px' }}>
+        <div
+          className="additional-info-phase animate-slide-in"
+          style={{ width: '100%', padding: '0', boxSizing: 'border-box' }}
+        >
           <div className="phase-header">
-            <h3 className="phase-header-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+            <h3
+              className="phase-header-title"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '0.25rem',
+              }}
+            >
               <span className="step-indicator">3</span>
               {t('additionalDetails', 'Additional Details')}
             </h3>
