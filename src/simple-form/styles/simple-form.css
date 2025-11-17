@@ -1,0 +1,1704 @@
+.sino-simple-form-root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, sans-serif;
+}
+
+.sino-simple-form {
+  --sino-simple-bg: #ffffff;
+  --sino-simple-border: rgba(226, 232, 240, 0.8);
+  --sino-simple-step-bg: #eff6ff;
+  --sino-simple-step-fg: #1d4ed8;
+
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0;
+  background: linear-gradient(to bottom, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--sino-simple-border);
+  overflow: hidden;
+}
+
+.sino-simple-form__header {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.sino-simple-form__eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.sino-simple-form__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.sino-simple-form__subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 8px;
+}
+
+.sino-simple-form__section {
+  margin-top: 24px;
+}
+
+.sino-simple-form__section
+  + .sino-simple-form__section:not(.sino-simple-form__section--no-divider):not(
+    [class*='--service-']
+  ):not(.sino-simple-form__section--contact):not(.sino-simple-form__section--services):not(
+    .sino-simple-form__section--footer
+  ) {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.sino-simple-form__section--no-divider {
+  margin-top: 24px;
+  padding-top: 0;
+}
+
+.sino-simple-form__section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 12px;
+}
+
+.sino-simple-form__section-step {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--sino-simple-step-bg);
+  color: var(--sino-simple-step-fg);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Themed section backgrounds per service - colors appear from the section divider */
+.sino-simple-form__section--service-shipping {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #f8faff 0%, #f1f5ff 100%);
+  border-top: 3px solid #3b82f6;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+/* Subtle shadow for depth */
+.sino-simple-form__section--service-shipping:first-of-type {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+}
+
+/* Remove border-top for consecutive shipping sections */
+.sino-simple-form__section--service-shipping + .sino-simple-form__section--service-shipping {
+  border-top: none;
+  padding-top: 28px;
+  margin-top: 0;
+}
+
+/* Last shipping section gets a subtle bottom border */
+.sino-simple-form__section--service-shipping:last-of-type {
+  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+  padding-bottom: 32px;
+}
+
+/* Remove bottom border from shipping when immediately followed by contact section */
+.sino-simple-form__section--service-shipping:last-of-type:has(
+    + .sino-simple-form__section--contact
+  ) {
+  border-bottom: none;
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #e0ecff 0%, #dbeafe 100%);
+  color: #1d4ed8;
+  box-shadow: 0 2px 4px rgba(29, 78, 216, 0.1);
+}
+
+/* Enhanced substep titles in shipping sections */
+.sino-simple-form__section--service-shipping h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e40af;
+  position: relative;
+}
+
+.sino-simple-form__section--service-shipping h3.sino-simple-form__subsection-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #3b82f6;
+  border-radius: 2px;
+}
+
+/* First substep has less top margin */
+.sino-simple-form__section--service-shipping:first-of-type h3.sino-simple-form__subsection-title {
+  margin-top: 16px;
+}
+
+/* Improved field styling in shipping sections */
+.sino-simple-form__section--service-shipping .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.05);
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-form__input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: #ffffff;
+}
+
+/* Enhanced subsection styling in shipping */
+.sino-simple-form__section--service-shipping .sino-simple-form__subsection {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-form__subsection--open {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+/* Enhanced chips in shipping sections */
+.sino-simple-form__section--service-shipping .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-chip--active {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+/* Improved hint text in shipping sections */
+.sino-simple-form__section--service-shipping .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--service-shipping .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__section--service-sourcing {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #f0fdf4 0%, #effdf5 100%);
+  border-top: 3px solid #22c55e;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.sino-simple-form__section--service-sourcing:first-of-type {
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.08);
+}
+
+.sino-simple-form__section--service-sourcing:last-of-type {
+  border-bottom: 1px solid rgba(34, 197, 94, 0.15);
+  padding-bottom: 32px;
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #15803d;
+  box-shadow: 0 2px 4px rgba(21, 128, 61, 0.1);
+}
+
+.sino-simple-form__section--service-sourcing h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #166534;
+  position: relative;
+}
+
+.sino-simple-form__section--service-sourcing h3.sino-simple-form__subsection-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #22c55e;
+  border-radius: 2px;
+}
+
+.sino-simple-form__section--service-sourcing:first-of-type h3.sino-simple-form__subsection-title {
+  margin-top: 16px;
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  box-shadow: 0 1px 3px rgba(34, 197, 94, 0.05);
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+  background: #ffffff;
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__subsection {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__subsection--open {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(34, 197, 94, 0.3);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(34, 197, 94, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(34, 197, 94, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.15);
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-chip--active {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #ffffff;
+  border-color: #22c55e;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--service-sourcing .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__section--service-warehousing {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #fffbeb 0%, #fef3c7 100%);
+  border-top: 3px solid #f59e0b;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.sino-simple-form__section--service-warehousing:first-of-type {
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+}
+
+.sino-simple-form__section--service-warehousing:last-of-type {
+  border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+  padding-bottom: 32px;
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  box-shadow: 0 2px 4px rgba(146, 64, 14, 0.1);
+}
+
+.sino-simple-form__section--service-warehousing h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #78350f;
+  position: relative;
+}
+
+.sino-simple-form__section--service-warehousing h3.sino-simple-form__subsection-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #f59e0b;
+  border-radius: 2px;
+}
+
+.sino-simple-form__section--service-warehousing:first-of-type
+  h3.sino-simple-form__subsection-title {
+  margin-top: 16px;
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.05);
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__input:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  background: #ffffff;
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__subsection {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__subsection--open {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(245, 158, 11, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15);
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-chip--active {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  border-color: #f59e0b;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--service-warehousing .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__section--service-dropshipping {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #faf5ff 0%, #f9f5ff 100%);
+  border-top: 3px solid #a855f7;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.sino-simple-form__section--service-dropshipping:first-of-type {
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.08);
+}
+
+.sino-simple-form__section--service-dropshipping:last-of-type {
+  border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+  padding-bottom: 32px;
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+  color: #6b21a8;
+  box-shadow: 0 2px 4px rgba(107, 33, 168, 0.1);
+}
+
+.sino-simple-form__section--service-dropshipping h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #581c87;
+  position: relative;
+}
+
+.sino-simple-form__section--service-dropshipping h3.sino-simple-form__subsection-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #a855f7;
+  border-radius: 2px;
+}
+
+.sino-simple-form__section--service-dropshipping:first-of-type
+  h3.sino-simple-form__subsection-title {
+  margin-top: 16px;
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  box-shadow: 0 1px 3px rgba(168, 85, 247, 0.05);
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__input:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+  background: #ffffff;
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__subsection {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__subsection--open {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.1);
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(168, 85, 247, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(168, 85, 247, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(168, 85, 247, 0.15);
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-chip--active {
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+  color: #ffffff;
+  border-color: #a855f7;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+  box-shadow: 0 6px 16px rgba(168, 85, 247, 0.4);
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--service-dropshipping .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__section--service-qc {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #ecfeff 0%, #cffafe 100%);
+  border-top: 3px solid #14b8a6;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.sino-simple-form__section--service-qc:first-of-type {
+  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.08);
+}
+
+.sino-simple-form__section--service-qc:last-of-type {
+  border-bottom: 1px solid rgba(20, 184, 166, 0.15);
+  padding-bottom: 32px;
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+  color: #0f766e;
+  box-shadow: 0 2px 4px rgba(15, 118, 110, 0.1);
+}
+
+.sino-simple-form__section--service-qc h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0d9488;
+  position: relative;
+}
+
+.sino-simple-form__section--service-qc h3.sino-simple-form__subsection-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #14b8a6;
+  border-radius: 2px;
+}
+
+.sino-simple-form__section--service-qc:first-of-type h3.sino-simple-form__subsection-title {
+  margin-top: 16px;
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  box-shadow: 0 1px 3px rgba(20, 184, 166, 0.05);
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__input:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+  background: #ffffff;
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__subsection {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__subsection--open {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(20, 184, 166, 0.3);
+  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
+}
+
+.sino-simple-form__section--service-qc .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(20, 184, 166, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--service-qc .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(20, 184, 166, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(20, 184, 166, 0.15);
+}
+
+.sino-simple-form__section--service-qc .sino-simple-chip--active {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  color: #ffffff;
+  border-color: #14b8a6;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+.sino-simple-form__section--service-qc .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--service-qc .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__section--service-chinaVisits {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #fff1f2 0%, #ffe4e6 100%);
+  border-top: 3px solid #f43f5e;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.sino-simple-form__section--service-chinaVisits:first-of-type {
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.08);
+}
+
+.sino-simple-form__section--service-chinaVisits:last-of-type {
+  border-bottom: 1px solid rgba(244, 63, 94, 0.15);
+  padding-bottom: 32px;
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+  color: #be123c;
+  box-shadow: 0 2px 4px rgba(190, 18, 60, 0.1);
+}
+
+.sino-simple-form__section--service-chinaVisits h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(244, 63, 94, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #9f1239;
+  position: relative;
+}
+
+.sino-simple-form__section--service-chinaVisits h3.sino-simple-form__subsection-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #f43f5e;
+  border-radius: 2px;
+}
+
+.sino-simple-form__section--service-chinaVisits:first-of-type
+  h3.sino-simple-form__subsection-title {
+  margin-top: 16px;
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  box-shadow: 0 1px 3px rgba(244, 63, 94, 0.05);
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__input:focus {
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.1);
+  background: #ffffff;
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__subsection {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__subsection--open {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(244, 63, 94, 0.3);
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.1);
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(244, 63, 94, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(244, 63, 94, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(244, 63, 94, 0.15);
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-chip--active {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  color: #ffffff;
+  border-color: #f43f5e;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--service-chinaVisits .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__hint {
+  margin: 0 0 16px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.sino-simple-form__hint--secondary {
+  margin-top: -4px;
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+.sino-simple-form__subsection {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px dashed #e5e7eb;
+}
+
+/* When a subsection is used inside a field grid (e.g. "Advanced pickup details"),
+   rely on the grid gap instead of adding extra margin on top, to keep spacing
+   consistent with other fields. */
+.sino-simple-form__fields .sino-simple-form__subsection {
+  margin-top: 0;
+}
+
+/* Ensure there is a clear and consistent breathing space after any subsection
+   before the next field or field grid (e.g. "Preferred mode" under
+   "Advanced delivery details"). */
+.sino-simple-form__subsection + .sino-simple-form__field,
+.sino-simple-form__subsection + .sino-simple-form__fields {
+  margin-top: 16px;
+}
+
+.sino-simple-form__subsection-title {
+  margin: 16px 0 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* When subsection-title is used as a substep (h3) in shipping sections */
+.sino-simple-form__section h3.sino-simple-form__subsection-title {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #4b5563;
+  padding-left: 0;
+}
+
+.sino-simple-form__subsection-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.sino-simple-form__subsection-label {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.sino-simple-form__subsection-label small {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #9ca3af;
+}
+
+.sino-simple-form__subsection:hover .sino-simple-form__subsection-toggle {
+  color: #111827;
+}
+
+.sino-simple-form__subsection--open {
+  background: #eef2ff;
+  border-style: solid;
+  border-color: #c7d2fe;
+}
+
+.sino-simple-form__subsection-chevron {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+}
+
+.sino-simple-form__subsection-chevron--open {
+  transform: rotate(180deg);
+}
+
+.sino-simple-form__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.sino-simple-form__fields--rows {
+  grid-template-columns: 1fr;
+}
+
+.sino-simple-form__fields--inline {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sino-simple-form__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sino-simple-form__chips--wrap {
+  flex-wrap: wrap;
+}
+
+.sino-simple-chip {
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  background: #f9fafb;
+  color: #374151;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+  transform: translateY(0);
+}
+
+.sino-simple-chip:hover {
+  background: #f3f4f6;
+}
+
+.sino-simple-chip--active {
+  background: #111827;
+  color: #f9fafb;
+  border-color: #111827;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+  transform: translateY(-1px);
+}
+
+.sino-simple-chip--active:hover {
+  background: #020617; /* slightly deeper navy on hover for contrast */
+  color: #f9fafb;
+  border-color: #020617;
+}
+
+/* Service-specific soft colors for selected chips */
+.sino-simple-chip--service-shipping.sino-simple-chip--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.sino-simple-chip--service-sourcing.sino-simple-chip--active {
+  background: #16a34a;
+  border-color: #16a34a;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+}
+
+.sino-simple-chip--service-warehousing.sino-simple-chip--active {
+  background: #d97706;
+  border-color: #d97706;
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.35);
+}
+
+.sino-simple-chip--service-dropshipping.sino-simple-chip--active {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.35);
+}
+
+.sino-simple-chip--service-qc.sino-simple-chip--active {
+  background: #0d9488;
+  border-color: #0d9488;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.35);
+}
+
+.sino-simple-chip--service-chinaVisits.sino-simple-chip--active {
+  background: #e11d48;
+  border-color: #e11d48;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.35);
+}
+
+.sino-simple-chip--service-other.sino-simple-chip--active {
+  background: #4b5563;
+  border-color: #4b5563;
+  box-shadow: 0 4px 12px rgba(75, 85, 99, 0.35);
+}
+
+/* Tooltip bubble for chips with explanations */
+.sino-simple-chip[data-tooltip] {
+  position: relative;
+}
+
+.sino-simple-chip[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  max-width: 220px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #f9fafb;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 50;
+  white-space: normal;
+  text-align: left;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
+}
+
+.sino-simple-chip[data-tooltip]::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #0f172a;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    visibility 0.15s ease;
+}
+
+.sino-simple-chip[data-tooltip]:hover::after,
+.sino-simple-chip[data-tooltip]:focus-visible::after,
+.sino-simple-chip[data-tooltip]:hover::before,
+.sino-simple-chip[data-tooltip]:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.sino-simple-form__help {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.sino-simple-chip:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 2px;
+}
+
+.sino-simple-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sino-simple-form__field--primary {
+  padding: 4px 6px 6px;
+  margin: -2px -4px 2px;
+  border-radius: 12px;
+  background: #f3f4ff;
+  border: 1px solid #e0e7ff;
+}
+
+.sino-simple-form__field--primary .sino-simple-form__label {
+  color: #111827;
+}
+
+.sino-simple-form__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+}
+
+.sino-simple-form__label-text {
+  display: inline-block;
+}
+
+.sino-simple-form__fields--m-top {
+  margin-top: 8px;
+}
+
+.sino-simple-form__input--disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.sino-simple-form__input {
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #111827;
+  background: #f9fafb;
+}
+
+.sino-simple-form__input--textarea {
+  border-radius: 14px;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.sino-simple-form__input:focus {
+  outline: none;
+  border-color: #d6df20;
+  box-shadow: 0 0 0 1px rgba(214, 223, 32, 0.6);
+  background: #ffffff;
+}
+
+.sino-simple-form__required {
+  color: #ef4444;
+  margin-left: 3px;
+}
+
+.sino-simple-form__optional {
+  margin-left: 6px;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: #9ca3af;
+}
+
+.sino-simple-form__label--muted {
+  color: #9ca3af;
+}
+
+.sino-simple-form__field--filled .sino-simple-form__label::after {
+  content: '✓';
+  color: #16a34a;
+  font-size: 0.75rem;
+  margin-left: 6px;
+}
+
+.sino-simple-form__field--filled .sino-simple-form__input {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.25);
+}
+
+.sino-simple-form__field--error .sino-simple-form__input {
+  border-color: #f97316;
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.25);
+}
+
+.sino-simple-form__field--error .sino-simple-form__label {
+  color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+  .sino-simple-form {
+    border-radius: 18px;
+    padding: 20px 16px 24px;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.25);
+  }
+
+  .sino-simple-form__fields {
+    grid-template-columns: 1fr;
+  }
+
+  .sino-simple-form__section {
+    margin-top: 28px;
+  }
+
+  .sino-simple-form__title {
+    font-size: 1.4rem;
+  }
+
+  .sino-simple-chip[data-tooltip]::after {
+    max-width: min(220px, 90vw);
+  }
+}
+
+/* Services section - styled as a step with separator bar */
+.sino-simple-form__section--services {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  background: linear-gradient(to bottom, #f9fafb 0%, #f3f4f6 100%);
+  border-top: none;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  transition: background 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Header styling within services section */
+.sino-simple-form__section--services .sino-simple-form__header {
+  margin-bottom: 24px;
+}
+
+.sino-simple-form__section--services .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #374151;
+  box-shadow: 0 2px 4px rgba(55, 65, 81, 0.1);
+}
+
+/* Enhanced chips in services section - keep service-specific colors */
+.sino-simple-form__section--services .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+}
+
+/* Service-specific border colors for inactive chips */
+.sino-simple-form__section--services .sino-simple-chip--service-shipping {
+  border-color: #3b82f6;
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.2);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-sourcing {
+  border-color: #22c55e;
+  box-shadow: 0 1px 3px rgba(34, 197, 94, 0.2);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-warehousing {
+  border-color: #f59e0b;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.2);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-dropshipping {
+  border-color: #a855f7;
+  box-shadow: 0 1px 3px rgba(168, 85, 247, 0.2);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-qc {
+  border-color: #14b8a6;
+  box-shadow: 0 1px 3px rgba(20, 184, 166, 0.2);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-chinaVisits {
+  border-color: #f43f5e;
+  box-shadow: 0 1px 3px rgba(244, 63, 94, 0.2);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-other {
+  border-color: #6b7280;
+  box-shadow: 0 1px 3px rgba(107, 114, 128, 0.2);
+}
+
+/* Hover states for inactive chips */
+.sino-simple-form__section--services
+  .sino-simple-chip--service-shipping:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-sourcing:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.25);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-warehousing:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.25);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-dropshipping:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #9333ea;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(168, 85, 247, 0.25);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-qc:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #0d9488;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(20, 184, 166, 0.25);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-chinaVisits:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #e11d48;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(244, 63, 94, 0.25);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-other:hover:not(.sino-simple-chip--active) {
+  background: rgba(255, 255, 255, 1);
+  border-color: #4b5563;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(107, 114, 128, 0.25);
+}
+
+/* Active chips - service-specific colors with white text */
+.sino-simple-form__section--services .sino-simple-chip--service-shipping.sino-simple-chip--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-sourcing.sino-simple-chip--active {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-warehousing.sino-simple-chip--active {
+  background: #d97706;
+  border-color: #d97706;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.35);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-dropshipping.sino-simple-chip--active {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.35);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-qc.sino-simple-chip--active {
+  background: #0d9488;
+  border-color: #0d9488;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.35);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-chinaVisits.sino-simple-chip--active {
+  background: #e11d48;
+  border-color: #e11d48;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.35);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-other.sino-simple-chip--active {
+  background: #4b5563;
+  border-color: #4b5563;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(75, 85, 99, 0.35);
+}
+
+/* Hover states for active chips */
+.sino-simple-form__section--services
+  .sino-simple-chip--service-shipping.sino-simple-chip--active:hover {
+  background: #1e40af;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-sourcing.sino-simple-chip--active:hover {
+  background: #15803d;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-warehousing.sino-simple-chip--active:hover {
+  background: #b45309;
+  box-shadow: 0 6px 16px rgba(234, 179, 8, 0.4);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-dropshipping.sino-simple-chip--active:hover {
+  background: #6d28d9;
+  box-shadow: 0 6px 16px rgba(129, 140, 248, 0.4);
+}
+
+.sino-simple-form__section--services .sino-simple-chip--service-qc.sino-simple-chip--active:hover {
+  background: #0f766e;
+  box-shadow: 0 6px 16px rgba(45, 212, 191, 0.4);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-chinaVisits.sino-simple-chip--active:hover {
+  background: #be123c;
+  box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+}
+
+.sino-simple-form__section--services
+  .sino-simple-chip--service-other.sino-simple-chip--active:hover {
+  background: #374151;
+  box-shadow: 0 6px 16px rgba(75, 85, 99, 0.4);
+}
+
+/* Improved hint text in services section */
+.sino-simple-form__section--services .sino-simple-form__hint {
+  color: #475569;
+}
+
+/* Contact section - styled as a step with separator bar */
+.sino-simple-form__section--contact {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0 !important;
+  padding: 28px 24px 32px;
+  border-top: 3px solid #6b7280 !important;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  background: linear-gradient(to bottom, #f9fafb 0%, #f3f4f6 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: background 0.3s ease;
+}
+
+/* Ensure no other border rules apply to contact section */
+.sino-simple-form__section + .sino-simple-form__section--contact {
+  border-top: 3px solid #6b7280 !important;
+  margin-top: 0 !important;
+  padding-top: 28px;
+}
+
+.sino-simple-form__section--contact .sino-simple-form__section-step {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #374151;
+  box-shadow: 0 2px 4px rgba(55, 65, 81, 0.1);
+}
+
+/* Enhanced substep titles in contact sections */
+.sino-simple-form__section--contact h3.sino-simple-form__subsection-title,
+.sino-simple-form__section--contact .sino-simple-form__group-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(107, 114, 128, 0.2);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #374151;
+  position: relative;
+}
+
+.sino-simple-form__section--contact h3.sino-simple-form__subsection-title::before,
+.sino-simple-form__section--contact .sino-simple-form__group-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 2px;
+  background: #6b7280;
+  border-radius: 2px;
+}
+
+.sino-simple-form__section--contact:first-of-type h3.sino-simple-form__subsection-title,
+.sino-simple-form__section--contact:first-of-type .sino-simple-form__group-title {
+  margin-top: 16px;
+}
+
+/* Improved field styling in contact sections */
+.sino-simple-form__section--contact .sino-simple-form__field--primary {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(107, 114, 128, 0.2);
+  box-shadow: 0 1px 3px rgba(107, 114, 128, 0.05);
+}
+
+.sino-simple-form__section--contact .sino-simple-form__input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+  background: #ffffff;
+}
+
+/* Enhanced chips in contact sections */
+.sino-simple-form__section--contact .sino-simple-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(107, 114, 128, 0.3);
+  transition: all 0.2s ease;
+}
+
+.sino-simple-form__section--contact .sino-simple-chip:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(107, 114, 128, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(107, 114, 128, 0.15);
+}
+
+.sino-simple-form__section--contact .sino-simple-chip--active {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: #ffffff;
+  border-color: #6b7280;
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+.sino-simple-form__section--contact .sino-simple-chip--active:hover {
+  background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+  box-shadow: 0 6px 16px rgba(107, 114, 128, 0.4);
+}
+
+/* Improved hint text in contact sections */
+.sino-simple-form__section--contact .sino-simple-form__hint {
+  color: #475569;
+}
+
+.sino-simple-form__section--contact .sino-simple-form__help {
+  color: #64748b;
+}
+
+.sino-simple-form__section--footer {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding: 28px 24px 32px;
+  border-top: 3px solid #6b7280;
+  border-bottom: none;
+  border-radius: 0;
+  position: relative;
+  background: linear-gradient(to bottom, #f9fafb 0%, #f3f4f6 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: background 0.3s ease;
+}
+
+/* Ensure no other border rules apply to footer section */
+.sino-simple-form__section + .sino-simple-form__section--footer {
+  border-top: 3px solid #6b7280 !important;
+  margin-top: 0 !important;
+  padding-top: 28px;
+}
+
+.sino-simple-form__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Step Navigation */
+.sino-simple-form__step-navigation {
+  padding: 24px;
+  background: linear-gradient(to bottom, #f9fafb 0%, #f3f4f6 100%);
+  border-top: 3px solid #6b7280;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sino-simple-form__step-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sino-simple-form__step-counter {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.sino-simple-form__step-progress-bar {
+  height: 6px;
+  background: rgba(107, 114, 128, 0.2);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.sino-simple-form__step-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6b7280 0%, #4b5563 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.sino-simple-form__step-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.sino-simple-form__step-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.sino-simple-form__step-button--previous {
+  background: rgba(255, 255, 255, 0.9);
+  color: #374151;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.sino-simple-form__step-button--previous:hover {
+  background: #ffffff;
+  border-color: rgba(107, 114, 128, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(107, 114, 128, 0.15);
+}
+
+.sino-simple-form__step-button--next {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+.sino-simple-form__step-button--next:hover {
+  background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+  box-shadow: 0 6px 16px rgba(107, 114, 128, 0.4);
+  transform: translateY(-1px);
+}
+
+.sino-simple-form__footer-title {
+  margin: 0 0 4px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.sino-simple-form__footer-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.sino-simple-form__footer-trust {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.sino-simple-form__footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.sino-simple-form__cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #d6df20 0%, #e8f032 100%);
+  color: #000000;
+  box-shadow: 0 10px 26px rgba(214, 223, 32, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.sino-simple-form__cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(214, 223, 32, 0.45);
+}
+
+.sino-simple-form__cta-button:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 20px rgba(214, 223, 32, 0.35);
+}
+
+.sino-simple-form__cta-button:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 2px;
+}
+
+.sino-simple-form__footer-note {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.sino-simple-form__footer-error {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  color: #b91c1c;
+}
+
+.sino-simple-form__group {
+  margin-top: 16px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.sino-simple-form__group-title {
+  margin: 0 0 8px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+@media (max-width: 768px) {
+  .sino-simple-form__footer {
+    gap: 12px;
+  }
+
+  .sino-simple-form__cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
