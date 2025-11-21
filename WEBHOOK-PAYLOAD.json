@@ -1,0 +1,136 @@
+{
+  "submissionId": "form-FR-1234567890-abc12",
+  "timestamp": "2025-01-15T14:30:45+08:00",
+
+  "country": "France",
+  "destCity": "Paris",
+  "destLocationType": "warehouse",
+  "destZipCode": "75001",
+  "destPort": "",
+  "origin": "Shenzhen",
+  "mode": "Railway",
+  "city": "Shenzhen",
+  "locationType": "factory",
+  "zipCode": "518000",
+
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phone": "+33123456789",
+  "phoneCountryCode": "+33",
+  "companyName": "Example Company Ltd",
+  "customerType": "company",
+  "shipperType": "regular",
+
+  "incoterm": "FOB (Free On Board)",
+  "annualVolume": "501 ~ 1000",
+
+  "goodsDescription": "Electronics and accessories",
+  "goodsValue": "25000",
+  "goodsCurrency": "EUR",
+  "isPersonalOrHazardous": false,
+  "areGoodsReady": "yes",
+  "specialRequirements": "Fragile goods",
+  "remarks": "Need fast delivery",
+
+  "loads": [
+    {
+      "shippingType": "cartons",
+      "numberOfUnits": 100,
+      "packageType": "Cartons",
+      "totalWeight": "1200",
+      "totalWeightUnit": "KG",
+      "dimensions": {
+        "length": "50",
+        "width": "40",
+        "height": "30"
+      },
+      "dimensionUnit": "CM",
+      "weightPerUnit": "12",
+      "weightUnit": "KG",
+      "totalVolume": "6",
+      "totalVolumeUnit": "CBM",
+      "totalWeightUnit": "KG",
+      "calculationType": "by_dimensions",
+      "palletType": ""
+    }
+  ],
+
+  "servicesRequested": {
+    "shipping": true,
+    "sourcing": false,
+    "dropshipping": false,
+    "warehousing": true,
+    "qc": false,
+    "chinaVisits": false,
+    "other": false
+  },
+
+  "sourcing": {
+    "productDescription": "Smartphone accessories",
+    "referenceLink": "https://example.com/product",
+    "targetPrice": 5.5,
+    "targetCurrency": "USD",
+    "moq": 1000,
+    "platform": "Amazon FBA",
+    "hasSupplier": true,
+    "notes": "",
+    "targetMarkets": "EU, UK, US",
+    "requiredCertifications": "CE, RoHS",
+    "timeline": "Need samples within 2 weeks",
+    "qualityStandards": "ISO 9001",
+    "packagingRequirements": "Retail-ready packaging",
+    "advancedNotes": "Custom labeling required"
+  },
+
+  "warehousing": {
+    "needed": null,
+    "duration": "1_3_months",
+    "skuCount": 50,
+    "consolidation": true,
+    "extraServices": ["Repackage", "Inventory Management", "Quality Control"],
+    "specialHandling": "Temperature controlled storage",
+    "notes": ""
+  },
+
+  "dropshipping": {
+    "products": "Smartphone cases",
+    "model": "Shopify store",
+    "customerCountries": "US, EU, UK",
+    "dailyOrders": 20,
+    "hasCatalog": true,
+    "brandingNeeded": false,
+    "notes": ""
+  },
+
+  "qc": {
+    "type": "pre_shipment",
+    "productionStage": "finished",
+    "factoryCity": "Shenzhen",
+    "preferredDate": "2025-02-01",
+    "notes": ""
+  },
+
+  "chinaVisit": {
+    "visitType": "Canton Fair",
+    "mainCity": "Guangzhou",
+    "otherCities": "Shenzhen, Shanghai",
+    "fairName": "",
+    "cantonPhase": "Phase 1 (April) - Electronics, Home Appliances, Building Materials, Industrial Products",
+    "startDate": "2025-04-15",
+    "endDate": "2025-04-20",
+    "numberOfDays": 5,
+    "numberOfTravelers": 2,
+    "needInterpreter": true,
+    "needGuide": true,
+    "needTransport": true,
+    "needHotels": true,
+    "languages": "",
+    "localTransportNeeds": [],
+    "needHotel": null,
+    "mainGoal": "",
+    "willShipAfterVisit": null,
+    "remarks": "",
+    "tripBudget": ""
+  }
+}

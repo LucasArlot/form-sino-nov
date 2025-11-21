@@ -6,6 +6,7 @@ type SimpleWarehousingSectionProps = Pick<QuoteFormContextValue, 'formData' | 's
   showWarehousingAdvanced: boolean;
   setShowWarehousingAdvanced: (updater: (prev: boolean) => boolean) => void;
   stepLabel?: string;
+  isQuickQuote?: boolean;
 };
 
 const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
@@ -15,6 +16,8 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
   showWarehousingAdvanced,
   setShowWarehousingAdvanced,
   stepLabel,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isQuickQuote: _isQuickQuote = false,
 }) => {
   if (!formData.servicesRequested.warehousing) return null;
 
@@ -180,17 +183,21 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
                 </label>
                 <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
                   {[
-                    { value: 'relabeling', label: t('warehousingRelabeling', 'Relabeling') },
-                    { value: 'repacking', label: t('warehousingRepacking', 'Repacking') },
-                    { value: 'kitting', label: t('warehousingKitting', 'Kitting / bundles') },
+                    { value: 'Repackage', label: 'Repackage' },
+                    { value: 'Shipment Tracking', label: 'Shipment Tracking' },
+                    { value: 'Inventory Management', label: 'Inventory Management' },
+                    { value: 'Quality Control', label: 'Quality Control' },
+                    { value: 'Returns Handling', label: 'Returns Handling' },
+                    { value: 'Product Photography', label: 'Product Photography' },
                     {
-                      value: 'photo_shooting',
-                      label: t('warehousingPhotoShooting', 'Photo shooting'),
+                      value: 'Product Listing Optimization',
+                      label: 'Product Listing Optimization',
                     },
                     {
-                      value: 'inventory_reports',
-                      label: t('warehousingInventoryReports', 'Inventory reports'),
+                      value: 'Fulfillment by Amazon (FBA) Preparation',
+                      label: 'Fulfillment by Amazon (FBA) Preparation',
                     },
+                    { value: 'Other', label: 'Other' },
                   ].map((option) => {
                     const active = formData.warehousing.extraServices.includes(option.value);
                     return (

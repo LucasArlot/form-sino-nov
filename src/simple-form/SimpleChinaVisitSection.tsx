@@ -32,23 +32,9 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
           </label>
           <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
             {[
-              { value: 'canton_fair', label: t('chinaVisitCantonFair', 'Canton Fair') },
-              { value: 'yiwu_market', label: t('chinaVisitYiwuMarket', 'Yiwu market') },
-              { value: 'other_fair', label: t('chinaVisitOtherFair', 'Other trade fair') },
-              { value: 'factory_visits', label: t('chinaVisitFactoryVisits', 'Factory visits') },
-              { value: 'mixed_trip', label: t('chinaVisitMixedTrip', 'Mixed trip') },
-              {
-                value: 'business_immersion_day',
-                label: t('chinaVisitImmersionDay', 'Business immersion day'),
-              },
-              {
-                value: 'supplier_roadshow',
-                label: t('chinaVisitSupplierRoadshow', 'Supplier roadshow'),
-              },
-              {
-                value: 'factory_audit_visit',
-                label: t('chinaVisitFactoryAuditVisit', 'Factory audit visit'),
-              },
+              { value: 'Canton Fair', label: 'Canton Fair' },
+              { value: 'Yiwu Market', label: 'Yiwu Market' },
+              { value: 'Both', label: 'Both' },
             ].map((option) => (
               <button
                 key={option.value}
@@ -120,7 +106,11 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
         </div>
 
         {(formData.chinaVisit.visitType === 'other_fair' ||
-          formData.chinaVisit.visitType === 'mixed_trip') && (
+          formData.chinaVisit.visitType === 'mixed_trip' ||
+          formData.chinaVisit.visitType === 'factory_visits' ||
+          formData.chinaVisit.visitType === 'business_immersion_day' ||
+          formData.chinaVisit.visitType === 'supplier_roadshow' ||
+          formData.chinaVisit.visitType === 'factory_audit_visit') && (
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label" htmlFor="chinaVisitFairName">
               {t('chinaVisitFairName', 'Which trade fair or market?')}
@@ -147,17 +137,30 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
           </div>
         )}
 
-        {formData.chinaVisit.visitType === 'canton_fair' && (
+        {(formData.chinaVisit.visitType === 'Canton Fair' ||
+          formData.chinaVisit.visitType === 'Both') && (
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label">
               {t('chinaVisitCantonPhase', 'Canton Fair phase')}
             </label>
             <div className="sino-simple-form__chips">
               {[
-                { value: 'phase_1', label: t('chinaVisitCantonPhase1', 'Phase 1') },
-                { value: 'phase_2', label: t('chinaVisitCantonPhase2', 'Phase 2') },
-                { value: 'phase_3', label: t('chinaVisitCantonPhase3', 'Phase 3') },
-                { value: 'not_sure', label: t('chinaVisitCantonPhaseNotSure', 'Not sure') },
+                {
+                  value:
+                    'Phase 1 (April) - Electronics, Home Appliances, Building Materials, Industrial Products',
+                  label:
+                    'Phase 1 (April) - Electronics, Home Appliances, Building Materials, Industrial Products',
+                },
+                {
+                  value: 'Phase 2 (April) - Consumer Goods, Gifts, Home Decoration',
+                  label: 'Phase 2 (April) - Consumer Goods, Gifts, Home Decoration',
+                },
+                {
+                  value:
+                    'Phase 3 (May) - Textiles, Garments, Shoes, Office Supplies, Bags, Food, and Healthcare Products',
+                  label:
+                    'Phase 3 (May) - Textiles, Garments, Shoes, Office Supplies, Bags, Food, and Healthcare Products',
+                },
               ].map((option) => (
                 <button
                   key={option.value}

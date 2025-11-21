@@ -40,6 +40,76 @@ export const initialLoadDetails: LoadDetails = {
   urgency: '',
 };
 
+export interface ServicesRequested {
+  shipping: boolean;
+  sourcing: boolean;
+  dropshipping: boolean;
+  warehousing: boolean;
+  qc: boolean;
+  chinaVisits: boolean;
+  other: boolean;
+}
+
+export interface SourcingData {
+  productDescription: string;
+  referenceLink: string;
+  targetPrice: number | null;
+  targetCurrency: string;
+  moq: number | null;
+  platform: string;
+  hasSupplier: boolean | null;
+  notes: string;
+  targetMarkets: string;
+  requiredCertifications: string;
+}
+
+export interface WarehousingData {
+  needed: boolean | null;
+  duration: string;
+  skuCount: number | null;
+  consolidation: boolean | null;
+  extraServices: string[];
+  specialHandling?: string;
+  notes: string;
+}
+
+export interface DropshippingData {
+  model: string;
+  customerCountries: string;
+  dailyOrders: number | null;
+  hasCatalog: boolean | null;
+  brandingNeeded: boolean | null;
+  notes: string;
+}
+
+export interface QcData {
+  type: string;
+  productionStage: string;
+  factoryCity: string;
+  preferredDate: string;
+  notes: string;
+}
+
+export interface ChinaVisitData {
+  visitType: string;
+  mainCity: string;
+  otherCities: string;
+  fairName: string;
+  cantonPhase: string;
+  startDate: string;
+  endDate: string;
+  numberOfDays: number | null;
+  numberOfTravelers: number | null;
+  needInterpreter: boolean | null;
+  languages: string;
+  localTransportNeeds: string[];
+  needHotel: boolean | null;
+  mainGoal: string;
+  willShipAfterVisit: boolean | null;
+  remarks: string;
+  tripBudget: string;
+}
+
 export interface FormData {
   country: string;
   origin: string;
@@ -67,6 +137,18 @@ export interface FormData {
   goodsDescription: string;
   specialRequirements: string;
   remarks: string;
+
+  // Shipping meta
+  incoterm: string;
+  annualVolume: string;
+
+  // Multi-service extensions
+  servicesRequested: ServicesRequested;
+  sourcing: SourcingData;
+  warehousing: WarehousingData;
+  dropshipping: DropshippingData;
+  qc: QcData;
+  chinaVisit: ChinaVisitData;
 }
 
 export const initialFormData: FormData = {
@@ -96,6 +178,73 @@ export const initialFormData: FormData = {
   goodsDescription: '',
   specialRequirements: '',
   remarks: '',
+
+  incoterm: '',
+  annualVolume: '',
+
+  servicesRequested: {
+    shipping: true,
+    sourcing: false,
+    dropshipping: false,
+    warehousing: false,
+    qc: false,
+    chinaVisits: false,
+    other: false,
+  },
+  sourcing: {
+    productDescription: '',
+    referenceLink: '',
+    targetPrice: null,
+    targetCurrency: 'USD',
+    moq: null,
+    platform: '',
+    hasSupplier: null,
+    notes: '',
+    targetMarkets: '',
+    requiredCertifications: '',
+  },
+  warehousing: {
+    needed: null,
+    duration: '',
+    skuCount: null,
+    consolidation: null,
+    extraServices: [],
+    notes: '',
+  },
+  dropshipping: {
+    model: '',
+    customerCountries: '',
+    dailyOrders: null,
+    hasCatalog: null,
+    brandingNeeded: null,
+    notes: '',
+  },
+  qc: {
+    type: '',
+    productionStage: '',
+    factoryCity: '',
+    preferredDate: '',
+    notes: '',
+  },
+  chinaVisit: {
+    visitType: '',
+    mainCity: '',
+    otherCities: '',
+    fairName: '',
+    cantonPhase: '',
+    startDate: '',
+    endDate: '',
+    numberOfDays: null,
+    numberOfTravelers: null,
+    needInterpreter: null,
+    languages: '',
+    localTransportNeeds: [],
+    needHotel: null,
+    mainGoal: '',
+    willShipAfterVisit: null,
+    remarks: '',
+    tripBudget: '',
+  },
 };
 
 export interface FieldValid {
