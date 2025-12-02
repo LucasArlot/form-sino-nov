@@ -1,6 +1,7 @@
 import type { FC, ChangeEvent } from 'react';
-import { useEffect, useRef, useState, useMemo, useCallback, lazy, Suspense } from 'react';
-import { useQuoteForm } from '@/features/lead/context/useQuoteForm';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useSimpleForm } from './context/useSimpleForm';
+// SimpleFormData type is used via useSimpleForm hook
 import SimpleServicesSection from './SimpleServicesSection';
 import SimpleContactSection from './SimpleContactSection';
 import SimpleFooterSection from './SimpleFooterSection';
@@ -9,14 +10,13 @@ import SimpleStepProgress from './SimpleStepProgress';
 import SimpleAutocomplete, { createCountryOptions, createCityOptions } from './SimpleAutocomplete';
 import SimpleCargoCalculations from './SimpleCargoCalculations';
 import SimpleSocialProofWidget from './SimpleSocialProofWidget';
-
-// Lazy load sections that are not always visible
-const SimpleSourcingSection = lazy(() => import('./SimpleSourcingSection'));
-const SimpleWarehousingSection = lazy(() => import('./SimpleWarehousingSection'));
-const SimpleDropshippingSection = lazy(() => import('./SimpleDropshippingSection'));
-const SimpleQcSection = lazy(() => import('./SimpleQcSection'));
-const SimpleChinaVisitSection = lazy(() => import('./SimpleChinaVisitSection'));
-const SimpleConfirmationSection = lazy(() => import('./SimpleConfirmationSection'));
+import SimpleSourcingSection from './SimpleSourcingSection';
+import SimpleWarehousingSection from './SimpleWarehousingSection';
+import SimpleDropshippingSection from './SimpleDropshippingSection';
+import SimpleQcSection from './SimpleQcSection';
+import SimpleChinaVisitSection from './SimpleChinaVisitSection';
+import SimpleOtherSection from './SimpleOtherSection';
+import SimpleConfirmationSection from './SimpleConfirmationSection';
 import {
   validateEmail,
   validatePhone,
@@ -39,15 +39,15 @@ import {
 } from './utils/analytics';
 
 /**
- * SimpleQuoteForm v2 – initial skeleton
+ * SimpleQuoteForm v2 – Standalone simple form
  *
- * Ultra‑lightweight form used to validate:
- * - integration with the existing QuoteForm context (useQuoteForm)
+ * Completely independent from the legacy QuoteForm:
+ * - Uses SimpleFormProvider context
+ * - No i18n dependency (uses fallback strings directly)
  * - CSS scoping through .sino-simple-form* classes
- * - wiring with the standalone simple entry (window.SinoSimpleForm)
  */
 const SimpleQuoteForm: FC = () => {
-  const { formData, setFormData, handleInputChange, getText } = useQuoteForm();
+  const { formData, setFormData, handleInputChange } = useSimpleForm();
 
   const [goodsValueUnknown, setGoodsValueUnknown] = useState(false);
   const [dimensionsUnknown, setDimensionsUnknown] = useState(false);
@@ -71,6 +71,7 @@ const SimpleQuoteForm: FC = () => {
   const [showSaveNotification, setShowSaveNotification] = useState(false);
   const [lastSelectedCountry, setLastSelectedCountry] = useState<string>('');
   const [lastSelectedCity, setLastSelectedCity] = useState<string>('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Memoize country and city options
   const countryOptions = useMemo(() => createCountryOptions(), []);
@@ -106,10 +107,8 @@ const SimpleQuoteForm: FC = () => {
     []
   );
 
-  const t = useCallback(
-    (key: string, fallback: string): string => getText(key, fallback),
-    [getText]
-  );
+  // Simple translation function - just returns the fallback (no i18n)
+  const t = useCallback((_key: string, fallback: string): string => fallback, []);
 
   const onChange = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -148,6 +147,7 @@ const SimpleQuoteForm: FC = () => {
     | 'dropshipping'
     | 'qc'
     | 'chinaVisit'
+    | 'other'
     | 'contact';
 
   // Fonction pour obtenir toutes les étapes dans l'ordre - recalculée à chaque changement de services
@@ -168,6 +168,9 @@ const SimpleQuoteForm: FC = () => {
       steps.push('shippingRoute');
       steps.push('shippingCargo');
     }
+
+    // "Other project" en dernier (avant contact) - permet de décrire des besoins spéciaux
+    if (servicesRequested.other) steps.push('other');
 
     // Contact en dernier
     steps.push('contact');
@@ -312,7 +315,7 @@ const SimpleQuoteForm: FC = () => {
       return; // Empêcher la navigation
     }
 
-    // Si l'étape est complète, permettre la navigation
+    // Si l'étape est complète, permettre la navigation avec transition
     if (currentStepIndex < totalSteps - 1) {
       const nextStepIndex = currentStepIndex + 1;
       const nextStepId = orderedSteps[nextStepIndex];
@@ -320,11 +323,19 @@ const SimpleQuoteForm: FC = () => {
       // Track step change
       trackStepChange(currentStepId, nextStepId, nextStepIndex, totalSteps);
 
-      setCurrentStepIndex(nextStepIndex);
-      // Scroll vers le haut du formulaire
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      // Start transition animation
+      setIsTransitioning(true);
+
+      // Wait for fade-out, then change step
+      setTimeout(() => {
+        setCurrentStepIndex(nextStepIndex);
+        // Scroll vers le haut du formulaire
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // End transition after fade-in starts
+        setTimeout(() => setIsTransitioning(false), 50);
+      }, 150);
     }
   }, [currentStepId, formData, currentStepIndex, totalSteps, scrollToFirstError, orderedSteps]);
 
@@ -337,10 +348,18 @@ const SimpleQuoteForm: FC = () => {
       // Track step change (going back)
       trackStepChange(currentStepId, prevStepId, prevStepIndex, totalSteps);
 
-      setCurrentStepIndex(prevStepIndex);
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      // Start transition animation
+      setIsTransitioning(true);
+
+      // Wait for fade-out, then change step
+      setTimeout(() => {
+        setCurrentStepIndex(prevStepIndex);
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // End transition after fade-in starts
+        setTimeout(() => setIsTransitioning(false), 50);
+      }, 150);
     }
   }, [currentStepIndex, currentStepId, orderedSteps, totalSteps]);
 
@@ -454,7 +473,11 @@ const SimpleQuoteForm: FC = () => {
           lastName: formData.lastName,
           companyName: formData.companyName,
           shipperType: formData.shipperType,
-          loads: formData.loads,
+          // Simple form cargo fields (direct, no loads array)
+          totalWeight: formData.totalWeight,
+          numberOfUnits: formData.numberOfUnits,
+          dimensions: formData.dimensions,
+          weightPerUnit: formData.weightPerUnit,
           goodsValue: formData.goodsValue,
           goodsCurrency: formData.goodsCurrency,
           isPersonalOrHazardous: formData.isPersonalOrHazardous,
@@ -470,6 +493,7 @@ const SimpleQuoteForm: FC = () => {
           dropshipping: formData.dropshipping,
           qc: formData.qc,
           chinaVisit: formData.chinaVisit,
+          otherProject: formData.otherProject,
         };
 
         // Save with session ID (silent, no notification)
@@ -497,13 +521,15 @@ const SimpleQuoteForm: FC = () => {
     return () => clearTimeout(notificationTimeoutId);
   }, [formData, sessionId]);
 
-  const updateFirstLoad = useCallback(
-    (field: keyof (typeof formData.loads)[number], value: unknown): void => {
-      setFormData((prev) => {
-        const [firstLoad, ...rest] = prev.loads;
-        const updatedFirst = { ...firstLoad, [field]: value };
-        return { ...prev, loads: [updatedFirst, ...rest] };
-      });
+  const updateCargoField = useCallback(
+    (
+      field: 'totalWeight' | 'numberOfUnits' | 'dimensions' | 'weightPerUnit',
+      value: unknown
+    ): void => {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
     },
     [setFormData]
   );
@@ -527,7 +553,6 @@ const SimpleQuoteForm: FC = () => {
           // ignore
         }
       }
-       
     },
     [sessionId]
   );
@@ -545,15 +570,13 @@ const SimpleQuoteForm: FC = () => {
   if (submissionId) {
     return (
       <div className="sino-simple-form">
-        <Suspense fallback={<div className="sino-simple-form__loading">Loading...</div>}>
-          <SimpleConfirmationSection
-            submissionId={submissionId}
-            t={t}
-            onStartNew={handleStartNew}
-            selectedServiceLabels={selectedServiceLabels}
-            formData={formData}
-          />
-        </Suspense>
+        <SimpleConfirmationSection
+          submissionId={submissionId}
+          t={t}
+          onStartNew={handleStartNew}
+          selectedServiceLabels={selectedServiceLabels}
+          formData={formData}
+        />
       </div>
     );
   }
@@ -600,21 +623,24 @@ const SimpleQuoteForm: FC = () => {
         {/* Social Proof Widget - visible during form filling */}
         {!submissionId && <SimpleSocialProofWidget t={t} />}
 
-        {/* Afficher seulement l'étape actuelle */}
-        {currentStepId === 'services' && (
-          <SimpleServicesSection
-            formData={formData}
-            setFormData={setFormData}
-            t={t}
-            stepLabel={`Step ${currentStepIndex + 1}`}
-            shippingOnly={false}
-            isQuickQuote={isQuickQuote}
-            setIsQuickQuote={setIsQuickQuote}
-          />
-        )}
+        {/* Step content with transition */}
+        <div
+          className={`sino-simple-form__step-content${isTransitioning ? ' sino-simple-form__step-content--transitioning' : ''}`}
+        >
+          {/* Afficher seulement l'étape actuelle */}
+          {currentStepId === 'services' && (
+            <SimpleServicesSection
+              formData={formData}
+              setFormData={setFormData}
+              t={t}
+              stepLabel={`Step ${currentStepIndex + 1}`}
+              shippingOnly={false}
+              isQuickQuote={isQuickQuote}
+              setIsQuickQuote={setIsQuickQuote}
+            />
+          )}
 
-        {currentStepId === 'sourcing' && (
-          <Suspense fallback={<div className="sino-simple-form__loading">Loading...</div>}>
+          {currentStepId === 'sourcing' && (
             <SimpleSourcingSection
               formData={formData}
               setFormData={setFormData}
@@ -624,11 +650,9 @@ const SimpleQuoteForm: FC = () => {
               setShowSourcingAdvanced={setShowSourcingAdvanced}
               isQuickQuote={isQuickQuote}
             />
-          </Suspense>
-        )}
+          )}
 
-        {currentStepId === 'warehousing' && (
-          <Suspense fallback={<div className="sino-simple-form__loading">Loading...</div>}>
+          {currentStepId === 'warehousing' && (
             <SimpleWarehousingSection
               formData={formData}
               setFormData={setFormData}
@@ -637,11 +661,9 @@ const SimpleQuoteForm: FC = () => {
               setShowWarehousingAdvanced={setShowWarehousingAdvanced}
               stepLabel={`Step ${currentStepIndex + 1}`}
             />
-          </Suspense>
-        )}
+          )}
 
-        {currentStepId === 'dropshipping' && (
-          <Suspense fallback={<div className="sino-simple-form__loading">Loading...</div>}>
+          {currentStepId === 'dropshipping' && (
             <SimpleDropshippingSection
               formData={formData}
               setFormData={setFormData}
@@ -650,11 +672,9 @@ const SimpleQuoteForm: FC = () => {
               setShowDropshippingAdvanced={setShowDropshippingAdvanced}
               stepLabel={`Step ${currentStepIndex + 1}`}
             />
-          </Suspense>
-        )}
+          )}
 
-        {currentStepId === 'qc' && (
-          <Suspense fallback={<div className="sino-simple-form__loading">Loading...</div>}>
+          {currentStepId === 'qc' && (
             <SimpleQcSection
               formData={formData}
               setFormData={setFormData}
@@ -663,11 +683,9 @@ const SimpleQuoteForm: FC = () => {
               setShowQcAdvanced={setShowQcAdvanced}
               stepLabel={`Step ${currentStepIndex + 1}`}
             />
-          </Suspense>
-        )}
+          )}
 
-        {currentStepId === 'chinaVisit' && (
-          <Suspense fallback={<div className="sino-simple-form__loading">Loading...</div>}>
+          {currentStepId === 'chinaVisit' && (
             <SimpleChinaVisitSection
               formData={formData}
               setFormData={setFormData}
@@ -676,735 +694,1340 @@ const SimpleQuoteForm: FC = () => {
               setShowChinaVisitLogistics={setShowChinaVisitLogistics}
               stepLabel={`Step ${currentStepIndex + 1}`}
             />
-          </Suspense>
-        )}
+          )}
 
-        {/* Shipping from China – Step 1: Destination & mode & Pickup */}
-        {currentStepId === 'shippingRoute' && shippingSelected && (
-          <>
-            <section className="sino-simple-form__section sino-simple-form__section--service-shipping">
-              <h2 className="sino-simple-form__section-title">
-                <span className="sino-simple-form__section-step">
-                  {`Step ${currentStepIndex + 1}`}
-                </span>
-                <span>{t('shippingFromChinaTitle', 'Shipping from China')}</span>
-              </h2>
+          {currentStepId === 'other' && (
+            <SimpleOtherSection
+              formData={formData}
+              setFormData={setFormData}
+              t={t}
+              stepLabel={`Step ${currentStepIndex + 1}`}
+            />
+          )}
 
-              <SimpleStepProgress
-                stepId="shippingRoute"
-                formData={formData}
-                currentStepIndex={currentStepIndex}
-                totalSteps={totalSteps}
-                t={t}
-              />
+          {/* Shipping from China – Step 1: Destination & mode & Pickup */}
+          {currentStepId === 'shippingRoute' && shippingSelected && (
+            <>
+              <section className="sino-simple-form__section sino-simple-form__section--service-shipping">
+                <h2 className="sino-simple-form__section-title">
+                  <span className="sino-simple-form__section-step">
+                    {`Step ${currentStepIndex + 1}`}
+                  </span>
+                  <span>{t('shippingFromChinaTitle', 'Shipping from China')}</span>
+                </h2>
 
-              <h3 className="sino-simple-form__subsection-title">
-                {t('simpleStep1Title', 'Destination & mode')}
-              </h3>
+                <SimpleStepProgress
+                  stepId="shippingRoute"
+                  formData={formData}
+                  currentStepIndex={currentStepIndex}
+                  totalSteps={totalSteps}
+                  t={t}
+                />
 
-              <div className="sino-simple-form__fields">
-                <div
-                  className={`sino-simple-form__field sino-simple-form__field--primary${
-                    fieldTouched.country && fieldErrors.country
-                      ? ' sino-simple-form__field--error'
-                      : ''
-                  }${
-                    fieldTouched.country && !fieldErrors.country && isFilled(formData.country)
-                      ? ' sino-simple-form__field--success'
-                      : ''
-                  }`}
-                >
-                  <label className="sino-simple-form__label" htmlFor="country">
-                    {t('destinationCountry', 'Destination country')}
-                    <span className="sino-simple-form__required" aria-label="required">
-                      *
-                    </span>
-                  </label>
-                  <div className="sino-simple-form__field-wrapper">
-                    <SimpleAutocomplete
-                      id="country"
-                      name="country"
-                      value={formData.country}
-                      onChange={onChange}
-                      onBlur={() => {
-                        // Only validate on blur if field has a value and was actually touched by user
-                        if (formData.country && formData.country.trim().length > 0) {
-                          onBlur('country', formData.country);
+                <h3 className="sino-simple-form__subsection-title">
+                  {t('simpleStep1Title', 'Destination & mode')}
+                </h3>
+
+                <div className="sino-simple-form__fields">
+                  <div
+                    className={`sino-simple-form__field sino-simple-form__field--primary${
+                      fieldTouched.country && fieldErrors.country
+                        ? ' sino-simple-form__field--error'
+                        : ''
+                    }${
+                      fieldTouched.country && !fieldErrors.country && isFilled(formData.country)
+                        ? ' sino-simple-form__field--success'
+                        : ''
+                    }`}
+                  >
+                    <label className="sino-simple-form__label" htmlFor="country">
+                      {t('destinationCountry', 'Destination country')}
+                      <span className="sino-simple-form__required" aria-label="required">
+                        *
+                      </span>
+                    </label>
+                    <div className="sino-simple-form__field-wrapper">
+                      <SimpleAutocomplete
+                        id="country"
+                        name="country"
+                        value={formData.country}
+                        onChange={onChange}
+                        onBlur={() => {
+                          // Only validate on blur if field has a value and was actually touched by user
+                          if (formData.country && formData.country.trim().length > 0) {
+                            onBlur('country', formData.country);
+                          }
+                        }}
+                        onSelect={(value) => {
+                          // Value is already set by onChange, but we can do additional processing here if needed
+                          setFormData((prev) => ({ ...prev, country: value }));
+                        }}
+                        onSelectWithValidation={(value) => {
+                          // Update formData immediately to ensure isValid uses the correct value
+                          setFormData((prev) => ({ ...prev, country: value }));
+                          // Store the selected value for isValid calculation
+                          setLastSelectedCountry(value);
+                          // Mark as touched immediately
+                          setFieldTouched((prev) => ({ ...prev, country: true }));
+
+                          // Validate with the selected value directly
+                          const result = validateCountry(value);
+                          if (!result.valid && result.error) {
+                            setFieldErrors((prev) => ({ ...prev, country: result.error! }));
+                          } else {
+                            setFieldErrors((prev) => {
+                              const newErrors = { ...prev };
+                              delete newErrors.country;
+                              return newErrors;
+                            });
+                          }
+                        }}
+                        placeholder={t('destinationCountryPlaceholder', 'France, USA, Canada…')}
+                        options={countryOptions}
+                        inputRef={countryRef}
+                        error={fieldErrors.country}
+                        touched={fieldTouched.country}
+                        isValid={
+                          !fieldErrors.country && isFilled(lastSelectedCountry || formData.country)
                         }
-                      }}
-                      onSelect={(value) => {
-                        // Value is already set by onChange, but we can do additional processing here if needed
-                        setFormData((prev) => ({ ...prev, country: value }));
-                      }}
-                      onSelectWithValidation={(value) => {
-                        // Update formData immediately to ensure isValid uses the correct value
-                        setFormData((prev) => ({ ...prev, country: value }));
-                        // Store the selected value for isValid calculation
-                        setLastSelectedCountry(value);
-                        // Mark as touched immediately
-                        setFieldTouched((prev) => ({ ...prev, country: true }));
-
-                        // Validate with the selected value directly
-                        const result = validateCountry(value);
-                        if (!result.valid && result.error) {
-                          setFieldErrors((prev) => ({ ...prev, country: result.error! }));
-                        } else {
-                          setFieldErrors((prev) => {
-                            const newErrors = { ...prev };
-                            delete newErrors.country;
-                            return newErrors;
-                          });
-                        }
-                      }}
-                      placeholder={t('destinationCountryPlaceholder', 'France, USA, Canada…')}
-                      options={countryOptions}
-                      inputRef={countryRef}
-                      error={fieldErrors.country}
-                      touched={fieldTouched.country}
-                      isValid={
-                        !fieldErrors.country && isFilled(lastSelectedCountry || formData.country)
-                      }
-                      maxResults={10}
-                    />
-                    {fieldTouched.country && (
-                      <>
-                        {fieldErrors.country && (
-                          <span
-                            className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
-                            aria-hidden="true"
-                          >
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
+                        maxResults={10}
+                      />
+                      {fieldTouched.country && (
+                        <>
+                          {fieldErrors.country && (
+                            <span
+                              className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
+                              aria-hidden="true"
                             >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              />
-                              <line
-                                x1="12"
-                                y1="8"
-                                x2="12"
-                                y2="12"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                              />
-                              <line
-                                x1="12"
-                                y1="16"
-                                x2="12.01"
-                                y2="16"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                          </span>
-                        )}
-                        {!fieldErrors.country && isFilled(formData.country) && (
-                          <span
-                            className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
-                            aria-hidden="true"
-                          >
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <line
+                                  x1="12"
+                                  y1="8"
+                                  x2="12"
+                                  y2="12"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <line
+                                  x1="12"
+                                  y1="16"
+                                  x2="12.01"
+                                  y2="16"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                          {!fieldErrors.country && isFilled(formData.country) && (
+                            <span
+                              className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
+                              aria-hidden="true"
                             >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              />
-                              <path
-                                d="M8 12l2 2 4-4"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  {fieldErrors.country && (
-                    <p
-                      id="country-error"
-                      className="sino-simple-form__field-error"
-                      role="alert"
-                      aria-live="polite"
-                    >
-                      {fieldErrors.country}
-                    </p>
-                  )}
-                  {fieldTouched.country && !fieldErrors.country && isFilled(formData.country) && (
-                    <p
-                      id="country-success"
-                      className="sino-simple-form__sr-only"
-                      aria-live="polite"
-                    >
-                      {t('fieldValid', 'Field is valid')}
-                    </p>
-                  )}
-                </div>
-
-                <div
-                  className={`sino-simple-form__field sino-simple-form__field--primary${
-                    fieldTouched.destCity && fieldErrors.destCity
-                      ? ' sino-simple-form__field--error'
-                      : ''
-                  }${
-                    fieldTouched.destCity && !fieldErrors.destCity && isFilled(formData.destCity)
-                      ? ' sino-simple-form__field--success'
-                      : ''
-                  }`}
-                >
-                  <label className="sino-simple-form__label" htmlFor="destCity">
-                    {t('destinationCityOrPort', 'City or port')}
-                    <span className="sino-simple-form__required" aria-label="required">
-                      *
-                    </span>
-                  </label>
-                  <div className="sino-simple-form__field-wrapper">
-                    <SimpleAutocomplete
-                      id="destCity"
-                      name="destCity"
-                      value={formData.destCity}
-                      onChange={onChange}
-                      onBlur={() => {
-                        // Only validate on blur if field has a value and was actually touched by user
-                        if (formData.destCity && formData.destCity.trim().length > 0) {
-                          onBlur('destCity', formData.destCity);
-                        }
-                      }}
-                      onSelectWithValidation={(value) => {
-                        // Update formData immediately to ensure isValid uses the correct value
-                        setFormData((prev) => ({ ...prev, destCity: value }));
-                        // Store the selected value for isValid calculation
-                        setLastSelectedCity(value);
-                        // Mark as touched immediately
-                        setFieldTouched((prev) => ({ ...prev, destCity: true }));
-
-                        // Validate with the selected value directly
-                        const result = validateDestCity(value);
-                        if (!result.valid && result.error) {
-                          setFieldErrors((prev) => ({ ...prev, destCity: result.error! }));
-                        } else {
-                          setFieldErrors((prev) => {
-                            const newErrors = { ...prev };
-                            delete newErrors.destCity;
-                            return newErrors;
-                          });
-                        }
-                      }}
-                      placeholder={t('destinationCityPlaceholder', 'e.g. Paris, Le Havre…')}
-                      options={cityOptions}
-                      inputRef={destCityRef}
-                      error={fieldErrors.destCity}
-                      touched={fieldTouched.destCity}
-                      isValid={
-                        !fieldErrors.destCity && isFilled(lastSelectedCity || formData.destCity)
-                      }
-                      maxResults={8}
-                    />
-                    {fieldTouched.destCity && (
-                      <>
-                        {fieldErrors.destCity && (
-                          <span
-                            className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
-                            aria-hidden="true"
-                            aria-label={t('fieldError', 'Error')}
-                          >
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              />
-                              <line
-                                x1="12"
-                                y1="8"
-                                x2="12"
-                                y2="12"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                              />
-                              <line
-                                x1="12"
-                                y1="16"
-                                x2="12.01"
-                                y2="16"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                          </span>
-                        )}
-                        {!fieldErrors.destCity && isFilled(formData.destCity) && (
-                          <span
-                            className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
-                            aria-hidden="true"
-                            aria-label={t('fieldValid', 'Field is valid')}
-                          >
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              />
-                              <path
-                                d="M8 12l2 2 4-4"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  {fieldErrors.destCity && (
-                    <p
-                      id="destCity-error"
-                      className="sino-simple-form__field-error"
-                      role="alert"
-                      aria-live="polite"
-                    >
-                      {fieldErrors.destCity}
-                    </p>
-                  )}
-                  {fieldTouched.destCity &&
-                    !fieldErrors.destCity &&
-                    isFilled(formData.destCity) && (
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <path
+                                  d="M8 12l2 2 4-4"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {fieldErrors.country && (
                       <p
-                        id="destCity-success"
+                        id="country-error"
+                        className="sino-simple-form__field-error"
+                        role="alert"
+                        aria-live="polite"
+                      >
+                        {fieldErrors.country}
+                      </p>
+                    )}
+                    {fieldTouched.country && !fieldErrors.country && isFilled(formData.country) && (
+                      <p
+                        id="country-success"
                         className="sino-simple-form__sr-only"
                         aria-live="polite"
                       >
                         {t('fieldValid', 'Field is valid')}
                       </p>
                     )}
-                </div>
-              </div>
+                  </div>
 
-              <div
-                className={`sino-simple-form__subsection${
-                  showDestinationDetails ? ' sino-simple-form__subsection--open' : ''
-                }`}
-              >
-                <button
-                  type="button"
-                  className="sino-simple-form__subsection-toggle"
-                  onClick={() => setShowDestinationDetails((prev) => !prev)}
-                  aria-expanded={showDestinationDetails}
-                  aria-controls="destination-details-content"
-                  aria-label={
-                    showDestinationDetails
-                      ? t('collapseSection', 'Collapse destination details')
-                      : t('expandSection', 'Expand destination details')
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setShowDestinationDetails((prev) => !prev);
-                    }
-                  }}
-                >
-                  <span className="sino-simple-form__subsection-label">
-                    {t('destinationDetailsTitle', 'Advanced delivery details (optional)')}
-                    <small>
-                      {t(
-                        'destinationDetailsSubtitle',
-                        'Helps us refine delivery but you can skip this for now.'
-                      )}
-                    </small>
-                  </span>
-                  <span
-                    className={`sino-simple-form__subsection-chevron${
-                      showDestinationDetails ? ' sino-simple-form__subsection-chevron--open' : ''
+                  <div
+                    className={`sino-simple-form__field sino-simple-form__field--primary${
+                      fieldTouched.destCity && fieldErrors.destCity
+                        ? ' sino-simple-form__field--error'
+                        : ''
+                    }${
+                      fieldTouched.destCity && !fieldErrors.destCity && isFilled(formData.destCity)
+                        ? ' sino-simple-form__field--success'
+                        : ''
                     }`}
                   >
-                    ▾
-                  </span>
-                </button>
-                {showDestinationDetails && (
-                  <div
-                    id="destination-details-content"
-                    className="sino-simple-form__fields sino-simple-form__fields--rows"
-                  >
-                    <div className="sino-simple-form__field">
-                      <label className="sino-simple-form__label">
-                        {t('destinationLocationType', 'Delivery location')}
-                        <span className="sino-simple-form__optional">Optional</span>
-                      </label>
-                      <input
-                        className="sino-simple-form__input"
-                        type="text"
-                        name="destLocationType"
-                        value={formData.destLocationType}
+                    <label className="sino-simple-form__label" htmlFor="destCity">
+                      {t('destinationCityOrPort', 'City or port')}
+                      <span className="sino-simple-form__required" aria-label="required">
+                        *
+                      </span>
+                    </label>
+                    <div className="sino-simple-form__field-wrapper">
+                      <SimpleAutocomplete
+                        id="destCity"
+                        name="destCity"
+                        value={formData.destCity}
                         onChange={onChange}
-                        placeholder={t(
-                          'destinationLocationTypePlaceholder',
-                          'Port, warehouse, home address…'
-                        )}
-                      />
-                    </div>
-
-                    <div className="sino-simple-form__field">
-                      <label className="sino-simple-form__label">
-                        {t('destinationZipCode', 'ZIP / postal code')}
-                        <span className="sino-simple-form__optional">Optional</span>
-                      </label>
-                      <input
-                        className="sino-simple-form__input"
-                        type="text"
-                        name="destZipCode"
-                        value={formData.destZipCode}
-                        onChange={onChange}
-                        placeholder={t('destinationZipCodePlaceholder', 'Optional')}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top">
-                <div className="sino-simple-form__field">
-                  <label className="sino-simple-form__label">
-                    {t('shippingMode', 'Preferred mode')}
-                  </label>
-                  <div className="sino-simple-form__chips">
-                    {[
-                      {
-                        value: 'Sea',
-                        label: 'Sea',
-                        tooltip: t(
-                          'modeSeaHelp',
-                          'Best for large volumes and lower cost when you have a few weeks.'
-                        ),
-                      },
-                      {
-                        value: 'Air',
-                        label: 'Air',
-                        tooltip: t(
-                          'modeAirHelp',
-                          'Faster than sea, ideal for smaller, time-sensitive shipments.'
-                        ),
-                      },
-                      {
-                        value: 'Railway',
-                        label: 'Railway',
-                        tooltip: t(
-                          'modeRailHelp',
-                          'Balanced option Europe–China: faster than sea, cheaper than air.'
-                        ),
-                      },
-                      {
-                        value: 'Express',
-                        label: 'Express',
-                        tooltip: t(
-                          'modeExpressHelp',
-                          'Door‑to‑door courier (DHL/UPS/FedEx) for urgent small parcels.'
-                        ),
-                      },
-                    ].map((option) => (
-                      <button
-                        key={option.value}
-                        type="button"
-                        className={`sino-simple-chip${
-                          formData.mode === option.value ? ' sino-simple-chip--active' : ''
-                        }`}
-                        data-tooltip={option.tooltip}
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            mode: option.value,
-                          }))
-                        }
-                        aria-pressed={formData.mode === option.value ? 'true' : 'false'}
-                        aria-label={`${option.label}${formData.mode === option.value ? ', selected' : ', not selected'}. ${option.tooltip}`}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setFormData((prev) => ({
-                              ...prev,
-                              mode: option.value,
-                            }));
+                        onBlur={() => {
+                          // Only validate on blur if field has a value and was actually touched by user
+                          if (formData.destCity && formData.destCity.trim().length > 0) {
+                            onBlur('destCity', formData.destCity);
                           }
                         }}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                        onSelectWithValidation={(value) => {
+                          // Update formData immediately to ensure isValid uses the correct value
+                          setFormData((prev) => ({ ...prev, destCity: value }));
+                          // Store the selected value for isValid calculation
+                          setLastSelectedCity(value);
+                          // Mark as touched immediately
+                          setFieldTouched((prev) => ({ ...prev, destCity: true }));
 
-              <div className="sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top">
-                <div className="sino-simple-form__field">
-                  <label className="sino-simple-form__label">
-                    {t('incotermLabel', 'Trade terms (Incoterm, if you know it)')}
-                    <span className="sino-simple-form__optional">
-                      {t('incotermOptional', 'Optional – helps us understand who handles what')}
-                    </span>
-                  </label>
-                  <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
-                    {[
-                      {
-                        value: 'EXW (Ex Work)',
-                        label: 'EXW (Ex Work)',
-                        tooltip: t(
-                          'incotermEXWTooltip',
-                          'Ex Works: You handle everything from the factory. We pick up at the supplier.'
-                        ),
-                      },
-                      {
-                        value: 'FOB (Free On Board)',
-                        label: 'FOB (Free On Board)',
-                        tooltip: t(
-                          'incotermFOBTooltip',
-                          'Free On Board: Supplier delivers to port, you handle shipping and destination costs.'
-                        ),
-                      },
-                      {
-                        value: 'CIF (Cost Insurance and Freight)',
-                        label: 'CIF (Cost Insurance and Freight)',
-                        tooltip: t(
-                          'incotermCIFTooltip',
-                          'Cost, Insurance & Freight: Supplier pays shipping to your port, you handle destination.'
-                        ),
-                      },
-                      {
-                        value: 'CFR (Cost & Freight)',
-                        label: 'CFR (Cost & Freight)',
-                        tooltip: t(
-                          'incotermCFRTooltip',
-                          'Cost and Freight: Supplier pays shipping to your port.'
-                        ),
-                      },
-                      {
-                        value: 'DAT (Delivery at Terminal)',
-                        label: 'DAT (Delivery at Terminal)',
-                        tooltip: t(
-                          'incotermDATTooltip',
-                          'Delivered At Terminal: Delivered at a named terminal at destination.'
-                        ),
-                      },
-                      {
-                        value: "I don't know yet",
-                        label: "I don't know yet",
-                        tooltip: t(
-                          'incotermNotSureTooltip',
-                          "No problem! We'll help you choose the best option based on your needs."
-                        ),
-                      },
-                    ].map((option) => (
-                      <button
-                        key={option.value}
-                        type="button"
-                        className={`sino-simple-chip${
-                          formData.incoterm === option.value ? ' sino-simple-chip--active' : ''
-                        }`}
-                        data-tooltip={option.tooltip}
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            incoterm: option.value,
-                          }))
+                          // Validate with the selected value directly
+                          const result = validateDestCity(value);
+                          if (!result.valid && result.error) {
+                            setFieldErrors((prev) => ({ ...prev, destCity: result.error! }));
+                          } else {
+                            setFieldErrors((prev) => {
+                              const newErrors = { ...prev };
+                              delete newErrors.destCity;
+                              return newErrors;
+                            });
+                          }
+                        }}
+                        placeholder={t('destinationCityPlaceholder', 'e.g. Paris, Le Havre…')}
+                        options={cityOptions}
+                        inputRef={destCityRef}
+                        error={fieldErrors.destCity}
+                        touched={fieldTouched.destCity}
+                        isValid={
+                          !fieldErrors.destCity && isFilled(lastSelectedCity || formData.destCity)
                         }
+                        maxResults={8}
+                      />
+                      {fieldTouched.destCity && (
+                        <>
+                          {fieldErrors.destCity && (
+                            <span
+                              className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
+                              aria-hidden="true"
+                              aria-label={t('fieldError', 'Error')}
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <line
+                                  x1="12"
+                                  y1="8"
+                                  x2="12"
+                                  y2="12"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <line
+                                  x1="12"
+                                  y1="16"
+                                  x2="12.01"
+                                  y2="16"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                          {!fieldErrors.destCity && isFilled(formData.destCity) && (
+                            <span
+                              className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
+                              aria-hidden="true"
+                              aria-label={t('fieldValid', 'Field is valid')}
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <path
+                                  d="M8 12l2 2 4-4"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {fieldErrors.destCity && (
+                      <p
+                        id="destCity-error"
+                        className="sino-simple-form__field-error"
+                        role="alert"
+                        aria-live="polite"
                       >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Shipping – Origin in China (substep) */}
-              <h3 className="sino-simple-form__subsection-title">
-                {t('simpleStep2Title', 'Pickup in China')}
-              </h3>
-
-              <div className="sino-simple-form__fields sino-simple-form__fields--rows">
-                <div className="sino-simple-form__field sino-simple-form__field--primary">
-                  <label className="sino-simple-form__label" htmlFor="city">
-                    {t('originCity', 'City in China')}
-                  </label>
-                  <input
-                    className="sino-simple-form__input"
-                    type="text"
-                    name="city"
-                    id="city"
-                    value={formData.city}
-                    onChange={onChange}
-                    placeholder={t('originCityPlaceholder', 'e.g. Shenzhen, Guangzhou…')}
-                  />
-                  <p className="sino-simple-form__help">
-                    {t(
-                      'originCityHelp',
-                      'City is enough for now. You can skip the pickup details below if you prefer.'
+                        {fieldErrors.destCity}
+                      </p>
                     )}
-                  </p>
+                    {fieldTouched.destCity &&
+                      !fieldErrors.destCity &&
+                      isFilled(formData.destCity) && (
+                        <p
+                          id="destCity-success"
+                          className="sino-simple-form__sr-only"
+                          aria-live="polite"
+                        >
+                          {t('fieldValid', 'Field is valid')}
+                        </p>
+                      )}
+                  </div>
                 </div>
 
                 <div
                   className={`sino-simple-form__subsection${
-                    showOriginDetails ? ' sino-simple-form__subsection--open' : ''
+                    showDestinationDetails ? ' sino-simple-form__subsection--open' : ''
                   }`}
                 >
                   <button
                     type="button"
                     className="sino-simple-form__subsection-toggle"
-                    onClick={() => setShowOriginDetails((prev) => !prev)}
-                    aria-expanded={showOriginDetails}
-                    aria-controls="origin-details-content"
+                    onClick={() => setShowDestinationDetails((prev) => !prev)}
+                    aria-expanded={showDestinationDetails}
+                    aria-controls="destination-details-content"
                     aria-label={
-                      showOriginDetails
-                        ? t('collapseSection', 'Collapse origin details')
-                        : t('expandSection', 'Expand origin details')
+                      showDestinationDetails
+                        ? t('collapseSection', 'Collapse destination details')
+                        : t('expandSection', 'Expand destination details')
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setShowOriginDetails((prev) => !prev);
+                        setShowDestinationDetails((prev) => !prev);
                       }
                     }}
                   >
                     <span className="sino-simple-form__subsection-label">
-                      {t('originDetailsTitle', 'Advanced pickup details (optional)')}
+                      {t('destinationDetailsTitle', 'Advanced delivery details (optional)')}
                       <small>
                         {t(
-                          'originDetailsSubtitle',
-                          'Useful for door pickup but optional at this stage.'
+                          'destinationDetailsSubtitle',
+                          'Helps us refine delivery but you can skip this for now.'
                         )}
                       </small>
                     </span>
                     <span
                       className={`sino-simple-form__subsection-chevron${
-                        showOriginDetails ? ' sino-simple-form__subsection-chevron--open' : ''
+                        showDestinationDetails ? ' sino-simple-form__subsection-chevron--open' : ''
+                      }`}
+                    >
+                      ▾
+                    </span>
+                  </button>
+                  {showDestinationDetails && (
+                    <div
+                      id="destination-details-content"
+                      className="sino-simple-form__fields sino-simple-form__fields--rows"
+                    >
+                      <div className="sino-simple-form__field">
+                        <label className="sino-simple-form__label">
+                          {t('destinationLocationType', 'Delivery location type')}
+                        </label>
+                        <input
+                          className="sino-simple-form__input"
+                          type="text"
+                          name="destLocationType"
+                          value={formData.destLocationType}
+                          onChange={onChange}
+                          placeholder={t(
+                            'destinationLocationTypePlaceholder',
+                            'Port, warehouse, home address…'
+                          )}
+                        />
+                      </div>
+
+                      <div className="sino-simple-form__field">
+                        <label className="sino-simple-form__label">
+                          {t('destinationZipCode', 'ZIP / postal code')}
+                        </label>
+                        <input
+                          className="sino-simple-form__input"
+                          type="text"
+                          name="destZipCode"
+                          value={formData.destZipCode}
+                          onChange={onChange}
+                          placeholder={t('destinationZipCodePlaceholder', 'e.g. 75001')}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top">
+                  <div className="sino-simple-form__field">
+                    <label className="sino-simple-form__label">
+                      {t('shippingMode', 'Preferred mode')}
+                    </label>
+                    <div className="sino-simple-form__chips">
+                      {[
+                        {
+                          value: 'Sea',
+                          label: 'Sea',
+                          tooltip: t(
+                            'modeSeaHelp',
+                            'Best for large volumes and lower cost when you have a few weeks.'
+                          ),
+                        },
+                        {
+                          value: 'Air',
+                          label: 'Air',
+                          tooltip: t(
+                            'modeAirHelp',
+                            'Faster than sea, ideal for smaller, time-sensitive shipments.'
+                          ),
+                        },
+                        {
+                          value: 'Railway',
+                          label: 'Railway',
+                          tooltip: t(
+                            'modeRailHelp',
+                            'Balanced option Europe–China: faster than sea, cheaper than air.'
+                          ),
+                        },
+                        {
+                          value: 'Express',
+                          label: 'Express',
+                          tooltip: t(
+                            'modeExpressHelp',
+                            'Door‑to‑door courier (DHL/UPS/FedEx) for urgent small parcels.'
+                          ),
+                        },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          className={`sino-simple-chip${
+                            formData.mode === option.value ? ' sino-simple-chip--active' : ''
+                          }`}
+                          data-tooltip={option.tooltip}
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              mode: prev.mode === option.value ? '' : option.value,
+                            }))
+                          }
+                          aria-pressed={formData.mode === option.value ? 'true' : 'false'}
+                          aria-label={`${option.label}${formData.mode === option.value ? ', selected' : ', not selected'}. ${option.tooltip}`}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setFormData((prev) => ({
+                                ...prev,
+                                mode: prev.mode === option.value ? '' : option.value,
+                              }));
+                            }
+                          }}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top">
+                  <div className="sino-simple-form__field">
+                    <label className="sino-simple-form__label">
+                      {t('incotermLabel', 'Trade terms (Incoterm)')}
+                      <span className="sino-simple-form__label-hint">
+                        {t('ifKnown', 'if known')}
+                      </span>
+                    </label>
+                    <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
+                      {[
+                        {
+                          value: 'EXW (Ex Work)',
+                          label: 'EXW (Ex Work)',
+                          tooltip: t(
+                            'incotermEXWTooltip',
+                            'Ex Works: You handle everything from the factory. We pick up at the supplier.'
+                          ),
+                        },
+                        {
+                          value: 'FOB (Free On Board)',
+                          label: 'FOB (Free On Board)',
+                          tooltip: t(
+                            'incotermFOBTooltip',
+                            'Free On Board: Supplier delivers to port, you handle shipping and destination costs.'
+                          ),
+                        },
+                        {
+                          value: 'CIF (Cost Insurance and Freight)',
+                          label: 'CIF (Cost Insurance and Freight)',
+                          tooltip: t(
+                            'incotermCIFTooltip',
+                            'Cost, Insurance & Freight: Supplier pays shipping to your port, you handle destination.'
+                          ),
+                        },
+                        {
+                          value: 'CFR (Cost & Freight)',
+                          label: 'CFR (Cost & Freight)',
+                          tooltip: t(
+                            'incotermCFRTooltip',
+                            'Cost and Freight: Supplier pays shipping to your port.'
+                          ),
+                        },
+                        {
+                          value: 'DAT (Delivery at Terminal)',
+                          label: 'DAT (Delivery at Terminal)',
+                          tooltip: t(
+                            'incotermDATTooltip',
+                            'Delivered At Terminal: Delivered at a named terminal at destination.'
+                          ),
+                        },
+                        {
+                          value: "I don't know yet",
+                          label: "I don't know yet",
+                          tooltip: t(
+                            'incotermNotSureTooltip',
+                            "No problem! We'll help you choose the best option based on your needs."
+                          ),
+                        },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          className={`sino-simple-chip${
+                            formData.incoterm === option.value ? ' sino-simple-chip--active' : ''
+                          }`}
+                          data-tooltip={option.tooltip}
+                          aria-pressed={formData.incoterm === option.value ? 'true' : 'false'}
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              incoterm: prev.incoterm === option.value ? '' : option.value,
+                            }))
+                          }
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shipping – Origin in China (substep) */}
+                <h3 className="sino-simple-form__subsection-title">
+                  {t('simpleStep2Title', 'Pickup in China')}
+                </h3>
+
+                <div className="sino-simple-form__fields sino-simple-form__fields--rows">
+                  <div className="sino-simple-form__field sino-simple-form__field--primary">
+                    <label className="sino-simple-form__label" htmlFor="city">
+                      {t('originCity', 'City in China')}
+                    </label>
+                    <input
+                      className="sino-simple-form__input"
+                      type="text"
+                      name="city"
+                      id="city"
+                      value={formData.city}
+                      onChange={onChange}
+                      placeholder={t('originCityPlaceholder', 'e.g. Shenzhen, Guangzhou…')}
+                    />
+                    <p className="sino-simple-form__help">
+                      {t(
+                        'originCityHelp',
+                        'City is enough for now. You can skip the pickup details below if you prefer.'
+                      )}
+                    </p>
+                  </div>
+
+                  <div
+                    className={`sino-simple-form__subsection${
+                      showOriginDetails ? ' sino-simple-form__subsection--open' : ''
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      className="sino-simple-form__subsection-toggle"
+                      onClick={() => setShowOriginDetails((prev) => !prev)}
+                      aria-expanded={showOriginDetails}
+                      aria-controls="origin-details-content"
+                      aria-label={
+                        showOriginDetails
+                          ? t('collapseSection', 'Collapse origin details')
+                          : t('expandSection', 'Expand origin details')
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setShowOriginDetails((prev) => !prev);
+                        }
+                      }}
+                    >
+                      <span className="sino-simple-form__subsection-label">
+                        {t('originDetailsTitle', 'Advanced pickup details (optional)')}
+                        <small>
+                          {t(
+                            'originDetailsSubtitle',
+                            'Useful for door pickup but optional at this stage.'
+                          )}
+                        </small>
+                      </span>
+                      <span
+                        className={`sino-simple-form__subsection-chevron${
+                          showOriginDetails ? ' sino-simple-form__subsection-chevron--open' : ''
+                        }`}
+                      >
+                        ▾
+                      </span>
+                    </button>
+
+                    {showOriginDetails && (
+                      <div
+                        id="origin-details-content"
+                        className="sino-simple-form__fields sino-simple-form__fields--rows"
+                      >
+                        <div className="sino-simple-form__field">
+                          <label className="sino-simple-form__label">
+                            {t('originLocationType', 'Pickup location type')}
+                          </label>
+                          <input
+                            className="sino-simple-form__input"
+                            type="text"
+                            name="locationType"
+                            value={formData.locationType}
+                            onChange={onChange}
+                            placeholder={t(
+                              'originLocationTypePlaceholder',
+                              'Factory, warehouse, port…'
+                            )}
+                          />
+                        </div>
+
+                        <div className="sino-simple-form__field">
+                          <div className="sino-simple-form__chips">
+                            <button
+                              type="button"
+                              className={`sino-simple-chip${
+                                formData.locationType === 'unknown'
+                                  ? ' sino-simple-chip--active'
+                                  : ''
+                              }`}
+                              onClick={() =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  locationType: 'unknown',
+                                }))
+                              }
+                              aria-pressed={formData.locationType === 'unknown' ? 'true' : 'false'}
+                              aria-label={`${t('originLocationTypeUnknown', "I'm still discussing with my supplier")}${formData.locationType === 'unknown' ? ', selected' : ', not selected'}`}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    locationType: 'unknown',
+                                  }));
+                                }
+                              }}
+                            >
+                              {t(
+                                'originLocationTypeUnknown',
+                                "I'm still discussing with my supplier"
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="sino-simple-form__field">
+                          <label className="sino-simple-form__label">
+                            {t('originZipCode', 'ZIP / postal code in China')}
+                          </label>
+                          <input
+                            className="sino-simple-form__input"
+                            type="text"
+                            name="zipCode"
+                            value={formData.zipCode}
+                            onChange={onChange}
+                            placeholder={t('originZipCodePlaceholder', 'e.g. 518000')}
+                          />
+                        </div>
+
+                        <div className="sino-simple-form__field">
+                          <label className="sino-simple-form__label">
+                            {t('originPort', 'Port of loading')}
+                            <span className="sino-simple-form__label-hint">
+                              {t('ifKnown', 'if known')}
+                            </span>
+                          </label>
+                          <input
+                            className="sino-simple-form__input"
+                            type="text"
+                            name="origin"
+                            value={formData.origin}
+                            onChange={onChange}
+                            placeholder={t(
+                              'originPortPlaceholder',
+                              'e.g. Shenzhen (Yantian), Ningbo…'
+                            )}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+            </>
+          )}
+
+          {/* Shipping from China – Step 2: Cargo details */}
+          {currentStepId === 'shippingCargo' && shippingSelected && (
+            <section className="sino-simple-form__section sino-simple-form__section--service-shipping">
+              <h2 className="sino-simple-form__section-title">
+                <span className="sino-simple-form__section-step">{`Step ${currentStepIndex + 1}`}</span>
+                <span>{t('simpleStep3Title', 'Cargo details')}</span>
+              </h2>
+
+              <SimpleStepProgress
+                stepId="shippingCargo"
+                formData={formData}
+                currentStepIndex={currentStepIndex}
+                totalSteps={totalSteps}
+                t={t}
+              />
+
+              <p className="sino-simple-form__hint">
+                {t(
+                  'simpleStep3Hint',
+                  'A short description, an approximate weight and a rough number of cartons/pallets is enough for a first quote.'
+                )}
+              </p>
+              <p className="sino-simple-form__hint sino-simple-form__hint--secondary">
+                {t(
+                  'simpleStep3ImpactHint',
+                  'These 4 fields have the biggest impact on your rates: route, mode, total weight and when the goods are ready.'
+                )}
+              </p>
+
+              <div className="sino-simple-form__fields sino-simple-form__fields--rows">
+                <div className="sino-simple-form__field sino-simple-form__field--primary">
+                  <label className="sino-simple-form__label" htmlFor="goodsDescription">
+                    {t('goodsDescription', 'What are you shipping?')}
+                  </label>
+                  <input
+                    className="sino-simple-form__input"
+                    type="text"
+                    name="goodsDescription"
+                    id="goodsDescription"
+                    value={formData.goodsDescription}
+                    onChange={onChange}
+                    placeholder={t(
+                      'goodsDescriptionPlaceholder',
+                      'e.g. electronics, furniture, clothing…'
+                    )}
+                  />
+                </div>
+
+                <div
+                  className={`sino-simple-form__field sino-simple-form__field--primary${
+                    fieldTouched.totalWeight && fieldErrors.totalWeight
+                      ? ' sino-simple-form__field--error'
+                      : ''
+                  }${
+                    fieldTouched.totalWeight &&
+                    !fieldErrors.totalWeight &&
+                    isFilled(formData.totalWeight)
+                      ? ' sino-simple-form__field--success'
+                      : ''
+                  }`}
+                >
+                  <label className="sino-simple-form__label" htmlFor="totalWeight">
+                    {t('totalWeight', 'Total Weight (kg)')}
+                    <span className="sino-simple-form__required" aria-label="required">
+                      *
+                    </span>
+                  </label>
+                  <div className="sino-simple-form__field-wrapper">
+                    <input
+                      className={`sino-simple-form__input${
+                        fieldErrors.totalWeight ? ' sino-simple-form__input--error' : ''
+                      }${
+                        fieldTouched.totalWeight &&
+                        !fieldErrors.totalWeight &&
+                        isFilled(formData.totalWeight)
+                          ? ' sino-simple-form__input--success'
+                          : ''
+                      }`}
+                      type="text"
+                      id="totalWeight"
+                      name="totalWeight"
+                      ref={totalWeightRef}
+                      value={formData.totalWeight}
+                      onChange={(event) => {
+                        updateCargoField('totalWeight', event.target.value);
+                        // Clear error when user starts typing
+                        if (fieldErrors.totalWeight) {
+                          setFieldErrors((prev) => {
+                            const newErrors = { ...prev };
+                            delete newErrors.totalWeight;
+                            return newErrors;
+                          });
+                        }
+                      }}
+                      onBlur={() => onBlur('totalWeight', formData.totalWeight)}
+                      placeholder={t('totalWeightPlaceholder', 'e.g. 1 200')}
+                      aria-label={t('totalWeight', 'Estimated total weight')}
+                      aria-describedby={
+                        fieldErrors.totalWeight
+                          ? 'totalWeight-error'
+                          : fieldTouched.totalWeight &&
+                              !fieldErrors.totalWeight &&
+                              isFilled(formData.totalWeight)
+                            ? 'totalWeight-success'
+                            : undefined
+                      }
+                      aria-invalid={fieldErrors.totalWeight ? 'true' : 'false'}
+                      aria-required="true"
+                    />
+                    {fieldTouched.totalWeight && (
+                      <>
+                        {fieldErrors.totalWeight && (
+                          <span
+                            className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              />
+                              <line
+                                x1="12"
+                                y1="8"
+                                x2="12"
+                                y2="12"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                              />
+                              <line
+                                x1="12"
+                                y1="16"
+                                x2="12.01"
+                                y2="16"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                          </span>
+                        )}
+                        {!fieldErrors.totalWeight && isFilled(formData.totalWeight) && (
+                          <span
+                            className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              />
+                              <path
+                                d="M8 12l2 2 4-4"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </div>
+                  {fieldErrors.totalWeight && (
+                    <p
+                      id="totalWeight-error"
+                      className="sino-simple-form__field-error"
+                      role="alert"
+                      aria-live="polite"
+                    >
+                      {fieldErrors.totalWeight}
+                    </p>
+                  )}
+                  {fieldTouched.totalWeight &&
+                    !fieldErrors.totalWeight &&
+                    isFilled(formData.totalWeight) && (
+                      <p
+                        id="totalWeight-success"
+                        className="sino-simple-form__sr-only"
+                        aria-live="polite"
+                      >
+                        {t('fieldValid', 'Field is valid')}
+                      </p>
+                    )}
+                  <p className="sino-simple-form__help">
+                    {t(
+                      'totalWeightHelp',
+                      'Rough estimate is OK. We refine it together before booking.'
+                    )}
+                  </p>
+                </div>
+
+                <div className="sino-simple-form__field">
+                  <label
+                    className={`sino-simple-form__label${
+                      unitsUnknown ? ' sino-simple-form__label--muted' : ''
+                    }`}
+                    htmlFor="numberOfUnits"
+                  >
+                    {t('numberOfUnits', 'Number of cartons / pallets')}
+                  </label>
+                  <div className="sino-simple-form__field-input-group">
+                    <input
+                      className="sino-simple-form__input"
+                      type="number"
+                      min={1}
+                      id="numberOfUnits"
+                      value={formData.numberOfUnits}
+                      onChange={(event) => {
+                        setUnitsUnknown(false);
+                        updateCargoField('numberOfUnits', Number(event.target.value));
+                      }}
+                      placeholder={t('numberOfUnitsPlaceholder', 'e.g. 10 pallets')}
+                    />
+                    <div className="sino-simple-form__chips">
+                      <button
+                        type="button"
+                        className={`sino-simple-chip${unitsUnknown ? ' sino-simple-chip--active' : ''}`}
+                        aria-pressed={unitsUnknown ? 'true' : 'false'}
+                        onClick={() => {
+                          setUnitsUnknown(true);
+                          updateCargoField('numberOfUnits', 0);
+                        }}
+                      >
+                        {t('numberOfUnitsUnknown', "I don't know the exact number yet")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sino-simple-form__field">
+                  <label
+                    className={`sino-simple-form__label${
+                      goodsValueUnknown ? ' sino-simple-form__label--muted' : ''
+                    }`}
+                    htmlFor="goodsValue"
+                  >
+                    {t('goodsValue', 'Estimated cargo value')}
+                  </label>
+                  <div className="sino-simple-form__field-input-group">
+                    <input
+                      className="sino-simple-form__input"
+                      type="text"
+                      name="goodsValue"
+                      id="goodsValue"
+                      value={formData.goodsValue}
+                      onChange={(event) => {
+                        setGoodsValueUnknown(false);
+                        onChange(event);
+                      }}
+                      placeholder={t('goodsValuePlaceholder', 'e.g. 25 000')}
+                    />
+                    <div className="sino-simple-form__chips">
+                      <button
+                        type="button"
+                        className={`sino-simple-chip${
+                          goodsValueUnknown ? ' sino-simple-chip--active' : ''
+                        }`}
+                        aria-pressed={goodsValueUnknown ? 'true' : 'false'}
+                        onClick={() => {
+                          setGoodsValueUnknown(true);
+                          setFormData((prev) => ({
+                            ...prev,
+                            goodsValue: '',
+                          }));
+                        }}
+                      >
+                        {t('goodsValueUnknown', "I don't know the value yet")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sino-simple-form__field">
+                  <label className="sino-simple-form__label" htmlFor="goodsCurrency">
+                    {t('goodsCurrency', 'Currency')}
+                  </label>
+                  <input
+                    className="sino-simple-form__input"
+                    type="text"
+                    name="goodsCurrency"
+                    id="goodsCurrency"
+                    value={formData.goodsCurrency}
+                    onChange={onChange}
+                    placeholder={t('goodsCurrencyPlaceholder', 'USD, EUR…')}
+                  />
+                </div>
+
+                <div className="sino-simple-form__field sino-simple-form__field--primary">
+                  <label className="sino-simple-form__label">
+                    {t('areGoodsReady', 'Are the goods ready?')}
+                  </label>
+                  <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
+                    {[
+                      { value: 'yes', label: t('goodsReadyNow', 'Ready now') },
+                      { value: 'no_in_1_week', label: t('goodsReady1Week', 'In ~1 week') },
+                      { value: 'no_in_2_weeks', label: t('goodsReady2Weeks', 'In ~2 weeks') },
+                      { value: 'no_in_1_month', label: t('goodsReady1Month', 'In ~1 month') },
+                      { value: 'no_date_set', label: t('goodsReadyNoDate', 'No date set yet') },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`sino-simple-chip${
+                          formData.areGoodsReady === option.value ? ' sino-simple-chip--active' : ''
+                        }`}
+                        aria-pressed={formData.areGoodsReady === option.value ? 'true' : 'false'}
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            areGoodsReady: prev.areGoodsReady === option.value ? '' : option.value,
+                          }))
+                        }
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="sino-simple-form__field">
+                  <label className="sino-simple-form__label">
+                    {t('annualVolumeLabel', 'Rough annual volume from China')}
+                    <span className="sino-simple-form__label-hint">{t('ifKnown', 'if known')}</span>
+                  </label>
+                  <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
+                    {[
+                      {
+                        value: '50 ~ 500',
+                        label: '50 ~ 500',
+                      },
+                      {
+                        value: '501 ~ 1000',
+                        label: '501 ~ 1000',
+                      },
+                      {
+                        value: '1001 ~ 5000',
+                        label: '1001 ~ 5000',
+                      },
+                      {
+                        value: '5001+',
+                        label: '5001+',
+                      },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`sino-simple-chip${
+                          formData.annualVolume === option.value ? ' sino-simple-chip--active' : ''
+                        }`}
+                        aria-pressed={formData.annualVolume === option.value ? 'true' : 'false'}
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            annualVolume: prev.annualVolume === option.value ? '' : option.value,
+                          }))
+                        }
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="sino-simple-form__field">
+                  <label className="sino-simple-form__label">
+                    {t('isPersonalOrHazardous', 'Personal effects or hazardous goods?')}
+                  </label>
+                  <div className="sino-simple-form__chips">
+                    {[
+                      {
+                        value: true,
+                        label: t('personalOrHazardousYes', 'Yes, personal or hazardous'),
+                      },
+                      {
+                        value: false,
+                        label: t('personalOrHazardousNo', 'No, standard commercial goods'),
+                      },
+                    ].map((option) => (
+                      <button
+                        key={String(option.value)}
+                        type="button"
+                        className={`sino-simple-chip${
+                          formData.isPersonalOrHazardous === option.value
+                            ? ' sino-simple-chip--active'
+                            : ''
+                        }`}
+                        aria-pressed={
+                          formData.isPersonalOrHazardous === option.value ? 'true' : 'false'
+                        }
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            isPersonalOrHazardous: option.value,
+                          }))
+                        }
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="sino-simple-form__help">
+                    {t(
+                      'isPersonalOrHazardousHelp',
+                      'This only helps us pick the right specialist on our side – it does not change your pricing automatically.'
+                    )}
+                  </p>
+                </div>
+
+                {/* Advanced cargo details (optional) */}
+                <div
+                  className={`sino-simple-form__subsection${
+                    showAdvancedDetails ? ' sino-simple-form__subsection--open' : ''
+                  }`}
+                >
+                  <button
+                    type="button"
+                    className="sino-simple-form__subsection-toggle"
+                    onClick={() => setShowAdvancedDetails((prev) => !prev)}
+                    aria-expanded={showAdvancedDetails}
+                    aria-controls="advanced-details-content"
+                    aria-label={
+                      showAdvancedDetails
+                        ? t('collapseSection', 'Collapse advanced cargo details')
+                        : t('expandSection', 'Expand advanced cargo details')
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setShowAdvancedDetails((prev) => !prev);
+                      }
+                    }}
+                  >
+                    <span className="sino-simple-form__subsection-label">
+                      {t('simpleStep4Title', 'Advanced cargo details (optional)')}
+                      <small>
+                        {t(
+                          'simpleStep4Subtitle',
+                          'Dimensions and remarks help us fine-tune the quote but are not mandatory.'
+                        )}
+                      </small>
+                    </span>
+                    <span
+                      className={`sino-simple-form__subsection-chevron${
+                        showAdvancedDetails ? ' sino-simple-form__subsection-chevron--open' : ''
                       }`}
                     >
                       ▾
                     </span>
                   </button>
 
-                  {showOriginDetails && (
+                  {showAdvancedDetails && (
                     <div
-                      id="origin-details-content"
+                      id="advanced-details-content"
                       className="sino-simple-form__fields sino-simple-form__fields--rows"
                     >
                       <div className="sino-simple-form__field">
-                        <label className="sino-simple-form__label">
-                          {t('originLocationType', 'Pickup location type')}
+                        <label
+                          className={`sino-simple-form__label${
+                            dimensionsUnknown ? ' sino-simple-form__label--muted' : ''
+                          }`}
+                        >
+                          {t('dimensions', 'Approximate dimensions per unit')}
                         </label>
-                        <input
-                          className="sino-simple-form__input"
-                          type="text"
-                          name="locationType"
-                          value={formData.locationType}
-                          onChange={onChange}
-                          placeholder={t(
-                            'originLocationTypePlaceholder',
-                            'Factory, warehouse, port…'
-                          )}
-                        />
-                      </div>
+                        <div className="sino-simple-form__fields sino-simple-form__fields--inline">
+                          <input
+                            className="sino-simple-form__input"
+                            type="text"
+                            value={formData.dimensions.length}
+                            onChange={(event) =>
+                              updateCargoField('dimensions', {
+                                ...formData.dimensions,
+                                length: event.target.value,
+                              })
+                            }
+                            placeholder={t('lengthPlaceholder', 'L (cm)')}
+                          />
+                          <input
+                            className="sino-simple-form__input"
+                            type="text"
+                            value={formData.dimensions.width}
+                            onChange={(event) =>
+                              updateCargoField('dimensions', {
+                                ...formData.dimensions,
+                                width: event.target.value,
+                              })
+                            }
+                            placeholder={t('widthPlaceholder', 'W (cm)')}
+                          />
+                          <input
+                            className="sino-simple-form__input"
+                            type="text"
+                            value={formData.dimensions.height}
+                            onChange={(event) =>
+                              updateCargoField('dimensions', {
+                                ...formData.dimensions,
+                                height: event.target.value,
+                              })
+                            }
+                            placeholder={t('heightPlaceholder', 'H (cm)')}
+                          />
+                        </div>
 
-                      <div className="sino-simple-form__field">
-                        <div className="sino-simple-form__chips">
+                        <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
                           <button
                             type="button"
                             className={`sino-simple-chip${
-                              formData.locationType === 'unknown' ? ' sino-simple-chip--active' : ''
+                              dimensionsUnknown ? ' sino-simple-chip--active' : ''
                             }`}
-                            onClick={() =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                locationType: 'unknown',
-                              }))
-                            }
-                            aria-pressed={formData.locationType === 'unknown' ? 'true' : 'false'}
-                            aria-label={`${t('originLocationTypeUnknown', "I'm still discussing with my supplier")}${formData.locationType === 'unknown' ? ', selected' : ', not selected'}`}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  locationType: 'unknown',
-                                }));
-                              }
+                            aria-pressed={dimensionsUnknown ? 'true' : 'false'}
+                            onClick={() => {
+                              setDimensionsUnknown(true);
+                              updateCargoField('dimensions', { length: '', width: '', height: '' });
                             }}
                           >
-                            {t(
-                              'originLocationTypeUnknown',
-                              "I'm still discussing with my supplier"
-                            )}
+                            {t('dimensionsUnknown', "I don't know the exact dimensions yet")}
                           </button>
                         </div>
                       </div>
 
                       <div className="sino-simple-form__field">
                         <label className="sino-simple-form__label">
-                          {t('originZipCode', 'ZIP / postal code in China')}
-                          <span className="sino-simple-form__optional">Optional</span>
+                          {t('weightPerUnit', 'Weight per unit')}
+                          <span className="sino-simple-form__label-hint">
+                            {t('ifKnown', 'if known')}
+                          </span>
                         </label>
                         <input
                           className="sino-simple-form__input"
                           type="text"
-                          name="zipCode"
-                          value={formData.zipCode}
-                          onChange={onChange}
-                          placeholder={t('originZipCodePlaceholder', 'Optional')}
+                          value={formData.weightPerUnit}
+                          onChange={(event) => {
+                            updateCargoField('weightPerUnit', event.target.value);
+                          }}
+                          placeholder={t('weightPerUnitPlaceholder', 'e.g. 25 kg per pallet')}
                         />
+                        <p className="sino-simple-form__help">
+                          {t(
+                            'weightPerUnitHelp',
+                            'If you know the weight per unit, we can calculate the total weight automatically.'
+                          )}
+                        </p>
                       </div>
+
+                      {/* Cargo Calculations */}
+                      <SimpleCargoCalculations
+                        formData={formData}
+                        setFormData={setFormData}
+                        t={t}
+                      />
 
                       <div className="sino-simple-form__field">
                         <label className="sino-simple-form__label">
-                          {t('originPort', 'Port of loading (if known)')}
-                          <span className="sino-simple-form__optional">Optional</span>
+                          {t('remarks', 'Anything we should know?')}
                         </label>
                         <input
                           className="sino-simple-form__input"
                           type="text"
-                          name="origin"
-                          value={formData.origin}
+                          name="remarks"
+                          value={formData.remarks}
                           onChange={onChange}
                           placeholder={t(
-                            'originPortPlaceholder',
-                            'e.g. Shenzhen (Yantian), Ningbo…'
+                            'remarksPlaceholder',
+                            'Fragile goods, specific deadlines, preferred routing…'
                           )}
                         />
                       </div>
@@ -1413,630 +2036,53 @@ const SimpleQuoteForm: FC = () => {
                 </div>
               </div>
             </section>
-          </>
-        )}
+          )}
 
-        {/* Shipping from China – Step 2: Cargo details */}
-        {currentStepId === 'shippingCargo' && shippingSelected && (
-          <section className="sino-simple-form__section sino-simple-form__section--service-shipping">
-            <h2 className="sino-simple-form__section-title">
-              <span className="sino-simple-form__section-step">{`Step ${currentStepIndex + 1}`}</span>
-              <span>{t('simpleStep3Title', 'Cargo details')}</span>
-            </h2>
+          {/* Final step – Contact & confirmation */}
+          {currentStepId === 'contact' && (
+            <>
+              <SimpleContactSection
+                formData={formData}
+                setFormData={setFormData}
+                t={t}
+                isFilled={isFilled}
+                onChange={onChange}
+                onBlur={onBlur}
+                fieldErrors={fieldErrors}
+                fieldTouched={fieldTouched}
+                firstNameRef={firstNameRef}
+                emailRef={emailRef}
+                phoneRef={phoneRef}
+                stepLabel={`Step ${currentStepIndex + 1}`}
+                currentStepIndex={currentStepIndex}
+                totalSteps={totalSteps}
+              />
 
-            <SimpleStepProgress
-              stepId="shippingCargo"
-              formData={formData}
-              currentStepIndex={currentStepIndex}
-              totalSteps={totalSteps}
-              t={t}
-            />
-
-            <p className="sino-simple-form__hint">
-              {t(
-                'simpleStep3Hint',
-                'A short description, an approximate weight and a rough number of cartons/pallets is enough for a first quote.'
-              )}
-            </p>
-            <p className="sino-simple-form__hint sino-simple-form__hint--secondary">
-              {t(
-                'simpleStep3ImpactHint',
-                'These 4 fields have the biggest impact on your rates: route, mode, total weight and when the goods are ready.'
-              )}
-            </p>
-
-            <div className="sino-simple-form__fields sino-simple-form__fields--rows">
-              <div className="sino-simple-form__field sino-simple-form__field--primary">
-                <label className="sino-simple-form__label" htmlFor="goodsDescription">
-                  {t('goodsDescription', 'What are you shipping?')}
-                </label>
-                <input
-                  className="sino-simple-form__input"
-                  type="text"
-                  name="goodsDescription"
-                  id="goodsDescription"
-                  value={formData.goodsDescription}
-                  onChange={onChange}
-                  placeholder={t(
-                    'goodsDescriptionPlaceholder',
-                    'e.g. electronics, furniture, clothing…'
-                  )}
-                />
-              </div>
-
-              <div
-                className={`sino-simple-form__field sino-simple-form__field--primary${
-                  fieldTouched.totalWeight && fieldErrors.totalWeight
-                    ? ' sino-simple-form__field--error'
-                    : ''
-                }${
-                  fieldTouched.totalWeight &&
-                  !fieldErrors.totalWeight &&
-                  isFilled(formData.loads[0]?.totalWeight ?? '')
-                    ? ' sino-simple-form__field--success'
-                    : ''
-                }`}
-              >
-                <label className="sino-simple-form__label" htmlFor="totalWeight">
-                  {t('totalWeight', 'Estimated total weight')}
-                  <span className="sino-simple-form__required" aria-label="required">
-                    *
-                  </span>
-                </label>
-                <div className="sino-simple-form__field-wrapper">
-                  <input
-                    className={`sino-simple-form__input${
-                      fieldErrors.totalWeight ? ' sino-simple-form__input--error' : ''
-                    }${
-                      fieldTouched.totalWeight &&
-                      !fieldErrors.totalWeight &&
-                      isFilled(formData.loads[0]?.totalWeight ?? '')
-                        ? ' sino-simple-form__input--success'
-                        : ''
-                    }`}
-                    type="text"
-                    id="totalWeight"
-                    name="totalWeight"
-                    ref={totalWeightRef}
-                    value={formData.loads[0]?.totalWeight ?? ''}
-                    onChange={(event) => {
-                      updateFirstLoad('totalWeight', event.target.value);
-                      // Clear error when user starts typing
-                      if (fieldErrors.totalWeight) {
-                        setFieldErrors((prev) => {
-                          const newErrors = { ...prev };
-                          delete newErrors.totalWeight;
-                          return newErrors;
-                        });
-                      }
-                    }}
-                    onBlur={() => onBlur('totalWeight', formData.loads[0]?.totalWeight)}
-                    placeholder={t('totalWeightPlaceholder', 'e.g. 1 200')}
-                    aria-label={t('totalWeight', 'Estimated total weight')}
-                    aria-describedby={
-                      fieldErrors.totalWeight
-                        ? 'totalWeight-error'
-                        : fieldTouched.totalWeight &&
-                            !fieldErrors.totalWeight &&
-                            isFilled(formData.loads[0]?.totalWeight ?? '')
-                          ? 'totalWeight-success'
-                          : undefined
-                    }
-                    aria-invalid={fieldErrors.totalWeight ? 'true' : 'false'}
-                    aria-required="true"
-                  />
-                  {fieldTouched.totalWeight && (
-                    <>
-                      {fieldErrors.totalWeight && (
-                        <span
-                          className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                            <line
-                              x1="12"
-                              y1="8"
-                              x2="12"
-                              y2="12"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                            <line
-                              x1="12"
-                              y1="16"
-                              x2="12.01"
-                              y2="16"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                        </span>
-                      )}
-                      {!fieldErrors.totalWeight &&
-                        isFilled(formData.loads[0]?.totalWeight ?? '') && (
-                          <span
-                            className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
-                            aria-hidden="true"
-                          >
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              />
-                              <path
-                                d="M8 12l2 2 4-4"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        )}
-                    </>
-                  )}
-                </div>
-                {fieldErrors.totalWeight && (
-                  <p
-                    id="totalWeight-error"
-                    className="sino-simple-form__field-error"
-                    role="alert"
-                    aria-live="polite"
-                  >
-                    {fieldErrors.totalWeight}
-                  </p>
-                )}
-                {fieldTouched.totalWeight &&
-                  !fieldErrors.totalWeight &&
-                  isFilled(formData.loads[0]?.totalWeight) && (
-                    <p
-                      id="totalWeight-success"
-                      className="sino-simple-form__sr-only"
-                      aria-live="polite"
-                    >
-                      {t('fieldValid', 'Field is valid')}
-                    </p>
-                  )}
-                <p className="sino-simple-form__help">
-                  {t(
-                    'totalWeightHelp',
-                    'Rough estimate is OK. We refine it together before booking.'
-                  )}
-                </p>
-              </div>
-
-              <div className="sino-simple-form__field">
-                <label
-                  className={`sino-simple-form__label${
-                    unitsUnknown ? ' sino-simple-form__label--muted' : ''
-                  }`}
-                  htmlFor="numberOfUnits"
-                >
-                  {t('numberOfUnits', 'Number of cartons / pallets')}
-                  <span className="sino-simple-form__optional">Optional</span>
-                </label>
-                <div className="sino-simple-form__field-input-group">
-                  <input
-                    className="sino-simple-form__input"
-                    type="number"
-                    min={1}
-                    id="numberOfUnits"
-                    value={formData.loads[0]?.numberOfUnits ?? 1}
-                    onChange={(event) => {
-                      setUnitsUnknown(false);
-                      updateFirstLoad('numberOfUnits', Number(event.target.value));
-                    }}
-                    placeholder={t('numberOfUnitsPlaceholder', 'e.g. 10 pallets')}
-                  />
-                  <div className="sino-simple-form__chips">
-                    <button
-                      type="button"
-                      className={`sino-simple-chip${unitsUnknown ? ' sino-simple-chip--active' : ''}`}
-                      onClick={() => {
-                        setUnitsUnknown(true);
-                        updateFirstLoad('numberOfUnits', 0);
-                      }}
-                    >
-                      {t('numberOfUnitsUnknown', "I don't know the exact number yet")}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sino-simple-form__field">
-                <label
-                  className={`sino-simple-form__label${
-                    goodsValueUnknown ? ' sino-simple-form__label--muted' : ''
-                  }`}
-                  htmlFor="goodsValue"
-                >
-                  {t('goodsValue', 'Estimated cargo value')}
-                  <span className="sino-simple-form__optional">Optional</span>
-                </label>
-                <div className="sino-simple-form__field-input-group">
-                  <input
-                    className="sino-simple-form__input"
-                    type="text"
-                    name="goodsValue"
-                    id="goodsValue"
-                    value={formData.goodsValue}
-                    onChange={(event) => {
-                      setGoodsValueUnknown(false);
-                      onChange(event);
-                    }}
-                    placeholder={t('goodsValuePlaceholder', 'e.g. 25 000')}
-                  />
-                  <div className="sino-simple-form__chips">
-                    <button
-                      type="button"
-                      className={`sino-simple-chip${
-                        goodsValueUnknown ? ' sino-simple-chip--active' : ''
-                      }`}
-                      onClick={() => {
-                        setGoodsValueUnknown(true);
-                        setFormData((prev) => ({
-                          ...prev,
-                          goodsValue: '',
-                        }));
-                      }}
-                    >
-                      {t('goodsValueUnknown', "I don't know the value yet")}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="sino-simple-form__field">
-                <label className="sino-simple-form__label" htmlFor="goodsCurrency">
-                  {t('goodsCurrency', 'Currency')}
-                </label>
-                <input
-                  className="sino-simple-form__input"
-                  type="text"
-                  name="goodsCurrency"
-                  id="goodsCurrency"
-                  value={formData.goodsCurrency}
-                  onChange={onChange}
-                  placeholder={t('goodsCurrencyPlaceholder', 'USD, EUR…')}
-                />
-              </div>
-
-              <div className="sino-simple-form__field sino-simple-form__field--primary">
-                <label className="sino-simple-form__label">
-                  {t('areGoodsReady', 'Are the goods ready?')}
-                </label>
-                <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
-                  {[
-                    { value: 'yes', label: t('goodsReadyNow', 'Ready now') },
-                    { value: 'no_in_1_week', label: t('goodsReady1Week', 'In ~1 week') },
-                    { value: 'no_in_2_weeks', label: t('goodsReady2Weeks', 'In ~2 weeks') },
-                    { value: 'no_in_1_month', label: t('goodsReady1Month', 'In ~1 month') },
-                    { value: 'no_date_set', label: t('goodsReadyNoDate', 'No date set yet') },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      className={`sino-simple-chip${
-                        formData.areGoodsReady === option.value ? ' sino-simple-chip--active' : ''
-                      }`}
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          areGoodsReady: option.value,
-                        }))
-                      }
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="sino-simple-form__field">
-                <label className="sino-simple-form__label">
-                  {t('annualVolumeLabel', 'Rough annual volume from China')}
-                  <span className="sino-simple-form__optional">
-                    {t('annualVolumeOptional', 'Optional – helps us recommend the right setup')}
-                  </span>
-                </label>
-                <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
-                  {[
-                    {
-                      value: '50 ~ 500',
-                      label: '50 ~ 500',
-                    },
-                    {
-                      value: '501 ~ 1000',
-                      label: '501 ~ 1000',
-                    },
-                    {
-                      value: '1001 ~ 5000',
-                      label: '1001 ~ 5000',
-                    },
-                    {
-                      value: '5001+',
-                      label: '5001+',
-                    },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      className={`sino-simple-chip${
-                        formData.annualVolume === option.value ? ' sino-simple-chip--active' : ''
-                      }`}
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          annualVolume: option.value,
-                        }))
-                      }
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="sino-simple-form__field">
-                <label className="sino-simple-form__label">
-                  {t('isPersonalOrHazardous', 'Personal effects or hazardous goods?')}
-                </label>
-                <div className="sino-simple-form__chips">
-                  {[
-                    {
-                      value: true,
-                      label: t('personalOrHazardousYes', 'Yes, personal or hazardous'),
-                    },
-                    {
-                      value: false,
-                      label: t('personalOrHazardousNo', 'No, standard commercial goods'),
-                    },
-                  ].map((option) => (
-                    <button
-                      key={String(option.value)}
-                      type="button"
-                      className={`sino-simple-chip${
-                        formData.isPersonalOrHazardous === option.value
-                          ? ' sino-simple-chip--active'
-                          : ''
-                      }`}
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          isPersonalOrHazardous: option.value,
-                        }))
-                      }
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-                <p className="sino-simple-form__help">
-                  {t(
-                    'isPersonalOrHazardousHelp',
-                    'This only helps us pick the right specialist on our side – it does not change your pricing automatically.'
-                  )}
-                </p>
-              </div>
-
-              {/* Advanced cargo details (optional) */}
-              <div
-                className={`sino-simple-form__subsection${
-                  showAdvancedDetails ? ' sino-simple-form__subsection--open' : ''
-                }`}
-              >
-                <button
-                  type="button"
-                  className="sino-simple-form__subsection-toggle"
-                  onClick={() => setShowAdvancedDetails((prev) => !prev)}
-                  aria-expanded={showAdvancedDetails}
-                  aria-controls="advanced-details-content"
-                  aria-label={
-                    showAdvancedDetails
-                      ? t('collapseSection', 'Collapse advanced cargo details')
-                      : t('expandSection', 'Expand advanced cargo details')
+              {/* Simple footer CTA */}
+              <SimpleFooterSection
+                formData={formData}
+                t={t}
+                selectedServiceLabels={selectedServiceLabels}
+                submitError={submitError}
+                setSubmitError={setSubmitError}
+                isSubmitting={isSubmitting}
+                setIsSubmitting={setIsSubmitting}
+                scrollToFirstError={scrollToFirstError}
+                onSubmissionSuccess={handleSubmissionSuccess}
+                setFieldErrors={setFieldErrors}
+                setFieldTouched={setFieldTouched}
+                orderedSteps={orderedSteps}
+                onEditStep={(stepIndex) => {
+                  setCurrentStepIndex(stepIndex);
+                  if (typeof window !== 'undefined') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setShowAdvancedDetails((prev) => !prev);
-                    }
-                  }}
-                >
-                  <span className="sino-simple-form__subsection-label">
-                    {t('simpleStep4Title', 'Advanced cargo details (optional)')}
-                    <small>
-                      {t(
-                        'simpleStep4Subtitle',
-                        'Dimensions and remarks help us fine-tune the quote but are not mandatory.'
-                      )}
-                    </small>
-                  </span>
-                  <span
-                    className={`sino-simple-form__subsection-chevron${
-                      showAdvancedDetails ? ' sino-simple-form__subsection-chevron--open' : ''
-                    }`}
-                  >
-                    ▾
-                  </span>
-                </button>
-
-                {showAdvancedDetails && (
-                  <div
-                    id="advanced-details-content"
-                    className="sino-simple-form__fields sino-simple-form__fields--rows"
-                  >
-                    <div className="sino-simple-form__field">
-                      <label
-                        className={`sino-simple-form__label${
-                          dimensionsUnknown ? ' sino-simple-form__label--muted' : ''
-                        }`}
-                      >
-                        {t('dimensions', 'Approximate dimensions per unit')}
-                      </label>
-                      <div className="sino-simple-form__fields sino-simple-form__fields--inline">
-                        <input
-                          className="sino-simple-form__input"
-                          type="text"
-                          value={formData.loads[0]?.dimensions.length ?? ''}
-                          onChange={(event) =>
-                            updateFirstLoad('dimensions', {
-                              ...formData.loads[0]?.dimensions,
-                              length: event.target.value,
-                            })
-                          }
-                          placeholder={t('lengthPlaceholder', 'L (cm)')}
-                        />
-                        <input
-                          className="sino-simple-form__input"
-                          type="text"
-                          value={formData.loads[0]?.dimensions.width ?? ''}
-                          onChange={(event) =>
-                            updateFirstLoad('dimensions', {
-                              ...formData.loads[0]?.dimensions,
-                              width: event.target.value,
-                            })
-                          }
-                          placeholder={t('widthPlaceholder', 'W (cm)')}
-                        />
-                        <input
-                          className="sino-simple-form__input"
-                          type="text"
-                          value={formData.loads[0]?.dimensions.height ?? ''}
-                          onChange={(event) =>
-                            updateFirstLoad('dimensions', {
-                              ...formData.loads[0]?.dimensions,
-                              height: event.target.value,
-                            })
-                          }
-                          placeholder={t('heightPlaceholder', 'H (cm)')}
-                        />
-                      </div>
-
-                      <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
-                        <button
-                          type="button"
-                          className={`sino-simple-chip${
-                            dimensionsUnknown ? ' sino-simple-chip--active' : ''
-                          }`}
-                          onClick={() => {
-                            setDimensionsUnknown(true);
-                            updateFirstLoad('dimensions', { length: '', width: '', height: '' });
-                          }}
-                        >
-                          {t('dimensionsUnknown', "I don't know the exact dimensions yet")}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="sino-simple-form__field">
-                      <label className="sino-simple-form__label">
-                        {t('weightPerUnit', 'Weight per unit (optional)')}
-                      </label>
-                      <input
-                        className="sino-simple-form__input"
-                        type="text"
-                        value={formData.loads[0]?.weightPerUnit ?? ''}
-                        onChange={(event) => {
-                          updateFirstLoad('weightPerUnit', event.target.value);
-                        }}
-                        placeholder={t('weightPerUnitPlaceholder', 'e.g. 25 kg per pallet')}
-                      />
-                      <p className="sino-simple-form__help">
-                        {t(
-                          'weightPerUnitHelp',
-                          'If you know the weight per unit, we can calculate the total weight automatically.'
-                        )}
-                      </p>
-                    </div>
-
-                    {/* Cargo Calculations */}
-                    <SimpleCargoCalculations formData={formData} setFormData={setFormData} t={t} />
-
-                    <div className="sino-simple-form__field">
-                      <label className="sino-simple-form__label">
-                        {t('remarks', 'Anything we should know?')}
-                      </label>
-                      <input
-                        className="sino-simple-form__input"
-                        type="text"
-                        name="remarks"
-                        value={formData.remarks}
-                        onChange={onChange}
-                        placeholder={t(
-                          'remarksPlaceholder',
-                          'Fragile goods, specific deadlines, preferred routing…'
-                        )}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Final step – Contact & confirmation */}
-        {currentStepId === 'contact' && (
-          <>
-            <SimpleContactSection
-              formData={formData}
-              setFormData={setFormData}
-              t={t}
-              isFilled={isFilled}
-              onChange={onChange}
-              onBlur={onBlur}
-              fieldErrors={fieldErrors}
-              fieldTouched={fieldTouched}
-              firstNameRef={firstNameRef}
-              emailRef={emailRef}
-              phoneRef={phoneRef}
-              stepLabel={`Step ${currentStepIndex + 1}`}
-              currentStepIndex={currentStepIndex}
-              totalSteps={totalSteps}
-            />
-
-            {/* Simple footer CTA */}
-            <SimpleFooterSection
-              formData={formData}
-              t={t}
-              selectedServiceLabels={selectedServiceLabels}
-              submitError={submitError}
-              setSubmitError={setSubmitError}
-              isSubmitting={isSubmitting}
-              setIsSubmitting={setIsSubmitting}
-              scrollToFirstError={scrollToFirstError}
-              onSubmissionSuccess={handleSubmissionSuccess}
-              setFieldErrors={setFieldErrors}
-              setFieldTouched={setFieldTouched}
-              orderedSteps={orderedSteps}
-              onEditStep={(stepIndex) => {
-                setCurrentStepIndex(stepIndex);
-                if (typeof window !== 'undefined') {
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-              }}
-            />
-          </>
-        )}
+                }}
+              />
+            </>
+          )}
+        </div>
+        {/* End step content */}
 
         {/* Navigation - afficher sur toutes les étapes */}
         <SimpleStepNavigation

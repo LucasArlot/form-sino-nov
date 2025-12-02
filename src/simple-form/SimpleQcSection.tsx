@@ -1,11 +1,12 @@
 import type { FC } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormProps } from './context/types';
 
-type SimpleQcSectionProps = Pick<QuoteFormContextValue, 'formData' | 'setFormData'> & {
+type SimpleQcSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
   showQcAdvanced: boolean;
   setShowQcAdvanced: (updater: (prev: boolean) => boolean) => void;
   stepLabel?: string;
+  isQuickQuote?: boolean;
 };
 
 const SimpleQcSection: FC<SimpleQcSectionProps> = ({
@@ -15,6 +16,8 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
   showQcAdvanced,
   setShowQcAdvanced,
   stepLabel,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isQuickQuote = false,
 }) => {
   if (!formData.servicesRequested.qc) return null;
 
@@ -29,6 +32,9 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label">
             {t('qcType', 'What type of inspection do you need?')}
+            <span className="sino-simple-form__required" aria-label="required">
+              *
+            </span>
           </label>
           <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
             {[
@@ -51,7 +57,7 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
                     ...prev,
                     qc: {
                       ...prev.qc,
-                      type: option.value,
+                      type: prev.qc.type === option.value ? '' : option.value,
                     },
                   }))
                 }
@@ -83,7 +89,7 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
                     ...prev,
                     qc: {
                       ...prev.qc,
-                      productionStage: option.value,
+                      productionStage: prev.qc.productionStage === option.value ? '' : option.value,
                     },
                   }))
                 }
@@ -97,6 +103,9 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label" htmlFor="qcFactoryCity">
             {t('qcFactoryCity', 'Factory location (city in China)')}
+            <span className="sino-simple-form__required" aria-label="required">
+              *
+            </span>
           </label>
           <input
             id="qcFactoryCity"
@@ -118,7 +127,8 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
 
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label" htmlFor="qcPreferredDate">
-            {t('qcPreferredDate', 'Preferred inspection date (approximate is OK)')}
+            {t('qcPreferredDate', 'Preferred inspection date')}
+            <span className="sino-simple-form__label-hint">{t('ifKnown', 'if known')}</span>
           </label>
           <input
             id="qcPreferredDate"
@@ -148,12 +158,9 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
             onClick={() => setShowQcAdvanced((prev) => !prev)}
           >
             <span className="sino-simple-form__subsection-label">
-              {t('qcAdvancedTitle', 'Advanced inspection details (optional)')}
+              {t('qcAdvancedTitle', 'Additional inspection details (optional)')}
               <small>
-                {t(
-                  'qcAdvancedSubtitle',
-                  'Open this if you want to add specific checkpoints, batch sizes or constraints.'
-                )}
+                {t('qcAdvancedSubtitle', 'Specific checkpoints, batch sizes or constraints.')}
               </small>
             </span>
             <span
@@ -169,7 +176,7 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
             <div className="sino-simple-form__fields sino-simple-form__fields--rows">
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label" htmlFor="qcNotes">
-                  {t('qcNotes', 'Anything else we should know about this inspection?')}
+                  {t('qcNotes', 'Anything else we should know?')}
                 </label>
                 <textarea
                   id="qcNotes"
@@ -186,7 +193,7 @@ const SimpleQcSection: FC<SimpleQcSectionProps> = ({
                   }
                   placeholder={t(
                     'qcNotesPlaceholder',
-                    'Product type, quantities, deadlines, specific checkpoints, etc.'
+                    'Product type, quantities, deadlines, specific checkpoints…'
                   )}
                 />
               </div>

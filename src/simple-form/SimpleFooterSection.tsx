@@ -1,10 +1,12 @@
 import type { FC } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormData } from './context/types';
 import { prepareSubmissionPayload, submitFormData } from './utils/submitForm';
 import { validateStepFields } from './utils/validation';
 import SimpleReviewSection from './SimpleReviewSection';
 
-type SimpleFooterSectionProps = Pick<QuoteFormContextValue, 'formData'> & {
+type SimpleFooterSectionProps = {
+  formData: SimpleFormData;
+} & {
   t: (key: string, fallback: string) => string;
   selectedServiceLabels: string[];
   submitError: string | null;
@@ -54,7 +56,7 @@ const SimpleFooterSection: FC<SimpleFooterSectionProps> = ({
           <p className="sino-simple-form__footer-title">
             {t('simpleFooterTitle', 'Ready to get your plan?')}
           </p>
-          <p className="sino-simple-form__footer-subtitle">
+          <p id="sino-simple-form__footer-subtitle" className="sino-simple-form__footer-subtitle">
             {t(
               'simpleFooterSubtitle',
               'A SINO expert (not a bot) will email you a first quote within 24h (Mon–Fri).'
@@ -72,6 +74,8 @@ const SimpleFooterSection: FC<SimpleFooterSectionProps> = ({
           <button
             type="button"
             className="sino-simple-form__cta-button"
+            aria-label={t('getQuoteAria', 'Submit form to get your quote')}
+            aria-describedby="sino-simple-form__footer-subtitle"
             onClick={async () => {
               if (isSubmitting) return;
 

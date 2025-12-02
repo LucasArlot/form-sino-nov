@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormProps } from './context/types';
 
-type SimpleChinaVisitSectionProps = Pick<QuoteFormContextValue, 'formData' | 'setFormData'> & {
+type SimpleChinaVisitSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
   showChinaVisitLogistics: boolean;
   setShowChinaVisitLogistics: (updater: (prev: boolean) => boolean) => void;
@@ -18,6 +18,50 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
 }) => {
   if (!formData.servicesRequested.chinaVisits) return null;
 
+  const visitTypes = formData.chinaVisit.visitType;
+
+  const toggleVisitType = (value: string) => {
+    setFormData((prev) => {
+      const currentTypes = prev.chinaVisit.visitType;
+      const isSelected = currentTypes.includes(value);
+      const newTypes = isSelected
+        ? currentTypes.filter((t) => t !== value)
+        : [...currentTypes, value];
+
+      return {
+        ...prev,
+        chinaVisit: {
+          ...prev.chinaVisit,
+          visitType: newTypes,
+        },
+      };
+    });
+  };
+
+  // Derived states
+  const hasCantonFair = visitTypes.includes('Canton Fair');
+  const hasYiwu = visitTypes.includes('Yiwu Market');
+  const hasFactoryVisits = visitTypes.includes('Factory Visits');
+  const hasOtherFair = visitTypes.includes('Other Trade Fair');
+
+  // Logic: Do we need to ask for main city?
+  // Only if Factory Visits or Other Trade Fair is selected (and not just Canton/Yiwu)
+  const needsMainCity = hasFactoryVisits || hasOtherFair;
+
+  // Logic: Do we need to ask for other cities?
+  // Always useful if they're doing multiple things
+  const needsOtherCities = visitTypes.length > 0;
+
+  // Auto-determine main city based on selection
+  const getAutoCity = (): string => {
+    if (hasCantonFair && !hasYiwu && !hasFactoryVisits && !hasOtherFair) return 'Guangzhou';
+    if (hasYiwu && !hasCantonFair && !hasFactoryVisits && !hasOtherFair) return 'Yiwu';
+    if (hasCantonFair && hasYiwu && !hasFactoryVisits && !hasOtherFair) return 'Guangzhou, Yiwu';
+    return '';
+  };
+
+  const autoCity = getAutoCity();
+
   return (
     <section className="sino-simple-form__section sino-simple-form__section--service-chinaVisits">
       <h2 className="sino-simple-form__section-title">
@@ -25,141 +69,64 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
         <span>{t('chinaVisitTitle', 'China visits & trade fairs')}</span>
       </h2>
 
+      <p className="sino-simple-form__hint">
+        {t('chinaVisitHint', 'Select all that apply. We can help you plan a multi-stop trip.')}
+      </p>
+
       <div className="sino-simple-form__fields sino-simple-form__fields--rows">
+        {/* Visit Type Selection (Multi-select) */}
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label">
-            {t('chinaVisitType', 'What kind of visit are you planning?')}
+            {t('chinaVisitType', 'What would you like to visit?')}
+            <span className="sino-simple-form__required" aria-label="required">
+              *
+            </span>
           </label>
           <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
             {[
-              { value: 'Canton Fair', label: 'Canton Fair' },
+              { value: 'Canton Fair', label: 'Canton Fair (Guangzhou)' },
               { value: 'Yiwu Market', label: 'Yiwu Market' },
-              { value: 'Both', label: 'Both' },
-            ].map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={`sino-simple-chip${
-                  formData.chinaVisit.visitType === option.value ? ' sino-simple-chip--active' : ''
-                }`}
-                onClick={() =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    chinaVisit: {
-                      ...prev.chinaVisit,
-                      visitType: option.value,
-                    },
-                  }))
-                }
-              >
-                {option.label}
-              </button>
-            ))}
+              { value: 'Factory Visits', label: 'Factory Visits' },
+              { value: 'Other Trade Fair', label: 'Other Trade Fair' },
+            ].map((option) => {
+              const isSelected = visitTypes.includes(option.value);
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`sino-simple-chip${isSelected ? ' sino-simple-chip--active' : ''}`}
+                  onClick={() => toggleVisitType(option.value)}
+                  aria-pressed={isSelected ? 'true' : 'false'}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        <div className="sino-simple-form__field">
-          <label className="sino-simple-form__label" htmlFor="chinaVisitMainCity">
-            {t('chinaVisitMainCity', 'Main city or area in China')}
-          </label>
-          <input
-            id="chinaVisitMainCity"
-            className="sino-simple-form__input"
-            type="text"
-            value={formData.chinaVisit.mainCity}
-            onChange={(event) =>
-              setFormData((prev) => ({
-                ...prev,
-                chinaVisit: {
-                  ...prev.chinaVisit,
-                  mainCity: event.target.value,
-                },
-              }))
-            }
-            placeholder={t(
-              'chinaVisitMainCityPlaceholder',
-              'Guangzhou, Yiwu, Shenzhen, Shanghai, etc.'
-            )}
-          />
-        </div>
-
-        <div className="sino-simple-form__field">
-          <label className="sino-simple-form__label" htmlFor="chinaVisitOtherCities">
-            {t('chinaVisitOtherCities', 'Other cities to visit (optional)')}
-          </label>
-          <input
-            id="chinaVisitOtherCities"
-            className="sino-simple-form__input"
-            type="text"
-            value={formData.chinaVisit.otherCities}
-            onChange={(event) =>
-              setFormData((prev) => ({
-                ...prev,
-                chinaVisit: {
-                  ...prev.chinaVisit,
-                  otherCities: event.target.value,
-                },
-              }))
-            }
-            placeholder={t('chinaVisitOtherCitiesPlaceholder', 'Separated by commas if needed.')}
-          />
-        </div>
-
-        {(formData.chinaVisit.visitType === 'other_fair' ||
-          formData.chinaVisit.visitType === 'mixed_trip' ||
-          formData.chinaVisit.visitType === 'factory_visits' ||
-          formData.chinaVisit.visitType === 'business_immersion_day' ||
-          formData.chinaVisit.visitType === 'supplier_roadshow' ||
-          formData.chinaVisit.visitType === 'factory_audit_visit') && (
-          <div className="sino-simple-form__field">
-            <label className="sino-simple-form__label" htmlFor="chinaVisitFairName">
-              {t('chinaVisitFairName', 'Which trade fair or market?')}
-            </label>
-            <input
-              id="chinaVisitFairName"
-              className="sino-simple-form__input"
-              type="text"
-              value={formData.chinaVisit.fairName}
-              onChange={(event) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  chinaVisit: {
-                    ...prev.chinaVisit,
-                    fairName: event.target.value,
-                  },
-                }))
-              }
-              placeholder={t(
-                'chinaVisitFairNamePlaceholder',
-                'Name of the fair or market you plan to visit.'
-              )}
-            />
-          </div>
-        )}
-
-        {(formData.chinaVisit.visitType === 'Canton Fair' ||
-          formData.chinaVisit.visitType === 'Both') && (
+        {/* Canton Fair Phase (Conditional) */}
+        {hasCantonFair && (
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label">
-              {t('chinaVisitCantonPhase', 'Canton Fair phase')}
+              {t('chinaVisitCantonPhase', 'Which phase?')}
             </label>
-            <div className="sino-simple-form__chips">
+            <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
               {[
                 {
-                  value:
-                    'Phase 1 (April) - Electronics, Home Appliances, Building Materials, Industrial Products',
-                  label:
-                    'Phase 1 (April) - Electronics, Home Appliances, Building Materials, Industrial Products',
+                  value: 'Phase 1',
+                  label: 'Phase 1',
+                  tooltip: 'Electronics, Machinery, Vehicles, Building Materials',
                 },
                 {
-                  value: 'Phase 2 (April) - Consumer Goods, Gifts, Home Decoration',
-                  label: 'Phase 2 (April) - Consumer Goods, Gifts, Home Decoration',
+                  value: 'Phase 2',
+                  label: 'Phase 2',
+                  tooltip: 'Consumer Goods, Gifts, Home Decor',
                 },
                 {
-                  value:
-                    'Phase 3 (May) - Textiles, Garments, Shoes, Office Supplies, Bags, Food, and Healthcare Products',
-                  label:
-                    'Phase 3 (May) - Textiles, Garments, Shoes, Office Supplies, Bags, Food, and Healthcare Products',
+                  value: 'Phase 3',
+                  label: 'Phase 3',
+                  tooltip: 'Textiles, Shoes, Office Supplies, Food',
                 },
               ].map((option) => (
                 <button
@@ -170,13 +137,11 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
                       ? ' sino-simple-chip--active'
                       : ''
                   }`}
+                  data-tooltip={option.tooltip}
                   onClick={() =>
                     setFormData((prev) => ({
                       ...prev,
-                      chinaVisit: {
-                        ...prev.chinaVisit,
-                        cantonPhase: option.value,
-                      },
+                      chinaVisit: { ...prev.chinaVisit, cantonPhase: option.value },
                     }))
                   }
                 >
@@ -184,46 +149,155 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
                 </button>
               ))}
             </div>
+            <p className="sino-simple-form__help">
+              {t('cantonPhaseHelp', 'Held in April/May and October/November each year.')}
+            </p>
           </div>
         )}
 
+        {/* Other Trade Fair Name (Conditional) */}
+        {hasOtherFair && (
+          <div className="sino-simple-form__field">
+            <label className="sino-simple-form__label" htmlFor="chinaVisitFairName">
+              {t('chinaVisitFairName', 'Which trade fair?')}
+              <span className="sino-simple-form__required" aria-label="required">
+                *
+              </span>
+            </label>
+            <input
+              id="chinaVisitFairName"
+              className="sino-simple-form__input"
+              type="text"
+              value={formData.chinaVisit.fairName}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  chinaVisit: { ...prev.chinaVisit, fairName: e.target.value },
+                }))
+              }
+              placeholder="e.g. CIFF Furniture Fair, China Beauty Expo…"
+            />
+          </div>
+        )}
+
+        {/* Factory Visit Description (Conditional) */}
+        {hasFactoryVisits && (
+          <div className="sino-simple-form__field">
+            <label className="sino-simple-form__label" htmlFor="chinaVisitFactoryDescription">
+              {t('chinaVisitFactoryDescription', 'What kind of factories?')}
+            </label>
+            <textarea
+              id="chinaVisitFactoryDescription"
+              className="sino-simple-form__input sino-simple-form__input--textarea"
+              value={formData.chinaVisit.factoryDescription || ''}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  chinaVisit: { ...prev.chinaVisit, factoryDescription: e.target.value },
+                }))
+              }
+              placeholder="Product categories, specific suppliers, regions…"
+            />
+          </div>
+        )}
+
+        {/* Main City - Only if needed */}
+        {needsMainCity && (
+          <div className="sino-simple-form__field">
+            <label className="sino-simple-form__label" htmlFor="chinaVisitMainCity">
+              {t('chinaVisitMainCity', 'Main city or region')}
+              <span className="sino-simple-form__required" aria-label="required">
+                *
+              </span>
+            </label>
+            <input
+              id="chinaVisitMainCity"
+              className="sino-simple-form__input"
+              type="text"
+              value={formData.chinaVisit.mainCity}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  chinaVisit: { ...prev.chinaVisit, mainCity: e.target.value },
+                }))
+              }
+              placeholder="Shenzhen, Dongguan, Shanghai…"
+            />
+          </div>
+        )}
+
+        {/* Auto-detected city info (when Canton/Yiwu only) */}
+        {autoCity && !needsMainCity && (
+          <div className="sino-simple-form__field">
+            <p className="sino-simple-form__info">
+              📍 {t('autoDetectedCity', 'Your trip will be based in')}: <strong>{autoCity}</strong>
+            </p>
+          </div>
+        )}
+
+        {/* Other Cities */}
+        {needsOtherCities && (
+          <div className="sino-simple-form__field">
+            <label className="sino-simple-form__label" htmlFor="chinaVisitOtherCities">
+              {hasFactoryVisits && !hasCantonFair && !hasYiwu
+                ? t('chinaVisitFactoryCities', 'Cities/regions to visit')
+                : t('chinaVisitOtherCities', 'Other cities to visit')}{' '}
+              {!(hasFactoryVisits && !hasCantonFair && !hasYiwu) && (
+                <span className="sino-simple-form__label-hint">
+                  {t('ifApplicable', 'if applicable')}
+                </span>
+              )}
+            </label>
+            <input
+              id="chinaVisitOtherCities"
+              className="sino-simple-form__input"
+              type="text"
+              value={formData.chinaVisit.otherCities}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  chinaVisit: { ...prev.chinaVisit, otherCities: e.target.value },
+                }))
+              }
+              placeholder="Separated by commas"
+            />
+          </div>
+        )}
+
+        {/* Dates & Duration */}
         <div className="sino-simple-form__fields sino-simple-form__fields--inline">
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label" htmlFor="chinaVisitStartDate">
-              {t('chinaVisitStartDate', 'Planned start date')}
+              {t('chinaVisitStartDate', 'Start date')}
+              <span className="sino-simple-form__label-hint">{t('ifKnown', 'if known')}</span>
             </label>
             <input
               id="chinaVisitStartDate"
               className="sino-simple-form__input"
               type="date"
               value={formData.chinaVisit.startDate}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  chinaVisit: {
-                    ...prev.chinaVisit,
-                    startDate: event.target.value,
-                  },
+                  chinaVisit: { ...prev.chinaVisit, startDate: e.target.value },
                 }))
               }
             />
           </div>
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label" htmlFor="chinaVisitEndDate">
-              {t('chinaVisitEndDate', 'Planned end date')}
+              {t('chinaVisitEndDate', 'End date')}
+              <span className="sino-simple-form__label-hint">{t('ifKnown', 'if known')}</span>
             </label>
             <input
               id="chinaVisitEndDate"
               className="sino-simple-form__input"
               type="date"
               value={formData.chinaVisit.endDate}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  chinaVisit: {
-                    ...prev.chinaVisit,
-                    endDate: event.target.value,
-                  },
+                  chinaVisit: { ...prev.chinaVisit, endDate: e.target.value },
                 }))
               }
             />
@@ -233,29 +307,29 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
         <div className="sino-simple-form__fields sino-simple-form__fields--inline">
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label" htmlFor="chinaVisitNumberOfDays">
-              {t('chinaVisitNumberOfDays', 'Rough number of days on site')}
+              {t('chinaVisitNumberOfDays', 'Days on site')}
             </label>
             <input
               id="chinaVisitNumberOfDays"
               className="sino-simple-form__input"
               type="number"
-              min={0}
+              min={1}
               value={formData.chinaVisit.numberOfDays ?? ''}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
                   chinaVisit: {
                     ...prev.chinaVisit,
-                    numberOfDays: event.target.value ? Number(event.target.value) : null,
+                    numberOfDays: e.target.value ? Number(e.target.value) : null,
                   },
                 }))
               }
-              placeholder={t('chinaVisitNumberOfDaysPlaceholder', 'e.g. 5')}
+              placeholder="e.g. 5"
             />
           </div>
           <div className="sino-simple-form__field">
             <label className="sino-simple-form__label" htmlFor="chinaVisitNumberOfTravelers">
-              {t('chinaVisitNumberOfTravelers', 'How many people are traveling?')}
+              {t('chinaVisitNumberOfTravelers', 'Travelers')}
             </label>
             <input
               id="chinaVisitNumberOfTravelers"
@@ -263,43 +337,41 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
               type="number"
               min={1}
               value={formData.chinaVisit.numberOfTravelers ?? ''}
-              onChange={(event) =>
+              onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
                   chinaVisit: {
                     ...prev.chinaVisit,
-                    numberOfTravelers: event.target.value ? Number(event.target.value) : null,
+                    numberOfTravelers: e.target.value ? Number(e.target.value) : null,
                   },
                 }))
               }
-              placeholder={t('chinaVisitNumberOfTravelersPlaceholder', 'e.g. 2')}
+              placeholder="e.g. 2"
             />
           </div>
         </div>
 
+        {/* Trip Logistics (Collapsible) */}
         <div
-          className={`sino-simple-form__subsection${
-            showChinaVisitLogistics ? ' sino-simple-form__subsection--open' : ''
-          }`}
+          className={`sino-simple-form__subsection${showChinaVisitLogistics ? ' sino-simple-form__subsection--open' : ''}`}
         >
           <button
             type="button"
             className="sino-simple-form__subsection-toggle"
             onClick={() => setShowChinaVisitLogistics((prev) => !prev)}
+            aria-expanded={showChinaVisitLogistics}
           >
             <span className="sino-simple-form__subsection-label">
-              {t('chinaVisitLogisticsTitle', 'Trip logistics (optional)')}
+              {t('chinaVisitLogisticsTitle', 'Advanced trip logistics (optional)')}
               <small>
                 {t(
                   'chinaVisitLogisticsSubtitle',
-                  'Open this if you also want help with guides, transport and hotels.'
+                  'Local guide, transport arrangements, hotel booking.'
                 )}
               </small>
             </span>
             <span
-              className={`sino-simple-form__subsection-chevron${
-                showChinaVisitLogistics ? ' sino-simple-form__subsection-chevron--open' : ''
-              }`}
+              className={`sino-simple-form__subsection-chevron${showChinaVisitLogistics ? ' sino-simple-form__subsection-chevron--open' : ''}`}
             >
               ▾
             </span>
@@ -307,126 +379,103 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
 
           {showChinaVisitLogistics && (
             <div className="sino-simple-form__fields sino-simple-form__fields--rows">
+              {/* Guide */}
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label">
-                  {t('chinaVisitNeedGuide', 'Do you need a local guide / interpreter?')}
+                  {t('chinaVisitNeedGuide', 'Local guide / interpreter?')}
                 </label>
                 <div className="sino-simple-form__chips">
-                  {[
-                    { value: true, label: t('chinaVisitNeedGuideYes', 'Yes') },
-                    { value: false, label: t('chinaVisitNeedGuideNo', 'No') },
-                  ].map((option) => (
+                  {[true, false].map((val) => (
                     <button
-                      key={String(option.value)}
+                      key={String(val)}
                       type="button"
-                      className={`sino-simple-chip${
-                        formData.chinaVisit.needGuide === option.value
-                          ? ' sino-simple-chip--active'
-                          : ''
-                      }`}
+                      className={`sino-simple-chip${formData.chinaVisit.needGuide === val ? ' sino-simple-chip--active' : ''}`}
                       onClick={() =>
                         setFormData((prev) => ({
                           ...prev,
                           chinaVisit: {
                             ...prev.chinaVisit,
-                            needGuide: option.value,
+                            needGuide: prev.chinaVisit.needGuide === val ? null : val,
                           },
                         }))
                       }
                     >
-                      {option.label}
+                      {val ? 'Yes' : 'No'}
                     </button>
                   ))}
                 </div>
               </div>
 
+              {/* Transport */}
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label">
-                  {t('chinaVisitNeedTransport', 'Do you need local transport arrangements?')}
+                  {t('chinaVisitNeedTransport', 'Local transport?')}
                 </label>
                 <div className="sino-simple-form__chips">
-                  {[
-                    { value: true, label: t('chinaVisitNeedTransportYes', 'Yes') },
-                    { value: false, label: t('chinaVisitNeedTransportNo', 'No') },
-                  ].map((option) => (
+                  {[true, false].map((val) => (
                     <button
-                      key={String(option.value)}
+                      key={String(val)}
                       type="button"
-                      className={`sino-simple-chip${
-                        formData.chinaVisit.needTransport === option.value
-                          ? ' sino-simple-chip--active'
-                          : ''
-                      }`}
+                      className={`sino-simple-chip${formData.chinaVisit.needTransport === val ? ' sino-simple-chip--active' : ''}`}
                       onClick={() =>
                         setFormData((prev) => ({
                           ...prev,
                           chinaVisit: {
                             ...prev.chinaVisit,
-                            needTransport: option.value,
+                            needTransport: prev.chinaVisit.needTransport === val ? null : val,
                           },
                         }))
                       }
                     >
-                      {option.label}
+                      {val ? 'Yes' : 'No'}
                     </button>
                   ))}
                 </div>
               </div>
 
+              {/* Hotels */}
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label">
-                  {t('chinaVisitNeedHotels', 'Do you need help with hotel booking?')}
+                  {t('chinaVisitNeedHotels', 'Hotel booking help?')}
                 </label>
                 <div className="sino-simple-form__chips">
-                  {[
-                    { value: true, label: t('chinaVisitNeedHotelsYes', 'Yes') },
-                    { value: false, label: t('chinaVisitNeedHotelsNo', 'No') },
-                  ].map((option) => (
+                  {[true, false].map((val) => (
                     <button
-                      key={String(option.value)}
+                      key={String(val)}
                       type="button"
-                      className={`sino-simple-chip${
-                        formData.chinaVisit.needHotels === option.value
-                          ? ' sino-simple-chip--active'
-                          : ''
-                      }`}
+                      className={`sino-simple-chip${formData.chinaVisit.needHotels === val ? ' sino-simple-chip--active' : ''}`}
                       onClick={() =>
                         setFormData((prev) => ({
                           ...prev,
                           chinaVisit: {
                             ...prev.chinaVisit,
-                            needHotels: option.value,
+                            needHotels: prev.chinaVisit.needHotels === val ? null : val,
                           },
                         }))
                       }
                     >
-                      {option.label}
+                      {val ? 'Yes' : 'No'}
                     </button>
                   ))}
                 </div>
               </div>
 
+              {/* Notes */}
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label" htmlFor="chinaVisitNotes">
-                  {t('chinaVisitNotes', 'Anything else about your trip we should know?')}
+                  {t('chinaVisitNotes', 'Anything else?')}
                 </label>
                 <textarea
                   id="chinaVisitNotes"
                   className="sino-simple-form__input sino-simple-form__input--textarea"
                   value={formData.chinaVisit.notes}
-                  onChange={(event) =>
+                  onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
-                      chinaVisit: {
-                        ...prev.chinaVisit,
-                        notes: event.target.value,
-                      },
+                      chinaVisit: { ...prev.chinaVisit, notes: e.target.value },
                     }))
                   }
-                  placeholder={t(
-                    'chinaVisitNotesPlaceholder',
-                    'Visa status, time constraints, budget, preferred hotel area, etc.'
-                  )}
+                  placeholder="Visa, budget, preferences…"
                 />
               </div>
             </div>

@@ -1,4 +1,4 @@
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormData } from '../context/types';
 
 /**
  * Parse a numeric value from string, handling spaces and commas
@@ -103,30 +103,22 @@ export function calculateTotalWeightFromUnits(
 
 /**
  * Get all cargo calculations for display
+ * Uses direct cargo fields from FormData (simple form structure)
  */
-export function getCargoCalculations(formData: QuoteFormContextValue['formData']): {
+export function getCargoCalculations(formData: SimpleFormData): {
   totalVolume: { value: number | null; formatted: string };
   totalWeightFromUnits: { value: number | null; formatted: string };
 } {
-  const firstLoad = formData.loads?.[0];
-
-  if (!firstLoad) {
-    return {
-      totalVolume: { value: null, formatted: '' },
-      totalWeightFromUnits: { value: null, formatted: '' },
-    };
-  }
-
   const totalVolume = calculateTotalVolume(
-    firstLoad.dimensions,
-    firstLoad.dimensionUnit,
-    firstLoad.numberOfUnits
+    formData.dimensions,
+    'CM', // Simple form always uses CM
+    formData.numberOfUnits
   );
 
   const totalWeightFromUnits = calculateTotalWeightFromUnits(
-    firstLoad.weightPerUnit,
-    firstLoad.weightUnit,
-    firstLoad.numberOfUnits
+    formData.weightPerUnit,
+    'KG', // Simple form always uses KG
+    formData.numberOfUnits
   );
 
   return {

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormProps } from './context/types';
 
-type SimpleWarehousingSectionProps = Pick<QuoteFormContextValue, 'formData' | 'setFormData'> & {
+type SimpleWarehousingSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
   showWarehousingAdvanced: boolean;
   setShowWarehousingAdvanced: (updater: (prev: boolean) => boolean) => void;
@@ -32,6 +32,9 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label">
             {t('warehousingDuration', 'How long do you plan to store goods in China?')}
+            <span className="sino-simple-form__required" aria-label="required">
+              *
+            </span>
           </label>
           <div className="sino-simple-form__chips">
             {[
@@ -56,7 +59,7 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
                     ...prev,
                     warehousing: {
                       ...prev.warehousing,
-                      duration: option.value,
+                      duration: prev.warehousing.duration === option.value ? '' : option.value,
                     },
                   }))
                 }
@@ -112,7 +115,8 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
                     ...prev,
                     warehousing: {
                       ...prev.warehousing,
-                      consolidation: option.value,
+                      consolidation:
+                        prev.warehousing.consolidation === option.value ? null : option.value,
                     },
                   }))
                 }
@@ -121,30 +125,6 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
               </button>
             ))}
           </div>
-        </div>
-
-        <div className="sino-simple-form__field">
-          <label className="sino-simple-form__label" htmlFor="warehousingSpecialHandling">
-            {t('warehousingSpecialHandling', 'Any special handling or storage requirements?')}
-          </label>
-          <textarea
-            id="warehousingSpecialHandling"
-            className="sino-simple-form__input sino-simple-form__input--textarea"
-            value={formData.warehousing.specialHandling}
-            onChange={(event) =>
-              setFormData((prev) => ({
-                ...prev,
-                warehousing: {
-                  ...prev.warehousing,
-                  specialHandling: event.target.value,
-                },
-              }))
-            }
-            placeholder={t(
-              'warehousingSpecialHandlingPlaceholder',
-              'Fragile goods, temperature control, palletization, labelling, etc.'
-            )}
-          />
         </div>
 
         <div
@@ -160,10 +140,7 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
             <span className="sino-simple-form__subsection-label">
               {t('warehousingAdvancedTitle', 'Advanced warehousing preferences (optional)')}
               <small>
-                {t(
-                  'warehousingAdvancedSubtitle',
-                  'Only if you already have clear requirements for storage layout or WMS.'
-                )}
+                {t('warehousingAdvancedSubtitle', 'Extra services and special requirements.')}
               </small>
             </span>
             <span
@@ -179,7 +156,8 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
             <div className="sino-simple-form__fields sino-simple-form__fields--rows">
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label">
-                  {t('warehousingExtraServices', 'Any extra services you may need?')}
+                  {t('warehousingExtraServices', 'Extra services')}
+                  <span className="sino-simple-form__label-hint">{t('ifAny', 'if any')}</span>
                 </label>
                 <div className="sino-simple-form__chips sino-simple-form__chips--wrap">
                   {[
@@ -195,7 +173,7 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
                     },
                     {
                       value: 'Fulfillment by Amazon (FBA) Preparation',
-                      label: 'Fulfillment by Amazon (FBA) Preparation',
+                      label: 'FBA Preparation',
                     },
                     { value: 'Other', label: 'Other' },
                   ].map((option) => {
@@ -230,7 +208,7 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
 
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label" htmlFor="warehousingNotes">
-                  {t('warehousingNotes', 'Anything else we should know about warehousing?')}
+                  {t('warehousingNotes', 'Anything else we should know?')}
                 </label>
                 <textarea
                   id="warehousingNotes"
@@ -247,7 +225,7 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
                   }
                   placeholder={t(
                     'warehousingNotesPlaceholder',
-                    'Special handling, temperature control, rotation rules, etc.'
+                    'Special handling, temperature control, rotation rules…'
                   )}
                 />
               </div>

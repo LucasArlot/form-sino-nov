@@ -1,11 +1,12 @@
 import type { FC } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormProps } from './context/types';
 
-type SimpleDropshippingSectionProps = Pick<QuoteFormContextValue, 'formData' | 'setFormData'> & {
+type SimpleDropshippingSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
   showDropshippingAdvanced: boolean;
   setShowDropshippingAdvanced: (updater: (prev: boolean) => boolean) => void;
   stepLabel?: string;
+  isQuickQuote?: boolean;
 };
 
 const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
@@ -15,6 +16,9 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
   showDropshippingAdvanced,
   setShowDropshippingAdvanced,
   stepLabel,
+  // isQuickQuote is received but not used yet - kept for future quick quote mode
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isQuickQuote = false,
 }) => {
   if (!formData.servicesRequested.dropshipping) return null;
 
@@ -29,6 +33,9 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label" htmlFor="dropshippingProducts">
             {t('dropshippingProducts', 'What type of products do you plan to ship?')}
+            <span className="sino-simple-form__required" aria-label="required">
+              *
+            </span>
           </label>
           <textarea
             id="dropshippingProducts"
@@ -70,7 +77,7 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
             }
             placeholder={t(
               'dropshippingModelPlaceholder',
-              'Shopify store, Amazon FBA, marketplace, D2C, etc.'
+              'Shopify store, Amazon FBA, marketplace, D2C…'
             )}
           />
         </div>
@@ -78,6 +85,9 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
         <div className="sino-simple-form__field">
           <label className="sino-simple-form__label" htmlFor="dropshippingCustomerCountries">
             {t('dropshippingCustomerCountries', 'Where are your final customers located?')}
+            <span className="sino-simple-form__required" aria-label="required">
+              *
+            </span>
           </label>
           <input
             id="dropshippingCustomerCountries"
@@ -145,7 +155,8 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
                     ...prev,
                     dropshipping: {
                       ...prev.dropshipping,
-                      hasCatalog: option.value,
+                      hasCatalog:
+                        prev.dropshipping.hasCatalog === option.value ? null : option.value,
                     },
                   }))
                 }
@@ -169,10 +180,7 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
             <span className="sino-simple-form__subsection-label">
               {t('dropshippingAdvancedTitle', 'Advanced dropshipping details (optional)')}
               <small>
-                {t(
-                  'dropshippingAdvancedSubtitle',
-                  'Open this if you already know your branding needs or current 3PL setup.'
-                )}
+                {t('dropshippingAdvancedSubtitle', 'Branding needs and additional notes.')}
               </small>
             </span>
             <span
@@ -208,7 +216,10 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
                           ...prev,
                           dropshipping: {
                             ...prev.dropshipping,
-                            brandingNeeded: option.value,
+                            brandingNeeded:
+                              prev.dropshipping.brandingNeeded === option.value
+                                ? null
+                                : option.value,
                           },
                         }))
                       }
@@ -221,7 +232,7 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
 
               <div className="sino-simple-form__field">
                 <label className="sino-simple-form__label" htmlFor="dropshippingNotes">
-                  {t('dropshippingNotes', 'Anything else we should know about dropshipping?')}
+                  {t('dropshippingNotes', 'Anything else we should know?')}
                 </label>
                 <textarea
                   id="dropshippingNotes"
@@ -238,7 +249,7 @@ const SimpleDropshippingSection: FC<SimpleDropshippingSectionProps> = ({
                   }
                   placeholder={t(
                     'dropshippingNotesPlaceholder',
-                    'Catalog links, current 3PL setup, pain points, etc.'
+                    'Catalog links, current 3PL setup, pain points…'
                   )}
                 />
               </div>

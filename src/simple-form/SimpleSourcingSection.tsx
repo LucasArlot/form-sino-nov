@@ -1,9 +1,12 @@
 import type { FC } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import type { SimpleFormProps } from './context/types';
 
-type SimpleSourcingSectionProps = Pick<QuoteFormContextValue, 'formData' | 'setFormData'> & {
+type SimpleSourcingSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
   stepLabel?: string;
+  showSourcingAdvanced: boolean;
+  setShowSourcingAdvanced: (updater: (prev: boolean) => boolean) => void;
+  isQuickQuote?: boolean;
 };
 
 const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
@@ -11,6 +14,10 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
   setFormData,
   t,
   stepLabel,
+  showSourcingAdvanced,
+  setShowSourcingAdvanced,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isQuickQuote = false,
 }) => {
   return (
     <>
@@ -25,6 +32,9 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
             <div className="sino-simple-form__field">
               <label className="sino-simple-form__label" htmlFor="sourcingProductDescription">
                 {t('sourcingProductDescription', 'What product are you looking for?')}
+                <span className="sino-simple-form__required" aria-label="required">
+                  *
+                </span>
               </label>
               <textarea
                 id="sourcingProductDescription"
@@ -49,7 +59,8 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
 
             <div className="sino-simple-form__field">
               <label className="sino-simple-form__label" htmlFor="sourcingReferenceLink">
-                {t('sourcingReferenceLink', 'Reference link (if any)')}
+                {t('sourcingReferenceLink', 'Reference link')}
+                <span className="sino-simple-form__label-hint">{t('ifAny', 'if any')}</span>
               </label>
               <input
                 id="sourcingReferenceLink"
@@ -74,7 +85,7 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
 
             <div className="sino-simple-form__field">
               <label className="sino-simple-form__label" htmlFor="sourcingTargetPrice">
-                {t('sourcingTargetPrice', 'Target price per unit (optional)')}
+                {t('sourcingTargetPrice', 'Target price per unit')}
               </label>
               <div className="sino-simple-form__fields sino-simple-form__fields--inline">
                 <input
@@ -182,7 +193,8 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
                         ...prev,
                         sourcing: {
                           ...prev.sourcing,
-                          hasSupplier: option.value,
+                          hasSupplier:
+                            prev.sourcing.hasSupplier === option.value ? null : option.value,
                         },
                       }))
                     }
@@ -194,35 +206,8 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
             </div>
 
             <div className="sino-simple-form__field">
-              <label className="sino-simple-form__label" htmlFor="sourcingNotes">
-                {t('sourcingNotes', 'Anything else we should know about sourcing?')}
-              </label>
-              <textarea
-                id="sourcingNotes"
-                className="sino-simple-form__input sino-simple-form__input--textarea"
-                value={formData.sourcing.notes}
-                onChange={(event) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    sourcing: {
-                      ...prev.sourcing,
-                      notes: event.target.value,
-                    },
-                  }))
-                }
-                placeholder={t(
-                  'sourcingNotesPlaceholder',
-                  'Existing quotes, timelines, certifications required, etc.'
-                )}
-              />
-            </div>
-
-            <div className="sino-simple-form__field">
               <label className="sino-simple-form__label" htmlFor="sourcingTargetMarkets">
                 {t('sourcingTargetMarkets', 'Which markets are you selling to?')}
-                <span className="sino-simple-form__optional">
-                  {t('sourcingTargetMarketsOptional', 'Optional – helps us match regulations')}
-                </span>
               </label>
               <input
                 id="sourcingTargetMarkets"
@@ -244,13 +229,8 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
 
             <div className="sino-simple-form__field">
               <label className="sino-simple-form__label" htmlFor="sourcingRequiredCertifications">
-                {t('sourcingRequiredCertifications', 'Required certifications (if any)')}
-                <span className="sino-simple-form__optional">
-                  {t(
-                    'sourcingRequiredCertificationsOptional',
-                    'Optional – CE, FDA, RoHS, FSC, etc.'
-                  )}
-                </span>
+                {t('sourcingRequiredCertifications', 'Required certifications')}
+                <span className="sino-simple-form__label-hint">{t('ifAny', 'if any')}</span>
               </label>
               <input
                 id="sourcingRequiredCertifications"
@@ -268,9 +248,147 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
                 }
                 placeholder={t(
                   'sourcingRequiredCertificationsPlaceholder',
-                  'List any mandatory certifications for your market.'
+                  'e.g. CE, RoHS, FDA...'
                 )}
               />
+            </div>
+
+            {/* Advanced sourcing details (optional) */}
+            <div
+              className={`sino-simple-form__subsection${
+                showSourcingAdvanced ? ' sino-simple-form__subsection--open' : ''
+              }`}
+            >
+              <button
+                type="button"
+                className="sino-simple-form__subsection-toggle"
+                onClick={() => setShowSourcingAdvanced((prev) => !prev)}
+              >
+                <span className="sino-simple-form__subsection-label">
+                  {t('sourcingAdvancedTitle', 'Advanced sourcing details (optional)')}
+                  <small>
+                    {t(
+                      'sourcingAdvancedSubtitle',
+                      'Timeline, quality standards, packaging requirements.'
+                    )}
+                  </small>
+                </span>
+                <span
+                  className={`sino-simple-form__subsection-chevron${
+                    showSourcingAdvanced ? ' sino-simple-form__subsection-chevron--open' : ''
+                  }`}
+                >
+                  ▾
+                </span>
+              </button>
+
+              {showSourcingAdvanced && (
+                <div className="sino-simple-form__fields sino-simple-form__fields--rows">
+                  <div className="sino-simple-form__field">
+                    <label className="sino-simple-form__label" htmlFor="sourcingTimeline">
+                      {t('sourcingTimeline', 'Timeline / urgency')}
+                    </label>
+                    <input
+                      id="sourcingTimeline"
+                      className="sino-simple-form__input"
+                      type="text"
+                      value={formData.sourcing.timeline || ''}
+                      onChange={(event) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          sourcing: {
+                            ...prev.sourcing,
+                            timeline: event.target.value,
+                          },
+                        }))
+                      }
+                      placeholder={t(
+                        'sourcingTimelinePlaceholder',
+                        'e.g. Need samples within 2 weeks, production start in 1 month…'
+                      )}
+                    />
+                  </div>
+
+                  <div className="sino-simple-form__field">
+                    <label className="sino-simple-form__label" htmlFor="sourcingQualityStandards">
+                      {t('sourcingQualityStandards', 'Quality standards')}
+                      <span className="sino-simple-form__label-hint">{t('ifAny', 'if any')}</span>
+                    </label>
+                    <input
+                      id="sourcingQualityStandards"
+                      className="sino-simple-form__input"
+                      type="text"
+                      value={formData.sourcing.qualityStandards || ''}
+                      onChange={(event) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          sourcing: {
+                            ...prev.sourcing,
+                            qualityStandards: event.target.value,
+                          },
+                        }))
+                      }
+                      placeholder={t(
+                        'sourcingQualityStandardsPlaceholder',
+                        'e.g. ISO 9001, specific quality grades…'
+                      )}
+                    />
+                  </div>
+
+                  <div className="sino-simple-form__field">
+                    <label
+                      className="sino-simple-form__label"
+                      htmlFor="sourcingPackagingRequirements"
+                    >
+                      {t('sourcingPackagingRequirements', 'Packaging requirements')}
+                      <span className="sino-simple-form__label-hint">{t('ifAny', 'if any')}</span>
+                    </label>
+                    <input
+                      id="sourcingPackagingRequirements"
+                      className="sino-simple-form__input"
+                      type="text"
+                      value={formData.sourcing.packagingRequirements || ''}
+                      onChange={(event) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          sourcing: {
+                            ...prev.sourcing,
+                            packagingRequirements: event.target.value,
+                          },
+                        }))
+                      }
+                      placeholder={t(
+                        'sourcingPackagingRequirementsPlaceholder',
+                        'e.g. Retail-ready, eco-friendly materials…'
+                      )}
+                    />
+                  </div>
+
+                  <div className="sino-simple-form__field">
+                    <label className="sino-simple-form__label" htmlFor="sourcingNotes">
+                      {t('sourcingAdvancedNotes', 'Any other details?')}
+                    </label>
+                    <textarea
+                      id="sourcingNotes"
+                      className="sino-simple-form__input sino-simple-form__input--textarea"
+                      value={formData.sourcing.notes || ''}
+                      onChange={(event) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          sourcing: {
+                            ...prev.sourcing,
+                            notes: event.target.value,
+                          },
+                        }))
+                      }
+                      placeholder={t(
+                        'sourcingAdvancedNotesPlaceholder',
+                        'Custom labeling, branding, sample requirements, factory audits…'
+                      )}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>

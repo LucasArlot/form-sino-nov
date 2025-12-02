@@ -1,9 +1,9 @@
 import type { FC } from 'react';
-import { useEffect, useRef } from 'react';
-import type { QuoteFormContextValue } from '@/features/lead/context/QuoteFormTypes';
+import { useEffect, useRef, useMemo } from 'react';
+import type { SimpleFormProps } from './context/types';
 import { getCargoCalculations } from './utils/cargoCalculations';
 
-type SimpleCargoCalculationsProps = Pick<QuoteFormContextValue, 'formData' | 'setFormData'> & {
+type SimpleCargoCalculationsProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
 };
 
@@ -12,19 +12,19 @@ const SimpleCargoCalculations: FC<SimpleCargoCalculationsProps> = ({
   setFormData,
   t,
 }) => {
-  const calculations = getCargoCalculations(formData);
+  // Memoize calculations to avoid recalculating on every render
+  const calculations = useMemo(
+    () => getCargoCalculations(formData),
+    [formData.dimensions, formData.numberOfUnits, formData.weightPerUnit]
+  );
   const hasCalculations =
     calculations.totalVolume.value !== null || calculations.totalWeightFromUnits.value !== null;
   const autoUpdateRef = useRef(false);
 
   // Auto-update totalWeight if weightPerUnit is provided and totalWeight is empty
   useEffect(() => {
-    if (
-      calculations.totalWeightFromUnits.value !== null &&
-      formData.loads?.[0] &&
-      !autoUpdateRef.current
-    ) {
-      const currentTotalWeight = formData.loads[0].totalWeight;
+    if (calculations.totalWeightFromUnits.value !== null && !autoUpdateRef.current) {
+      const currentTotalWeight = formData.totalWeight;
       const calculatedWeight = Math.round(calculations.totalWeightFromUnits.value).toString();
 
       // Only update if totalWeight is empty or very different from calculated value
@@ -33,11 +33,10 @@ const SimpleCargoCalculations: FC<SimpleCargoCalculationsProps> = ({
         // Auto-fill totalWeight if empty (with delay to avoid conflicts)
         const timeoutId = setTimeout(() => {
           setFormData((prev) => {
-            const [firstLoad, ...rest] = prev.loads;
-            if (firstLoad && (!firstLoad.totalWeight || firstLoad.totalWeight.trim() === '')) {
+            if (!prev.totalWeight || prev.totalWeight.trim() === '') {
               return {
                 ...prev,
-                loads: [{ ...firstLoad, totalWeight: calculatedWeight }, ...rest],
+                totalWeight: calculatedWeight,
               };
             }
             return prev;
@@ -51,7 +50,7 @@ const SimpleCargoCalculations: FC<SimpleCargoCalculationsProps> = ({
         };
       }
     }
-  }, [calculations.totalWeightFromUnits.value, formData.loads, setFormData]);
+  }, [calculations.totalWeightFromUnits.value, formData.totalWeight, setFormData]);
 
   if (!hasCalculations) {
     return null;
