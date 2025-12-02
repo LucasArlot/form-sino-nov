@@ -1,0 +1,16800 @@
+(function () {
+  const c = document.createElement('link').relList;
+  if (c && c.supports && c.supports('modulepreload')) return;
+  for (const N of document.querySelectorAll('link[rel="modulepreload"]')) w(N);
+  new MutationObserver((N) => {
+    for (const C of N)
+      if (C.type === 'childList')
+        for (const j of C.addedNodes) j.tagName === 'LINK' && j.rel === 'modulepreload' && w(j);
+  }).observe(document, { childList: !0, subtree: !0 });
+  function a(N) {
+    const C = {};
+    return (
+      N.integrity && (C.integrity = N.integrity),
+      N.referrerPolicy && (C.referrerPolicy = N.referrerPolicy),
+      N.crossOrigin === 'use-credentials'
+        ? (C.credentials = 'include')
+        : N.crossOrigin === 'anonymous'
+          ? (C.credentials = 'omit')
+          : (C.credentials = 'same-origin'),
+      C
+    );
+  }
+  function w(N) {
+    if (N.ep) return;
+    N.ep = !0;
+    const C = a(N);
+    fetch(N.href, C);
+  }
+})();
+var Ko = { exports: {} },
+  Ht = {},
+  Qo = { exports: {} },
+  oe = {};
+/**
+ * @license React
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */ var Bu;
+function rm() {
+  if (Bu) return oe;
+  Bu = 1;
+  var l = Symbol.for('react.element'),
+    c = Symbol.for('react.portal'),
+    a = Symbol.for('react.fragment'),
+    w = Symbol.for('react.strict_mode'),
+    N = Symbol.for('react.profiler'),
+    C = Symbol.for('react.provider'),
+    j = Symbol.for('react.context'),
+    f = Symbol.for('react.forward_ref'),
+    h = Symbol.for('react.suspense'),
+    O = Symbol.for('react.memo'),
+    D = Symbol.for('react.lazy'),
+    z = Symbol.iterator;
+  function b(p) {
+    return p === null || typeof p != 'object'
+      ? null
+      : ((p = (z && p[z]) || p['@@iterator']), typeof p == 'function' ? p : null);
+  }
+  var Z = {
+      isMounted: function () {
+        return !1;
+      },
+      enqueueForceUpdate: function () {},
+      enqueueReplaceState: function () {},
+      enqueueSetState: function () {},
+    },
+    H = Object.assign,
+    Y = {};
+  function P(p, k, Q) {
+    ((this.props = p), (this.context = k), (this.refs = Y), (this.updater = Q || Z));
+  }
+  ((P.prototype.isReactComponent = {}),
+    (P.prototype.setState = function (p, k) {
+      if (typeof p != 'object' && typeof p != 'function' && p != null)
+        throw Error(
+          'setState(...): takes an object of state variables to update or a function which returns an object of state variables.'
+        );
+      this.updater.enqueueSetState(this, p, k, 'setState');
+    }),
+    (P.prototype.forceUpdate = function (p) {
+      this.updater.enqueueForceUpdate(this, p, 'forceUpdate');
+    }));
+  function I() {}
+  I.prototype = P.prototype;
+  function pe(p, k, Q) {
+    ((this.props = p), (this.context = k), (this.refs = Y), (this.updater = Q || Z));
+  }
+  var me = (pe.prototype = new I());
+  ((me.constructor = pe), H(me, P.prototype), (me.isPureReactComponent = !0));
+  var re = Array.isArray,
+    ue = Object.prototype.hasOwnProperty,
+    fe = { current: null },
+    ve = { key: !0, ref: !0, __self: !0, __source: !0 };
+  function Ie(p, k, Q) {
+    var ie,
+      se = {},
+      le = null,
+      ge = null;
+    if (k != null)
+      for (ie in (k.ref !== void 0 && (ge = k.ref), k.key !== void 0 && (le = '' + k.key), k))
+        ue.call(k, ie) && !ve.hasOwnProperty(ie) && (se[ie] = k[ie]);
+    var ce = arguments.length - 2;
+    if (ce === 1) se.children = Q;
+    else if (1 < ce) {
+      for (var ye = Array(ce), Ke = 0; Ke < ce; Ke++) ye[Ke] = arguments[Ke + 2];
+      se.children = ye;
+    }
+    if (p && p.defaultProps)
+      for (ie in ((ce = p.defaultProps), ce)) se[ie] === void 0 && (se[ie] = ce[ie]);
+    return { $$typeof: l, type: p, key: le, ref: ge, props: se, _owner: fe.current };
+  }
+  function Ge(p, k) {
+    return { $$typeof: l, type: p.type, key: k, ref: p.ref, props: p.props, _owner: p._owner };
+  }
+  function We(p) {
+    return typeof p == 'object' && p !== null && p.$$typeof === l;
+  }
+  function cn(p) {
+    var k = { '=': '=0', ':': '=2' };
+    return (
+      '$' +
+      p.replace(/[=:]/g, function (Q) {
+        return k[Q];
+      })
+    );
+  }
+  var Ae = /\/+/g;
+  function X(p, k) {
+    return typeof p == 'object' && p !== null && p.key != null ? cn('' + p.key) : k.toString(36);
+  }
+  function Te(p, k, Q, ie, se) {
+    var le = typeof p;
+    (le === 'undefined' || le === 'boolean') && (p = null);
+    var ge = !1;
+    if (p === null) ge = !0;
+    else
+      switch (le) {
+        case 'string':
+        case 'number':
+          ge = !0;
+          break;
+        case 'object':
+          switch (p.$$typeof) {
+            case l:
+            case c:
+              ge = !0;
+          }
+      }
+    if (ge)
+      return (
+        (ge = p),
+        (se = se(ge)),
+        (p = ie === '' ? '.' + X(ge, 0) : ie),
+        re(se)
+          ? ((Q = ''),
+            p != null && (Q = p.replace(Ae, '$&/') + '/'),
+            Te(se, k, Q, '', function (Ke) {
+              return Ke;
+            }))
+          : se != null &&
+            (We(se) &&
+              (se = Ge(
+                se,
+                Q +
+                  (!se.key || (ge && ge.key === se.key)
+                    ? ''
+                    : ('' + se.key).replace(Ae, '$&/') + '/') +
+                  p
+              )),
+            k.push(se)),
+        1
+      );
+    if (((ge = 0), (ie = ie === '' ? '.' : ie + ':'), re(p)))
+      for (var ce = 0; ce < p.length; ce++) {
+        le = p[ce];
+        var ye = ie + X(le, ce);
+        ge += Te(le, k, Q, ye, se);
+      }
+    else if (((ye = b(p)), typeof ye == 'function'))
+      for (p = ye.call(p), ce = 0; !(le = p.next()).done; )
+        ((le = le.value), (ye = ie + X(le, ce++)), (ge += Te(le, k, Q, ye, se)));
+    else if (le === 'object')
+      throw (
+        (k = String(p)),
+        Error(
+          'Objects are not valid as a React child (found: ' +
+            (k === '[object Object]' ? 'object with keys {' + Object.keys(p).join(', ') + '}' : k) +
+            '). If you meant to render a collection of children, use an array instead.'
+        )
+      );
+    return ge;
+  }
+  function Ve(p, k, Q) {
+    if (p == null) return p;
+    var ie = [],
+      se = 0;
+    return (
+      Te(p, ie, '', '', function (le) {
+        return k.call(Q, le, se++);
+      }),
+      ie
+    );
+  }
+  function Re(p) {
+    if (p._status === -1) {
+      var k = p._result;
+      ((k = k()),
+        k.then(
+          function (Q) {
+            (p._status === 0 || p._status === -1) && ((p._status = 1), (p._result = Q));
+          },
+          function (Q) {
+            (p._status === 0 || p._status === -1) && ((p._status = 2), (p._result = Q));
+          }
+        ),
+        p._status === -1 && ((p._status = 0), (p._result = k)));
+    }
+    if (p._status === 1) return p._result.default;
+    throw p._result;
+  }
+  var K = { current: null },
+    F = { transition: null },
+    V = { ReactCurrentDispatcher: K, ReactCurrentBatchConfig: F, ReactCurrentOwner: fe };
+  function A() {
+    throw Error('act(...) is not supported in production builds of React.');
+  }
+  return (
+    (oe.Children = {
+      map: Ve,
+      forEach: function (p, k, Q) {
+        Ve(
+          p,
+          function () {
+            k.apply(this, arguments);
+          },
+          Q
+        );
+      },
+      count: function (p) {
+        var k = 0;
+        return (
+          Ve(p, function () {
+            k++;
+          }),
+          k
+        );
+      },
+      toArray: function (p) {
+        return (
+          Ve(p, function (k) {
+            return k;
+          }) || []
+        );
+      },
+      only: function (p) {
+        if (!We(p))
+          throw Error('React.Children.only expected to receive a single React element child.');
+        return p;
+      },
+    }),
+    (oe.Component = P),
+    (oe.Fragment = a),
+    (oe.Profiler = N),
+    (oe.PureComponent = pe),
+    (oe.StrictMode = w),
+    (oe.Suspense = h),
+    (oe.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = V),
+    (oe.act = A),
+    (oe.cloneElement = function (p, k, Q) {
+      if (p == null)
+        throw Error(
+          'React.cloneElement(...): The argument must be a React element, but you passed ' + p + '.'
+        );
+      var ie = H({}, p.props),
+        se = p.key,
+        le = p.ref,
+        ge = p._owner;
+      if (k != null) {
+        if (
+          (k.ref !== void 0 && ((le = k.ref), (ge = fe.current)),
+          k.key !== void 0 && (se = '' + k.key),
+          p.type && p.type.defaultProps)
+        )
+          var ce = p.type.defaultProps;
+        for (ye in k)
+          ue.call(k, ye) &&
+            !ve.hasOwnProperty(ye) &&
+            (ie[ye] = k[ye] === void 0 && ce !== void 0 ? ce[ye] : k[ye]);
+      }
+      var ye = arguments.length - 2;
+      if (ye === 1) ie.children = Q;
+      else if (1 < ye) {
+        ce = Array(ye);
+        for (var Ke = 0; Ke < ye; Ke++) ce[Ke] = arguments[Ke + 2];
+        ie.children = ce;
+      }
+      return { $$typeof: l, type: p.type, key: se, ref: le, props: ie, _owner: ge };
+    }),
+    (oe.createContext = function (p) {
+      return (
+        (p = {
+          $$typeof: j,
+          _currentValue: p,
+          _currentValue2: p,
+          _threadCount: 0,
+          Provider: null,
+          Consumer: null,
+          _defaultValue: null,
+          _globalName: null,
+        }),
+        (p.Provider = { $$typeof: C, _context: p }),
+        (p.Consumer = p)
+      );
+    }),
+    (oe.createElement = Ie),
+    (oe.createFactory = function (p) {
+      var k = Ie.bind(null, p);
+      return ((k.type = p), k);
+    }),
+    (oe.createRef = function () {
+      return { current: null };
+    }),
+    (oe.forwardRef = function (p) {
+      return { $$typeof: f, render: p };
+    }),
+    (oe.isValidElement = We),
+    (oe.lazy = function (p) {
+      return { $$typeof: D, _payload: { _status: -1, _result: p }, _init: Re };
+    }),
+    (oe.memo = function (p, k) {
+      return { $$typeof: O, type: p, compare: k === void 0 ? null : k };
+    }),
+    (oe.startTransition = function (p) {
+      var k = F.transition;
+      F.transition = {};
+      try {
+        p();
+      } finally {
+        F.transition = k;
+      }
+    }),
+    (oe.unstable_act = A),
+    (oe.useCallback = function (p, k) {
+      return K.current.useCallback(p, k);
+    }),
+    (oe.useContext = function (p) {
+      return K.current.useContext(p);
+    }),
+    (oe.useDebugValue = function () {}),
+    (oe.useDeferredValue = function (p) {
+      return K.current.useDeferredValue(p);
+    }),
+    (oe.useEffect = function (p, k) {
+      return K.current.useEffect(p, k);
+    }),
+    (oe.useId = function () {
+      return K.current.useId();
+    }),
+    (oe.useImperativeHandle = function (p, k, Q) {
+      return K.current.useImperativeHandle(p, k, Q);
+    }),
+    (oe.useInsertionEffect = function (p, k) {
+      return K.current.useInsertionEffect(p, k);
+    }),
+    (oe.useLayoutEffect = function (p, k) {
+      return K.current.useLayoutEffect(p, k);
+    }),
+    (oe.useMemo = function (p, k) {
+      return K.current.useMemo(p, k);
+    }),
+    (oe.useReducer = function (p, k, Q) {
+      return K.current.useReducer(p, k, Q);
+    }),
+    (oe.useRef = function (p) {
+      return K.current.useRef(p);
+    }),
+    (oe.useState = function (p) {
+      return K.current.useState(p);
+    }),
+    (oe.useSyncExternalStore = function (p, k, Q) {
+      return K.current.useSyncExternalStore(p, k, Q);
+    }),
+    (oe.useTransition = function () {
+      return K.current.useTransition();
+    }),
+    (oe.version = '18.3.1'),
+    oe
+  );
+}
+var $u;
+function sl() {
+  return ($u || (($u = 1), (Qo.exports = rm())), Qo.exports);
+}
+/**
+ * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */ var Uu;
+function sm() {
+  if (Uu) return Ht;
+  Uu = 1;
+  var l = sl(),
+    c = Symbol.for('react.element'),
+    a = Symbol.for('react.fragment'),
+    w = Object.prototype.hasOwnProperty,
+    N = l.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,
+    C = { key: !0, ref: !0, __self: !0, __source: !0 };
+  function j(f, h, O) {
+    var D,
+      z = {},
+      b = null,
+      Z = null;
+    (O !== void 0 && (b = '' + O),
+      h.key !== void 0 && (b = '' + h.key),
+      h.ref !== void 0 && (Z = h.ref));
+    for (D in h) w.call(h, D) && !C.hasOwnProperty(D) && (z[D] = h[D]);
+    if (f && f.defaultProps) for (D in ((h = f.defaultProps), h)) z[D] === void 0 && (z[D] = h[D]);
+    return { $$typeof: c, type: f, key: b, ref: Z, props: z, _owner: N.current };
+  }
+  return ((Ht.Fragment = a), (Ht.jsx = j), (Ht.jsxs = j), Ht);
+}
+var qu;
+function om() {
+  return (qu || ((qu = 1), (Ko.exports = sm())), Ko.exports);
+}
+var r = om(),
+  W = sl(),
+  ss = {},
+  Yo = { exports: {} },
+  un = {},
+  Zo = { exports: {} },
+  Xo = {};
+/**
+ * @license React
+ * scheduler.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */ var Du;
+function lm() {
+  return (
+    Du ||
+      ((Du = 1),
+      (function (l) {
+        function c(F, V) {
+          var A = F.length;
+          F.push(V);
+          e: for (; 0 < A; ) {
+            var p = (A - 1) >>> 1,
+              k = F[p];
+            if (0 < N(k, V)) ((F[p] = V), (F[A] = k), (A = p));
+            else break e;
+          }
+        }
+        function a(F) {
+          return F.length === 0 ? null : F[0];
+        }
+        function w(F) {
+          if (F.length === 0) return null;
+          var V = F[0],
+            A = F.pop();
+          if (A !== V) {
+            F[0] = A;
+            e: for (var p = 0, k = F.length, Q = k >>> 1; p < Q; ) {
+              var ie = 2 * (p + 1) - 1,
+                se = F[ie],
+                le = ie + 1,
+                ge = F[le];
+              if (0 > N(se, A))
+                le < k && 0 > N(ge, se)
+                  ? ((F[p] = ge), (F[le] = A), (p = le))
+                  : ((F[p] = se), (F[ie] = A), (p = ie));
+              else if (le < k && 0 > N(ge, A)) ((F[p] = ge), (F[le] = A), (p = le));
+              else break e;
+            }
+          }
+          return V;
+        }
+        function N(F, V) {
+          var A = F.sortIndex - V.sortIndex;
+          return A !== 0 ? A : F.id - V.id;
+        }
+        if (typeof performance == 'object' && typeof performance.now == 'function') {
+          var C = performance;
+          l.unstable_now = function () {
+            return C.now();
+          };
+        } else {
+          var j = Date,
+            f = j.now();
+          l.unstable_now = function () {
+            return j.now() - f;
+          };
+        }
+        var h = [],
+          O = [],
+          D = 1,
+          z = null,
+          b = 3,
+          Z = !1,
+          H = !1,
+          Y = !1,
+          P = typeof setTimeout == 'function' ? setTimeout : null,
+          I = typeof clearTimeout == 'function' ? clearTimeout : null,
+          pe = typeof setImmediate < 'u' ? setImmediate : null;
+        typeof navigator < 'u' &&
+          navigator.scheduling !== void 0 &&
+          navigator.scheduling.isInputPending !== void 0 &&
+          navigator.scheduling.isInputPending.bind(navigator.scheduling);
+        function me(F) {
+          for (var V = a(O); V !== null; ) {
+            if (V.callback === null) w(O);
+            else if (V.startTime <= F) (w(O), (V.sortIndex = V.expirationTime), c(h, V));
+            else break;
+            V = a(O);
+          }
+        }
+        function re(F) {
+          if (((Y = !1), me(F), !H))
+            if (a(h) !== null) ((H = !0), Re(ue));
+            else {
+              var V = a(O);
+              V !== null && K(re, V.startTime - F);
+            }
+        }
+        function ue(F, V) {
+          ((H = !1), Y && ((Y = !1), I(Ie), (Ie = -1)), (Z = !0));
+          var A = b;
+          try {
+            for (me(V), z = a(h); z !== null && (!(z.expirationTime > V) || (F && !cn())); ) {
+              var p = z.callback;
+              if (typeof p == 'function') {
+                ((z.callback = null), (b = z.priorityLevel));
+                var k = p(z.expirationTime <= V);
+                ((V = l.unstable_now()),
+                  typeof k == 'function' ? (z.callback = k) : z === a(h) && w(h),
+                  me(V));
+              } else w(h);
+              z = a(h);
+            }
+            if (z !== null) var Q = !0;
+            else {
+              var ie = a(O);
+              (ie !== null && K(re, ie.startTime - V), (Q = !1));
+            }
+            return Q;
+          } finally {
+            ((z = null), (b = A), (Z = !1));
+          }
+        }
+        var fe = !1,
+          ve = null,
+          Ie = -1,
+          Ge = 5,
+          We = -1;
+        function cn() {
+          return !(l.unstable_now() - We < Ge);
+        }
+        function Ae() {
+          if (ve !== null) {
+            var F = l.unstable_now();
+            We = F;
+            var V = !0;
+            try {
+              V = ve(!0, F);
+            } finally {
+              V ? X() : ((fe = !1), (ve = null));
+            }
+          } else fe = !1;
+        }
+        var X;
+        if (typeof pe == 'function')
+          X = function () {
+            pe(Ae);
+          };
+        else if (typeof MessageChannel < 'u') {
+          var Te = new MessageChannel(),
+            Ve = Te.port2;
+          ((Te.port1.onmessage = Ae),
+            (X = function () {
+              Ve.postMessage(null);
+            }));
+        } else
+          X = function () {
+            P(Ae, 0);
+          };
+        function Re(F) {
+          ((ve = F), fe || ((fe = !0), X()));
+        }
+        function K(F, V) {
+          Ie = P(function () {
+            F(l.unstable_now());
+          }, V);
+        }
+        ((l.unstable_IdlePriority = 5),
+          (l.unstable_ImmediatePriority = 1),
+          (l.unstable_LowPriority = 4),
+          (l.unstable_NormalPriority = 3),
+          (l.unstable_Profiling = null),
+          (l.unstable_UserBlockingPriority = 2),
+          (l.unstable_cancelCallback = function (F) {
+            F.callback = null;
+          }),
+          (l.unstable_continueExecution = function () {
+            H || Z || ((H = !0), Re(ue));
+          }),
+          (l.unstable_forceFrameRate = function (F) {
+            0 > F || 125 < F
+              ? console.error(
+                  'forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported'
+                )
+              : (Ge = 0 < F ? Math.floor(1e3 / F) : 5);
+          }),
+          (l.unstable_getCurrentPriorityLevel = function () {
+            return b;
+          }),
+          (l.unstable_getFirstCallbackNode = function () {
+            return a(h);
+          }),
+          (l.unstable_next = function (F) {
+            switch (b) {
+              case 1:
+              case 2:
+              case 3:
+                var V = 3;
+                break;
+              default:
+                V = b;
+            }
+            var A = b;
+            b = V;
+            try {
+              return F();
+            } finally {
+              b = A;
+            }
+          }),
+          (l.unstable_pauseExecution = function () {}),
+          (l.unstable_requestPaint = function () {}),
+          (l.unstable_runWithPriority = function (F, V) {
+            switch (F) {
+              case 1:
+              case 2:
+              case 3:
+              case 4:
+              case 5:
+                break;
+              default:
+                F = 3;
+            }
+            var A = b;
+            b = F;
+            try {
+              return V();
+            } finally {
+              b = A;
+            }
+          }),
+          (l.unstable_scheduleCallback = function (F, V, A) {
+            var p = l.unstable_now();
+            switch (
+              (typeof A == 'object' && A !== null
+                ? ((A = A.delay), (A = typeof A == 'number' && 0 < A ? p + A : p))
+                : (A = p),
+              F)
+            ) {
+              case 1:
+                var k = -1;
+                break;
+              case 2:
+                k = 250;
+                break;
+              case 5:
+                k = 1073741823;
+                break;
+              case 4:
+                k = 1e4;
+                break;
+              default:
+                k = 5e3;
+            }
+            return (
+              (k = A + k),
+              (F = {
+                id: D++,
+                callback: V,
+                priorityLevel: F,
+                startTime: A,
+                expirationTime: k,
+                sortIndex: -1,
+              }),
+              A > p
+                ? ((F.sortIndex = A),
+                  c(O, F),
+                  a(h) === null && F === a(O) && (Y ? (I(Ie), (Ie = -1)) : (Y = !0), K(re, A - p)))
+                : ((F.sortIndex = k), c(h, F), H || Z || ((H = !0), Re(ue))),
+              F
+            );
+          }),
+          (l.unstable_shouldYield = cn),
+          (l.unstable_wrapCallback = function (F) {
+            var V = b;
+            return function () {
+              var A = b;
+              b = V;
+              try {
+                return F.apply(this, arguments);
+              } finally {
+                b = A;
+              }
+            };
+          }));
+      })(Xo)),
+    Xo
+  );
+}
+var Hu;
+function am() {
+  return (Hu || ((Hu = 1), (Zo.exports = lm())), Zo.exports);
+}
+/**
+ * @license React
+ * react-dom.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */ var Gu;
+function um() {
+  if (Gu) return un;
+  Gu = 1;
+  var l = sl(),
+    c = am();
+  function a(e) {
+    for (
+      var n = 'https://reactjs.org/docs/error-decoder.html?invariant=' + e, i = 1;
+      i < arguments.length;
+      i++
+    )
+      n += '&args[]=' + encodeURIComponent(arguments[i]);
+    return (
+      'Minified React error #' +
+      e +
+      '; visit ' +
+      n +
+      ' for the full message or use the non-minified dev environment for full errors and additional helpful warnings.'
+    );
+  }
+  var w = new Set(),
+    N = {};
+  function C(e, n) {
+    (j(e, n), j(e + 'Capture', n));
+  }
+  function j(e, n) {
+    for (N[e] = n, e = 0; e < n.length; e++) w.add(n[e]);
+  }
+  var f = !(
+      typeof window > 'u' ||
+      typeof window.document > 'u' ||
+      typeof window.document.createElement > 'u'
+    ),
+    h = Object.prototype.hasOwnProperty,
+    O =
+      /^[:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD][:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*$/,
+    D = {},
+    z = {};
+  function b(e) {
+    return h.call(z, e) ? !0 : h.call(D, e) ? !1 : O.test(e) ? (z[e] = !0) : ((D[e] = !0), !1);
+  }
+  function Z(e, n, i, t) {
+    if (i !== null && i.type === 0) return !1;
+    switch (typeof n) {
+      case 'function':
+      case 'symbol':
+        return !0;
+      case 'boolean':
+        return t
+          ? !1
+          : i !== null
+            ? !i.acceptsBooleans
+            : ((e = e.toLowerCase().slice(0, 5)), e !== 'data-' && e !== 'aria-');
+      default:
+        return !1;
+    }
+  }
+  function H(e, n, i, t) {
+    if (n === null || typeof n > 'u' || Z(e, n, i, t)) return !0;
+    if (t) return !1;
+    if (i !== null)
+      switch (i.type) {
+        case 3:
+          return !n;
+        case 4:
+          return n === !1;
+        case 5:
+          return isNaN(n);
+        case 6:
+          return isNaN(n) || 1 > n;
+      }
+    return !1;
+  }
+  function Y(e, n, i, t, s, o, u) {
+    ((this.acceptsBooleans = n === 2 || n === 3 || n === 4),
+      (this.attributeName = t),
+      (this.attributeNamespace = s),
+      (this.mustUseProperty = i),
+      (this.propertyName = e),
+      (this.type = n),
+      (this.sanitizeURL = o),
+      (this.removeEmptyString = u));
+  }
+  var P = {};
+  ('children dangerouslySetInnerHTML defaultValue defaultChecked innerHTML suppressContentEditableWarning suppressHydrationWarning style'
+    .split(' ')
+    .forEach(function (e) {
+      P[e] = new Y(e, 0, !1, e, null, !1, !1);
+    }),
+    [
+      ['acceptCharset', 'accept-charset'],
+      ['className', 'class'],
+      ['htmlFor', 'for'],
+      ['httpEquiv', 'http-equiv'],
+    ].forEach(function (e) {
+      var n = e[0];
+      P[n] = new Y(n, 1, !1, e[1], null, !1, !1);
+    }),
+    ['contentEditable', 'draggable', 'spellCheck', 'value'].forEach(function (e) {
+      P[e] = new Y(e, 2, !1, e.toLowerCase(), null, !1, !1);
+    }),
+    ['autoReverse', 'externalResourcesRequired', 'focusable', 'preserveAlpha'].forEach(
+      function (e) {
+        P[e] = new Y(e, 2, !1, e, null, !1, !1);
+      }
+    ),
+    'allowFullScreen async autoFocus autoPlay controls default defer disabled disablePictureInPicture disableRemotePlayback formNoValidate hidden loop noModule noValidate open playsInline readOnly required reversed scoped seamless itemScope'
+      .split(' ')
+      .forEach(function (e) {
+        P[e] = new Y(e, 3, !1, e.toLowerCase(), null, !1, !1);
+      }),
+    ['checked', 'multiple', 'muted', 'selected'].forEach(function (e) {
+      P[e] = new Y(e, 3, !0, e, null, !1, !1);
+    }),
+    ['capture', 'download'].forEach(function (e) {
+      P[e] = new Y(e, 4, !1, e, null, !1, !1);
+    }),
+    ['cols', 'rows', 'size', 'span'].forEach(function (e) {
+      P[e] = new Y(e, 6, !1, e, null, !1, !1);
+    }),
+    ['rowSpan', 'start'].forEach(function (e) {
+      P[e] = new Y(e, 5, !1, e.toLowerCase(), null, !1, !1);
+    }));
+  var I = /[\-:]([a-z])/g;
+  function pe(e) {
+    return e[1].toUpperCase();
+  }
+  ('accent-height alignment-baseline arabic-form baseline-shift cap-height clip-path clip-rule color-interpolation color-interpolation-filters color-profile color-rendering dominant-baseline enable-background fill-opacity fill-rule flood-color flood-opacity font-family font-size font-size-adjust font-stretch font-style font-variant font-weight glyph-name glyph-orientation-horizontal glyph-orientation-vertical horiz-adv-x horiz-origin-x image-rendering letter-spacing lighting-color marker-end marker-mid marker-start overline-position overline-thickness paint-order panose-1 pointer-events rendering-intent shape-rendering stop-color stop-opacity strikethrough-position strikethrough-thickness stroke-dasharray stroke-dashoffset stroke-linecap stroke-linejoin stroke-miterlimit stroke-opacity stroke-width text-anchor text-decoration text-rendering underline-position underline-thickness unicode-bidi unicode-range units-per-em v-alphabetic v-hanging v-ideographic v-mathematical vector-effect vert-adv-y vert-origin-x vert-origin-y word-spacing writing-mode xmlns:xlink x-height'
+    .split(' ')
+    .forEach(function (e) {
+      var n = e.replace(I, pe);
+      P[n] = new Y(n, 1, !1, e, null, !1, !1);
+    }),
+    'xlink:actuate xlink:arcrole xlink:role xlink:show xlink:title xlink:type'
+      .split(' ')
+      .forEach(function (e) {
+        var n = e.replace(I, pe);
+        P[n] = new Y(n, 1, !1, e, 'http://www.w3.org/1999/xlink', !1, !1);
+      }),
+    ['xml:base', 'xml:lang', 'xml:space'].forEach(function (e) {
+      var n = e.replace(I, pe);
+      P[n] = new Y(n, 1, !1, e, 'http://www.w3.org/XML/1998/namespace', !1, !1);
+    }),
+    ['tabIndex', 'crossOrigin'].forEach(function (e) {
+      P[e] = new Y(e, 1, !1, e.toLowerCase(), null, !1, !1);
+    }),
+    (P.xlinkHref = new Y('xlinkHref', 1, !1, 'xlink:href', 'http://www.w3.org/1999/xlink', !0, !1)),
+    ['src', 'href', 'action', 'formAction'].forEach(function (e) {
+      P[e] = new Y(e, 1, !1, e.toLowerCase(), null, !0, !0);
+    }));
+  function me(e, n, i, t) {
+    var s = P.hasOwnProperty(n) ? P[n] : null;
+    (s !== null
+      ? s.type !== 0
+      : t || !(2 < n.length) || (n[0] !== 'o' && n[0] !== 'O') || (n[1] !== 'n' && n[1] !== 'N')) &&
+      (H(n, i, s, t) && (i = null),
+      t || s === null
+        ? b(n) && (i === null ? e.removeAttribute(n) : e.setAttribute(n, '' + i))
+        : s.mustUseProperty
+          ? (e[s.propertyName] = i === null ? (s.type === 3 ? !1 : '') : i)
+          : ((n = s.attributeName),
+            (t = s.attributeNamespace),
+            i === null
+              ? e.removeAttribute(n)
+              : ((s = s.type),
+                (i = s === 3 || (s === 4 && i === !0) ? '' : '' + i),
+                t ? e.setAttributeNS(t, n, i) : e.setAttribute(n, i))));
+  }
+  var re = l.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+    ue = Symbol.for('react.element'),
+    fe = Symbol.for('react.portal'),
+    ve = Symbol.for('react.fragment'),
+    Ie = Symbol.for('react.strict_mode'),
+    Ge = Symbol.for('react.profiler'),
+    We = Symbol.for('react.provider'),
+    cn = Symbol.for('react.context'),
+    Ae = Symbol.for('react.forward_ref'),
+    X = Symbol.for('react.suspense'),
+    Te = Symbol.for('react.suspense_list'),
+    Ve = Symbol.for('react.memo'),
+    Re = Symbol.for('react.lazy'),
+    K = Symbol.for('react.offscreen'),
+    F = Symbol.iterator;
+  function V(e) {
+    return e === null || typeof e != 'object'
+      ? null
+      : ((e = (F && e[F]) || e['@@iterator']), typeof e == 'function' ? e : null);
+  }
+  var A = Object.assign,
+    p;
+  function k(e) {
+    if (p === void 0)
+      try {
+        throw Error();
+      } catch (i) {
+        var n = i.stack.trim().match(/\n( *(at )?)/);
+        p = (n && n[1]) || '';
+      }
+    return (
+      `
+` +
+      p +
+      e
+    );
+  }
+  var Q = !1;
+  function ie(e, n) {
+    if (!e || Q) return '';
+    Q = !0;
+    var i = Error.prepareStackTrace;
+    Error.prepareStackTrace = void 0;
+    try {
+      if (n)
+        if (
+          ((n = function () {
+            throw Error();
+          }),
+          Object.defineProperty(n.prototype, 'props', {
+            set: function () {
+              throw Error();
+            },
+          }),
+          typeof Reflect == 'object' && Reflect.construct)
+        ) {
+          try {
+            Reflect.construct(n, []);
+          } catch (x) {
+            var t = x;
+          }
+          Reflect.construct(e, [], n);
+        } else {
+          try {
+            n.call();
+          } catch (x) {
+            t = x;
+          }
+          e.call(n.prototype);
+        }
+      else {
+        try {
+          throw Error();
+        } catch (x) {
+          t = x;
+        }
+        e();
+      }
+    } catch (x) {
+      if (x && t && typeof x.stack == 'string') {
+        for (
+          var s = x.stack.split(`
+`),
+            o = t.stack.split(`
+`),
+            u = s.length - 1,
+            d = o.length - 1;
+          1 <= u && 0 <= d && s[u] !== o[d];
+
+        )
+          d--;
+        for (; 1 <= u && 0 <= d; u--, d--)
+          if (s[u] !== o[d]) {
+            if (u !== 1 || d !== 1)
+              do
+                if ((u--, d--, 0 > d || s[u] !== o[d])) {
+                  var m =
+                    `
+` + s[u].replace(' at new ', ' at ');
+                  return (
+                    e.displayName &&
+                      m.includes('<anonymous>') &&
+                      (m = m.replace('<anonymous>', e.displayName)),
+                    m
+                  );
+                }
+              while (1 <= u && 0 <= d);
+            break;
+          }
+      }
+    } finally {
+      ((Q = !1), (Error.prepareStackTrace = i));
+    }
+    return (e = e ? e.displayName || e.name : '') ? k(e) : '';
+  }
+  function se(e) {
+    switch (e.tag) {
+      case 5:
+        return k(e.type);
+      case 16:
+        return k('Lazy');
+      case 13:
+        return k('Suspense');
+      case 19:
+        return k('SuspenseList');
+      case 0:
+      case 2:
+      case 15:
+        return ((e = ie(e.type, !1)), e);
+      case 11:
+        return ((e = ie(e.type.render, !1)), e);
+      case 1:
+        return ((e = ie(e.type, !0)), e);
+      default:
+        return '';
+    }
+  }
+  function le(e) {
+    if (e == null) return null;
+    if (typeof e == 'function') return e.displayName || e.name || null;
+    if (typeof e == 'string') return e;
+    switch (e) {
+      case ve:
+        return 'Fragment';
+      case fe:
+        return 'Portal';
+      case Ge:
+        return 'Profiler';
+      case Ie:
+        return 'StrictMode';
+      case X:
+        return 'Suspense';
+      case Te:
+        return 'SuspenseList';
+    }
+    if (typeof e == 'object')
+      switch (e.$$typeof) {
+        case cn:
+          return (e.displayName || 'Context') + '.Consumer';
+        case We:
+          return (e._context.displayName || 'Context') + '.Provider';
+        case Ae:
+          var n = e.render;
+          return (
+            (e = e.displayName),
+            e ||
+              ((e = n.displayName || n.name || ''),
+              (e = e !== '' ? 'ForwardRef(' + e + ')' : 'ForwardRef')),
+            e
+          );
+        case Ve:
+          return ((n = e.displayName || null), n !== null ? n : le(e.type) || 'Memo');
+        case Re:
+          ((n = e._payload), (e = e._init));
+          try {
+            return le(e(n));
+          } catch {}
+      }
+    return null;
+  }
+  function ge(e) {
+    var n = e.type;
+    switch (e.tag) {
+      case 24:
+        return 'Cache';
+      case 9:
+        return (n.displayName || 'Context') + '.Consumer';
+      case 10:
+        return (n._context.displayName || 'Context') + '.Provider';
+      case 18:
+        return 'DehydratedFragment';
+      case 11:
+        return (
+          (e = n.render),
+          (e = e.displayName || e.name || ''),
+          n.displayName || (e !== '' ? 'ForwardRef(' + e + ')' : 'ForwardRef')
+        );
+      case 7:
+        return 'Fragment';
+      case 5:
+        return n;
+      case 4:
+        return 'Portal';
+      case 3:
+        return 'Root';
+      case 6:
+        return 'Text';
+      case 16:
+        return le(n);
+      case 8:
+        return n === Ie ? 'StrictMode' : 'Mode';
+      case 22:
+        return 'Offscreen';
+      case 12:
+        return 'Profiler';
+      case 21:
+        return 'Scope';
+      case 13:
+        return 'Suspense';
+      case 19:
+        return 'SuspenseList';
+      case 25:
+        return 'TracingMarker';
+      case 1:
+      case 0:
+      case 17:
+      case 2:
+      case 14:
+      case 15:
+        if (typeof n == 'function') return n.displayName || n.name || null;
+        if (typeof n == 'string') return n;
+    }
+    return null;
+  }
+  function ce(e) {
+    switch (typeof e) {
+      case 'boolean':
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return e;
+      case 'object':
+        return e;
+      default:
+        return '';
+    }
+  }
+  function ye(e) {
+    var n = e.type;
+    return (e = e.nodeName) && e.toLowerCase() === 'input' && (n === 'checkbox' || n === 'radio');
+  }
+  function Ke(e) {
+    var n = ye(e) ? 'checked' : 'value',
+      i = Object.getOwnPropertyDescriptor(e.constructor.prototype, n),
+      t = '' + e[n];
+    if (
+      !e.hasOwnProperty(n) &&
+      typeof i < 'u' &&
+      typeof i.get == 'function' &&
+      typeof i.set == 'function'
+    ) {
+      var s = i.get,
+        o = i.set;
+      return (
+        Object.defineProperty(e, n, {
+          configurable: !0,
+          get: function () {
+            return s.call(this);
+          },
+          set: function (u) {
+            ((t = '' + u), o.call(this, u));
+          },
+        }),
+        Object.defineProperty(e, n, { enumerable: i.enumerable }),
+        {
+          getValue: function () {
+            return t;
+          },
+          setValue: function (u) {
+            t = '' + u;
+          },
+          stopTracking: function () {
+            ((e._valueTracker = null), delete e[n]);
+          },
+        }
+      );
+    }
+  }
+  function Ti(e) {
+    e._valueTracker || (e._valueTracker = Ke(e));
+  }
+  function pi(e) {
+    if (!e) return !1;
+    var n = e._valueTracker;
+    if (!n) return !0;
+    var i = n.getValue(),
+      t = '';
+    return (
+      e && (t = ye(e) ? (e.checked ? 'true' : 'false') : e.value),
+      (e = t),
+      e !== i ? (n.setValue(e), !0) : !1
+    );
+  }
+  function Ei(e) {
+    if (((e = e || (typeof document < 'u' ? document : void 0)), typeof e > 'u')) return null;
+    try {
+      return e.activeElement || e.body;
+    } catch {
+      return e.body;
+    }
+  }
+  function tt(e, n) {
+    var i = n.checked;
+    return A({}, n, {
+      defaultChecked: void 0,
+      defaultValue: void 0,
+      value: void 0,
+      checked: i ?? e._wrapperState.initialChecked,
+    });
+  }
+  function rt(e, n) {
+    var i = n.defaultValue == null ? '' : n.defaultValue,
+      t = n.checked != null ? n.checked : n.defaultChecked;
+    ((i = ce(n.value != null ? n.value : i)),
+      (e._wrapperState = {
+        initialChecked: t,
+        initialValue: i,
+        controlled:
+          n.type === 'checkbox' || n.type === 'radio' ? n.checked != null : n.value != null,
+      }));
+  }
+  function st(e, n) {
+    ((n = n.checked), n != null && me(e, 'checked', n, !1));
+  }
+  function Li(e, n) {
+    st(e, n);
+    var i = ce(n.value),
+      t = n.type;
+    if (i != null)
+      t === 'number'
+        ? ((i === 0 && e.value === '') || e.value != i) && (e.value = '' + i)
+        : e.value !== '' + i && (e.value = '' + i);
+    else if (t === 'submit' || t === 'reset') {
+      e.removeAttribute('value');
+      return;
+    }
+    (n.hasOwnProperty('value')
+      ? Ri(e, n.type, i)
+      : n.hasOwnProperty('defaultValue') && Ri(e, n.type, ce(n.defaultValue)),
+      n.checked == null && n.defaultChecked != null && (e.defaultChecked = !!n.defaultChecked));
+  }
+  function ot(e, n, i) {
+    if (n.hasOwnProperty('value') || n.hasOwnProperty('defaultValue')) {
+      var t = n.type;
+      if (!((t !== 'submit' && t !== 'reset') || (n.value !== void 0 && n.value !== null))) return;
+      ((n = '' + e._wrapperState.initialValue),
+        i || n === e.value || (e.value = n),
+        (e.defaultValue = n));
+    }
+    ((i = e.name),
+      i !== '' && (e.name = ''),
+      (e.defaultChecked = !!e._wrapperState.initialChecked),
+      i !== '' && (e.name = i));
+  }
+  function Ri(e, n, i) {
+    (n !== 'number' || Ei(e.ownerDocument) !== e) &&
+      (i == null
+        ? (e.defaultValue = '' + e._wrapperState.initialValue)
+        : e.defaultValue !== '' + i && (e.defaultValue = '' + i));
+  }
+  var qn = Array.isArray;
+  function En(e, n, i, t) {
+    if (((e = e.options), n)) {
+      n = {};
+      for (var s = 0; s < i.length; s++) n['$' + i[s]] = !0;
+      for (i = 0; i < e.length; i++)
+        ((s = n.hasOwnProperty('$' + e[i].value)),
+          e[i].selected !== s && (e[i].selected = s),
+          s && t && (e[i].defaultSelected = !0));
+    } else {
+      for (i = '' + ce(i), n = null, s = 0; s < e.length; s++) {
+        if (e[s].value === i) {
+          ((e[s].selected = !0), t && (e[s].defaultSelected = !0));
+          return;
+        }
+        n !== null || e[s].disabled || (n = e[s]);
+      }
+      n !== null && (n.selected = !0);
+    }
+  }
+  function Be(e, n) {
+    if (n.dangerouslySetInnerHTML != null) throw Error(a(91));
+    return A({}, n, {
+      value: void 0,
+      defaultValue: void 0,
+      children: '' + e._wrapperState.initialValue,
+    });
+  }
+  function S(e, n) {
+    var i = n.value;
+    if (i == null) {
+      if (((i = n.children), (n = n.defaultValue), i != null)) {
+        if (n != null) throw Error(a(92));
+        if (qn(i)) {
+          if (1 < i.length) throw Error(a(93));
+          i = i[0];
+        }
+        n = i;
+      }
+      (n == null && (n = ''), (i = n));
+    }
+    e._wrapperState = { initialValue: ce(i) };
+  }
+  function Qe(e, n) {
+    var i = ce(n.value),
+      t = ce(n.defaultValue);
+    (i != null &&
+      ((i = '' + i),
+      i !== e.value && (e.value = i),
+      n.defaultValue == null && e.defaultValue !== i && (e.defaultValue = i)),
+      t != null && (e.defaultValue = '' + t));
+  }
+  function lt(e) {
+    var n = e.textContent;
+    n === e._wrapperState.initialValue && n !== '' && n !== null && (e.value = n);
+  }
+  function en(e) {
+    switch (e) {
+      case 'svg':
+        return 'http://www.w3.org/2000/svg';
+      case 'math':
+        return 'http://www.w3.org/1998/Math/MathML';
+      default:
+        return 'http://www.w3.org/1999/xhtml';
+    }
+  }
+  function Ee(e, n) {
+    return e == null || e === 'http://www.w3.org/1999/xhtml'
+      ? en(n)
+      : e === 'http://www.w3.org/2000/svg' && n === 'foreignObject'
+        ? 'http://www.w3.org/1999/xhtml'
+        : e;
+  }
+  var _e,
+    fi = (function (e) {
+      return typeof MSApp < 'u' && MSApp.execUnsafeLocalFunction
+        ? function (n, i, t, s) {
+            MSApp.execUnsafeLocalFunction(function () {
+              return e(n, i, t, s);
+            });
+          }
+        : e;
+    })(function (e, n) {
+      if (e.namespaceURI !== 'http://www.w3.org/2000/svg' || 'innerHTML' in e) e.innerHTML = n;
+      else {
+        for (
+          _e = _e || document.createElement('div'),
+            _e.innerHTML = '<svg>' + n.valueOf().toString() + '</svg>',
+            n = _e.firstChild;
+          e.firstChild;
+
+        )
+          e.removeChild(e.firstChild);
+        for (; n.firstChild; ) e.appendChild(n.firstChild);
+      }
+    });
+  function Dn(e, n) {
+    if (n) {
+      var i = e.firstChild;
+      if (i && i === e.lastChild && i.nodeType === 3) {
+        i.nodeValue = n;
+        return;
+      }
+    }
+    e.textContent = n;
+  }
+  var Hn = {
+      animationIterationCount: !0,
+      aspectRatio: !0,
+      borderImageOutset: !0,
+      borderImageSlice: !0,
+      borderImageWidth: !0,
+      boxFlex: !0,
+      boxFlexGroup: !0,
+      boxOrdinalGroup: !0,
+      columnCount: !0,
+      columns: !0,
+      flex: !0,
+      flexGrow: !0,
+      flexPositive: !0,
+      flexShrink: !0,
+      flexNegative: !0,
+      flexOrder: !0,
+      gridArea: !0,
+      gridRow: !0,
+      gridRowEnd: !0,
+      gridRowSpan: !0,
+      gridRowStart: !0,
+      gridColumn: !0,
+      gridColumnEnd: !0,
+      gridColumnSpan: !0,
+      gridColumnStart: !0,
+      fontWeight: !0,
+      lineClamp: !0,
+      lineHeight: !0,
+      opacity: !0,
+      order: !0,
+      orphans: !0,
+      tabSize: !0,
+      widows: !0,
+      zIndex: !0,
+      zoom: !0,
+      fillOpacity: !0,
+      floodOpacity: !0,
+      stopOpacity: !0,
+      strokeDasharray: !0,
+      strokeDashoffset: !0,
+      strokeMiterlimit: !0,
+      strokeOpacity: !0,
+      strokeWidth: !0,
+    },
+    as = ['Webkit', 'ms', 'Moz', 'O'];
+  Object.keys(Hn).forEach(function (e) {
+    as.forEach(function (n) {
+      ((n = n + e.charAt(0).toUpperCase() + e.substring(1)), (Hn[n] = Hn[e]));
+    });
+  });
+  function Yt(e, n, i) {
+    return n == null || typeof n == 'boolean' || n === ''
+      ? ''
+      : i || typeof n != 'number' || n === 0 || (Hn.hasOwnProperty(e) && Hn[e])
+        ? ('' + n).trim()
+        : n + 'px';
+  }
+  function Zt(e, n) {
+    e = e.style;
+    for (var i in n)
+      if (n.hasOwnProperty(i)) {
+        var t = i.indexOf('--') === 0,
+          s = Yt(i, n[i], t);
+        (i === 'float' && (i = 'cssFloat'), t ? e.setProperty(i, s) : (e[i] = s));
+      }
+  }
+  var us = A(
+    { menuitem: !0 },
+    {
+      area: !0,
+      base: !0,
+      br: !0,
+      col: !0,
+      embed: !0,
+      hr: !0,
+      img: !0,
+      input: !0,
+      keygen: !0,
+      link: !0,
+      meta: !0,
+      param: !0,
+      source: !0,
+      track: !0,
+      wbr: !0,
+    }
+  );
+  function hn(e, n) {
+    if (n) {
+      if (us[e] && (n.children != null || n.dangerouslySetInnerHTML != null))
+        throw Error(a(137, e));
+      if (n.dangerouslySetInnerHTML != null) {
+        if (n.children != null) throw Error(a(60));
+        if (
+          typeof n.dangerouslySetInnerHTML != 'object' ||
+          !('__html' in n.dangerouslySetInnerHTML)
+        )
+          throw Error(a(61));
+      }
+      if (n.style != null && typeof n.style != 'object') throw Error(a(62));
+    }
+  }
+  function at(e, n) {
+    if (e.indexOf('-') === -1) return typeof n.is == 'string';
+    switch (e) {
+      case 'annotation-xml':
+      case 'color-profile':
+      case 'font-face':
+      case 'font-face-src':
+      case 'font-face-uri':
+      case 'font-face-format':
+      case 'font-face-name':
+      case 'missing-glyph':
+        return !1;
+      default:
+        return !0;
+    }
+  }
+  var ut = null;
+  function bi(e) {
+    return (
+      (e = e.target || e.srcElement || window),
+      e.correspondingUseElement && (e = e.correspondingUseElement),
+      e.nodeType === 3 ? e.parentNode : e
+    );
+  }
+  var Mi = null,
+    y = null,
+    L = null;
+  function ne(e) {
+    if ((e = Rt(e))) {
+      if (typeof Mi != 'function') throw Error(a(280));
+      var n = e.stateNode;
+      n && ((n = xr(n)), Mi(e.stateNode, e.type, n));
+    }
+  }
+  function we(e) {
+    y ? (L ? L.push(e) : (L = [e])) : (y = e);
+  }
+  function Ln() {
+    if (y) {
+      var e = y,
+        n = L;
+      if (((L = y = null), ne(e), n)) for (e = 0; e < n.length; e++) ne(n[e]);
+    }
+  }
+  function ll(e, n) {
+    return e(n);
+  }
+  function al() {}
+  var cs = !1;
+  function ul(e, n, i) {
+    if (cs) return e(n, i);
+    cs = !0;
+    try {
+      return ll(e, n, i);
+    } finally {
+      ((cs = !1), (y !== null || L !== null) && (al(), Ln()));
+    }
+  }
+  function ct(e, n) {
+    var i = e.stateNode;
+    if (i === null) return null;
+    var t = xr(i);
+    if (t === null) return null;
+    i = t[n];
+    e: switch (n) {
+      case 'onClick':
+      case 'onClickCapture':
+      case 'onDoubleClick':
+      case 'onDoubleClickCapture':
+      case 'onMouseDown':
+      case 'onMouseDownCapture':
+      case 'onMouseMove':
+      case 'onMouseMoveCapture':
+      case 'onMouseUp':
+      case 'onMouseUpCapture':
+      case 'onMouseEnter':
+        ((t = !t.disabled) ||
+          ((e = e.type),
+          (t = !(e === 'button' || e === 'input' || e === 'select' || e === 'textarea'))),
+          (e = !t));
+        break e;
+      default:
+        e = !1;
+    }
+    if (e) return null;
+    if (i && typeof i != 'function') throw Error(a(231, n, typeof i));
+    return i;
+  }
+  var ds = !1;
+  if (f)
+    try {
+      var dt = {};
+      (Object.defineProperty(dt, 'passive', {
+        get: function () {
+          ds = !0;
+        },
+      }),
+        window.addEventListener('test', dt, dt),
+        window.removeEventListener('test', dt, dt));
+    } catch {
+      ds = !1;
+    }
+  function cc(e, n, i, t, s, o, u, d, m) {
+    var x = Array.prototype.slice.call(arguments, 3);
+    try {
+      n.apply(i, x);
+    } catch (E) {
+      this.onError(E);
+    }
+  }
+  var mt = !1,
+    Xt = null,
+    Jt = !1,
+    ms = null,
+    dc = {
+      onError: function (e) {
+        ((mt = !0), (Xt = e));
+      },
+    };
+  function mc(e, n, i, t, s, o, u, d, m) {
+    ((mt = !1), (Xt = null), cc.apply(dc, arguments));
+  }
+  function pc(e, n, i, t, s, o, u, d, m) {
+    if ((mc.apply(this, arguments), mt)) {
+      if (mt) {
+        var x = Xt;
+        ((mt = !1), (Xt = null));
+      } else throw Error(a(198));
+      Jt || ((Jt = !0), (ms = x));
+    }
+  }
+  function hi(e) {
+    var n = e,
+      i = e;
+    if (e.alternate) for (; n.return; ) n = n.return;
+    else {
+      e = n;
+      do ((n = e), (n.flags & 4098) !== 0 && (i = n.return), (e = n.return));
+      while (e);
+    }
+    return n.tag === 3 ? i : null;
+  }
+  function cl(e) {
+    if (e.tag === 13) {
+      var n = e.memoizedState;
+      if ((n === null && ((e = e.alternate), e !== null && (n = e.memoizedState)), n !== null))
+        return n.dehydrated;
+    }
+    return null;
+  }
+  function dl(e) {
+    if (hi(e) !== e) throw Error(a(188));
+  }
+  function fc(e) {
+    var n = e.alternate;
+    if (!n) {
+      if (((n = hi(e)), n === null)) throw Error(a(188));
+      return n !== e ? null : e;
+    }
+    for (var i = e, t = n; ; ) {
+      var s = i.return;
+      if (s === null) break;
+      var o = s.alternate;
+      if (o === null) {
+        if (((t = s.return), t !== null)) {
+          i = t;
+          continue;
+        }
+        break;
+      }
+      if (s.child === o.child) {
+        for (o = s.child; o; ) {
+          if (o === i) return (dl(s), e);
+          if (o === t) return (dl(s), n);
+          o = o.sibling;
+        }
+        throw Error(a(188));
+      }
+      if (i.return !== t.return) ((i = s), (t = o));
+      else {
+        for (var u = !1, d = s.child; d; ) {
+          if (d === i) {
+            ((u = !0), (i = s), (t = o));
+            break;
+          }
+          if (d === t) {
+            ((u = !0), (t = s), (i = o));
+            break;
+          }
+          d = d.sibling;
+        }
+        if (!u) {
+          for (d = o.child; d; ) {
+            if (d === i) {
+              ((u = !0), (i = o), (t = s));
+              break;
+            }
+            if (d === t) {
+              ((u = !0), (t = o), (i = s));
+              break;
+            }
+            d = d.sibling;
+          }
+          if (!u) throw Error(a(189));
+        }
+      }
+      if (i.alternate !== t) throw Error(a(190));
+    }
+    if (i.tag !== 3) throw Error(a(188));
+    return i.stateNode.current === i ? e : n;
+  }
+  function ml(e) {
+    return ((e = fc(e)), e !== null ? pl(e) : null);
+  }
+  function pl(e) {
+    if (e.tag === 5 || e.tag === 6) return e;
+    for (e = e.child; e !== null; ) {
+      var n = pl(e);
+      if (n !== null) return n;
+      e = e.sibling;
+    }
+    return null;
+  }
+  var fl = c.unstable_scheduleCallback,
+    hl = c.unstable_cancelCallback,
+    hc = c.unstable_shouldYield,
+    gc = c.unstable_requestPaint,
+    be = c.unstable_now,
+    vc = c.unstable_getCurrentPriorityLevel,
+    ps = c.unstable_ImmediatePriority,
+    gl = c.unstable_UserBlockingPriority,
+    er = c.unstable_NormalPriority,
+    yc = c.unstable_LowPriority,
+    vl = c.unstable_IdlePriority,
+    nr = null,
+    Rn = null;
+  function _c(e) {
+    if (Rn && typeof Rn.onCommitFiberRoot == 'function')
+      try {
+        Rn.onCommitFiberRoot(nr, e, void 0, (e.current.flags & 128) === 128);
+      } catch {}
+  }
+  var Nn = Math.clz32 ? Math.clz32 : Nc,
+    xc = Math.log,
+    wc = Math.LN2;
+  function Nc(e) {
+    return ((e >>>= 0), e === 0 ? 32 : (31 - ((xc(e) / wc) | 0)) | 0);
+  }
+  var ir = 64,
+    tr = 4194304;
+  function pt(e) {
+    switch (e & -e) {
+      case 1:
+        return 1;
+      case 2:
+        return 2;
+      case 4:
+        return 4;
+      case 8:
+        return 8;
+      case 16:
+        return 16;
+      case 32:
+        return 32;
+      case 64:
+      case 128:
+      case 256:
+      case 512:
+      case 1024:
+      case 2048:
+      case 4096:
+      case 8192:
+      case 16384:
+      case 32768:
+      case 65536:
+      case 131072:
+      case 262144:
+      case 524288:
+      case 1048576:
+      case 2097152:
+        return e & 4194240;
+      case 4194304:
+      case 8388608:
+      case 16777216:
+      case 33554432:
+      case 67108864:
+        return e & 130023424;
+      case 134217728:
+        return 134217728;
+      case 268435456:
+        return 268435456;
+      case 536870912:
+        return 536870912;
+      case 1073741824:
+        return 1073741824;
+      default:
+        return e;
+    }
+  }
+  function rr(e, n) {
+    var i = e.pendingLanes;
+    if (i === 0) return 0;
+    var t = 0,
+      s = e.suspendedLanes,
+      o = e.pingedLanes,
+      u = i & 268435455;
+    if (u !== 0) {
+      var d = u & ~s;
+      d !== 0 ? (t = pt(d)) : ((o &= u), o !== 0 && (t = pt(o)));
+    } else ((u = i & ~s), u !== 0 ? (t = pt(u)) : o !== 0 && (t = pt(o)));
+    if (t === 0) return 0;
+    if (
+      n !== 0 &&
+      n !== t &&
+      (n & s) === 0 &&
+      ((s = t & -t), (o = n & -n), s >= o || (s === 16 && (o & 4194240) !== 0))
+    )
+      return n;
+    if (((t & 4) !== 0 && (t |= i & 16), (n = e.entangledLanes), n !== 0))
+      for (e = e.entanglements, n &= t; 0 < n; )
+        ((i = 31 - Nn(n)), (s = 1 << i), (t |= e[i]), (n &= ~s));
+    return t;
+  }
+  function jc(e, n) {
+    switch (e) {
+      case 1:
+      case 2:
+      case 4:
+        return n + 250;
+      case 8:
+      case 16:
+      case 32:
+      case 64:
+      case 128:
+      case 256:
+      case 512:
+      case 1024:
+      case 2048:
+      case 4096:
+      case 8192:
+      case 16384:
+      case 32768:
+      case 65536:
+      case 131072:
+      case 262144:
+      case 524288:
+      case 1048576:
+      case 2097152:
+        return n + 5e3;
+      case 4194304:
+      case 8388608:
+      case 16777216:
+      case 33554432:
+      case 67108864:
+        return -1;
+      case 134217728:
+      case 268435456:
+      case 536870912:
+      case 1073741824:
+        return -1;
+      default:
+        return -1;
+    }
+  }
+  function kc(e, n) {
+    for (
+      var i = e.suspendedLanes, t = e.pingedLanes, s = e.expirationTimes, o = e.pendingLanes;
+      0 < o;
+
+    ) {
+      var u = 31 - Nn(o),
+        d = 1 << u,
+        m = s[u];
+      (m === -1
+        ? ((d & i) === 0 || (d & t) !== 0) && (s[u] = jc(d, n))
+        : m <= n && (e.expiredLanes |= d),
+        (o &= ~d));
+    }
+  }
+  function fs(e) {
+    return ((e = e.pendingLanes & -1073741825), e !== 0 ? e : e & 1073741824 ? 1073741824 : 0);
+  }
+  function yl() {
+    var e = ir;
+    return ((ir <<= 1), (ir & 4194240) === 0 && (ir = 64), e);
+  }
+  function hs(e) {
+    for (var n = [], i = 0; 31 > i; i++) n.push(e);
+    return n;
+  }
+  function ft(e, n, i) {
+    ((e.pendingLanes |= n),
+      n !== 536870912 && ((e.suspendedLanes = 0), (e.pingedLanes = 0)),
+      (e = e.eventTimes),
+      (n = 31 - Nn(n)),
+      (e[n] = i));
+  }
+  function Sc(e, n) {
+    var i = e.pendingLanes & ~n;
+    ((e.pendingLanes = n),
+      (e.suspendedLanes = 0),
+      (e.pingedLanes = 0),
+      (e.expiredLanes &= n),
+      (e.mutableReadLanes &= n),
+      (e.entangledLanes &= n),
+      (n = e.entanglements));
+    var t = e.eventTimes;
+    for (e = e.expirationTimes; 0 < i; ) {
+      var s = 31 - Nn(i),
+        o = 1 << s;
+      ((n[s] = 0), (t[s] = -1), (e[s] = -1), (i &= ~o));
+    }
+  }
+  function gs(e, n) {
+    var i = (e.entangledLanes |= n);
+    for (e = e.entanglements; i; ) {
+      var t = 31 - Nn(i),
+        s = 1 << t;
+      ((s & n) | (e[t] & n) && (e[t] |= n), (i &= ~s));
+    }
+  }
+  var he = 0;
+  function _l(e) {
+    return ((e &= -e), 1 < e ? (4 < e ? ((e & 268435455) !== 0 ? 16 : 536870912) : 4) : 1);
+  }
+  var xl,
+    vs,
+    wl,
+    Nl,
+    jl,
+    ys = !1,
+    sr = [],
+    Gn = null,
+    Kn = null,
+    Qn = null,
+    ht = new Map(),
+    gt = new Map(),
+    Yn = [],
+    Cc =
+      'mousedown mouseup touchcancel touchend touchstart auxclick dblclick pointercancel pointerdown pointerup dragend dragstart drop compositionend compositionstart keydown keypress keyup input textInput copy cut paste click change contextmenu reset submit'.split(
+        ' '
+      );
+  function kl(e, n) {
+    switch (e) {
+      case 'focusin':
+      case 'focusout':
+        Gn = null;
+        break;
+      case 'dragenter':
+      case 'dragleave':
+        Kn = null;
+        break;
+      case 'mouseover':
+      case 'mouseout':
+        Qn = null;
+        break;
+      case 'pointerover':
+      case 'pointerout':
+        ht.delete(n.pointerId);
+        break;
+      case 'gotpointercapture':
+      case 'lostpointercapture':
+        gt.delete(n.pointerId);
+    }
+  }
+  function vt(e, n, i, t, s, o) {
+    return e === null || e.nativeEvent !== o
+      ? ((e = {
+          blockedOn: n,
+          domEventName: i,
+          eventSystemFlags: t,
+          nativeEvent: o,
+          targetContainers: [s],
+        }),
+        n !== null && ((n = Rt(n)), n !== null && vs(n)),
+        e)
+      : ((e.eventSystemFlags |= t),
+        (n = e.targetContainers),
+        s !== null && n.indexOf(s) === -1 && n.push(s),
+        e);
+  }
+  function Pc(e, n, i, t, s) {
+    switch (n) {
+      case 'focusin':
+        return ((Gn = vt(Gn, e, n, i, t, s)), !0);
+      case 'dragenter':
+        return ((Kn = vt(Kn, e, n, i, t, s)), !0);
+      case 'mouseover':
+        return ((Qn = vt(Qn, e, n, i, t, s)), !0);
+      case 'pointerover':
+        var o = s.pointerId;
+        return (ht.set(o, vt(ht.get(o) || null, e, n, i, t, s)), !0);
+      case 'gotpointercapture':
+        return ((o = s.pointerId), gt.set(o, vt(gt.get(o) || null, e, n, i, t, s)), !0);
+    }
+    return !1;
+  }
+  function Sl(e) {
+    var n = gi(e.target);
+    if (n !== null) {
+      var i = hi(n);
+      if (i !== null) {
+        if (((n = i.tag), n === 13)) {
+          if (((n = cl(i)), n !== null)) {
+            ((e.blockedOn = n),
+              jl(e.priority, function () {
+                wl(i);
+              }));
+            return;
+          }
+        } else if (n === 3 && i.stateNode.current.memoizedState.isDehydrated) {
+          e.blockedOn = i.tag === 3 ? i.stateNode.containerInfo : null;
+          return;
+        }
+      }
+    }
+    e.blockedOn = null;
+  }
+  function or(e) {
+    if (e.blockedOn !== null) return !1;
+    for (var n = e.targetContainers; 0 < n.length; ) {
+      var i = xs(e.domEventName, e.eventSystemFlags, n[0], e.nativeEvent);
+      if (i === null) {
+        i = e.nativeEvent;
+        var t = new i.constructor(i.type, i);
+        ((ut = t), i.target.dispatchEvent(t), (ut = null));
+      } else return ((n = Rt(i)), n !== null && vs(n), (e.blockedOn = i), !1);
+      n.shift();
+    }
+    return !0;
+  }
+  function Cl(e, n, i) {
+    or(e) && i.delete(n);
+  }
+  function Tc() {
+    ((ys = !1),
+      Gn !== null && or(Gn) && (Gn = null),
+      Kn !== null && or(Kn) && (Kn = null),
+      Qn !== null && or(Qn) && (Qn = null),
+      ht.forEach(Cl),
+      gt.forEach(Cl));
+  }
+  function yt(e, n) {
+    e.blockedOn === n &&
+      ((e.blockedOn = null),
+      ys || ((ys = !0), c.unstable_scheduleCallback(c.unstable_NormalPriority, Tc)));
+  }
+  function _t(e) {
+    function n(s) {
+      return yt(s, e);
+    }
+    if (0 < sr.length) {
+      yt(sr[0], e);
+      for (var i = 1; i < sr.length; i++) {
+        var t = sr[i];
+        t.blockedOn === e && (t.blockedOn = null);
+      }
+    }
+    for (
+      Gn !== null && yt(Gn, e),
+        Kn !== null && yt(Kn, e),
+        Qn !== null && yt(Qn, e),
+        ht.forEach(n),
+        gt.forEach(n),
+        i = 0;
+      i < Yn.length;
+      i++
+    )
+      ((t = Yn[i]), t.blockedOn === e && (t.blockedOn = null));
+    for (; 0 < Yn.length && ((i = Yn[0]), i.blockedOn === null); )
+      (Sl(i), i.blockedOn === null && Yn.shift());
+  }
+  var Fi = re.ReactCurrentBatchConfig,
+    lr = !0;
+  function Ec(e, n, i, t) {
+    var s = he,
+      o = Fi.transition;
+    Fi.transition = null;
+    try {
+      ((he = 1), _s(e, n, i, t));
+    } finally {
+      ((he = s), (Fi.transition = o));
+    }
+  }
+  function Lc(e, n, i, t) {
+    var s = he,
+      o = Fi.transition;
+    Fi.transition = null;
+    try {
+      ((he = 4), _s(e, n, i, t));
+    } finally {
+      ((he = s), (Fi.transition = o));
+    }
+  }
+  function _s(e, n, i, t) {
+    if (lr) {
+      var s = xs(e, n, i, t);
+      if (s === null) (Is(e, n, t, ar, i), kl(e, t));
+      else if (Pc(s, e, n, i, t)) t.stopPropagation();
+      else if ((kl(e, t), n & 4 && -1 < Cc.indexOf(e))) {
+        for (; s !== null; ) {
+          var o = Rt(s);
+          if (
+            (o !== null && xl(o), (o = xs(e, n, i, t)), o === null && Is(e, n, t, ar, i), o === s)
+          )
+            break;
+          s = o;
+        }
+        s !== null && t.stopPropagation();
+      } else Is(e, n, t, null, i);
+    }
+  }
+  var ar = null;
+  function xs(e, n, i, t) {
+    if (((ar = null), (e = bi(t)), (e = gi(e)), e !== null))
+      if (((n = hi(e)), n === null)) e = null;
+      else if (((i = n.tag), i === 13)) {
+        if (((e = cl(n)), e !== null)) return e;
+        e = null;
+      } else if (i === 3) {
+        if (n.stateNode.current.memoizedState.isDehydrated)
+          return n.tag === 3 ? n.stateNode.containerInfo : null;
+        e = null;
+      } else n !== e && (e = null);
+    return ((ar = e), null);
+  }
+  function Pl(e) {
+    switch (e) {
+      case 'cancel':
+      case 'click':
+      case 'close':
+      case 'contextmenu':
+      case 'copy':
+      case 'cut':
+      case 'auxclick':
+      case 'dblclick':
+      case 'dragend':
+      case 'dragstart':
+      case 'drop':
+      case 'focusin':
+      case 'focusout':
+      case 'input':
+      case 'invalid':
+      case 'keydown':
+      case 'keypress':
+      case 'keyup':
+      case 'mousedown':
+      case 'mouseup':
+      case 'paste':
+      case 'pause':
+      case 'play':
+      case 'pointercancel':
+      case 'pointerdown':
+      case 'pointerup':
+      case 'ratechange':
+      case 'reset':
+      case 'resize':
+      case 'seeked':
+      case 'submit':
+      case 'touchcancel':
+      case 'touchend':
+      case 'touchstart':
+      case 'volumechange':
+      case 'change':
+      case 'selectionchange':
+      case 'textInput':
+      case 'compositionstart':
+      case 'compositionend':
+      case 'compositionupdate':
+      case 'beforeblur':
+      case 'afterblur':
+      case 'beforeinput':
+      case 'blur':
+      case 'fullscreenchange':
+      case 'focus':
+      case 'hashchange':
+      case 'popstate':
+      case 'select':
+      case 'selectstart':
+        return 1;
+      case 'drag':
+      case 'dragenter':
+      case 'dragexit':
+      case 'dragleave':
+      case 'dragover':
+      case 'mousemove':
+      case 'mouseout':
+      case 'mouseover':
+      case 'pointermove':
+      case 'pointerout':
+      case 'pointerover':
+      case 'scroll':
+      case 'toggle':
+      case 'touchmove':
+      case 'wheel':
+      case 'mouseenter':
+      case 'mouseleave':
+      case 'pointerenter':
+      case 'pointerleave':
+        return 4;
+      case 'message':
+        switch (vc()) {
+          case ps:
+            return 1;
+          case gl:
+            return 4;
+          case er:
+          case yc:
+            return 16;
+          case vl:
+            return 536870912;
+          default:
+            return 16;
+        }
+      default:
+        return 16;
+    }
+  }
+  var Zn = null,
+    ws = null,
+    ur = null;
+  function Tl() {
+    if (ur) return ur;
+    var e,
+      n = ws,
+      i = n.length,
+      t,
+      s = 'value' in Zn ? Zn.value : Zn.textContent,
+      o = s.length;
+    for (e = 0; e < i && n[e] === s[e]; e++);
+    var u = i - e;
+    for (t = 1; t <= u && n[i - t] === s[o - t]; t++);
+    return (ur = s.slice(e, 1 < t ? 1 - t : void 0));
+  }
+  function cr(e) {
+    var n = e.keyCode;
+    return (
+      'charCode' in e ? ((e = e.charCode), e === 0 && n === 13 && (e = 13)) : (e = n),
+      e === 10 && (e = 13),
+      32 <= e || e === 13 ? e : 0
+    );
+  }
+  function dr() {
+    return !0;
+  }
+  function El() {
+    return !1;
+  }
+  function dn(e) {
+    function n(i, t, s, o, u) {
+      ((this._reactName = i),
+        (this._targetInst = s),
+        (this.type = t),
+        (this.nativeEvent = o),
+        (this.target = u),
+        (this.currentTarget = null));
+      for (var d in e) e.hasOwnProperty(d) && ((i = e[d]), (this[d] = i ? i(o) : o[d]));
+      return (
+        (this.isDefaultPrevented = (
+          o.defaultPrevented != null ? o.defaultPrevented : o.returnValue === !1
+        )
+          ? dr
+          : El),
+        (this.isPropagationStopped = El),
+        this
+      );
+    }
+    return (
+      A(n.prototype, {
+        preventDefault: function () {
+          this.defaultPrevented = !0;
+          var i = this.nativeEvent;
+          i &&
+            (i.preventDefault
+              ? i.preventDefault()
+              : typeof i.returnValue != 'unknown' && (i.returnValue = !1),
+            (this.isDefaultPrevented = dr));
+        },
+        stopPropagation: function () {
+          var i = this.nativeEvent;
+          i &&
+            (i.stopPropagation
+              ? i.stopPropagation()
+              : typeof i.cancelBubble != 'unknown' && (i.cancelBubble = !0),
+            (this.isPropagationStopped = dr));
+        },
+        persist: function () {},
+        isPersistent: dr,
+      }),
+      n
+    );
+  }
+  var zi = {
+      eventPhase: 0,
+      bubbles: 0,
+      cancelable: 0,
+      timeStamp: function (e) {
+        return e.timeStamp || Date.now();
+      },
+      defaultPrevented: 0,
+      isTrusted: 0,
+    },
+    Ns = dn(zi),
+    xt = A({}, zi, { view: 0, detail: 0 }),
+    Rc = dn(xt),
+    js,
+    ks,
+    wt,
+    mr = A({}, xt, {
+      screenX: 0,
+      screenY: 0,
+      clientX: 0,
+      clientY: 0,
+      pageX: 0,
+      pageY: 0,
+      ctrlKey: 0,
+      shiftKey: 0,
+      altKey: 0,
+      metaKey: 0,
+      getModifierState: Cs,
+      button: 0,
+      buttons: 0,
+      relatedTarget: function (e) {
+        return e.relatedTarget === void 0
+          ? e.fromElement === e.srcElement
+            ? e.toElement
+            : e.fromElement
+          : e.relatedTarget;
+      },
+      movementX: function (e) {
+        return 'movementX' in e
+          ? e.movementX
+          : (e !== wt &&
+              (wt && e.type === 'mousemove'
+                ? ((js = e.screenX - wt.screenX), (ks = e.screenY - wt.screenY))
+                : (ks = js = 0),
+              (wt = e)),
+            js);
+      },
+      movementY: function (e) {
+        return 'movementY' in e ? e.movementY : ks;
+      },
+    }),
+    Ll = dn(mr),
+    bc = A({}, mr, { dataTransfer: 0 }),
+    Mc = dn(bc),
+    Fc = A({}, xt, { relatedTarget: 0 }),
+    Ss = dn(Fc),
+    zc = A({}, zi, { animationName: 0, elapsedTime: 0, pseudoElement: 0 }),
+    Oc = dn(zc),
+    Ic = A({}, zi, {
+      clipboardData: function (e) {
+        return 'clipboardData' in e ? e.clipboardData : window.clipboardData;
+      },
+    }),
+    Wc = dn(Ic),
+    Ac = A({}, zi, { data: 0 }),
+    Rl = dn(Ac),
+    Vc = {
+      Esc: 'Escape',
+      Spacebar: ' ',
+      Left: 'ArrowLeft',
+      Up: 'ArrowUp',
+      Right: 'ArrowRight',
+      Down: 'ArrowDown',
+      Del: 'Delete',
+      Win: 'OS',
+      Menu: 'ContextMenu',
+      Apps: 'ContextMenu',
+      Scroll: 'ScrollLock',
+      MozPrintableKey: 'Unidentified',
+    },
+    Bc = {
+      8: 'Backspace',
+      9: 'Tab',
+      12: 'Clear',
+      13: 'Enter',
+      16: 'Shift',
+      17: 'Control',
+      18: 'Alt',
+      19: 'Pause',
+      20: 'CapsLock',
+      27: 'Escape',
+      32: ' ',
+      33: 'PageUp',
+      34: 'PageDown',
+      35: 'End',
+      36: 'Home',
+      37: 'ArrowLeft',
+      38: 'ArrowUp',
+      39: 'ArrowRight',
+      40: 'ArrowDown',
+      45: 'Insert',
+      46: 'Delete',
+      112: 'F1',
+      113: 'F2',
+      114: 'F3',
+      115: 'F4',
+      116: 'F5',
+      117: 'F6',
+      118: 'F7',
+      119: 'F8',
+      120: 'F9',
+      121: 'F10',
+      122: 'F11',
+      123: 'F12',
+      144: 'NumLock',
+      145: 'ScrollLock',
+      224: 'Meta',
+    },
+    $c = { Alt: 'altKey', Control: 'ctrlKey', Meta: 'metaKey', Shift: 'shiftKey' };
+  function Uc(e) {
+    var n = this.nativeEvent;
+    return n.getModifierState ? n.getModifierState(e) : (e = $c[e]) ? !!n[e] : !1;
+  }
+  function Cs() {
+    return Uc;
+  }
+  var qc = A({}, xt, {
+      key: function (e) {
+        if (e.key) {
+          var n = Vc[e.key] || e.key;
+          if (n !== 'Unidentified') return n;
+        }
+        return e.type === 'keypress'
+          ? ((e = cr(e)), e === 13 ? 'Enter' : String.fromCharCode(e))
+          : e.type === 'keydown' || e.type === 'keyup'
+            ? Bc[e.keyCode] || 'Unidentified'
+            : '';
+      },
+      code: 0,
+      location: 0,
+      ctrlKey: 0,
+      shiftKey: 0,
+      altKey: 0,
+      metaKey: 0,
+      repeat: 0,
+      locale: 0,
+      getModifierState: Cs,
+      charCode: function (e) {
+        return e.type === 'keypress' ? cr(e) : 0;
+      },
+      keyCode: function (e) {
+        return e.type === 'keydown' || e.type === 'keyup' ? e.keyCode : 0;
+      },
+      which: function (e) {
+        return e.type === 'keypress'
+          ? cr(e)
+          : e.type === 'keydown' || e.type === 'keyup'
+            ? e.keyCode
+            : 0;
+      },
+    }),
+    Dc = dn(qc),
+    Hc = A({}, mr, {
+      pointerId: 0,
+      width: 0,
+      height: 0,
+      pressure: 0,
+      tangentialPressure: 0,
+      tiltX: 0,
+      tiltY: 0,
+      twist: 0,
+      pointerType: 0,
+      isPrimary: 0,
+    }),
+    bl = dn(Hc),
+    Gc = A({}, xt, {
+      touches: 0,
+      targetTouches: 0,
+      changedTouches: 0,
+      altKey: 0,
+      metaKey: 0,
+      ctrlKey: 0,
+      shiftKey: 0,
+      getModifierState: Cs,
+    }),
+    Kc = dn(Gc),
+    Qc = A({}, zi, { propertyName: 0, elapsedTime: 0, pseudoElement: 0 }),
+    Yc = dn(Qc),
+    Zc = A({}, mr, {
+      deltaX: function (e) {
+        return 'deltaX' in e ? e.deltaX : 'wheelDeltaX' in e ? -e.wheelDeltaX : 0;
+      },
+      deltaY: function (e) {
+        return 'deltaY' in e
+          ? e.deltaY
+          : 'wheelDeltaY' in e
+            ? -e.wheelDeltaY
+            : 'wheelDelta' in e
+              ? -e.wheelDelta
+              : 0;
+      },
+      deltaZ: 0,
+      deltaMode: 0,
+    }),
+    Xc = dn(Zc),
+    Jc = [9, 13, 27, 32],
+    Ps = f && 'CompositionEvent' in window,
+    Nt = null;
+  f && 'documentMode' in document && (Nt = document.documentMode);
+  var ed = f && 'TextEvent' in window && !Nt,
+    Ml = f && (!Ps || (Nt && 8 < Nt && 11 >= Nt)),
+    Fl = ' ',
+    zl = !1;
+  function Ol(e, n) {
+    switch (e) {
+      case 'keyup':
+        return Jc.indexOf(n.keyCode) !== -1;
+      case 'keydown':
+        return n.keyCode !== 229;
+      case 'keypress':
+      case 'mousedown':
+      case 'focusout':
+        return !0;
+      default:
+        return !1;
+    }
+  }
+  function Il(e) {
+    return ((e = e.detail), typeof e == 'object' && 'data' in e ? e.data : null);
+  }
+  var Oi = !1;
+  function nd(e, n) {
+    switch (e) {
+      case 'compositionend':
+        return Il(n);
+      case 'keypress':
+        return n.which !== 32 ? null : ((zl = !0), Fl);
+      case 'textInput':
+        return ((e = n.data), e === Fl && zl ? null : e);
+      default:
+        return null;
+    }
+  }
+  function id(e, n) {
+    if (Oi)
+      return e === 'compositionend' || (!Ps && Ol(e, n))
+        ? ((e = Tl()), (ur = ws = Zn = null), (Oi = !1), e)
+        : null;
+    switch (e) {
+      case 'paste':
+        return null;
+      case 'keypress':
+        if (!(n.ctrlKey || n.altKey || n.metaKey) || (n.ctrlKey && n.altKey)) {
+          if (n.char && 1 < n.char.length) return n.char;
+          if (n.which) return String.fromCharCode(n.which);
+        }
+        return null;
+      case 'compositionend':
+        return Ml && n.locale !== 'ko' ? null : n.data;
+      default:
+        return null;
+    }
+  }
+  var td = {
+    color: !0,
+    date: !0,
+    datetime: !0,
+    'datetime-local': !0,
+    email: !0,
+    month: !0,
+    number: !0,
+    password: !0,
+    range: !0,
+    search: !0,
+    tel: !0,
+    text: !0,
+    time: !0,
+    url: !0,
+    week: !0,
+  };
+  function Wl(e) {
+    var n = e && e.nodeName && e.nodeName.toLowerCase();
+    return n === 'input' ? !!td[e.type] : n === 'textarea';
+  }
+  function Al(e, n, i, t) {
+    (we(t),
+      (n = vr(n, 'onChange')),
+      0 < n.length &&
+        ((i = new Ns('onChange', 'change', null, i, t)), e.push({ event: i, listeners: n })));
+  }
+  var jt = null,
+    kt = null;
+  function rd(e) {
+    ta(e, 0);
+  }
+  function pr(e) {
+    var n = Bi(e);
+    if (pi(n)) return e;
+  }
+  function sd(e, n) {
+    if (e === 'change') return n;
+  }
+  var Vl = !1;
+  if (f) {
+    var Ts;
+    if (f) {
+      var Es = 'oninput' in document;
+      if (!Es) {
+        var Bl = document.createElement('div');
+        (Bl.setAttribute('oninput', 'return;'), (Es = typeof Bl.oninput == 'function'));
+      }
+      Ts = Es;
+    } else Ts = !1;
+    Vl = Ts && (!document.documentMode || 9 < document.documentMode);
+  }
+  function $l() {
+    jt && (jt.detachEvent('onpropertychange', Ul), (kt = jt = null));
+  }
+  function Ul(e) {
+    if (e.propertyName === 'value' && pr(kt)) {
+      var n = [];
+      (Al(n, kt, e, bi(e)), ul(rd, n));
+    }
+  }
+  function od(e, n, i) {
+    e === 'focusin'
+      ? ($l(), (jt = n), (kt = i), jt.attachEvent('onpropertychange', Ul))
+      : e === 'focusout' && $l();
+  }
+  function ld(e) {
+    if (e === 'selectionchange' || e === 'keyup' || e === 'keydown') return pr(kt);
+  }
+  function ad(e, n) {
+    if (e === 'click') return pr(n);
+  }
+  function ud(e, n) {
+    if (e === 'input' || e === 'change') return pr(n);
+  }
+  function cd(e, n) {
+    return (e === n && (e !== 0 || 1 / e === 1 / n)) || (e !== e && n !== n);
+  }
+  var jn = typeof Object.is == 'function' ? Object.is : cd;
+  function St(e, n) {
+    if (jn(e, n)) return !0;
+    if (typeof e != 'object' || e === null || typeof n != 'object' || n === null) return !1;
+    var i = Object.keys(e),
+      t = Object.keys(n);
+    if (i.length !== t.length) return !1;
+    for (t = 0; t < i.length; t++) {
+      var s = i[t];
+      if (!h.call(n, s) || !jn(e[s], n[s])) return !1;
+    }
+    return !0;
+  }
+  function ql(e) {
+    for (; e && e.firstChild; ) e = e.firstChild;
+    return e;
+  }
+  function Dl(e, n) {
+    var i = ql(e);
+    e = 0;
+    for (var t; i; ) {
+      if (i.nodeType === 3) {
+        if (((t = e + i.textContent.length), e <= n && t >= n)) return { node: i, offset: n - e };
+        e = t;
+      }
+      e: {
+        for (; i; ) {
+          if (i.nextSibling) {
+            i = i.nextSibling;
+            break e;
+          }
+          i = i.parentNode;
+        }
+        i = void 0;
+      }
+      i = ql(i);
+    }
+  }
+  function Hl(e, n) {
+    return e && n
+      ? e === n
+        ? !0
+        : e && e.nodeType === 3
+          ? !1
+          : n && n.nodeType === 3
+            ? Hl(e, n.parentNode)
+            : 'contains' in e
+              ? e.contains(n)
+              : e.compareDocumentPosition
+                ? !!(e.compareDocumentPosition(n) & 16)
+                : !1
+      : !1;
+  }
+  function Gl() {
+    for (var e = window, n = Ei(); n instanceof e.HTMLIFrameElement; ) {
+      try {
+        var i = typeof n.contentWindow.location.href == 'string';
+      } catch {
+        i = !1;
+      }
+      if (i) e = n.contentWindow;
+      else break;
+      n = Ei(e.document);
+    }
+    return n;
+  }
+  function Ls(e) {
+    var n = e && e.nodeName && e.nodeName.toLowerCase();
+    return (
+      n &&
+      ((n === 'input' &&
+        (e.type === 'text' ||
+          e.type === 'search' ||
+          e.type === 'tel' ||
+          e.type === 'url' ||
+          e.type === 'password')) ||
+        n === 'textarea' ||
+        e.contentEditable === 'true')
+    );
+  }
+  function dd(e) {
+    var n = Gl(),
+      i = e.focusedElem,
+      t = e.selectionRange;
+    if (n !== i && i && i.ownerDocument && Hl(i.ownerDocument.documentElement, i)) {
+      if (t !== null && Ls(i)) {
+        if (((n = t.start), (e = t.end), e === void 0 && (e = n), 'selectionStart' in i))
+          ((i.selectionStart = n), (i.selectionEnd = Math.min(e, i.value.length)));
+        else if (
+          ((e = ((n = i.ownerDocument || document) && n.defaultView) || window), e.getSelection)
+        ) {
+          e = e.getSelection();
+          var s = i.textContent.length,
+            o = Math.min(t.start, s);
+          ((t = t.end === void 0 ? o : Math.min(t.end, s)),
+            !e.extend && o > t && ((s = t), (t = o), (o = s)),
+            (s = Dl(i, o)));
+          var u = Dl(i, t);
+          s &&
+            u &&
+            (e.rangeCount !== 1 ||
+              e.anchorNode !== s.node ||
+              e.anchorOffset !== s.offset ||
+              e.focusNode !== u.node ||
+              e.focusOffset !== u.offset) &&
+            ((n = n.createRange()),
+            n.setStart(s.node, s.offset),
+            e.removeAllRanges(),
+            o > t
+              ? (e.addRange(n), e.extend(u.node, u.offset))
+              : (n.setEnd(u.node, u.offset), e.addRange(n)));
+        }
+      }
+      for (n = [], e = i; (e = e.parentNode); )
+        e.nodeType === 1 && n.push({ element: e, left: e.scrollLeft, top: e.scrollTop });
+      for (typeof i.focus == 'function' && i.focus(), i = 0; i < n.length; i++)
+        ((e = n[i]), (e.element.scrollLeft = e.left), (e.element.scrollTop = e.top));
+    }
+  }
+  var md = f && 'documentMode' in document && 11 >= document.documentMode,
+    Ii = null,
+    Rs = null,
+    Ct = null,
+    bs = !1;
+  function Kl(e, n, i) {
+    var t = i.window === i ? i.document : i.nodeType === 9 ? i : i.ownerDocument;
+    bs ||
+      Ii == null ||
+      Ii !== Ei(t) ||
+      ((t = Ii),
+      'selectionStart' in t && Ls(t)
+        ? (t = { start: t.selectionStart, end: t.selectionEnd })
+        : ((t = ((t.ownerDocument && t.ownerDocument.defaultView) || window).getSelection()),
+          (t = {
+            anchorNode: t.anchorNode,
+            anchorOffset: t.anchorOffset,
+            focusNode: t.focusNode,
+            focusOffset: t.focusOffset,
+          })),
+      (Ct && St(Ct, t)) ||
+        ((Ct = t),
+        (t = vr(Rs, 'onSelect')),
+        0 < t.length &&
+          ((n = new Ns('onSelect', 'select', null, n, i)),
+          e.push({ event: n, listeners: t }),
+          (n.target = Ii))));
+  }
+  function fr(e, n) {
+    var i = {};
+    return (
+      (i[e.toLowerCase()] = n.toLowerCase()),
+      (i['Webkit' + e] = 'webkit' + n),
+      (i['Moz' + e] = 'moz' + n),
+      i
+    );
+  }
+  var Wi = {
+      animationend: fr('Animation', 'AnimationEnd'),
+      animationiteration: fr('Animation', 'AnimationIteration'),
+      animationstart: fr('Animation', 'AnimationStart'),
+      transitionend: fr('Transition', 'TransitionEnd'),
+    },
+    Ms = {},
+    Ql = {};
+  f &&
+    ((Ql = document.createElement('div').style),
+    'AnimationEvent' in window ||
+      (delete Wi.animationend.animation,
+      delete Wi.animationiteration.animation,
+      delete Wi.animationstart.animation),
+    'TransitionEvent' in window || delete Wi.transitionend.transition);
+  function hr(e) {
+    if (Ms[e]) return Ms[e];
+    if (!Wi[e]) return e;
+    var n = Wi[e],
+      i;
+    for (i in n) if (n.hasOwnProperty(i) && i in Ql) return (Ms[e] = n[i]);
+    return e;
+  }
+  var Yl = hr('animationend'),
+    Zl = hr('animationiteration'),
+    Xl = hr('animationstart'),
+    Jl = hr('transitionend'),
+    ea = new Map(),
+    na =
+      'abort auxClick cancel canPlay canPlayThrough click close contextMenu copy cut drag dragEnd dragEnter dragExit dragLeave dragOver dragStart drop durationChange emptied encrypted ended error gotPointerCapture input invalid keyDown keyPress keyUp load loadedData loadedMetadata loadStart lostPointerCapture mouseDown mouseMove mouseOut mouseOver mouseUp paste pause play playing pointerCancel pointerDown pointerMove pointerOut pointerOver pointerUp progress rateChange reset resize seeked seeking stalled submit suspend timeUpdate touchCancel touchEnd touchStart volumeChange scroll toggle touchMove waiting wheel'.split(
+        ' '
+      );
+  function Xn(e, n) {
+    (ea.set(e, n), C(n, [e]));
+  }
+  for (var Fs = 0; Fs < na.length; Fs++) {
+    var zs = na[Fs],
+      pd = zs.toLowerCase(),
+      fd = zs[0].toUpperCase() + zs.slice(1);
+    Xn(pd, 'on' + fd);
+  }
+  (Xn(Yl, 'onAnimationEnd'),
+    Xn(Zl, 'onAnimationIteration'),
+    Xn(Xl, 'onAnimationStart'),
+    Xn('dblclick', 'onDoubleClick'),
+    Xn('focusin', 'onFocus'),
+    Xn('focusout', 'onBlur'),
+    Xn(Jl, 'onTransitionEnd'),
+    j('onMouseEnter', ['mouseout', 'mouseover']),
+    j('onMouseLeave', ['mouseout', 'mouseover']),
+    j('onPointerEnter', ['pointerout', 'pointerover']),
+    j('onPointerLeave', ['pointerout', 'pointerover']),
+    C('onChange', 'change click focusin focusout input keydown keyup selectionchange'.split(' ')),
+    C(
+      'onSelect',
+      'focusout contextmenu dragend focusin keydown keyup mousedown mouseup selectionchange'.split(
+        ' '
+      )
+    ),
+    C('onBeforeInput', ['compositionend', 'keypress', 'textInput', 'paste']),
+    C('onCompositionEnd', 'compositionend focusout keydown keypress keyup mousedown'.split(' ')),
+    C(
+      'onCompositionStart',
+      'compositionstart focusout keydown keypress keyup mousedown'.split(' ')
+    ),
+    C(
+      'onCompositionUpdate',
+      'compositionupdate focusout keydown keypress keyup mousedown'.split(' ')
+    ));
+  var Pt =
+      'abort canplay canplaythrough durationchange emptied encrypted ended error loadeddata loadedmetadata loadstart pause play playing progress ratechange resize seeked seeking stalled suspend timeupdate volumechange waiting'.split(
+        ' '
+      ),
+    hd = new Set('cancel close invalid load scroll toggle'.split(' ').concat(Pt));
+  function ia(e, n, i) {
+    var t = e.type || 'unknown-event';
+    ((e.currentTarget = i), pc(t, n, void 0, e), (e.currentTarget = null));
+  }
+  function ta(e, n) {
+    n = (n & 4) !== 0;
+    for (var i = 0; i < e.length; i++) {
+      var t = e[i],
+        s = t.event;
+      t = t.listeners;
+      e: {
+        var o = void 0;
+        if (n)
+          for (var u = t.length - 1; 0 <= u; u--) {
+            var d = t[u],
+              m = d.instance,
+              x = d.currentTarget;
+            if (((d = d.listener), m !== o && s.isPropagationStopped())) break e;
+            (ia(s, d, x), (o = m));
+          }
+        else
+          for (u = 0; u < t.length; u++) {
+            if (
+              ((d = t[u]),
+              (m = d.instance),
+              (x = d.currentTarget),
+              (d = d.listener),
+              m !== o && s.isPropagationStopped())
+            )
+              break e;
+            (ia(s, d, x), (o = m));
+          }
+      }
+    }
+    if (Jt) throw ((e = ms), (Jt = !1), (ms = null), e);
+  }
+  function Ne(e, n) {
+    var i = n[Us];
+    i === void 0 && (i = n[Us] = new Set());
+    var t = e + '__bubble';
+    i.has(t) || (ra(n, e, 2, !1), i.add(t));
+  }
+  function Os(e, n, i) {
+    var t = 0;
+    (n && (t |= 4), ra(i, e, t, n));
+  }
+  var gr = '_reactListening' + Math.random().toString(36).slice(2);
+  function Tt(e) {
+    if (!e[gr]) {
+      ((e[gr] = !0),
+        w.forEach(function (i) {
+          i !== 'selectionchange' && (hd.has(i) || Os(i, !1, e), Os(i, !0, e));
+        }));
+      var n = e.nodeType === 9 ? e : e.ownerDocument;
+      n === null || n[gr] || ((n[gr] = !0), Os('selectionchange', !1, n));
+    }
+  }
+  function ra(e, n, i, t) {
+    switch (Pl(n)) {
+      case 1:
+        var s = Ec;
+        break;
+      case 4:
+        s = Lc;
+        break;
+      default:
+        s = _s;
+    }
+    ((i = s.bind(null, n, i, e)),
+      (s = void 0),
+      !ds || (n !== 'touchstart' && n !== 'touchmove' && n !== 'wheel') || (s = !0),
+      t
+        ? s !== void 0
+          ? e.addEventListener(n, i, { capture: !0, passive: s })
+          : e.addEventListener(n, i, !0)
+        : s !== void 0
+          ? e.addEventListener(n, i, { passive: s })
+          : e.addEventListener(n, i, !1));
+  }
+  function Is(e, n, i, t, s) {
+    var o = t;
+    if ((n & 1) === 0 && (n & 2) === 0 && t !== null)
+      e: for (;;) {
+        if (t === null) return;
+        var u = t.tag;
+        if (u === 3 || u === 4) {
+          var d = t.stateNode.containerInfo;
+          if (d === s || (d.nodeType === 8 && d.parentNode === s)) break;
+          if (u === 4)
+            for (u = t.return; u !== null; ) {
+              var m = u.tag;
+              if (
+                (m === 3 || m === 4) &&
+                ((m = u.stateNode.containerInfo),
+                m === s || (m.nodeType === 8 && m.parentNode === s))
+              )
+                return;
+              u = u.return;
+            }
+          for (; d !== null; ) {
+            if (((u = gi(d)), u === null)) return;
+            if (((m = u.tag), m === 5 || m === 6)) {
+              t = o = u;
+              continue e;
+            }
+            d = d.parentNode;
+          }
+        }
+        t = t.return;
+      }
+    ul(function () {
+      var x = o,
+        E = bi(i),
+        R = [];
+      e: {
+        var T = ea.get(e);
+        if (T !== void 0) {
+          var B = Ns,
+            U = e;
+          switch (e) {
+            case 'keypress':
+              if (cr(i) === 0) break e;
+            case 'keydown':
+            case 'keyup':
+              B = Dc;
+              break;
+            case 'focusin':
+              ((U = 'focus'), (B = Ss));
+              break;
+            case 'focusout':
+              ((U = 'blur'), (B = Ss));
+              break;
+            case 'beforeblur':
+            case 'afterblur':
+              B = Ss;
+              break;
+            case 'click':
+              if (i.button === 2) break e;
+            case 'auxclick':
+            case 'dblclick':
+            case 'mousedown':
+            case 'mousemove':
+            case 'mouseup':
+            case 'mouseout':
+            case 'mouseover':
+            case 'contextmenu':
+              B = Ll;
+              break;
+            case 'drag':
+            case 'dragend':
+            case 'dragenter':
+            case 'dragexit':
+            case 'dragleave':
+            case 'dragover':
+            case 'dragstart':
+            case 'drop':
+              B = Mc;
+              break;
+            case 'touchcancel':
+            case 'touchend':
+            case 'touchmove':
+            case 'touchstart':
+              B = Kc;
+              break;
+            case Yl:
+            case Zl:
+            case Xl:
+              B = Oc;
+              break;
+            case Jl:
+              B = Yc;
+              break;
+            case 'scroll':
+              B = Rc;
+              break;
+            case 'wheel':
+              B = Xc;
+              break;
+            case 'copy':
+            case 'cut':
+            case 'paste':
+              B = Wc;
+              break;
+            case 'gotpointercapture':
+            case 'lostpointercapture':
+            case 'pointercancel':
+            case 'pointerdown':
+            case 'pointermove':
+            case 'pointerout':
+            case 'pointerover':
+            case 'pointerup':
+              B = bl;
+          }
+          var q = (n & 4) !== 0,
+            Me = !q && e === 'scroll',
+            v = q ? (T !== null ? T + 'Capture' : null) : T;
+          q = [];
+          for (var g = x, _; g !== null; ) {
+            _ = g;
+            var M = _.stateNode;
+            if (
+              (_.tag === 5 &&
+                M !== null &&
+                ((_ = M), v !== null && ((M = ct(g, v)), M != null && q.push(Et(g, M, _)))),
+              Me)
+            )
+              break;
+            g = g.return;
+          }
+          0 < q.length && ((T = new B(T, U, null, i, E)), R.push({ event: T, listeners: q }));
+        }
+      }
+      if ((n & 7) === 0) {
+        e: {
+          if (
+            ((T = e === 'mouseover' || e === 'pointerover'),
+            (B = e === 'mouseout' || e === 'pointerout'),
+            T && i !== ut && (U = i.relatedTarget || i.fromElement) && (gi(U) || U[On]))
+          )
+            break e;
+          if (
+            (B || T) &&
+            ((T =
+              E.window === E
+                ? E
+                : (T = E.ownerDocument)
+                  ? T.defaultView || T.parentWindow
+                  : window),
+            B
+              ? ((U = i.relatedTarget || i.toElement),
+                (B = x),
+                (U = U ? gi(U) : null),
+                U !== null &&
+                  ((Me = hi(U)), U !== Me || (U.tag !== 5 && U.tag !== 6)) &&
+                  (U = null))
+              : ((B = null), (U = x)),
+            B !== U)
+          ) {
+            if (
+              ((q = Ll),
+              (M = 'onMouseLeave'),
+              (v = 'onMouseEnter'),
+              (g = 'mouse'),
+              (e === 'pointerout' || e === 'pointerover') &&
+                ((q = bl), (M = 'onPointerLeave'), (v = 'onPointerEnter'), (g = 'pointer')),
+              (Me = B == null ? T : Bi(B)),
+              (_ = U == null ? T : Bi(U)),
+              (T = new q(M, g + 'leave', B, i, E)),
+              (T.target = Me),
+              (T.relatedTarget = _),
+              (M = null),
+              gi(E) === x &&
+                ((q = new q(v, g + 'enter', U, i, E)),
+                (q.target = _),
+                (q.relatedTarget = Me),
+                (M = q)),
+              (Me = M),
+              B && U)
+            )
+              n: {
+                for (q = B, v = U, g = 0, _ = q; _; _ = Ai(_)) g++;
+                for (_ = 0, M = v; M; M = Ai(M)) _++;
+                for (; 0 < g - _; ) ((q = Ai(q)), g--);
+                for (; 0 < _ - g; ) ((v = Ai(v)), _--);
+                for (; g--; ) {
+                  if (q === v || (v !== null && q === v.alternate)) break n;
+                  ((q = Ai(q)), (v = Ai(v)));
+                }
+                q = null;
+              }
+            else q = null;
+            (B !== null && sa(R, T, B, q, !1), U !== null && Me !== null && sa(R, Me, U, q, !0));
+          }
+        }
+        e: {
+          if (
+            ((T = x ? Bi(x) : window),
+            (B = T.nodeName && T.nodeName.toLowerCase()),
+            B === 'select' || (B === 'input' && T.type === 'file'))
+          )
+            var G = sd;
+          else if (Wl(T))
+            if (Vl) G = ud;
+            else {
+              G = ld;
+              var J = od;
+            }
+          else
+            (B = T.nodeName) &&
+              B.toLowerCase() === 'input' &&
+              (T.type === 'checkbox' || T.type === 'radio') &&
+              (G = ad);
+          if (G && (G = G(e, x))) {
+            Al(R, G, i, E);
+            break e;
+          }
+          (J && J(e, T, x),
+            e === 'focusout' &&
+              (J = T._wrapperState) &&
+              J.controlled &&
+              T.type === 'number' &&
+              Ri(T, 'number', T.value));
+        }
+        switch (((J = x ? Bi(x) : window), e)) {
+          case 'focusin':
+            (Wl(J) || J.contentEditable === 'true') && ((Ii = J), (Rs = x), (Ct = null));
+            break;
+          case 'focusout':
+            Ct = Rs = Ii = null;
+            break;
+          case 'mousedown':
+            bs = !0;
+            break;
+          case 'contextmenu':
+          case 'mouseup':
+          case 'dragend':
+            ((bs = !1), Kl(R, i, E));
+            break;
+          case 'selectionchange':
+            if (md) break;
+          case 'keydown':
+          case 'keyup':
+            Kl(R, i, E);
+        }
+        var ee;
+        if (Ps)
+          e: {
+            switch (e) {
+              case 'compositionstart':
+                var te = 'onCompositionStart';
+                break e;
+              case 'compositionend':
+                te = 'onCompositionEnd';
+                break e;
+              case 'compositionupdate':
+                te = 'onCompositionUpdate';
+                break e;
+            }
+            te = void 0;
+          }
+        else
+          Oi
+            ? Ol(e, i) && (te = 'onCompositionEnd')
+            : e === 'keydown' && i.keyCode === 229 && (te = 'onCompositionStart');
+        (te &&
+          (Ml &&
+            i.locale !== 'ko' &&
+            (Oi || te !== 'onCompositionStart'
+              ? te === 'onCompositionEnd' && Oi && (ee = Tl())
+              : ((Zn = E), (ws = 'value' in Zn ? Zn.value : Zn.textContent), (Oi = !0))),
+          (J = vr(x, te)),
+          0 < J.length &&
+            ((te = new Rl(te, e, null, i, E)),
+            R.push({ event: te, listeners: J }),
+            ee ? (te.data = ee) : ((ee = Il(i)), ee !== null && (te.data = ee)))),
+          (ee = ed ? nd(e, i) : id(e, i)) &&
+            ((x = vr(x, 'onBeforeInput')),
+            0 < x.length &&
+              ((E = new Rl('onBeforeInput', 'beforeinput', null, i, E)),
+              R.push({ event: E, listeners: x }),
+              (E.data = ee))));
+      }
+      ta(R, n);
+    });
+  }
+  function Et(e, n, i) {
+    return { instance: e, listener: n, currentTarget: i };
+  }
+  function vr(e, n) {
+    for (var i = n + 'Capture', t = []; e !== null; ) {
+      var s = e,
+        o = s.stateNode;
+      (s.tag === 5 &&
+        o !== null &&
+        ((s = o),
+        (o = ct(e, i)),
+        o != null && t.unshift(Et(e, o, s)),
+        (o = ct(e, n)),
+        o != null && t.push(Et(e, o, s))),
+        (e = e.return));
+    }
+    return t;
+  }
+  function Ai(e) {
+    if (e === null) return null;
+    do e = e.return;
+    while (e && e.tag !== 5);
+    return e || null;
+  }
+  function sa(e, n, i, t, s) {
+    for (var o = n._reactName, u = []; i !== null && i !== t; ) {
+      var d = i,
+        m = d.alternate,
+        x = d.stateNode;
+      if (m !== null && m === t) break;
+      (d.tag === 5 &&
+        x !== null &&
+        ((d = x),
+        s
+          ? ((m = ct(i, o)), m != null && u.unshift(Et(i, m, d)))
+          : s || ((m = ct(i, o)), m != null && u.push(Et(i, m, d)))),
+        (i = i.return));
+    }
+    u.length !== 0 && e.push({ event: n, listeners: u });
+  }
+  var gd = /\r\n?/g,
+    vd = /\u0000|\uFFFD/g;
+  function oa(e) {
+    return (typeof e == 'string' ? e : '' + e)
+      .replace(
+        gd,
+        `
+`
+      )
+      .replace(vd, '');
+  }
+  function yr(e, n, i) {
+    if (((n = oa(n)), oa(e) !== n && i)) throw Error(a(425));
+  }
+  function _r() {}
+  var Ws = null,
+    As = null;
+  function Vs(e, n) {
+    return (
+      e === 'textarea' ||
+      e === 'noscript' ||
+      typeof n.children == 'string' ||
+      typeof n.children == 'number' ||
+      (typeof n.dangerouslySetInnerHTML == 'object' &&
+        n.dangerouslySetInnerHTML !== null &&
+        n.dangerouslySetInnerHTML.__html != null)
+    );
+  }
+  var Bs = typeof setTimeout == 'function' ? setTimeout : void 0,
+    yd = typeof clearTimeout == 'function' ? clearTimeout : void 0,
+    la = typeof Promise == 'function' ? Promise : void 0,
+    _d =
+      typeof queueMicrotask == 'function'
+        ? queueMicrotask
+        : typeof la < 'u'
+          ? function (e) {
+              return la.resolve(null).then(e).catch(xd);
+            }
+          : Bs;
+  function xd(e) {
+    setTimeout(function () {
+      throw e;
+    });
+  }
+  function $s(e, n) {
+    var i = n,
+      t = 0;
+    do {
+      var s = i.nextSibling;
+      if ((e.removeChild(i), s && s.nodeType === 8))
+        if (((i = s.data), i === '/$')) {
+          if (t === 0) {
+            (e.removeChild(s), _t(n));
+            return;
+          }
+          t--;
+        } else (i !== '$' && i !== '$?' && i !== '$!') || t++;
+      i = s;
+    } while (i);
+    _t(n);
+  }
+  function Jn(e) {
+    for (; e != null; e = e.nextSibling) {
+      var n = e.nodeType;
+      if (n === 1 || n === 3) break;
+      if (n === 8) {
+        if (((n = e.data), n === '$' || n === '$!' || n === '$?')) break;
+        if (n === '/$') return null;
+      }
+    }
+    return e;
+  }
+  function aa(e) {
+    e = e.previousSibling;
+    for (var n = 0; e; ) {
+      if (e.nodeType === 8) {
+        var i = e.data;
+        if (i === '$' || i === '$!' || i === '$?') {
+          if (n === 0) return e;
+          n--;
+        } else i === '/$' && n++;
+      }
+      e = e.previousSibling;
+    }
+    return null;
+  }
+  var Vi = Math.random().toString(36).slice(2),
+    bn = '__reactFiber$' + Vi,
+    Lt = '__reactProps$' + Vi,
+    On = '__reactContainer$' + Vi,
+    Us = '__reactEvents$' + Vi,
+    wd = '__reactListeners$' + Vi,
+    Nd = '__reactHandles$' + Vi;
+  function gi(e) {
+    var n = e[bn];
+    if (n) return n;
+    for (var i = e.parentNode; i; ) {
+      if ((n = i[On] || i[bn])) {
+        if (((i = n.alternate), n.child !== null || (i !== null && i.child !== null)))
+          for (e = aa(e); e !== null; ) {
+            if ((i = e[bn])) return i;
+            e = aa(e);
+          }
+        return n;
+      }
+      ((e = i), (i = e.parentNode));
+    }
+    return null;
+  }
+  function Rt(e) {
+    return (
+      (e = e[bn] || e[On]),
+      !e || (e.tag !== 5 && e.tag !== 6 && e.tag !== 13 && e.tag !== 3) ? null : e
+    );
+  }
+  function Bi(e) {
+    if (e.tag === 5 || e.tag === 6) return e.stateNode;
+    throw Error(a(33));
+  }
+  function xr(e) {
+    return e[Lt] || null;
+  }
+  var qs = [],
+    $i = -1;
+  function ei(e) {
+    return { current: e };
+  }
+  function je(e) {
+    0 > $i || ((e.current = qs[$i]), (qs[$i] = null), $i--);
+  }
+  function xe(e, n) {
+    ($i++, (qs[$i] = e.current), (e.current = n));
+  }
+  var ni = {},
+    Ye = ei(ni),
+    rn = ei(!1),
+    vi = ni;
+  function Ui(e, n) {
+    var i = e.type.contextTypes;
+    if (!i) return ni;
+    var t = e.stateNode;
+    if (t && t.__reactInternalMemoizedUnmaskedChildContext === n)
+      return t.__reactInternalMemoizedMaskedChildContext;
+    var s = {},
+      o;
+    for (o in i) s[o] = n[o];
+    return (
+      t &&
+        ((e = e.stateNode),
+        (e.__reactInternalMemoizedUnmaskedChildContext = n),
+        (e.__reactInternalMemoizedMaskedChildContext = s)),
+      s
+    );
+  }
+  function sn(e) {
+    return ((e = e.childContextTypes), e != null);
+  }
+  function wr() {
+    (je(rn), je(Ye));
+  }
+  function ua(e, n, i) {
+    if (Ye.current !== ni) throw Error(a(168));
+    (xe(Ye, n), xe(rn, i));
+  }
+  function ca(e, n, i) {
+    var t = e.stateNode;
+    if (((n = n.childContextTypes), typeof t.getChildContext != 'function')) return i;
+    t = t.getChildContext();
+    for (var s in t) if (!(s in n)) throw Error(a(108, ge(e) || 'Unknown', s));
+    return A({}, i, t);
+  }
+  function Nr(e) {
+    return (
+      (e = ((e = e.stateNode) && e.__reactInternalMemoizedMergedChildContext) || ni),
+      (vi = Ye.current),
+      xe(Ye, e),
+      xe(rn, rn.current),
+      !0
+    );
+  }
+  function da(e, n, i) {
+    var t = e.stateNode;
+    if (!t) throw Error(a(169));
+    (i
+      ? ((e = ca(e, n, vi)),
+        (t.__reactInternalMemoizedMergedChildContext = e),
+        je(rn),
+        je(Ye),
+        xe(Ye, e))
+      : je(rn),
+      xe(rn, i));
+  }
+  var In = null,
+    jr = !1,
+    Ds = !1;
+  function ma(e) {
+    In === null ? (In = [e]) : In.push(e);
+  }
+  function jd(e) {
+    ((jr = !0), ma(e));
+  }
+  function ii() {
+    if (!Ds && In !== null) {
+      Ds = !0;
+      var e = 0,
+        n = he;
+      try {
+        var i = In;
+        for (he = 1; e < i.length; e++) {
+          var t = i[e];
+          do t = t(!0);
+          while (t !== null);
+        }
+        ((In = null), (jr = !1));
+      } catch (s) {
+        throw (In !== null && (In = In.slice(e + 1)), fl(ps, ii), s);
+      } finally {
+        ((he = n), (Ds = !1));
+      }
+    }
+    return null;
+  }
+  var qi = [],
+    Di = 0,
+    kr = null,
+    Sr = 0,
+    gn = [],
+    vn = 0,
+    yi = null,
+    Wn = 1,
+    An = '';
+  function _i(e, n) {
+    ((qi[Di++] = Sr), (qi[Di++] = kr), (kr = e), (Sr = n));
+  }
+  function pa(e, n, i) {
+    ((gn[vn++] = Wn), (gn[vn++] = An), (gn[vn++] = yi), (yi = e));
+    var t = Wn;
+    e = An;
+    var s = 32 - Nn(t) - 1;
+    ((t &= ~(1 << s)), (i += 1));
+    var o = 32 - Nn(n) + s;
+    if (30 < o) {
+      var u = s - (s % 5);
+      ((o = (t & ((1 << u) - 1)).toString(32)),
+        (t >>= u),
+        (s -= u),
+        (Wn = (1 << (32 - Nn(n) + s)) | (i << s) | t),
+        (An = o + e));
+    } else ((Wn = (1 << o) | (i << s) | t), (An = e));
+  }
+  function Hs(e) {
+    e.return !== null && (_i(e, 1), pa(e, 1, 0));
+  }
+  function Gs(e) {
+    for (; e === kr; ) ((kr = qi[--Di]), (qi[Di] = null), (Sr = qi[--Di]), (qi[Di] = null));
+    for (; e === yi; )
+      ((yi = gn[--vn]),
+        (gn[vn] = null),
+        (An = gn[--vn]),
+        (gn[vn] = null),
+        (Wn = gn[--vn]),
+        (gn[vn] = null));
+  }
+  var mn = null,
+    pn = null,
+    ke = !1,
+    kn = null;
+  function fa(e, n) {
+    var i = wn(5, null, null, 0);
+    ((i.elementType = 'DELETED'),
+      (i.stateNode = n),
+      (i.return = e),
+      (n = e.deletions),
+      n === null ? ((e.deletions = [i]), (e.flags |= 16)) : n.push(i));
+  }
+  function ha(e, n) {
+    switch (e.tag) {
+      case 5:
+        var i = e.type;
+        return (
+          (n = n.nodeType !== 1 || i.toLowerCase() !== n.nodeName.toLowerCase() ? null : n),
+          n !== null ? ((e.stateNode = n), (mn = e), (pn = Jn(n.firstChild)), !0) : !1
+        );
+      case 6:
+        return (
+          (n = e.pendingProps === '' || n.nodeType !== 3 ? null : n),
+          n !== null ? ((e.stateNode = n), (mn = e), (pn = null), !0) : !1
+        );
+      case 13:
+        return (
+          (n = n.nodeType !== 8 ? null : n),
+          n !== null
+            ? ((i = yi !== null ? { id: Wn, overflow: An } : null),
+              (e.memoizedState = { dehydrated: n, treeContext: i, retryLane: 1073741824 }),
+              (i = wn(18, null, null, 0)),
+              (i.stateNode = n),
+              (i.return = e),
+              (e.child = i),
+              (mn = e),
+              (pn = null),
+              !0)
+            : !1
+        );
+      default:
+        return !1;
+    }
+  }
+  function Ks(e) {
+    return (e.mode & 1) !== 0 && (e.flags & 128) === 0;
+  }
+  function Qs(e) {
+    if (ke) {
+      var n = pn;
+      if (n) {
+        var i = n;
+        if (!ha(e, n)) {
+          if (Ks(e)) throw Error(a(418));
+          n = Jn(i.nextSibling);
+          var t = mn;
+          n && ha(e, n) ? fa(t, i) : ((e.flags = (e.flags & -4097) | 2), (ke = !1), (mn = e));
+        }
+      } else {
+        if (Ks(e)) throw Error(a(418));
+        ((e.flags = (e.flags & -4097) | 2), (ke = !1), (mn = e));
+      }
+    }
+  }
+  function ga(e) {
+    for (e = e.return; e !== null && e.tag !== 5 && e.tag !== 3 && e.tag !== 13; ) e = e.return;
+    mn = e;
+  }
+  function Cr(e) {
+    if (e !== mn) return !1;
+    if (!ke) return (ga(e), (ke = !0), !1);
+    var n;
+    if (
+      ((n = e.tag !== 3) &&
+        !(n = e.tag !== 5) &&
+        ((n = e.type), (n = n !== 'head' && n !== 'body' && !Vs(e.type, e.memoizedProps))),
+      n && (n = pn))
+    ) {
+      if (Ks(e)) throw (va(), Error(a(418)));
+      for (; n; ) (fa(e, n), (n = Jn(n.nextSibling)));
+    }
+    if ((ga(e), e.tag === 13)) {
+      if (((e = e.memoizedState), (e = e !== null ? e.dehydrated : null), !e)) throw Error(a(317));
+      e: {
+        for (e = e.nextSibling, n = 0; e; ) {
+          if (e.nodeType === 8) {
+            var i = e.data;
+            if (i === '/$') {
+              if (n === 0) {
+                pn = Jn(e.nextSibling);
+                break e;
+              }
+              n--;
+            } else (i !== '$' && i !== '$!' && i !== '$?') || n++;
+          }
+          e = e.nextSibling;
+        }
+        pn = null;
+      }
+    } else pn = mn ? Jn(e.stateNode.nextSibling) : null;
+    return !0;
+  }
+  function va() {
+    for (var e = pn; e; ) e = Jn(e.nextSibling);
+  }
+  function Hi() {
+    ((pn = mn = null), (ke = !1));
+  }
+  function Ys(e) {
+    kn === null ? (kn = [e]) : kn.push(e);
+  }
+  var kd = re.ReactCurrentBatchConfig;
+  function bt(e, n, i) {
+    if (((e = i.ref), e !== null && typeof e != 'function' && typeof e != 'object')) {
+      if (i._owner) {
+        if (((i = i._owner), i)) {
+          if (i.tag !== 1) throw Error(a(309));
+          var t = i.stateNode;
+        }
+        if (!t) throw Error(a(147, e));
+        var s = t,
+          o = '' + e;
+        return n !== null && n.ref !== null && typeof n.ref == 'function' && n.ref._stringRef === o
+          ? n.ref
+          : ((n = function (u) {
+              var d = s.refs;
+              u === null ? delete d[o] : (d[o] = u);
+            }),
+            (n._stringRef = o),
+            n);
+      }
+      if (typeof e != 'string') throw Error(a(284));
+      if (!i._owner) throw Error(a(290, e));
+    }
+    return e;
+  }
+  function Pr(e, n) {
+    throw (
+      (e = Object.prototype.toString.call(n)),
+      Error(
+        a(31, e === '[object Object]' ? 'object with keys {' + Object.keys(n).join(', ') + '}' : e)
+      )
+    );
+  }
+  function ya(e) {
+    var n = e._init;
+    return n(e._payload);
+  }
+  function _a(e) {
+    function n(v, g) {
+      if (e) {
+        var _ = v.deletions;
+        _ === null ? ((v.deletions = [g]), (v.flags |= 16)) : _.push(g);
+      }
+    }
+    function i(v, g) {
+      if (!e) return null;
+      for (; g !== null; ) (n(v, g), (g = g.sibling));
+      return null;
+    }
+    function t(v, g) {
+      for (v = new Map(); g !== null; )
+        (g.key !== null ? v.set(g.key, g) : v.set(g.index, g), (g = g.sibling));
+      return v;
+    }
+    function s(v, g) {
+      return ((v = ci(v, g)), (v.index = 0), (v.sibling = null), v);
+    }
+    function o(v, g, _) {
+      return (
+        (v.index = _),
+        e
+          ? ((_ = v.alternate),
+            _ !== null ? ((_ = _.index), _ < g ? ((v.flags |= 2), g) : _) : ((v.flags |= 2), g))
+          : ((v.flags |= 1048576), g)
+      );
+    }
+    function u(v) {
+      return (e && v.alternate === null && (v.flags |= 2), v);
+    }
+    function d(v, g, _, M) {
+      return g === null || g.tag !== 6
+        ? ((g = $o(_, v.mode, M)), (g.return = v), g)
+        : ((g = s(g, _)), (g.return = v), g);
+    }
+    function m(v, g, _, M) {
+      var G = _.type;
+      return G === ve
+        ? E(v, g, _.props.children, M, _.key)
+        : g !== null &&
+            (g.elementType === G ||
+              (typeof G == 'object' && G !== null && G.$$typeof === Re && ya(G) === g.type))
+          ? ((M = s(g, _.props)), (M.ref = bt(v, g, _)), (M.return = v), M)
+          : ((M = Zr(_.type, _.key, _.props, null, v.mode, M)),
+            (M.ref = bt(v, g, _)),
+            (M.return = v),
+            M);
+    }
+    function x(v, g, _, M) {
+      return g === null ||
+        g.tag !== 4 ||
+        g.stateNode.containerInfo !== _.containerInfo ||
+        g.stateNode.implementation !== _.implementation
+        ? ((g = Uo(_, v.mode, M)), (g.return = v), g)
+        : ((g = s(g, _.children || [])), (g.return = v), g);
+    }
+    function E(v, g, _, M, G) {
+      return g === null || g.tag !== 7
+        ? ((g = Pi(_, v.mode, M, G)), (g.return = v), g)
+        : ((g = s(g, _)), (g.return = v), g);
+    }
+    function R(v, g, _) {
+      if ((typeof g == 'string' && g !== '') || typeof g == 'number')
+        return ((g = $o('' + g, v.mode, _)), (g.return = v), g);
+      if (typeof g == 'object' && g !== null) {
+        switch (g.$$typeof) {
+          case ue:
+            return (
+              (_ = Zr(g.type, g.key, g.props, null, v.mode, _)),
+              (_.ref = bt(v, null, g)),
+              (_.return = v),
+              _
+            );
+          case fe:
+            return ((g = Uo(g, v.mode, _)), (g.return = v), g);
+          case Re:
+            var M = g._init;
+            return R(v, M(g._payload), _);
+        }
+        if (qn(g) || V(g)) return ((g = Pi(g, v.mode, _, null)), (g.return = v), g);
+        Pr(v, g);
+      }
+      return null;
+    }
+    function T(v, g, _, M) {
+      var G = g !== null ? g.key : null;
+      if ((typeof _ == 'string' && _ !== '') || typeof _ == 'number')
+        return G !== null ? null : d(v, g, '' + _, M);
+      if (typeof _ == 'object' && _ !== null) {
+        switch (_.$$typeof) {
+          case ue:
+            return _.key === G ? m(v, g, _, M) : null;
+          case fe:
+            return _.key === G ? x(v, g, _, M) : null;
+          case Re:
+            return ((G = _._init), T(v, g, G(_._payload), M));
+        }
+        if (qn(_) || V(_)) return G !== null ? null : E(v, g, _, M, null);
+        Pr(v, _);
+      }
+      return null;
+    }
+    function B(v, g, _, M, G) {
+      if ((typeof M == 'string' && M !== '') || typeof M == 'number')
+        return ((v = v.get(_) || null), d(g, v, '' + M, G));
+      if (typeof M == 'object' && M !== null) {
+        switch (M.$$typeof) {
+          case ue:
+            return ((v = v.get(M.key === null ? _ : M.key) || null), m(g, v, M, G));
+          case fe:
+            return ((v = v.get(M.key === null ? _ : M.key) || null), x(g, v, M, G));
+          case Re:
+            var J = M._init;
+            return B(v, g, _, J(M._payload), G);
+        }
+        if (qn(M) || V(M)) return ((v = v.get(_) || null), E(g, v, M, G, null));
+        Pr(g, M);
+      }
+      return null;
+    }
+    function U(v, g, _, M) {
+      for (
+        var G = null, J = null, ee = g, te = (g = 0), qe = null;
+        ee !== null && te < _.length;
+        te++
+      ) {
+        ee.index > te ? ((qe = ee), (ee = null)) : (qe = ee.sibling);
+        var de = T(v, ee, _[te], M);
+        if (de === null) {
+          ee === null && (ee = qe);
+          break;
+        }
+        (e && ee && de.alternate === null && n(v, ee),
+          (g = o(de, g, te)),
+          J === null ? (G = de) : (J.sibling = de),
+          (J = de),
+          (ee = qe));
+      }
+      if (te === _.length) return (i(v, ee), ke && _i(v, te), G);
+      if (ee === null) {
+        for (; te < _.length; te++)
+          ((ee = R(v, _[te], M)),
+            ee !== null &&
+              ((g = o(ee, g, te)), J === null ? (G = ee) : (J.sibling = ee), (J = ee)));
+        return (ke && _i(v, te), G);
+      }
+      for (ee = t(v, ee); te < _.length; te++)
+        ((qe = B(ee, v, te, _[te], M)),
+          qe !== null &&
+            (e && qe.alternate !== null && ee.delete(qe.key === null ? te : qe.key),
+            (g = o(qe, g, te)),
+            J === null ? (G = qe) : (J.sibling = qe),
+            (J = qe)));
+      return (
+        e &&
+          ee.forEach(function (di) {
+            return n(v, di);
+          }),
+        ke && _i(v, te),
+        G
+      );
+    }
+    function q(v, g, _, M) {
+      var G = V(_);
+      if (typeof G != 'function') throw Error(a(150));
+      if (((_ = G.call(_)), _ == null)) throw Error(a(151));
+      for (
+        var J = (G = null), ee = g, te = (g = 0), qe = null, de = _.next();
+        ee !== null && !de.done;
+        te++, de = _.next()
+      ) {
+        ee.index > te ? ((qe = ee), (ee = null)) : (qe = ee.sibling);
+        var di = T(v, ee, de.value, M);
+        if (di === null) {
+          ee === null && (ee = qe);
+          break;
+        }
+        (e && ee && di.alternate === null && n(v, ee),
+          (g = o(di, g, te)),
+          J === null ? (G = di) : (J.sibling = di),
+          (J = di),
+          (ee = qe));
+      }
+      if (de.done) return (i(v, ee), ke && _i(v, te), G);
+      if (ee === null) {
+        for (; !de.done; te++, de = _.next())
+          ((de = R(v, de.value, M)),
+            de !== null &&
+              ((g = o(de, g, te)), J === null ? (G = de) : (J.sibling = de), (J = de)));
+        return (ke && _i(v, te), G);
+      }
+      for (ee = t(v, ee); !de.done; te++, de = _.next())
+        ((de = B(ee, v, te, de.value, M)),
+          de !== null &&
+            (e && de.alternate !== null && ee.delete(de.key === null ? te : de.key),
+            (g = o(de, g, te)),
+            J === null ? (G = de) : (J.sibling = de),
+            (J = de)));
+      return (
+        e &&
+          ee.forEach(function (tm) {
+            return n(v, tm);
+          }),
+        ke && _i(v, te),
+        G
+      );
+    }
+    function Me(v, g, _, M) {
+      if (
+        (typeof _ == 'object' &&
+          _ !== null &&
+          _.type === ve &&
+          _.key === null &&
+          (_ = _.props.children),
+        typeof _ == 'object' && _ !== null)
+      ) {
+        switch (_.$$typeof) {
+          case ue:
+            e: {
+              for (var G = _.key, J = g; J !== null; ) {
+                if (J.key === G) {
+                  if (((G = _.type), G === ve)) {
+                    if (J.tag === 7) {
+                      (i(v, J.sibling), (g = s(J, _.props.children)), (g.return = v), (v = g));
+                      break e;
+                    }
+                  } else if (
+                    J.elementType === G ||
+                    (typeof G == 'object' && G !== null && G.$$typeof === Re && ya(G) === J.type)
+                  ) {
+                    (i(v, J.sibling),
+                      (g = s(J, _.props)),
+                      (g.ref = bt(v, J, _)),
+                      (g.return = v),
+                      (v = g));
+                    break e;
+                  }
+                  i(v, J);
+                  break;
+                } else n(v, J);
+                J = J.sibling;
+              }
+              _.type === ve
+                ? ((g = Pi(_.props.children, v.mode, M, _.key)), (g.return = v), (v = g))
+                : ((M = Zr(_.type, _.key, _.props, null, v.mode, M)),
+                  (M.ref = bt(v, g, _)),
+                  (M.return = v),
+                  (v = M));
+            }
+            return u(v);
+          case fe:
+            e: {
+              for (J = _.key; g !== null; ) {
+                if (g.key === J)
+                  if (
+                    g.tag === 4 &&
+                    g.stateNode.containerInfo === _.containerInfo &&
+                    g.stateNode.implementation === _.implementation
+                  ) {
+                    (i(v, g.sibling), (g = s(g, _.children || [])), (g.return = v), (v = g));
+                    break e;
+                  } else {
+                    i(v, g);
+                    break;
+                  }
+                else n(v, g);
+                g = g.sibling;
+              }
+              ((g = Uo(_, v.mode, M)), (g.return = v), (v = g));
+            }
+            return u(v);
+          case Re:
+            return ((J = _._init), Me(v, g, J(_._payload), M));
+        }
+        if (qn(_)) return U(v, g, _, M);
+        if (V(_)) return q(v, g, _, M);
+        Pr(v, _);
+      }
+      return (typeof _ == 'string' && _ !== '') || typeof _ == 'number'
+        ? ((_ = '' + _),
+          g !== null && g.tag === 6
+            ? (i(v, g.sibling), (g = s(g, _)), (g.return = v), (v = g))
+            : (i(v, g), (g = $o(_, v.mode, M)), (g.return = v), (v = g)),
+          u(v))
+        : i(v, g);
+    }
+    return Me;
+  }
+  var Gi = _a(!0),
+    xa = _a(!1),
+    Tr = ei(null),
+    Er = null,
+    Ki = null,
+    Zs = null;
+  function Xs() {
+    Zs = Ki = Er = null;
+  }
+  function Js(e) {
+    var n = Tr.current;
+    (je(Tr), (e._currentValue = n));
+  }
+  function eo(e, n, i) {
+    for (; e !== null; ) {
+      var t = e.alternate;
+      if (
+        ((e.childLanes & n) !== n
+          ? ((e.childLanes |= n), t !== null && (t.childLanes |= n))
+          : t !== null && (t.childLanes & n) !== n && (t.childLanes |= n),
+        e === i)
+      )
+        break;
+      e = e.return;
+    }
+  }
+  function Qi(e, n) {
+    ((Er = e),
+      (Zs = Ki = null),
+      (e = e.dependencies),
+      e !== null &&
+        e.firstContext !== null &&
+        ((e.lanes & n) !== 0 && (on = !0), (e.firstContext = null)));
+  }
+  function yn(e) {
+    var n = e._currentValue;
+    if (Zs !== e)
+      if (((e = { context: e, memoizedValue: n, next: null }), Ki === null)) {
+        if (Er === null) throw Error(a(308));
+        ((Ki = e), (Er.dependencies = { lanes: 0, firstContext: e }));
+      } else Ki = Ki.next = e;
+    return n;
+  }
+  var xi = null;
+  function no(e) {
+    xi === null ? (xi = [e]) : xi.push(e);
+  }
+  function wa(e, n, i, t) {
+    var s = n.interleaved;
+    return (
+      s === null ? ((i.next = i), no(n)) : ((i.next = s.next), (s.next = i)),
+      (n.interleaved = i),
+      Vn(e, t)
+    );
+  }
+  function Vn(e, n) {
+    e.lanes |= n;
+    var i = e.alternate;
+    for (i !== null && (i.lanes |= n), i = e, e = e.return; e !== null; )
+      ((e.childLanes |= n),
+        (i = e.alternate),
+        i !== null && (i.childLanes |= n),
+        (i = e),
+        (e = e.return));
+    return i.tag === 3 ? i.stateNode : null;
+  }
+  var ti = !1;
+  function io(e) {
+    e.updateQueue = {
+      baseState: e.memoizedState,
+      firstBaseUpdate: null,
+      lastBaseUpdate: null,
+      shared: { pending: null, interleaved: null, lanes: 0 },
+      effects: null,
+    };
+  }
+  function Na(e, n) {
+    ((e = e.updateQueue),
+      n.updateQueue === e &&
+        (n.updateQueue = {
+          baseState: e.baseState,
+          firstBaseUpdate: e.firstBaseUpdate,
+          lastBaseUpdate: e.lastBaseUpdate,
+          shared: e.shared,
+          effects: e.effects,
+        }));
+  }
+  function Bn(e, n) {
+    return { eventTime: e, lane: n, tag: 0, payload: null, callback: null, next: null };
+  }
+  function ri(e, n, i) {
+    var t = e.updateQueue;
+    if (t === null) return null;
+    if (((t = t.shared), (ae & 2) !== 0)) {
+      var s = t.pending;
+      return (
+        s === null ? (n.next = n) : ((n.next = s.next), (s.next = n)),
+        (t.pending = n),
+        Vn(e, i)
+      );
+    }
+    return (
+      (s = t.interleaved),
+      s === null ? ((n.next = n), no(t)) : ((n.next = s.next), (s.next = n)),
+      (t.interleaved = n),
+      Vn(e, i)
+    );
+  }
+  function Lr(e, n, i) {
+    if (((n = n.updateQueue), n !== null && ((n = n.shared), (i & 4194240) !== 0))) {
+      var t = n.lanes;
+      ((t &= e.pendingLanes), (i |= t), (n.lanes = i), gs(e, i));
+    }
+  }
+  function ja(e, n) {
+    var i = e.updateQueue,
+      t = e.alternate;
+    if (t !== null && ((t = t.updateQueue), i === t)) {
+      var s = null,
+        o = null;
+      if (((i = i.firstBaseUpdate), i !== null)) {
+        do {
+          var u = {
+            eventTime: i.eventTime,
+            lane: i.lane,
+            tag: i.tag,
+            payload: i.payload,
+            callback: i.callback,
+            next: null,
+          };
+          (o === null ? (s = o = u) : (o = o.next = u), (i = i.next));
+        } while (i !== null);
+        o === null ? (s = o = n) : (o = o.next = n);
+      } else s = o = n;
+      ((i = {
+        baseState: t.baseState,
+        firstBaseUpdate: s,
+        lastBaseUpdate: o,
+        shared: t.shared,
+        effects: t.effects,
+      }),
+        (e.updateQueue = i));
+      return;
+    }
+    ((e = i.lastBaseUpdate),
+      e === null ? (i.firstBaseUpdate = n) : (e.next = n),
+      (i.lastBaseUpdate = n));
+  }
+  function Rr(e, n, i, t) {
+    var s = e.updateQueue;
+    ti = !1;
+    var o = s.firstBaseUpdate,
+      u = s.lastBaseUpdate,
+      d = s.shared.pending;
+    if (d !== null) {
+      s.shared.pending = null;
+      var m = d,
+        x = m.next;
+      ((m.next = null), u === null ? (o = x) : (u.next = x), (u = m));
+      var E = e.alternate;
+      E !== null &&
+        ((E = E.updateQueue),
+        (d = E.lastBaseUpdate),
+        d !== u && (d === null ? (E.firstBaseUpdate = x) : (d.next = x), (E.lastBaseUpdate = m)));
+    }
+    if (o !== null) {
+      var R = s.baseState;
+      ((u = 0), (E = x = m = null), (d = o));
+      do {
+        var T = d.lane,
+          B = d.eventTime;
+        if ((t & T) === T) {
+          E !== null &&
+            (E = E.next =
+              {
+                eventTime: B,
+                lane: 0,
+                tag: d.tag,
+                payload: d.payload,
+                callback: d.callback,
+                next: null,
+              });
+          e: {
+            var U = e,
+              q = d;
+            switch (((T = n), (B = i), q.tag)) {
+              case 1:
+                if (((U = q.payload), typeof U == 'function')) {
+                  R = U.call(B, R, T);
+                  break e;
+                }
+                R = U;
+                break e;
+              case 3:
+                U.flags = (U.flags & -65537) | 128;
+              case 0:
+                if (
+                  ((U = q.payload), (T = typeof U == 'function' ? U.call(B, R, T) : U), T == null)
+                )
+                  break e;
+                R = A({}, R, T);
+                break e;
+              case 2:
+                ti = !0;
+            }
+          }
+          d.callback !== null &&
+            d.lane !== 0 &&
+            ((e.flags |= 64), (T = s.effects), T === null ? (s.effects = [d]) : T.push(d));
+        } else
+          ((B = {
+            eventTime: B,
+            lane: T,
+            tag: d.tag,
+            payload: d.payload,
+            callback: d.callback,
+            next: null,
+          }),
+            E === null ? ((x = E = B), (m = R)) : (E = E.next = B),
+            (u |= T));
+        if (((d = d.next), d === null)) {
+          if (((d = s.shared.pending), d === null)) break;
+          ((T = d),
+            (d = T.next),
+            (T.next = null),
+            (s.lastBaseUpdate = T),
+            (s.shared.pending = null));
+        }
+      } while (!0);
+      if (
+        (E === null && (m = R),
+        (s.baseState = m),
+        (s.firstBaseUpdate = x),
+        (s.lastBaseUpdate = E),
+        (n = s.shared.interleaved),
+        n !== null)
+      ) {
+        s = n;
+        do ((u |= s.lane), (s = s.next));
+        while (s !== n);
+      } else o === null && (s.shared.lanes = 0);
+      ((ji |= u), (e.lanes = u), (e.memoizedState = R));
+    }
+  }
+  function ka(e, n, i) {
+    if (((e = n.effects), (n.effects = null), e !== null))
+      for (n = 0; n < e.length; n++) {
+        var t = e[n],
+          s = t.callback;
+        if (s !== null) {
+          if (((t.callback = null), (t = i), typeof s != 'function')) throw Error(a(191, s));
+          s.call(t);
+        }
+      }
+  }
+  var Mt = {},
+    Mn = ei(Mt),
+    Ft = ei(Mt),
+    zt = ei(Mt);
+  function wi(e) {
+    if (e === Mt) throw Error(a(174));
+    return e;
+  }
+  function to(e, n) {
+    switch ((xe(zt, n), xe(Ft, e), xe(Mn, Mt), (e = n.nodeType), e)) {
+      case 9:
+      case 11:
+        n = (n = n.documentElement) ? n.namespaceURI : Ee(null, '');
+        break;
+      default:
+        ((e = e === 8 ? n.parentNode : n),
+          (n = e.namespaceURI || null),
+          (e = e.tagName),
+          (n = Ee(n, e)));
+    }
+    (je(Mn), xe(Mn, n));
+  }
+  function Yi() {
+    (je(Mn), je(Ft), je(zt));
+  }
+  function Sa(e) {
+    wi(zt.current);
+    var n = wi(Mn.current),
+      i = Ee(n, e.type);
+    n !== i && (xe(Ft, e), xe(Mn, i));
+  }
+  function ro(e) {
+    Ft.current === e && (je(Mn), je(Ft));
+  }
+  var Se = ei(0);
+  function br(e) {
+    for (var n = e; n !== null; ) {
+      if (n.tag === 13) {
+        var i = n.memoizedState;
+        if (i !== null && ((i = i.dehydrated), i === null || i.data === '$?' || i.data === '$!'))
+          return n;
+      } else if (n.tag === 19 && n.memoizedProps.revealOrder !== void 0) {
+        if ((n.flags & 128) !== 0) return n;
+      } else if (n.child !== null) {
+        ((n.child.return = n), (n = n.child));
+        continue;
+      }
+      if (n === e) break;
+      for (; n.sibling === null; ) {
+        if (n.return === null || n.return === e) return null;
+        n = n.return;
+      }
+      ((n.sibling.return = n.return), (n = n.sibling));
+    }
+    return null;
+  }
+  var so = [];
+  function oo() {
+    for (var e = 0; e < so.length; e++) so[e]._workInProgressVersionPrimary = null;
+    so.length = 0;
+  }
+  var Mr = re.ReactCurrentDispatcher,
+    lo = re.ReactCurrentBatchConfig,
+    Ni = 0,
+    Ce = null,
+    ze = null,
+    $e = null,
+    Fr = !1,
+    Ot = !1,
+    It = 0,
+    Sd = 0;
+  function Ze() {
+    throw Error(a(321));
+  }
+  function ao(e, n) {
+    if (n === null) return !1;
+    for (var i = 0; i < n.length && i < e.length; i++) if (!jn(e[i], n[i])) return !1;
+    return !0;
+  }
+  function uo(e, n, i, t, s, o) {
+    if (
+      ((Ni = o),
+      (Ce = n),
+      (n.memoizedState = null),
+      (n.updateQueue = null),
+      (n.lanes = 0),
+      (Mr.current = e === null || e.memoizedState === null ? Ed : Ld),
+      (e = i(t, s)),
+      Ot)
+    ) {
+      o = 0;
+      do {
+        if (((Ot = !1), (It = 0), 25 <= o)) throw Error(a(301));
+        ((o += 1), ($e = ze = null), (n.updateQueue = null), (Mr.current = Rd), (e = i(t, s)));
+      } while (Ot);
+    }
+    if (
+      ((Mr.current = Ir),
+      (n = ze !== null && ze.next !== null),
+      (Ni = 0),
+      ($e = ze = Ce = null),
+      (Fr = !1),
+      n)
+    )
+      throw Error(a(300));
+    return e;
+  }
+  function co() {
+    var e = It !== 0;
+    return ((It = 0), e);
+  }
+  function Fn() {
+    var e = { memoizedState: null, baseState: null, baseQueue: null, queue: null, next: null };
+    return ($e === null ? (Ce.memoizedState = $e = e) : ($e = $e.next = e), $e);
+  }
+  function _n() {
+    if (ze === null) {
+      var e = Ce.alternate;
+      e = e !== null ? e.memoizedState : null;
+    } else e = ze.next;
+    var n = $e === null ? Ce.memoizedState : $e.next;
+    if (n !== null) (($e = n), (ze = e));
+    else {
+      if (e === null) throw Error(a(310));
+      ((ze = e),
+        (e = {
+          memoizedState: ze.memoizedState,
+          baseState: ze.baseState,
+          baseQueue: ze.baseQueue,
+          queue: ze.queue,
+          next: null,
+        }),
+        $e === null ? (Ce.memoizedState = $e = e) : ($e = $e.next = e));
+    }
+    return $e;
+  }
+  function Wt(e, n) {
+    return typeof n == 'function' ? n(e) : n;
+  }
+  function mo(e) {
+    var n = _n(),
+      i = n.queue;
+    if (i === null) throw Error(a(311));
+    i.lastRenderedReducer = e;
+    var t = ze,
+      s = t.baseQueue,
+      o = i.pending;
+    if (o !== null) {
+      if (s !== null) {
+        var u = s.next;
+        ((s.next = o.next), (o.next = u));
+      }
+      ((t.baseQueue = s = o), (i.pending = null));
+    }
+    if (s !== null) {
+      ((o = s.next), (t = t.baseState));
+      var d = (u = null),
+        m = null,
+        x = o;
+      do {
+        var E = x.lane;
+        if ((Ni & E) === E)
+          (m !== null &&
+            (m = m.next =
+              {
+                lane: 0,
+                action: x.action,
+                hasEagerState: x.hasEagerState,
+                eagerState: x.eagerState,
+                next: null,
+              }),
+            (t = x.hasEagerState ? x.eagerState : e(t, x.action)));
+        else {
+          var R = {
+            lane: E,
+            action: x.action,
+            hasEagerState: x.hasEagerState,
+            eagerState: x.eagerState,
+            next: null,
+          };
+          (m === null ? ((d = m = R), (u = t)) : (m = m.next = R), (Ce.lanes |= E), (ji |= E));
+        }
+        x = x.next;
+      } while (x !== null && x !== o);
+      (m === null ? (u = t) : (m.next = d),
+        jn(t, n.memoizedState) || (on = !0),
+        (n.memoizedState = t),
+        (n.baseState = u),
+        (n.baseQueue = m),
+        (i.lastRenderedState = t));
+    }
+    if (((e = i.interleaved), e !== null)) {
+      s = e;
+      do ((o = s.lane), (Ce.lanes |= o), (ji |= o), (s = s.next));
+      while (s !== e);
+    } else s === null && (i.lanes = 0);
+    return [n.memoizedState, i.dispatch];
+  }
+  function po(e) {
+    var n = _n(),
+      i = n.queue;
+    if (i === null) throw Error(a(311));
+    i.lastRenderedReducer = e;
+    var t = i.dispatch,
+      s = i.pending,
+      o = n.memoizedState;
+    if (s !== null) {
+      i.pending = null;
+      var u = (s = s.next);
+      do ((o = e(o, u.action)), (u = u.next));
+      while (u !== s);
+      (jn(o, n.memoizedState) || (on = !0),
+        (n.memoizedState = o),
+        n.baseQueue === null && (n.baseState = o),
+        (i.lastRenderedState = o));
+    }
+    return [o, t];
+  }
+  function Ca() {}
+  function Pa(e, n) {
+    var i = Ce,
+      t = _n(),
+      s = n(),
+      o = !jn(t.memoizedState, s);
+    if (
+      (o && ((t.memoizedState = s), (on = !0)),
+      (t = t.queue),
+      fo(La.bind(null, i, t, e), [e]),
+      t.getSnapshot !== n || o || ($e !== null && $e.memoizedState.tag & 1))
+    ) {
+      if (((i.flags |= 2048), At(9, Ea.bind(null, i, t, s, n), void 0, null), Ue === null))
+        throw Error(a(349));
+      (Ni & 30) !== 0 || Ta(i, n, s);
+    }
+    return s;
+  }
+  function Ta(e, n, i) {
+    ((e.flags |= 16384),
+      (e = { getSnapshot: n, value: i }),
+      (n = Ce.updateQueue),
+      n === null
+        ? ((n = { lastEffect: null, stores: null }), (Ce.updateQueue = n), (n.stores = [e]))
+        : ((i = n.stores), i === null ? (n.stores = [e]) : i.push(e)));
+  }
+  function Ea(e, n, i, t) {
+    ((n.value = i), (n.getSnapshot = t), Ra(n) && ba(e));
+  }
+  function La(e, n, i) {
+    return i(function () {
+      Ra(n) && ba(e);
+    });
+  }
+  function Ra(e) {
+    var n = e.getSnapshot;
+    e = e.value;
+    try {
+      var i = n();
+      return !jn(e, i);
+    } catch {
+      return !0;
+    }
+  }
+  function ba(e) {
+    var n = Vn(e, 1);
+    n !== null && Tn(n, e, 1, -1);
+  }
+  function Ma(e) {
+    var n = Fn();
+    return (
+      typeof e == 'function' && (e = e()),
+      (n.memoizedState = n.baseState = e),
+      (e = {
+        pending: null,
+        interleaved: null,
+        lanes: 0,
+        dispatch: null,
+        lastRenderedReducer: Wt,
+        lastRenderedState: e,
+      }),
+      (n.queue = e),
+      (e = e.dispatch = Td.bind(null, Ce, e)),
+      [n.memoizedState, e]
+    );
+  }
+  function At(e, n, i, t) {
+    return (
+      (e = { tag: e, create: n, destroy: i, deps: t, next: null }),
+      (n = Ce.updateQueue),
+      n === null
+        ? ((n = { lastEffect: null, stores: null }),
+          (Ce.updateQueue = n),
+          (n.lastEffect = e.next = e))
+        : ((i = n.lastEffect),
+          i === null
+            ? (n.lastEffect = e.next = e)
+            : ((t = i.next), (i.next = e), (e.next = t), (n.lastEffect = e))),
+      e
+    );
+  }
+  function Fa() {
+    return _n().memoizedState;
+  }
+  function zr(e, n, i, t) {
+    var s = Fn();
+    ((Ce.flags |= e), (s.memoizedState = At(1 | n, i, void 0, t === void 0 ? null : t)));
+  }
+  function Or(e, n, i, t) {
+    var s = _n();
+    t = t === void 0 ? null : t;
+    var o = void 0;
+    if (ze !== null) {
+      var u = ze.memoizedState;
+      if (((o = u.destroy), t !== null && ao(t, u.deps))) {
+        s.memoizedState = At(n, i, o, t);
+        return;
+      }
+    }
+    ((Ce.flags |= e), (s.memoizedState = At(1 | n, i, o, t)));
+  }
+  function za(e, n) {
+    return zr(8390656, 8, e, n);
+  }
+  function fo(e, n) {
+    return Or(2048, 8, e, n);
+  }
+  function Oa(e, n) {
+    return Or(4, 2, e, n);
+  }
+  function Ia(e, n) {
+    return Or(4, 4, e, n);
+  }
+  function Wa(e, n) {
+    if (typeof n == 'function')
+      return (
+        (e = e()),
+        n(e),
+        function () {
+          n(null);
+        }
+      );
+    if (n != null)
+      return (
+        (e = e()),
+        (n.current = e),
+        function () {
+          n.current = null;
+        }
+      );
+  }
+  function Aa(e, n, i) {
+    return ((i = i != null ? i.concat([e]) : null), Or(4, 4, Wa.bind(null, n, e), i));
+  }
+  function ho() {}
+  function Va(e, n) {
+    var i = _n();
+    n = n === void 0 ? null : n;
+    var t = i.memoizedState;
+    return t !== null && n !== null && ao(n, t[1]) ? t[0] : ((i.memoizedState = [e, n]), e);
+  }
+  function Ba(e, n) {
+    var i = _n();
+    n = n === void 0 ? null : n;
+    var t = i.memoizedState;
+    return t !== null && n !== null && ao(n, t[1])
+      ? t[0]
+      : ((e = e()), (i.memoizedState = [e, n]), e);
+  }
+  function $a(e, n, i) {
+    return (Ni & 21) === 0
+      ? (e.baseState && ((e.baseState = !1), (on = !0)), (e.memoizedState = i))
+      : (jn(i, n) || ((i = yl()), (Ce.lanes |= i), (ji |= i), (e.baseState = !0)), n);
+  }
+  function Cd(e, n) {
+    var i = he;
+    ((he = i !== 0 && 4 > i ? i : 4), e(!0));
+    var t = lo.transition;
+    lo.transition = {};
+    try {
+      (e(!1), n());
+    } finally {
+      ((he = i), (lo.transition = t));
+    }
+  }
+  function Ua() {
+    return _n().memoizedState;
+  }
+  function Pd(e, n, i) {
+    var t = ai(e);
+    if (((i = { lane: t, action: i, hasEagerState: !1, eagerState: null, next: null }), qa(e)))
+      Da(n, i);
+    else if (((i = wa(e, n, i, t)), i !== null)) {
+      var s = tn();
+      (Tn(i, e, t, s), Ha(i, n, t));
+    }
+  }
+  function Td(e, n, i) {
+    var t = ai(e),
+      s = { lane: t, action: i, hasEagerState: !1, eagerState: null, next: null };
+    if (qa(e)) Da(n, s);
+    else {
+      var o = e.alternate;
+      if (
+        e.lanes === 0 &&
+        (o === null || o.lanes === 0) &&
+        ((o = n.lastRenderedReducer), o !== null)
+      )
+        try {
+          var u = n.lastRenderedState,
+            d = o(u, i);
+          if (((s.hasEagerState = !0), (s.eagerState = d), jn(d, u))) {
+            var m = n.interleaved;
+            (m === null ? ((s.next = s), no(n)) : ((s.next = m.next), (m.next = s)),
+              (n.interleaved = s));
+            return;
+          }
+        } catch {
+        } finally {
+        }
+      ((i = wa(e, n, s, t)), i !== null && ((s = tn()), Tn(i, e, t, s), Ha(i, n, t)));
+    }
+  }
+  function qa(e) {
+    var n = e.alternate;
+    return e === Ce || (n !== null && n === Ce);
+  }
+  function Da(e, n) {
+    Ot = Fr = !0;
+    var i = e.pending;
+    (i === null ? (n.next = n) : ((n.next = i.next), (i.next = n)), (e.pending = n));
+  }
+  function Ha(e, n, i) {
+    if ((i & 4194240) !== 0) {
+      var t = n.lanes;
+      ((t &= e.pendingLanes), (i |= t), (n.lanes = i), gs(e, i));
+    }
+  }
+  var Ir = {
+      readContext: yn,
+      useCallback: Ze,
+      useContext: Ze,
+      useEffect: Ze,
+      useImperativeHandle: Ze,
+      useInsertionEffect: Ze,
+      useLayoutEffect: Ze,
+      useMemo: Ze,
+      useReducer: Ze,
+      useRef: Ze,
+      useState: Ze,
+      useDebugValue: Ze,
+      useDeferredValue: Ze,
+      useTransition: Ze,
+      useMutableSource: Ze,
+      useSyncExternalStore: Ze,
+      useId: Ze,
+      unstable_isNewReconciler: !1,
+    },
+    Ed = {
+      readContext: yn,
+      useCallback: function (e, n) {
+        return ((Fn().memoizedState = [e, n === void 0 ? null : n]), e);
+      },
+      useContext: yn,
+      useEffect: za,
+      useImperativeHandle: function (e, n, i) {
+        return ((i = i != null ? i.concat([e]) : null), zr(4194308, 4, Wa.bind(null, n, e), i));
+      },
+      useLayoutEffect: function (e, n) {
+        return zr(4194308, 4, e, n);
+      },
+      useInsertionEffect: function (e, n) {
+        return zr(4, 2, e, n);
+      },
+      useMemo: function (e, n) {
+        var i = Fn();
+        return ((n = n === void 0 ? null : n), (e = e()), (i.memoizedState = [e, n]), e);
+      },
+      useReducer: function (e, n, i) {
+        var t = Fn();
+        return (
+          (n = i !== void 0 ? i(n) : n),
+          (t.memoizedState = t.baseState = n),
+          (e = {
+            pending: null,
+            interleaved: null,
+            lanes: 0,
+            dispatch: null,
+            lastRenderedReducer: e,
+            lastRenderedState: n,
+          }),
+          (t.queue = e),
+          (e = e.dispatch = Pd.bind(null, Ce, e)),
+          [t.memoizedState, e]
+        );
+      },
+      useRef: function (e) {
+        var n = Fn();
+        return ((e = { current: e }), (n.memoizedState = e));
+      },
+      useState: Ma,
+      useDebugValue: ho,
+      useDeferredValue: function (e) {
+        return (Fn().memoizedState = e);
+      },
+      useTransition: function () {
+        var e = Ma(!1),
+          n = e[0];
+        return ((e = Cd.bind(null, e[1])), (Fn().memoizedState = e), [n, e]);
+      },
+      useMutableSource: function () {},
+      useSyncExternalStore: function (e, n, i) {
+        var t = Ce,
+          s = Fn();
+        if (ke) {
+          if (i === void 0) throw Error(a(407));
+          i = i();
+        } else {
+          if (((i = n()), Ue === null)) throw Error(a(349));
+          (Ni & 30) !== 0 || Ta(t, n, i);
+        }
+        s.memoizedState = i;
+        var o = { value: i, getSnapshot: n };
+        return (
+          (s.queue = o),
+          za(La.bind(null, t, o, e), [e]),
+          (t.flags |= 2048),
+          At(9, Ea.bind(null, t, o, i, n), void 0, null),
+          i
+        );
+      },
+      useId: function () {
+        var e = Fn(),
+          n = Ue.identifierPrefix;
+        if (ke) {
+          var i = An,
+            t = Wn;
+          ((i = (t & ~(1 << (32 - Nn(t) - 1))).toString(32) + i),
+            (n = ':' + n + 'R' + i),
+            (i = It++),
+            0 < i && (n += 'H' + i.toString(32)),
+            (n += ':'));
+        } else ((i = Sd++), (n = ':' + n + 'r' + i.toString(32) + ':'));
+        return (e.memoizedState = n);
+      },
+      unstable_isNewReconciler: !1,
+    },
+    Ld = {
+      readContext: yn,
+      useCallback: Va,
+      useContext: yn,
+      useEffect: fo,
+      useImperativeHandle: Aa,
+      useInsertionEffect: Oa,
+      useLayoutEffect: Ia,
+      useMemo: Ba,
+      useReducer: mo,
+      useRef: Fa,
+      useState: function () {
+        return mo(Wt);
+      },
+      useDebugValue: ho,
+      useDeferredValue: function (e) {
+        var n = _n();
+        return $a(n, ze.memoizedState, e);
+      },
+      useTransition: function () {
+        var e = mo(Wt)[0],
+          n = _n().memoizedState;
+        return [e, n];
+      },
+      useMutableSource: Ca,
+      useSyncExternalStore: Pa,
+      useId: Ua,
+      unstable_isNewReconciler: !1,
+    },
+    Rd = {
+      readContext: yn,
+      useCallback: Va,
+      useContext: yn,
+      useEffect: fo,
+      useImperativeHandle: Aa,
+      useInsertionEffect: Oa,
+      useLayoutEffect: Ia,
+      useMemo: Ba,
+      useReducer: po,
+      useRef: Fa,
+      useState: function () {
+        return po(Wt);
+      },
+      useDebugValue: ho,
+      useDeferredValue: function (e) {
+        var n = _n();
+        return ze === null ? (n.memoizedState = e) : $a(n, ze.memoizedState, e);
+      },
+      useTransition: function () {
+        var e = po(Wt)[0],
+          n = _n().memoizedState;
+        return [e, n];
+      },
+      useMutableSource: Ca,
+      useSyncExternalStore: Pa,
+      useId: Ua,
+      unstable_isNewReconciler: !1,
+    };
+  function Sn(e, n) {
+    if (e && e.defaultProps) {
+      ((n = A({}, n)), (e = e.defaultProps));
+      for (var i in e) n[i] === void 0 && (n[i] = e[i]);
+      return n;
+    }
+    return n;
+  }
+  function go(e, n, i, t) {
+    ((n = e.memoizedState),
+      (i = i(t, n)),
+      (i = i == null ? n : A({}, n, i)),
+      (e.memoizedState = i),
+      e.lanes === 0 && (e.updateQueue.baseState = i));
+  }
+  var Wr = {
+    isMounted: function (e) {
+      return (e = e._reactInternals) ? hi(e) === e : !1;
+    },
+    enqueueSetState: function (e, n, i) {
+      e = e._reactInternals;
+      var t = tn(),
+        s = ai(e),
+        o = Bn(t, s);
+      ((o.payload = n),
+        i != null && (o.callback = i),
+        (n = ri(e, o, s)),
+        n !== null && (Tn(n, e, s, t), Lr(n, e, s)));
+    },
+    enqueueReplaceState: function (e, n, i) {
+      e = e._reactInternals;
+      var t = tn(),
+        s = ai(e),
+        o = Bn(t, s);
+      ((o.tag = 1),
+        (o.payload = n),
+        i != null && (o.callback = i),
+        (n = ri(e, o, s)),
+        n !== null && (Tn(n, e, s, t), Lr(n, e, s)));
+    },
+    enqueueForceUpdate: function (e, n) {
+      e = e._reactInternals;
+      var i = tn(),
+        t = ai(e),
+        s = Bn(i, t);
+      ((s.tag = 2),
+        n != null && (s.callback = n),
+        (n = ri(e, s, t)),
+        n !== null && (Tn(n, e, t, i), Lr(n, e, t)));
+    },
+  };
+  function Ga(e, n, i, t, s, o, u) {
+    return (
+      (e = e.stateNode),
+      typeof e.shouldComponentUpdate == 'function'
+        ? e.shouldComponentUpdate(t, o, u)
+        : n.prototype && n.prototype.isPureReactComponent
+          ? !St(i, t) || !St(s, o)
+          : !0
+    );
+  }
+  function Ka(e, n, i) {
+    var t = !1,
+      s = ni,
+      o = n.contextType;
+    return (
+      typeof o == 'object' && o !== null
+        ? (o = yn(o))
+        : ((s = sn(n) ? vi : Ye.current),
+          (t = n.contextTypes),
+          (o = (t = t != null) ? Ui(e, s) : ni)),
+      (n = new n(i, o)),
+      (e.memoizedState = n.state !== null && n.state !== void 0 ? n.state : null),
+      (n.updater = Wr),
+      (e.stateNode = n),
+      (n._reactInternals = e),
+      t &&
+        ((e = e.stateNode),
+        (e.__reactInternalMemoizedUnmaskedChildContext = s),
+        (e.__reactInternalMemoizedMaskedChildContext = o)),
+      n
+    );
+  }
+  function Qa(e, n, i, t) {
+    ((e = n.state),
+      typeof n.componentWillReceiveProps == 'function' && n.componentWillReceiveProps(i, t),
+      typeof n.UNSAFE_componentWillReceiveProps == 'function' &&
+        n.UNSAFE_componentWillReceiveProps(i, t),
+      n.state !== e && Wr.enqueueReplaceState(n, n.state, null));
+  }
+  function vo(e, n, i, t) {
+    var s = e.stateNode;
+    ((s.props = i), (s.state = e.memoizedState), (s.refs = {}), io(e));
+    var o = n.contextType;
+    (typeof o == 'object' && o !== null
+      ? (s.context = yn(o))
+      : ((o = sn(n) ? vi : Ye.current), (s.context = Ui(e, o))),
+      (s.state = e.memoizedState),
+      (o = n.getDerivedStateFromProps),
+      typeof o == 'function' && (go(e, n, o, i), (s.state = e.memoizedState)),
+      typeof n.getDerivedStateFromProps == 'function' ||
+        typeof s.getSnapshotBeforeUpdate == 'function' ||
+        (typeof s.UNSAFE_componentWillMount != 'function' &&
+          typeof s.componentWillMount != 'function') ||
+        ((n = s.state),
+        typeof s.componentWillMount == 'function' && s.componentWillMount(),
+        typeof s.UNSAFE_componentWillMount == 'function' && s.UNSAFE_componentWillMount(),
+        n !== s.state && Wr.enqueueReplaceState(s, s.state, null),
+        Rr(e, i, s, t),
+        (s.state = e.memoizedState)),
+      typeof s.componentDidMount == 'function' && (e.flags |= 4194308));
+  }
+  function Zi(e, n) {
+    try {
+      var i = '',
+        t = n;
+      do ((i += se(t)), (t = t.return));
+      while (t);
+      var s = i;
+    } catch (o) {
+      s =
+        `
+Error generating stack: ` +
+        o.message +
+        `
+` +
+        o.stack;
+    }
+    return { value: e, source: n, stack: s, digest: null };
+  }
+  function yo(e, n, i) {
+    return { value: e, source: null, stack: i ?? null, digest: n ?? null };
+  }
+  function _o(e, n) {
+    try {
+      console.error(n.value);
+    } catch (i) {
+      setTimeout(function () {
+        throw i;
+      });
+    }
+  }
+  var bd = typeof WeakMap == 'function' ? WeakMap : Map;
+  function Ya(e, n, i) {
+    ((i = Bn(-1, i)), (i.tag = 3), (i.payload = { element: null }));
+    var t = n.value;
+    return (
+      (i.callback = function () {
+        (Dr || ((Dr = !0), (Fo = t)), _o(e, n));
+      }),
+      i
+    );
+  }
+  function Za(e, n, i) {
+    ((i = Bn(-1, i)), (i.tag = 3));
+    var t = e.type.getDerivedStateFromError;
+    if (typeof t == 'function') {
+      var s = n.value;
+      ((i.payload = function () {
+        return t(s);
+      }),
+        (i.callback = function () {
+          _o(e, n);
+        }));
+    }
+    var o = e.stateNode;
+    return (
+      o !== null &&
+        typeof o.componentDidCatch == 'function' &&
+        (i.callback = function () {
+          (_o(e, n),
+            typeof t != 'function' && (oi === null ? (oi = new Set([this])) : oi.add(this)));
+          var u = n.stack;
+          this.componentDidCatch(n.value, { componentStack: u !== null ? u : '' });
+        }),
+      i
+    );
+  }
+  function Xa(e, n, i) {
+    var t = e.pingCache;
+    if (t === null) {
+      t = e.pingCache = new bd();
+      var s = new Set();
+      t.set(n, s);
+    } else ((s = t.get(n)), s === void 0 && ((s = new Set()), t.set(n, s)));
+    s.has(i) || (s.add(i), (e = Hd.bind(null, e, n, i)), n.then(e, e));
+  }
+  function Ja(e) {
+    do {
+      var n;
+      if (
+        ((n = e.tag === 13) &&
+          ((n = e.memoizedState), (n = n !== null ? n.dehydrated !== null : !0)),
+        n)
+      )
+        return e;
+      e = e.return;
+    } while (e !== null);
+    return null;
+  }
+  function eu(e, n, i, t, s) {
+    return (e.mode & 1) === 0
+      ? (e === n
+          ? (e.flags |= 65536)
+          : ((e.flags |= 128),
+            (i.flags |= 131072),
+            (i.flags &= -52805),
+            i.tag === 1 &&
+              (i.alternate === null ? (i.tag = 17) : ((n = Bn(-1, 1)), (n.tag = 2), ri(i, n, 1))),
+            (i.lanes |= 1)),
+        e)
+      : ((e.flags |= 65536), (e.lanes = s), e);
+  }
+  var Md = re.ReactCurrentOwner,
+    on = !1;
+  function nn(e, n, i, t) {
+    n.child = e === null ? xa(n, null, i, t) : Gi(n, e.child, i, t);
+  }
+  function nu(e, n, i, t, s) {
+    i = i.render;
+    var o = n.ref;
+    return (
+      Qi(n, s),
+      (t = uo(e, n, i, t, o, s)),
+      (i = co()),
+      e !== null && !on
+        ? ((n.updateQueue = e.updateQueue), (n.flags &= -2053), (e.lanes &= ~s), $n(e, n, s))
+        : (ke && i && Hs(n), (n.flags |= 1), nn(e, n, t, s), n.child)
+    );
+  }
+  function iu(e, n, i, t, s) {
+    if (e === null) {
+      var o = i.type;
+      return typeof o == 'function' &&
+        !Bo(o) &&
+        o.defaultProps === void 0 &&
+        i.compare === null &&
+        i.defaultProps === void 0
+        ? ((n.tag = 15), (n.type = o), tu(e, n, o, t, s))
+        : ((e = Zr(i.type, null, t, n, n.mode, s)), (e.ref = n.ref), (e.return = n), (n.child = e));
+    }
+    if (((o = e.child), (e.lanes & s) === 0)) {
+      var u = o.memoizedProps;
+      if (((i = i.compare), (i = i !== null ? i : St), i(u, t) && e.ref === n.ref))
+        return $n(e, n, s);
+    }
+    return ((n.flags |= 1), (e = ci(o, t)), (e.ref = n.ref), (e.return = n), (n.child = e));
+  }
+  function tu(e, n, i, t, s) {
+    if (e !== null) {
+      var o = e.memoizedProps;
+      if (St(o, t) && e.ref === n.ref)
+        if (((on = !1), (n.pendingProps = t = o), (e.lanes & s) !== 0))
+          (e.flags & 131072) !== 0 && (on = !0);
+        else return ((n.lanes = e.lanes), $n(e, n, s));
+    }
+    return xo(e, n, i, t, s);
+  }
+  function ru(e, n, i) {
+    var t = n.pendingProps,
+      s = t.children,
+      o = e !== null ? e.memoizedState : null;
+    if (t.mode === 'hidden')
+      if ((n.mode & 1) === 0)
+        ((n.memoizedState = { baseLanes: 0, cachePool: null, transitions: null }),
+          xe(Ji, fn),
+          (fn |= i));
+      else {
+        if ((i & 1073741824) === 0)
+          return (
+            (e = o !== null ? o.baseLanes | i : i),
+            (n.lanes = n.childLanes = 1073741824),
+            (n.memoizedState = { baseLanes: e, cachePool: null, transitions: null }),
+            (n.updateQueue = null),
+            xe(Ji, fn),
+            (fn |= e),
+            null
+          );
+        ((n.memoizedState = { baseLanes: 0, cachePool: null, transitions: null }),
+          (t = o !== null ? o.baseLanes : i),
+          xe(Ji, fn),
+          (fn |= t));
+      }
+    else
+      (o !== null ? ((t = o.baseLanes | i), (n.memoizedState = null)) : (t = i),
+        xe(Ji, fn),
+        (fn |= t));
+    return (nn(e, n, s, i), n.child);
+  }
+  function su(e, n) {
+    var i = n.ref;
+    ((e === null && i !== null) || (e !== null && e.ref !== i)) &&
+      ((n.flags |= 512), (n.flags |= 2097152));
+  }
+  function xo(e, n, i, t, s) {
+    var o = sn(i) ? vi : Ye.current;
+    return (
+      (o = Ui(n, o)),
+      Qi(n, s),
+      (i = uo(e, n, i, t, o, s)),
+      (t = co()),
+      e !== null && !on
+        ? ((n.updateQueue = e.updateQueue), (n.flags &= -2053), (e.lanes &= ~s), $n(e, n, s))
+        : (ke && t && Hs(n), (n.flags |= 1), nn(e, n, i, s), n.child)
+    );
+  }
+  function ou(e, n, i, t, s) {
+    if (sn(i)) {
+      var o = !0;
+      Nr(n);
+    } else o = !1;
+    if ((Qi(n, s), n.stateNode === null)) (Vr(e, n), Ka(n, i, t), vo(n, i, t, s), (t = !0));
+    else if (e === null) {
+      var u = n.stateNode,
+        d = n.memoizedProps;
+      u.props = d;
+      var m = u.context,
+        x = i.contextType;
+      typeof x == 'object' && x !== null
+        ? (x = yn(x))
+        : ((x = sn(i) ? vi : Ye.current), (x = Ui(n, x)));
+      var E = i.getDerivedStateFromProps,
+        R = typeof E == 'function' || typeof u.getSnapshotBeforeUpdate == 'function';
+      (R ||
+        (typeof u.UNSAFE_componentWillReceiveProps != 'function' &&
+          typeof u.componentWillReceiveProps != 'function') ||
+        ((d !== t || m !== x) && Qa(n, u, t, x)),
+        (ti = !1));
+      var T = n.memoizedState;
+      ((u.state = T),
+        Rr(n, t, u, s),
+        (m = n.memoizedState),
+        d !== t || T !== m || rn.current || ti
+          ? (typeof E == 'function' && (go(n, i, E, t), (m = n.memoizedState)),
+            (d = ti || Ga(n, i, d, t, T, m, x))
+              ? (R ||
+                  (typeof u.UNSAFE_componentWillMount != 'function' &&
+                    typeof u.componentWillMount != 'function') ||
+                  (typeof u.componentWillMount == 'function' && u.componentWillMount(),
+                  typeof u.UNSAFE_componentWillMount == 'function' &&
+                    u.UNSAFE_componentWillMount()),
+                typeof u.componentDidMount == 'function' && (n.flags |= 4194308))
+              : (typeof u.componentDidMount == 'function' && (n.flags |= 4194308),
+                (n.memoizedProps = t),
+                (n.memoizedState = m)),
+            (u.props = t),
+            (u.state = m),
+            (u.context = x),
+            (t = d))
+          : (typeof u.componentDidMount == 'function' && (n.flags |= 4194308), (t = !1)));
+    } else {
+      ((u = n.stateNode),
+        Na(e, n),
+        (d = n.memoizedProps),
+        (x = n.type === n.elementType ? d : Sn(n.type, d)),
+        (u.props = x),
+        (R = n.pendingProps),
+        (T = u.context),
+        (m = i.contextType),
+        typeof m == 'object' && m !== null
+          ? (m = yn(m))
+          : ((m = sn(i) ? vi : Ye.current), (m = Ui(n, m))));
+      var B = i.getDerivedStateFromProps;
+      ((E = typeof B == 'function' || typeof u.getSnapshotBeforeUpdate == 'function') ||
+        (typeof u.UNSAFE_componentWillReceiveProps != 'function' &&
+          typeof u.componentWillReceiveProps != 'function') ||
+        ((d !== R || T !== m) && Qa(n, u, t, m)),
+        (ti = !1),
+        (T = n.memoizedState),
+        (u.state = T),
+        Rr(n, t, u, s));
+      var U = n.memoizedState;
+      d !== R || T !== U || rn.current || ti
+        ? (typeof B == 'function' && (go(n, i, B, t), (U = n.memoizedState)),
+          (x = ti || Ga(n, i, x, t, T, U, m) || !1)
+            ? (E ||
+                (typeof u.UNSAFE_componentWillUpdate != 'function' &&
+                  typeof u.componentWillUpdate != 'function') ||
+                (typeof u.componentWillUpdate == 'function' && u.componentWillUpdate(t, U, m),
+                typeof u.UNSAFE_componentWillUpdate == 'function' &&
+                  u.UNSAFE_componentWillUpdate(t, U, m)),
+              typeof u.componentDidUpdate == 'function' && (n.flags |= 4),
+              typeof u.getSnapshotBeforeUpdate == 'function' && (n.flags |= 1024))
+            : (typeof u.componentDidUpdate != 'function' ||
+                (d === e.memoizedProps && T === e.memoizedState) ||
+                (n.flags |= 4),
+              typeof u.getSnapshotBeforeUpdate != 'function' ||
+                (d === e.memoizedProps && T === e.memoizedState) ||
+                (n.flags |= 1024),
+              (n.memoizedProps = t),
+              (n.memoizedState = U)),
+          (u.props = t),
+          (u.state = U),
+          (u.context = m),
+          (t = x))
+        : (typeof u.componentDidUpdate != 'function' ||
+            (d === e.memoizedProps && T === e.memoizedState) ||
+            (n.flags |= 4),
+          typeof u.getSnapshotBeforeUpdate != 'function' ||
+            (d === e.memoizedProps && T === e.memoizedState) ||
+            (n.flags |= 1024),
+          (t = !1));
+    }
+    return wo(e, n, i, t, o, s);
+  }
+  function wo(e, n, i, t, s, o) {
+    su(e, n);
+    var u = (n.flags & 128) !== 0;
+    if (!t && !u) return (s && da(n, i, !1), $n(e, n, o));
+    ((t = n.stateNode), (Md.current = n));
+    var d = u && typeof i.getDerivedStateFromError != 'function' ? null : t.render();
+    return (
+      (n.flags |= 1),
+      e !== null && u
+        ? ((n.child = Gi(n, e.child, null, o)), (n.child = Gi(n, null, d, o)))
+        : nn(e, n, d, o),
+      (n.memoizedState = t.state),
+      s && da(n, i, !0),
+      n.child
+    );
+  }
+  function lu(e) {
+    var n = e.stateNode;
+    (n.pendingContext
+      ? ua(e, n.pendingContext, n.pendingContext !== n.context)
+      : n.context && ua(e, n.context, !1),
+      to(e, n.containerInfo));
+  }
+  function au(e, n, i, t, s) {
+    return (Hi(), Ys(s), (n.flags |= 256), nn(e, n, i, t), n.child);
+  }
+  var No = { dehydrated: null, treeContext: null, retryLane: 0 };
+  function jo(e) {
+    return { baseLanes: e, cachePool: null, transitions: null };
+  }
+  function uu(e, n, i) {
+    var t = n.pendingProps,
+      s = Se.current,
+      o = !1,
+      u = (n.flags & 128) !== 0,
+      d;
+    if (
+      ((d = u) || (d = e !== null && e.memoizedState === null ? !1 : (s & 2) !== 0),
+      d ? ((o = !0), (n.flags &= -129)) : (e === null || e.memoizedState !== null) && (s |= 1),
+      xe(Se, s & 1),
+      e === null)
+    )
+      return (
+        Qs(n),
+        (e = n.memoizedState),
+        e !== null && ((e = e.dehydrated), e !== null)
+          ? ((n.mode & 1) === 0
+              ? (n.lanes = 1)
+              : e.data === '$!'
+                ? (n.lanes = 8)
+                : (n.lanes = 1073741824),
+            null)
+          : ((u = t.children),
+            (e = t.fallback),
+            o
+              ? ((t = n.mode),
+                (o = n.child),
+                (u = { mode: 'hidden', children: u }),
+                (t & 1) === 0 && o !== null
+                  ? ((o.childLanes = 0), (o.pendingProps = u))
+                  : (o = Xr(u, t, 0, null)),
+                (e = Pi(e, t, i, null)),
+                (o.return = n),
+                (e.return = n),
+                (o.sibling = e),
+                (n.child = o),
+                (n.child.memoizedState = jo(i)),
+                (n.memoizedState = No),
+                e)
+              : ko(n, u))
+      );
+    if (((s = e.memoizedState), s !== null && ((d = s.dehydrated), d !== null)))
+      return Fd(e, n, u, t, d, s, i);
+    if (o) {
+      ((o = t.fallback), (u = n.mode), (s = e.child), (d = s.sibling));
+      var m = { mode: 'hidden', children: t.children };
+      return (
+        (u & 1) === 0 && n.child !== s
+          ? ((t = n.child), (t.childLanes = 0), (t.pendingProps = m), (n.deletions = null))
+          : ((t = ci(s, m)), (t.subtreeFlags = s.subtreeFlags & 14680064)),
+        d !== null ? (o = ci(d, o)) : ((o = Pi(o, u, i, null)), (o.flags |= 2)),
+        (o.return = n),
+        (t.return = n),
+        (t.sibling = o),
+        (n.child = t),
+        (t = o),
+        (o = n.child),
+        (u = e.child.memoizedState),
+        (u =
+          u === null
+            ? jo(i)
+            : { baseLanes: u.baseLanes | i, cachePool: null, transitions: u.transitions }),
+        (o.memoizedState = u),
+        (o.childLanes = e.childLanes & ~i),
+        (n.memoizedState = No),
+        t
+      );
+    }
+    return (
+      (o = e.child),
+      (e = o.sibling),
+      (t = ci(o, { mode: 'visible', children: t.children })),
+      (n.mode & 1) === 0 && (t.lanes = i),
+      (t.return = n),
+      (t.sibling = null),
+      e !== null &&
+        ((i = n.deletions), i === null ? ((n.deletions = [e]), (n.flags |= 16)) : i.push(e)),
+      (n.child = t),
+      (n.memoizedState = null),
+      t
+    );
+  }
+  function ko(e, n) {
+    return (
+      (n = Xr({ mode: 'visible', children: n }, e.mode, 0, null)),
+      (n.return = e),
+      (e.child = n)
+    );
+  }
+  function Ar(e, n, i, t) {
+    return (
+      t !== null && Ys(t),
+      Gi(n, e.child, null, i),
+      (e = ko(n, n.pendingProps.children)),
+      (e.flags |= 2),
+      (n.memoizedState = null),
+      e
+    );
+  }
+  function Fd(e, n, i, t, s, o, u) {
+    if (i)
+      return n.flags & 256
+        ? ((n.flags &= -257), (t = yo(Error(a(422)))), Ar(e, n, u, t))
+        : n.memoizedState !== null
+          ? ((n.child = e.child), (n.flags |= 128), null)
+          : ((o = t.fallback),
+            (s = n.mode),
+            (t = Xr({ mode: 'visible', children: t.children }, s, 0, null)),
+            (o = Pi(o, s, u, null)),
+            (o.flags |= 2),
+            (t.return = n),
+            (o.return = n),
+            (t.sibling = o),
+            (n.child = t),
+            (n.mode & 1) !== 0 && Gi(n, e.child, null, u),
+            (n.child.memoizedState = jo(u)),
+            (n.memoizedState = No),
+            o);
+    if ((n.mode & 1) === 0) return Ar(e, n, u, null);
+    if (s.data === '$!') {
+      if (((t = s.nextSibling && s.nextSibling.dataset), t)) var d = t.dgst;
+      return ((t = d), (o = Error(a(419))), (t = yo(o, t, void 0)), Ar(e, n, u, t));
+    }
+    if (((d = (u & e.childLanes) !== 0), on || d)) {
+      if (((t = Ue), t !== null)) {
+        switch (u & -u) {
+          case 4:
+            s = 2;
+            break;
+          case 16:
+            s = 8;
+            break;
+          case 64:
+          case 128:
+          case 256:
+          case 512:
+          case 1024:
+          case 2048:
+          case 4096:
+          case 8192:
+          case 16384:
+          case 32768:
+          case 65536:
+          case 131072:
+          case 262144:
+          case 524288:
+          case 1048576:
+          case 2097152:
+          case 4194304:
+          case 8388608:
+          case 16777216:
+          case 33554432:
+          case 67108864:
+            s = 32;
+            break;
+          case 536870912:
+            s = 268435456;
+            break;
+          default:
+            s = 0;
+        }
+        ((s = (s & (t.suspendedLanes | u)) !== 0 ? 0 : s),
+          s !== 0 && s !== o.retryLane && ((o.retryLane = s), Vn(e, s), Tn(t, e, s, -1)));
+      }
+      return (Vo(), (t = yo(Error(a(421)))), Ar(e, n, u, t));
+    }
+    return s.data === '$?'
+      ? ((n.flags |= 128), (n.child = e.child), (n = Gd.bind(null, e)), (s._reactRetry = n), null)
+      : ((e = o.treeContext),
+        (pn = Jn(s.nextSibling)),
+        (mn = n),
+        (ke = !0),
+        (kn = null),
+        e !== null &&
+          ((gn[vn++] = Wn),
+          (gn[vn++] = An),
+          (gn[vn++] = yi),
+          (Wn = e.id),
+          (An = e.overflow),
+          (yi = n)),
+        (n = ko(n, t.children)),
+        (n.flags |= 4096),
+        n);
+  }
+  function cu(e, n, i) {
+    e.lanes |= n;
+    var t = e.alternate;
+    (t !== null && (t.lanes |= n), eo(e.return, n, i));
+  }
+  function So(e, n, i, t, s) {
+    var o = e.memoizedState;
+    o === null
+      ? (e.memoizedState = {
+          isBackwards: n,
+          rendering: null,
+          renderingStartTime: 0,
+          last: t,
+          tail: i,
+          tailMode: s,
+        })
+      : ((o.isBackwards = n),
+        (o.rendering = null),
+        (o.renderingStartTime = 0),
+        (o.last = t),
+        (o.tail = i),
+        (o.tailMode = s));
+  }
+  function du(e, n, i) {
+    var t = n.pendingProps,
+      s = t.revealOrder,
+      o = t.tail;
+    if ((nn(e, n, t.children, i), (t = Se.current), (t & 2) !== 0))
+      ((t = (t & 1) | 2), (n.flags |= 128));
+    else {
+      if (e !== null && (e.flags & 128) !== 0)
+        e: for (e = n.child; e !== null; ) {
+          if (e.tag === 13) e.memoizedState !== null && cu(e, i, n);
+          else if (e.tag === 19) cu(e, i, n);
+          else if (e.child !== null) {
+            ((e.child.return = e), (e = e.child));
+            continue;
+          }
+          if (e === n) break e;
+          for (; e.sibling === null; ) {
+            if (e.return === null || e.return === n) break e;
+            e = e.return;
+          }
+          ((e.sibling.return = e.return), (e = e.sibling));
+        }
+      t &= 1;
+    }
+    if ((xe(Se, t), (n.mode & 1) === 0)) n.memoizedState = null;
+    else
+      switch (s) {
+        case 'forwards':
+          for (i = n.child, s = null; i !== null; )
+            ((e = i.alternate), e !== null && br(e) === null && (s = i), (i = i.sibling));
+          ((i = s),
+            i === null ? ((s = n.child), (n.child = null)) : ((s = i.sibling), (i.sibling = null)),
+            So(n, !1, s, i, o));
+          break;
+        case 'backwards':
+          for (i = null, s = n.child, n.child = null; s !== null; ) {
+            if (((e = s.alternate), e !== null && br(e) === null)) {
+              n.child = s;
+              break;
+            }
+            ((e = s.sibling), (s.sibling = i), (i = s), (s = e));
+          }
+          So(n, !0, i, null, o);
+          break;
+        case 'together':
+          So(n, !1, null, null, void 0);
+          break;
+        default:
+          n.memoizedState = null;
+      }
+    return n.child;
+  }
+  function Vr(e, n) {
+    (n.mode & 1) === 0 &&
+      e !== null &&
+      ((e.alternate = null), (n.alternate = null), (n.flags |= 2));
+  }
+  function $n(e, n, i) {
+    if (
+      (e !== null && (n.dependencies = e.dependencies), (ji |= n.lanes), (i & n.childLanes) === 0)
+    )
+      return null;
+    if (e !== null && n.child !== e.child) throw Error(a(153));
+    if (n.child !== null) {
+      for (e = n.child, i = ci(e, e.pendingProps), n.child = i, i.return = n; e.sibling !== null; )
+        ((e = e.sibling), (i = i.sibling = ci(e, e.pendingProps)), (i.return = n));
+      i.sibling = null;
+    }
+    return n.child;
+  }
+  function zd(e, n, i) {
+    switch (n.tag) {
+      case 3:
+        (lu(n), Hi());
+        break;
+      case 5:
+        Sa(n);
+        break;
+      case 1:
+        sn(n.type) && Nr(n);
+        break;
+      case 4:
+        to(n, n.stateNode.containerInfo);
+        break;
+      case 10:
+        var t = n.type._context,
+          s = n.memoizedProps.value;
+        (xe(Tr, t._currentValue), (t._currentValue = s));
+        break;
+      case 13:
+        if (((t = n.memoizedState), t !== null))
+          return t.dehydrated !== null
+            ? (xe(Se, Se.current & 1), (n.flags |= 128), null)
+            : (i & n.child.childLanes) !== 0
+              ? uu(e, n, i)
+              : (xe(Se, Se.current & 1), (e = $n(e, n, i)), e !== null ? e.sibling : null);
+        xe(Se, Se.current & 1);
+        break;
+      case 19:
+        if (((t = (i & n.childLanes) !== 0), (e.flags & 128) !== 0)) {
+          if (t) return du(e, n, i);
+          n.flags |= 128;
+        }
+        if (
+          ((s = n.memoizedState),
+          s !== null && ((s.rendering = null), (s.tail = null), (s.lastEffect = null)),
+          xe(Se, Se.current),
+          t)
+        )
+          break;
+        return null;
+      case 22:
+      case 23:
+        return ((n.lanes = 0), ru(e, n, i));
+    }
+    return $n(e, n, i);
+  }
+  var mu, Co, pu, fu;
+  ((mu = function (e, n) {
+    for (var i = n.child; i !== null; ) {
+      if (i.tag === 5 || i.tag === 6) e.appendChild(i.stateNode);
+      else if (i.tag !== 4 && i.child !== null) {
+        ((i.child.return = i), (i = i.child));
+        continue;
+      }
+      if (i === n) break;
+      for (; i.sibling === null; ) {
+        if (i.return === null || i.return === n) return;
+        i = i.return;
+      }
+      ((i.sibling.return = i.return), (i = i.sibling));
+    }
+  }),
+    (Co = function () {}),
+    (pu = function (e, n, i, t) {
+      var s = e.memoizedProps;
+      if (s !== t) {
+        ((e = n.stateNode), wi(Mn.current));
+        var o = null;
+        switch (i) {
+          case 'input':
+            ((s = tt(e, s)), (t = tt(e, t)), (o = []));
+            break;
+          case 'select':
+            ((s = A({}, s, { value: void 0 })), (t = A({}, t, { value: void 0 })), (o = []));
+            break;
+          case 'textarea':
+            ((s = Be(e, s)), (t = Be(e, t)), (o = []));
+            break;
+          default:
+            typeof s.onClick != 'function' && typeof t.onClick == 'function' && (e.onclick = _r);
+        }
+        hn(i, t);
+        var u;
+        i = null;
+        for (x in s)
+          if (!t.hasOwnProperty(x) && s.hasOwnProperty(x) && s[x] != null)
+            if (x === 'style') {
+              var d = s[x];
+              for (u in d) d.hasOwnProperty(u) && (i || (i = {}), (i[u] = ''));
+            } else
+              x !== 'dangerouslySetInnerHTML' &&
+                x !== 'children' &&
+                x !== 'suppressContentEditableWarning' &&
+                x !== 'suppressHydrationWarning' &&
+                x !== 'autoFocus' &&
+                (N.hasOwnProperty(x) ? o || (o = []) : (o = o || []).push(x, null));
+        for (x in t) {
+          var m = t[x];
+          if (
+            ((d = s != null ? s[x] : void 0),
+            t.hasOwnProperty(x) && m !== d && (m != null || d != null))
+          )
+            if (x === 'style')
+              if (d) {
+                for (u in d)
+                  !d.hasOwnProperty(u) ||
+                    (m && m.hasOwnProperty(u)) ||
+                    (i || (i = {}), (i[u] = ''));
+                for (u in m) m.hasOwnProperty(u) && d[u] !== m[u] && (i || (i = {}), (i[u] = m[u]));
+              } else (i || (o || (o = []), o.push(x, i)), (i = m));
+            else
+              x === 'dangerouslySetInnerHTML'
+                ? ((m = m ? m.__html : void 0),
+                  (d = d ? d.__html : void 0),
+                  m != null && d !== m && (o = o || []).push(x, m))
+                : x === 'children'
+                  ? (typeof m != 'string' && typeof m != 'number') || (o = o || []).push(x, '' + m)
+                  : x !== 'suppressContentEditableWarning' &&
+                    x !== 'suppressHydrationWarning' &&
+                    (N.hasOwnProperty(x)
+                      ? (m != null && x === 'onScroll' && Ne('scroll', e), o || d === m || (o = []))
+                      : (o = o || []).push(x, m));
+        }
+        i && (o = o || []).push('style', i);
+        var x = o;
+        (n.updateQueue = x) && (n.flags |= 4);
+      }
+    }),
+    (fu = function (e, n, i, t) {
+      i !== t && (n.flags |= 4);
+    }));
+  function Vt(e, n) {
+    if (!ke)
+      switch (e.tailMode) {
+        case 'hidden':
+          n = e.tail;
+          for (var i = null; n !== null; ) (n.alternate !== null && (i = n), (n = n.sibling));
+          i === null ? (e.tail = null) : (i.sibling = null);
+          break;
+        case 'collapsed':
+          i = e.tail;
+          for (var t = null; i !== null; ) (i.alternate !== null && (t = i), (i = i.sibling));
+          t === null
+            ? n || e.tail === null
+              ? (e.tail = null)
+              : (e.tail.sibling = null)
+            : (t.sibling = null);
+      }
+  }
+  function Xe(e) {
+    var n = e.alternate !== null && e.alternate.child === e.child,
+      i = 0,
+      t = 0;
+    if (n)
+      for (var s = e.child; s !== null; )
+        ((i |= s.lanes | s.childLanes),
+          (t |= s.subtreeFlags & 14680064),
+          (t |= s.flags & 14680064),
+          (s.return = e),
+          (s = s.sibling));
+    else
+      for (s = e.child; s !== null; )
+        ((i |= s.lanes | s.childLanes),
+          (t |= s.subtreeFlags),
+          (t |= s.flags),
+          (s.return = e),
+          (s = s.sibling));
+    return ((e.subtreeFlags |= t), (e.childLanes = i), n);
+  }
+  function Od(e, n, i) {
+    var t = n.pendingProps;
+    switch ((Gs(n), n.tag)) {
+      case 2:
+      case 16:
+      case 15:
+      case 0:
+      case 11:
+      case 7:
+      case 8:
+      case 12:
+      case 9:
+      case 14:
+        return (Xe(n), null);
+      case 1:
+        return (sn(n.type) && wr(), Xe(n), null);
+      case 3:
+        return (
+          (t = n.stateNode),
+          Yi(),
+          je(rn),
+          je(Ye),
+          oo(),
+          t.pendingContext && ((t.context = t.pendingContext), (t.pendingContext = null)),
+          (e === null || e.child === null) &&
+            (Cr(n)
+              ? (n.flags |= 4)
+              : e === null ||
+                (e.memoizedState.isDehydrated && (n.flags & 256) === 0) ||
+                ((n.flags |= 1024), kn !== null && (Io(kn), (kn = null)))),
+          Co(e, n),
+          Xe(n),
+          null
+        );
+      case 5:
+        ro(n);
+        var s = wi(zt.current);
+        if (((i = n.type), e !== null && n.stateNode != null))
+          (pu(e, n, i, t, s), e.ref !== n.ref && ((n.flags |= 512), (n.flags |= 2097152)));
+        else {
+          if (!t) {
+            if (n.stateNode === null) throw Error(a(166));
+            return (Xe(n), null);
+          }
+          if (((e = wi(Mn.current)), Cr(n))) {
+            ((t = n.stateNode), (i = n.type));
+            var o = n.memoizedProps;
+            switch (((t[bn] = n), (t[Lt] = o), (e = (n.mode & 1) !== 0), i)) {
+              case 'dialog':
+                (Ne('cancel', t), Ne('close', t));
+                break;
+              case 'iframe':
+              case 'object':
+              case 'embed':
+                Ne('load', t);
+                break;
+              case 'video':
+              case 'audio':
+                for (s = 0; s < Pt.length; s++) Ne(Pt[s], t);
+                break;
+              case 'source':
+                Ne('error', t);
+                break;
+              case 'img':
+              case 'image':
+              case 'link':
+                (Ne('error', t), Ne('load', t));
+                break;
+              case 'details':
+                Ne('toggle', t);
+                break;
+              case 'input':
+                (rt(t, o), Ne('invalid', t));
+                break;
+              case 'select':
+                ((t._wrapperState = { wasMultiple: !!o.multiple }), Ne('invalid', t));
+                break;
+              case 'textarea':
+                (S(t, o), Ne('invalid', t));
+            }
+            (hn(i, o), (s = null));
+            for (var u in o)
+              if (o.hasOwnProperty(u)) {
+                var d = o[u];
+                u === 'children'
+                  ? typeof d == 'string'
+                    ? t.textContent !== d &&
+                      (o.suppressHydrationWarning !== !0 && yr(t.textContent, d, e),
+                      (s = ['children', d]))
+                    : typeof d == 'number' &&
+                      t.textContent !== '' + d &&
+                      (o.suppressHydrationWarning !== !0 && yr(t.textContent, d, e),
+                      (s = ['children', '' + d]))
+                  : N.hasOwnProperty(u) && d != null && u === 'onScroll' && Ne('scroll', t);
+              }
+            switch (i) {
+              case 'input':
+                (Ti(t), ot(t, o, !0));
+                break;
+              case 'textarea':
+                (Ti(t), lt(t));
+                break;
+              case 'select':
+              case 'option':
+                break;
+              default:
+                typeof o.onClick == 'function' && (t.onclick = _r);
+            }
+            ((t = s), (n.updateQueue = t), t !== null && (n.flags |= 4));
+          } else {
+            ((u = s.nodeType === 9 ? s : s.ownerDocument),
+              e === 'http://www.w3.org/1999/xhtml' && (e = en(i)),
+              e === 'http://www.w3.org/1999/xhtml'
+                ? i === 'script'
+                  ? ((e = u.createElement('div')),
+                    (e.innerHTML = '<script><\/script>'),
+                    (e = e.removeChild(e.firstChild)))
+                  : typeof t.is == 'string'
+                    ? (e = u.createElement(i, { is: t.is }))
+                    : ((e = u.createElement(i)),
+                      i === 'select' &&
+                        ((u = e), t.multiple ? (u.multiple = !0) : t.size && (u.size = t.size)))
+                : (e = u.createElementNS(e, i)),
+              (e[bn] = n),
+              (e[Lt] = t),
+              mu(e, n, !1, !1),
+              (n.stateNode = e));
+            e: {
+              switch (((u = at(i, t)), i)) {
+                case 'dialog':
+                  (Ne('cancel', e), Ne('close', e), (s = t));
+                  break;
+                case 'iframe':
+                case 'object':
+                case 'embed':
+                  (Ne('load', e), (s = t));
+                  break;
+                case 'video':
+                case 'audio':
+                  for (s = 0; s < Pt.length; s++) Ne(Pt[s], e);
+                  s = t;
+                  break;
+                case 'source':
+                  (Ne('error', e), (s = t));
+                  break;
+                case 'img':
+                case 'image':
+                case 'link':
+                  (Ne('error', e), Ne('load', e), (s = t));
+                  break;
+                case 'details':
+                  (Ne('toggle', e), (s = t));
+                  break;
+                case 'input':
+                  (rt(e, t), (s = tt(e, t)), Ne('invalid', e));
+                  break;
+                case 'option':
+                  s = t;
+                  break;
+                case 'select':
+                  ((e._wrapperState = { wasMultiple: !!t.multiple }),
+                    (s = A({}, t, { value: void 0 })),
+                    Ne('invalid', e));
+                  break;
+                case 'textarea':
+                  (S(e, t), (s = Be(e, t)), Ne('invalid', e));
+                  break;
+                default:
+                  s = t;
+              }
+              (hn(i, s), (d = s));
+              for (o in d)
+                if (d.hasOwnProperty(o)) {
+                  var m = d[o];
+                  o === 'style'
+                    ? Zt(e, m)
+                    : o === 'dangerouslySetInnerHTML'
+                      ? ((m = m ? m.__html : void 0), m != null && fi(e, m))
+                      : o === 'children'
+                        ? typeof m == 'string'
+                          ? (i !== 'textarea' || m !== '') && Dn(e, m)
+                          : typeof m == 'number' && Dn(e, '' + m)
+                        : o !== 'suppressContentEditableWarning' &&
+                          o !== 'suppressHydrationWarning' &&
+                          o !== 'autoFocus' &&
+                          (N.hasOwnProperty(o)
+                            ? m != null && o === 'onScroll' && Ne('scroll', e)
+                            : m != null && me(e, o, m, u));
+                }
+              switch (i) {
+                case 'input':
+                  (Ti(e), ot(e, t, !1));
+                  break;
+                case 'textarea':
+                  (Ti(e), lt(e));
+                  break;
+                case 'option':
+                  t.value != null && e.setAttribute('value', '' + ce(t.value));
+                  break;
+                case 'select':
+                  ((e.multiple = !!t.multiple),
+                    (o = t.value),
+                    o != null
+                      ? En(e, !!t.multiple, o, !1)
+                      : t.defaultValue != null && En(e, !!t.multiple, t.defaultValue, !0));
+                  break;
+                default:
+                  typeof s.onClick == 'function' && (e.onclick = _r);
+              }
+              switch (i) {
+                case 'button':
+                case 'input':
+                case 'select':
+                case 'textarea':
+                  t = !!t.autoFocus;
+                  break e;
+                case 'img':
+                  t = !0;
+                  break e;
+                default:
+                  t = !1;
+              }
+            }
+            t && (n.flags |= 4);
+          }
+          n.ref !== null && ((n.flags |= 512), (n.flags |= 2097152));
+        }
+        return (Xe(n), null);
+      case 6:
+        if (e && n.stateNode != null) fu(e, n, e.memoizedProps, t);
+        else {
+          if (typeof t != 'string' && n.stateNode === null) throw Error(a(166));
+          if (((i = wi(zt.current)), wi(Mn.current), Cr(n))) {
+            if (
+              ((t = n.stateNode),
+              (i = n.memoizedProps),
+              (t[bn] = n),
+              (o = t.nodeValue !== i) && ((e = mn), e !== null))
+            )
+              switch (e.tag) {
+                case 3:
+                  yr(t.nodeValue, i, (e.mode & 1) !== 0);
+                  break;
+                case 5:
+                  e.memoizedProps.suppressHydrationWarning !== !0 &&
+                    yr(t.nodeValue, i, (e.mode & 1) !== 0);
+              }
+            o && (n.flags |= 4);
+          } else
+            ((t = (i.nodeType === 9 ? i : i.ownerDocument).createTextNode(t)),
+              (t[bn] = n),
+              (n.stateNode = t));
+        }
+        return (Xe(n), null);
+      case 13:
+        if (
+          (je(Se),
+          (t = n.memoizedState),
+          e === null || (e.memoizedState !== null && e.memoizedState.dehydrated !== null))
+        ) {
+          if (ke && pn !== null && (n.mode & 1) !== 0 && (n.flags & 128) === 0)
+            (va(), Hi(), (n.flags |= 98560), (o = !1));
+          else if (((o = Cr(n)), t !== null && t.dehydrated !== null)) {
+            if (e === null) {
+              if (!o) throw Error(a(318));
+              if (((o = n.memoizedState), (o = o !== null ? o.dehydrated : null), !o))
+                throw Error(a(317));
+              o[bn] = n;
+            } else (Hi(), (n.flags & 128) === 0 && (n.memoizedState = null), (n.flags |= 4));
+            (Xe(n), (o = !1));
+          } else (kn !== null && (Io(kn), (kn = null)), (o = !0));
+          if (!o) return n.flags & 65536 ? n : null;
+        }
+        return (n.flags & 128) !== 0
+          ? ((n.lanes = i), n)
+          : ((t = t !== null),
+            t !== (e !== null && e.memoizedState !== null) &&
+              t &&
+              ((n.child.flags |= 8192),
+              (n.mode & 1) !== 0 &&
+                (e === null || (Se.current & 1) !== 0 ? Oe === 0 && (Oe = 3) : Vo())),
+            n.updateQueue !== null && (n.flags |= 4),
+            Xe(n),
+            null);
+      case 4:
+        return (Yi(), Co(e, n), e === null && Tt(n.stateNode.containerInfo), Xe(n), null);
+      case 10:
+        return (Js(n.type._context), Xe(n), null);
+      case 17:
+        return (sn(n.type) && wr(), Xe(n), null);
+      case 19:
+        if ((je(Se), (o = n.memoizedState), o === null)) return (Xe(n), null);
+        if (((t = (n.flags & 128) !== 0), (u = o.rendering), u === null))
+          if (t) Vt(o, !1);
+          else {
+            if (Oe !== 0 || (e !== null && (e.flags & 128) !== 0))
+              for (e = n.child; e !== null; ) {
+                if (((u = br(e)), u !== null)) {
+                  for (
+                    n.flags |= 128,
+                      Vt(o, !1),
+                      t = u.updateQueue,
+                      t !== null && ((n.updateQueue = t), (n.flags |= 4)),
+                      n.subtreeFlags = 0,
+                      t = i,
+                      i = n.child;
+                    i !== null;
+
+                  )
+                    ((o = i),
+                      (e = t),
+                      (o.flags &= 14680066),
+                      (u = o.alternate),
+                      u === null
+                        ? ((o.childLanes = 0),
+                          (o.lanes = e),
+                          (o.child = null),
+                          (o.subtreeFlags = 0),
+                          (o.memoizedProps = null),
+                          (o.memoizedState = null),
+                          (o.updateQueue = null),
+                          (o.dependencies = null),
+                          (o.stateNode = null))
+                        : ((o.childLanes = u.childLanes),
+                          (o.lanes = u.lanes),
+                          (o.child = u.child),
+                          (o.subtreeFlags = 0),
+                          (o.deletions = null),
+                          (o.memoizedProps = u.memoizedProps),
+                          (o.memoizedState = u.memoizedState),
+                          (o.updateQueue = u.updateQueue),
+                          (o.type = u.type),
+                          (e = u.dependencies),
+                          (o.dependencies =
+                            e === null ? null : { lanes: e.lanes, firstContext: e.firstContext })),
+                      (i = i.sibling));
+                  return (xe(Se, (Se.current & 1) | 2), n.child);
+                }
+                e = e.sibling;
+              }
+            o.tail !== null &&
+              be() > et &&
+              ((n.flags |= 128), (t = !0), Vt(o, !1), (n.lanes = 4194304));
+          }
+        else {
+          if (!t)
+            if (((e = br(u)), e !== null)) {
+              if (
+                ((n.flags |= 128),
+                (t = !0),
+                (i = e.updateQueue),
+                i !== null && ((n.updateQueue = i), (n.flags |= 4)),
+                Vt(o, !0),
+                o.tail === null && o.tailMode === 'hidden' && !u.alternate && !ke)
+              )
+                return (Xe(n), null);
+            } else
+              2 * be() - o.renderingStartTime > et &&
+                i !== 1073741824 &&
+                ((n.flags |= 128), (t = !0), Vt(o, !1), (n.lanes = 4194304));
+          o.isBackwards
+            ? ((u.sibling = n.child), (n.child = u))
+            : ((i = o.last), i !== null ? (i.sibling = u) : (n.child = u), (o.last = u));
+        }
+        return o.tail !== null
+          ? ((n = o.tail),
+            (o.rendering = n),
+            (o.tail = n.sibling),
+            (o.renderingStartTime = be()),
+            (n.sibling = null),
+            (i = Se.current),
+            xe(Se, t ? (i & 1) | 2 : i & 1),
+            n)
+          : (Xe(n), null);
+      case 22:
+      case 23:
+        return (
+          Ao(),
+          (t = n.memoizedState !== null),
+          e !== null && (e.memoizedState !== null) !== t && (n.flags |= 8192),
+          t && (n.mode & 1) !== 0
+            ? (fn & 1073741824) !== 0 && (Xe(n), n.subtreeFlags & 6 && (n.flags |= 8192))
+            : Xe(n),
+          null
+        );
+      case 24:
+        return null;
+      case 25:
+        return null;
+    }
+    throw Error(a(156, n.tag));
+  }
+  function Id(e, n) {
+    switch ((Gs(n), n.tag)) {
+      case 1:
+        return (
+          sn(n.type) && wr(),
+          (e = n.flags),
+          e & 65536 ? ((n.flags = (e & -65537) | 128), n) : null
+        );
+      case 3:
+        return (
+          Yi(),
+          je(rn),
+          je(Ye),
+          oo(),
+          (e = n.flags),
+          (e & 65536) !== 0 && (e & 128) === 0 ? ((n.flags = (e & -65537) | 128), n) : null
+        );
+      case 5:
+        return (ro(n), null);
+      case 13:
+        if ((je(Se), (e = n.memoizedState), e !== null && e.dehydrated !== null)) {
+          if (n.alternate === null) throw Error(a(340));
+          Hi();
+        }
+        return ((e = n.flags), e & 65536 ? ((n.flags = (e & -65537) | 128), n) : null);
+      case 19:
+        return (je(Se), null);
+      case 4:
+        return (Yi(), null);
+      case 10:
+        return (Js(n.type._context), null);
+      case 22:
+      case 23:
+        return (Ao(), null);
+      case 24:
+        return null;
+      default:
+        return null;
+    }
+  }
+  var Br = !1,
+    Je = !1,
+    Wd = typeof WeakSet == 'function' ? WeakSet : Set,
+    $ = null;
+  function Xi(e, n) {
+    var i = e.ref;
+    if (i !== null)
+      if (typeof i == 'function')
+        try {
+          i(null);
+        } catch (t) {
+          Le(e, n, t);
+        }
+      else i.current = null;
+  }
+  function Po(e, n, i) {
+    try {
+      i();
+    } catch (t) {
+      Le(e, n, t);
+    }
+  }
+  var hu = !1;
+  function Ad(e, n) {
+    if (((Ws = lr), (e = Gl()), Ls(e))) {
+      if ('selectionStart' in e) var i = { start: e.selectionStart, end: e.selectionEnd };
+      else
+        e: {
+          i = ((i = e.ownerDocument) && i.defaultView) || window;
+          var t = i.getSelection && i.getSelection();
+          if (t && t.rangeCount !== 0) {
+            i = t.anchorNode;
+            var s = t.anchorOffset,
+              o = t.focusNode;
+            t = t.focusOffset;
+            try {
+              (i.nodeType, o.nodeType);
+            } catch {
+              i = null;
+              break e;
+            }
+            var u = 0,
+              d = -1,
+              m = -1,
+              x = 0,
+              E = 0,
+              R = e,
+              T = null;
+            n: for (;;) {
+              for (
+                var B;
+                R !== i || (s !== 0 && R.nodeType !== 3) || (d = u + s),
+                  R !== o || (t !== 0 && R.nodeType !== 3) || (m = u + t),
+                  R.nodeType === 3 && (u += R.nodeValue.length),
+                  (B = R.firstChild) !== null;
+
+              )
+                ((T = R), (R = B));
+              for (;;) {
+                if (R === e) break n;
+                if (
+                  (T === i && ++x === s && (d = u),
+                  T === o && ++E === t && (m = u),
+                  (B = R.nextSibling) !== null)
+                )
+                  break;
+                ((R = T), (T = R.parentNode));
+              }
+              R = B;
+            }
+            i = d === -1 || m === -1 ? null : { start: d, end: m };
+          } else i = null;
+        }
+      i = i || { start: 0, end: 0 };
+    } else i = null;
+    for (As = { focusedElem: e, selectionRange: i }, lr = !1, $ = n; $ !== null; )
+      if (((n = $), (e = n.child), (n.subtreeFlags & 1028) !== 0 && e !== null))
+        ((e.return = n), ($ = e));
+      else
+        for (; $ !== null; ) {
+          n = $;
+          try {
+            var U = n.alternate;
+            if ((n.flags & 1024) !== 0)
+              switch (n.tag) {
+                case 0:
+                case 11:
+                case 15:
+                  break;
+                case 1:
+                  if (U !== null) {
+                    var q = U.memoizedProps,
+                      Me = U.memoizedState,
+                      v = n.stateNode,
+                      g = v.getSnapshotBeforeUpdate(
+                        n.elementType === n.type ? q : Sn(n.type, q),
+                        Me
+                      );
+                    v.__reactInternalSnapshotBeforeUpdate = g;
+                  }
+                  break;
+                case 3:
+                  var _ = n.stateNode.containerInfo;
+                  _.nodeType === 1
+                    ? (_.textContent = '')
+                    : _.nodeType === 9 && _.documentElement && _.removeChild(_.documentElement);
+                  break;
+                case 5:
+                case 6:
+                case 4:
+                case 17:
+                  break;
+                default:
+                  throw Error(a(163));
+              }
+          } catch (M) {
+            Le(n, n.return, M);
+          }
+          if (((e = n.sibling), e !== null)) {
+            ((e.return = n.return), ($ = e));
+            break;
+          }
+          $ = n.return;
+        }
+    return ((U = hu), (hu = !1), U);
+  }
+  function Bt(e, n, i) {
+    var t = n.updateQueue;
+    if (((t = t !== null ? t.lastEffect : null), t !== null)) {
+      var s = (t = t.next);
+      do {
+        if ((s.tag & e) === e) {
+          var o = s.destroy;
+          ((s.destroy = void 0), o !== void 0 && Po(n, i, o));
+        }
+        s = s.next;
+      } while (s !== t);
+    }
+  }
+  function $r(e, n) {
+    if (((n = n.updateQueue), (n = n !== null ? n.lastEffect : null), n !== null)) {
+      var i = (n = n.next);
+      do {
+        if ((i.tag & e) === e) {
+          var t = i.create;
+          i.destroy = t();
+        }
+        i = i.next;
+      } while (i !== n);
+    }
+  }
+  function To(e) {
+    var n = e.ref;
+    if (n !== null) {
+      var i = e.stateNode;
+      switch (e.tag) {
+        case 5:
+          e = i;
+          break;
+        default:
+          e = i;
+      }
+      typeof n == 'function' ? n(e) : (n.current = e);
+    }
+  }
+  function gu(e) {
+    var n = e.alternate;
+    (n !== null && ((e.alternate = null), gu(n)),
+      (e.child = null),
+      (e.deletions = null),
+      (e.sibling = null),
+      e.tag === 5 &&
+        ((n = e.stateNode),
+        n !== null && (delete n[bn], delete n[Lt], delete n[Us], delete n[wd], delete n[Nd])),
+      (e.stateNode = null),
+      (e.return = null),
+      (e.dependencies = null),
+      (e.memoizedProps = null),
+      (e.memoizedState = null),
+      (e.pendingProps = null),
+      (e.stateNode = null),
+      (e.updateQueue = null));
+  }
+  function vu(e) {
+    return e.tag === 5 || e.tag === 3 || e.tag === 4;
+  }
+  function yu(e) {
+    e: for (;;) {
+      for (; e.sibling === null; ) {
+        if (e.return === null || vu(e.return)) return null;
+        e = e.return;
+      }
+      for (
+        e.sibling.return = e.return, e = e.sibling;
+        e.tag !== 5 && e.tag !== 6 && e.tag !== 18;
+
+      ) {
+        if (e.flags & 2 || e.child === null || e.tag === 4) continue e;
+        ((e.child.return = e), (e = e.child));
+      }
+      if (!(e.flags & 2)) return e.stateNode;
+    }
+  }
+  function Eo(e, n, i) {
+    var t = e.tag;
+    if (t === 5 || t === 6)
+      ((e = e.stateNode),
+        n
+          ? i.nodeType === 8
+            ? i.parentNode.insertBefore(e, n)
+            : i.insertBefore(e, n)
+          : (i.nodeType === 8
+              ? ((n = i.parentNode), n.insertBefore(e, i))
+              : ((n = i), n.appendChild(e)),
+            (i = i._reactRootContainer),
+            i != null || n.onclick !== null || (n.onclick = _r)));
+    else if (t !== 4 && ((e = e.child), e !== null))
+      for (Eo(e, n, i), e = e.sibling; e !== null; ) (Eo(e, n, i), (e = e.sibling));
+  }
+  function Lo(e, n, i) {
+    var t = e.tag;
+    if (t === 5 || t === 6) ((e = e.stateNode), n ? i.insertBefore(e, n) : i.appendChild(e));
+    else if (t !== 4 && ((e = e.child), e !== null))
+      for (Lo(e, n, i), e = e.sibling; e !== null; ) (Lo(e, n, i), (e = e.sibling));
+  }
+  var De = null,
+    Cn = !1;
+  function si(e, n, i) {
+    for (i = i.child; i !== null; ) (_u(e, n, i), (i = i.sibling));
+  }
+  function _u(e, n, i) {
+    if (Rn && typeof Rn.onCommitFiberUnmount == 'function')
+      try {
+        Rn.onCommitFiberUnmount(nr, i);
+      } catch {}
+    switch (i.tag) {
+      case 5:
+        Je || Xi(i, n);
+      case 6:
+        var t = De,
+          s = Cn;
+        ((De = null),
+          si(e, n, i),
+          (De = t),
+          (Cn = s),
+          De !== null &&
+            (Cn
+              ? ((e = De),
+                (i = i.stateNode),
+                e.nodeType === 8 ? e.parentNode.removeChild(i) : e.removeChild(i))
+              : De.removeChild(i.stateNode)));
+        break;
+      case 18:
+        De !== null &&
+          (Cn
+            ? ((e = De),
+              (i = i.stateNode),
+              e.nodeType === 8 ? $s(e.parentNode, i) : e.nodeType === 1 && $s(e, i),
+              _t(e))
+            : $s(De, i.stateNode));
+        break;
+      case 4:
+        ((t = De),
+          (s = Cn),
+          (De = i.stateNode.containerInfo),
+          (Cn = !0),
+          si(e, n, i),
+          (De = t),
+          (Cn = s));
+        break;
+      case 0:
+      case 11:
+      case 14:
+      case 15:
+        if (!Je && ((t = i.updateQueue), t !== null && ((t = t.lastEffect), t !== null))) {
+          s = t = t.next;
+          do {
+            var o = s,
+              u = o.destroy;
+            ((o = o.tag),
+              u !== void 0 && ((o & 2) !== 0 || (o & 4) !== 0) && Po(i, n, u),
+              (s = s.next));
+          } while (s !== t);
+        }
+        si(e, n, i);
+        break;
+      case 1:
+        if (!Je && (Xi(i, n), (t = i.stateNode), typeof t.componentWillUnmount == 'function'))
+          try {
+            ((t.props = i.memoizedProps), (t.state = i.memoizedState), t.componentWillUnmount());
+          } catch (d) {
+            Le(i, n, d);
+          }
+        si(e, n, i);
+        break;
+      case 21:
+        si(e, n, i);
+        break;
+      case 22:
+        i.mode & 1
+          ? ((Je = (t = Je) || i.memoizedState !== null), si(e, n, i), (Je = t))
+          : si(e, n, i);
+        break;
+      default:
+        si(e, n, i);
+    }
+  }
+  function xu(e) {
+    var n = e.updateQueue;
+    if (n !== null) {
+      e.updateQueue = null;
+      var i = e.stateNode;
+      (i === null && (i = e.stateNode = new Wd()),
+        n.forEach(function (t) {
+          var s = Kd.bind(null, e, t);
+          i.has(t) || (i.add(t), t.then(s, s));
+        }));
+    }
+  }
+  function Pn(e, n) {
+    var i = n.deletions;
+    if (i !== null)
+      for (var t = 0; t < i.length; t++) {
+        var s = i[t];
+        try {
+          var o = e,
+            u = n,
+            d = u;
+          e: for (; d !== null; ) {
+            switch (d.tag) {
+              case 5:
+                ((De = d.stateNode), (Cn = !1));
+                break e;
+              case 3:
+                ((De = d.stateNode.containerInfo), (Cn = !0));
+                break e;
+              case 4:
+                ((De = d.stateNode.containerInfo), (Cn = !0));
+                break e;
+            }
+            d = d.return;
+          }
+          if (De === null) throw Error(a(160));
+          (_u(o, u, s), (De = null), (Cn = !1));
+          var m = s.alternate;
+          (m !== null && (m.return = null), (s.return = null));
+        } catch (x) {
+          Le(s, n, x);
+        }
+      }
+    if (n.subtreeFlags & 12854) for (n = n.child; n !== null; ) (wu(n, e), (n = n.sibling));
+  }
+  function wu(e, n) {
+    var i = e.alternate,
+      t = e.flags;
+    switch (e.tag) {
+      case 0:
+      case 11:
+      case 14:
+      case 15:
+        if ((Pn(n, e), zn(e), t & 4)) {
+          try {
+            (Bt(3, e, e.return), $r(3, e));
+          } catch (q) {
+            Le(e, e.return, q);
+          }
+          try {
+            Bt(5, e, e.return);
+          } catch (q) {
+            Le(e, e.return, q);
+          }
+        }
+        break;
+      case 1:
+        (Pn(n, e), zn(e), t & 512 && i !== null && Xi(i, i.return));
+        break;
+      case 5:
+        if ((Pn(n, e), zn(e), t & 512 && i !== null && Xi(i, i.return), e.flags & 32)) {
+          var s = e.stateNode;
+          try {
+            Dn(s, '');
+          } catch (q) {
+            Le(e, e.return, q);
+          }
+        }
+        if (t & 4 && ((s = e.stateNode), s != null)) {
+          var o = e.memoizedProps,
+            u = i !== null ? i.memoizedProps : o,
+            d = e.type,
+            m = e.updateQueue;
+          if (((e.updateQueue = null), m !== null))
+            try {
+              (d === 'input' && o.type === 'radio' && o.name != null && st(s, o), at(d, u));
+              var x = at(d, o);
+              for (u = 0; u < m.length; u += 2) {
+                var E = m[u],
+                  R = m[u + 1];
+                E === 'style'
+                  ? Zt(s, R)
+                  : E === 'dangerouslySetInnerHTML'
+                    ? fi(s, R)
+                    : E === 'children'
+                      ? Dn(s, R)
+                      : me(s, E, R, x);
+              }
+              switch (d) {
+                case 'input':
+                  Li(s, o);
+                  break;
+                case 'textarea':
+                  Qe(s, o);
+                  break;
+                case 'select':
+                  var T = s._wrapperState.wasMultiple;
+                  s._wrapperState.wasMultiple = !!o.multiple;
+                  var B = o.value;
+                  B != null
+                    ? En(s, !!o.multiple, B, !1)
+                    : T !== !!o.multiple &&
+                      (o.defaultValue != null
+                        ? En(s, !!o.multiple, o.defaultValue, !0)
+                        : En(s, !!o.multiple, o.multiple ? [] : '', !1));
+              }
+              s[Lt] = o;
+            } catch (q) {
+              Le(e, e.return, q);
+            }
+        }
+        break;
+      case 6:
+        if ((Pn(n, e), zn(e), t & 4)) {
+          if (e.stateNode === null) throw Error(a(162));
+          ((s = e.stateNode), (o = e.memoizedProps));
+          try {
+            s.nodeValue = o;
+          } catch (q) {
+            Le(e, e.return, q);
+          }
+        }
+        break;
+      case 3:
+        if ((Pn(n, e), zn(e), t & 4 && i !== null && i.memoizedState.isDehydrated))
+          try {
+            _t(n.containerInfo);
+          } catch (q) {
+            Le(e, e.return, q);
+          }
+        break;
+      case 4:
+        (Pn(n, e), zn(e));
+        break;
+      case 13:
+        (Pn(n, e),
+          zn(e),
+          (s = e.child),
+          s.flags & 8192 &&
+            ((o = s.memoizedState !== null),
+            (s.stateNode.isHidden = o),
+            !o || (s.alternate !== null && s.alternate.memoizedState !== null) || (Mo = be())),
+          t & 4 && xu(e));
+        break;
+      case 22:
+        if (
+          ((E = i !== null && i.memoizedState !== null),
+          e.mode & 1 ? ((Je = (x = Je) || E), Pn(n, e), (Je = x)) : Pn(n, e),
+          zn(e),
+          t & 8192)
+        ) {
+          if (
+            ((x = e.memoizedState !== null), (e.stateNode.isHidden = x) && !E && (e.mode & 1) !== 0)
+          )
+            for ($ = e, E = e.child; E !== null; ) {
+              for (R = $ = E; $ !== null; ) {
+                switch (((T = $), (B = T.child), T.tag)) {
+                  case 0:
+                  case 11:
+                  case 14:
+                  case 15:
+                    Bt(4, T, T.return);
+                    break;
+                  case 1:
+                    Xi(T, T.return);
+                    var U = T.stateNode;
+                    if (typeof U.componentWillUnmount == 'function') {
+                      ((t = T), (i = T.return));
+                      try {
+                        ((n = t),
+                          (U.props = n.memoizedProps),
+                          (U.state = n.memoizedState),
+                          U.componentWillUnmount());
+                      } catch (q) {
+                        Le(t, i, q);
+                      }
+                    }
+                    break;
+                  case 5:
+                    Xi(T, T.return);
+                    break;
+                  case 22:
+                    if (T.memoizedState !== null) {
+                      ku(R);
+                      continue;
+                    }
+                }
+                B !== null ? ((B.return = T), ($ = B)) : ku(R);
+              }
+              E = E.sibling;
+            }
+          e: for (E = null, R = e; ; ) {
+            if (R.tag === 5) {
+              if (E === null) {
+                E = R;
+                try {
+                  ((s = R.stateNode),
+                    x
+                      ? ((o = s.style),
+                        typeof o.setProperty == 'function'
+                          ? o.setProperty('display', 'none', 'important')
+                          : (o.display = 'none'))
+                      : ((d = R.stateNode),
+                        (m = R.memoizedProps.style),
+                        (u = m != null && m.hasOwnProperty('display') ? m.display : null),
+                        (d.style.display = Yt('display', u))));
+                } catch (q) {
+                  Le(e, e.return, q);
+                }
+              }
+            } else if (R.tag === 6) {
+              if (E === null)
+                try {
+                  R.stateNode.nodeValue = x ? '' : R.memoizedProps;
+                } catch (q) {
+                  Le(e, e.return, q);
+                }
+            } else if (
+              ((R.tag !== 22 && R.tag !== 23) || R.memoizedState === null || R === e) &&
+              R.child !== null
+            ) {
+              ((R.child.return = R), (R = R.child));
+              continue;
+            }
+            if (R === e) break e;
+            for (; R.sibling === null; ) {
+              if (R.return === null || R.return === e) break e;
+              (E === R && (E = null), (R = R.return));
+            }
+            (E === R && (E = null), (R.sibling.return = R.return), (R = R.sibling));
+          }
+        }
+        break;
+      case 19:
+        (Pn(n, e), zn(e), t & 4 && xu(e));
+        break;
+      case 21:
+        break;
+      default:
+        (Pn(n, e), zn(e));
+    }
+  }
+  function zn(e) {
+    var n = e.flags;
+    if (n & 2) {
+      try {
+        e: {
+          for (var i = e.return; i !== null; ) {
+            if (vu(i)) {
+              var t = i;
+              break e;
+            }
+            i = i.return;
+          }
+          throw Error(a(160));
+        }
+        switch (t.tag) {
+          case 5:
+            var s = t.stateNode;
+            t.flags & 32 && (Dn(s, ''), (t.flags &= -33));
+            var o = yu(e);
+            Lo(e, o, s);
+            break;
+          case 3:
+          case 4:
+            var u = t.stateNode.containerInfo,
+              d = yu(e);
+            Eo(e, d, u);
+            break;
+          default:
+            throw Error(a(161));
+        }
+      } catch (m) {
+        Le(e, e.return, m);
+      }
+      e.flags &= -3;
+    }
+    n & 4096 && (e.flags &= -4097);
+  }
+  function Vd(e, n, i) {
+    (($ = e), Nu(e));
+  }
+  function Nu(e, n, i) {
+    for (var t = (e.mode & 1) !== 0; $ !== null; ) {
+      var s = $,
+        o = s.child;
+      if (s.tag === 22 && t) {
+        var u = s.memoizedState !== null || Br;
+        if (!u) {
+          var d = s.alternate,
+            m = (d !== null && d.memoizedState !== null) || Je;
+          d = Br;
+          var x = Je;
+          if (((Br = u), (Je = m) && !x))
+            for ($ = s; $ !== null; )
+              ((u = $),
+                (m = u.child),
+                u.tag === 22 && u.memoizedState !== null
+                  ? Su(s)
+                  : m !== null
+                    ? ((m.return = u), ($ = m))
+                    : Su(s));
+          for (; o !== null; ) (($ = o), Nu(o), (o = o.sibling));
+          (($ = s), (Br = d), (Je = x));
+        }
+        ju(e);
+      } else (s.subtreeFlags & 8772) !== 0 && o !== null ? ((o.return = s), ($ = o)) : ju(e);
+    }
+  }
+  function ju(e) {
+    for (; $ !== null; ) {
+      var n = $;
+      if ((n.flags & 8772) !== 0) {
+        var i = n.alternate;
+        try {
+          if ((n.flags & 8772) !== 0)
+            switch (n.tag) {
+              case 0:
+              case 11:
+              case 15:
+                Je || $r(5, n);
+                break;
+              case 1:
+                var t = n.stateNode;
+                if (n.flags & 4 && !Je)
+                  if (i === null) t.componentDidMount();
+                  else {
+                    var s =
+                      n.elementType === n.type ? i.memoizedProps : Sn(n.type, i.memoizedProps);
+                    t.componentDidUpdate(s, i.memoizedState, t.__reactInternalSnapshotBeforeUpdate);
+                  }
+                var o = n.updateQueue;
+                o !== null && ka(n, o, t);
+                break;
+              case 3:
+                var u = n.updateQueue;
+                if (u !== null) {
+                  if (((i = null), n.child !== null))
+                    switch (n.child.tag) {
+                      case 5:
+                        i = n.child.stateNode;
+                        break;
+                      case 1:
+                        i = n.child.stateNode;
+                    }
+                  ka(n, u, i);
+                }
+                break;
+              case 5:
+                var d = n.stateNode;
+                if (i === null && n.flags & 4) {
+                  i = d;
+                  var m = n.memoizedProps;
+                  switch (n.type) {
+                    case 'button':
+                    case 'input':
+                    case 'select':
+                    case 'textarea':
+                      m.autoFocus && i.focus();
+                      break;
+                    case 'img':
+                      m.src && (i.src = m.src);
+                  }
+                }
+                break;
+              case 6:
+                break;
+              case 4:
+                break;
+              case 12:
+                break;
+              case 13:
+                if (n.memoizedState === null) {
+                  var x = n.alternate;
+                  if (x !== null) {
+                    var E = x.memoizedState;
+                    if (E !== null) {
+                      var R = E.dehydrated;
+                      R !== null && _t(R);
+                    }
+                  }
+                }
+                break;
+              case 19:
+              case 17:
+              case 21:
+              case 22:
+              case 23:
+              case 25:
+                break;
+              default:
+                throw Error(a(163));
+            }
+          Je || (n.flags & 512 && To(n));
+        } catch (T) {
+          Le(n, n.return, T);
+        }
+      }
+      if (n === e) {
+        $ = null;
+        break;
+      }
+      if (((i = n.sibling), i !== null)) {
+        ((i.return = n.return), ($ = i));
+        break;
+      }
+      $ = n.return;
+    }
+  }
+  function ku(e) {
+    for (; $ !== null; ) {
+      var n = $;
+      if (n === e) {
+        $ = null;
+        break;
+      }
+      var i = n.sibling;
+      if (i !== null) {
+        ((i.return = n.return), ($ = i));
+        break;
+      }
+      $ = n.return;
+    }
+  }
+  function Su(e) {
+    for (; $ !== null; ) {
+      var n = $;
+      try {
+        switch (n.tag) {
+          case 0:
+          case 11:
+          case 15:
+            var i = n.return;
+            try {
+              $r(4, n);
+            } catch (m) {
+              Le(n, i, m);
+            }
+            break;
+          case 1:
+            var t = n.stateNode;
+            if (typeof t.componentDidMount == 'function') {
+              var s = n.return;
+              try {
+                t.componentDidMount();
+              } catch (m) {
+                Le(n, s, m);
+              }
+            }
+            var o = n.return;
+            try {
+              To(n);
+            } catch (m) {
+              Le(n, o, m);
+            }
+            break;
+          case 5:
+            var u = n.return;
+            try {
+              To(n);
+            } catch (m) {
+              Le(n, u, m);
+            }
+        }
+      } catch (m) {
+        Le(n, n.return, m);
+      }
+      if (n === e) {
+        $ = null;
+        break;
+      }
+      var d = n.sibling;
+      if (d !== null) {
+        ((d.return = n.return), ($ = d));
+        break;
+      }
+      $ = n.return;
+    }
+  }
+  var Bd = Math.ceil,
+    Ur = re.ReactCurrentDispatcher,
+    Ro = re.ReactCurrentOwner,
+    xn = re.ReactCurrentBatchConfig,
+    ae = 0,
+    Ue = null,
+    Fe = null,
+    He = 0,
+    fn = 0,
+    Ji = ei(0),
+    Oe = 0,
+    $t = null,
+    ji = 0,
+    qr = 0,
+    bo = 0,
+    Ut = null,
+    ln = null,
+    Mo = 0,
+    et = 1 / 0,
+    Un = null,
+    Dr = !1,
+    Fo = null,
+    oi = null,
+    Hr = !1,
+    li = null,
+    Gr = 0,
+    qt = 0,
+    zo = null,
+    Kr = -1,
+    Qr = 0;
+  function tn() {
+    return (ae & 6) !== 0 ? be() : Kr !== -1 ? Kr : (Kr = be());
+  }
+  function ai(e) {
+    return (e.mode & 1) === 0
+      ? 1
+      : (ae & 2) !== 0 && He !== 0
+        ? He & -He
+        : kd.transition !== null
+          ? (Qr === 0 && (Qr = yl()), Qr)
+          : ((e = he), e !== 0 || ((e = window.event), (e = e === void 0 ? 16 : Pl(e.type))), e);
+  }
+  function Tn(e, n, i, t) {
+    if (50 < qt) throw ((qt = 0), (zo = null), Error(a(185)));
+    (ft(e, i, t),
+      ((ae & 2) === 0 || e !== Ue) &&
+        (e === Ue && ((ae & 2) === 0 && (qr |= i), Oe === 4 && ui(e, He)),
+        an(e, t),
+        i === 1 && ae === 0 && (n.mode & 1) === 0 && ((et = be() + 500), jr && ii())));
+  }
+  function an(e, n) {
+    var i = e.callbackNode;
+    kc(e, n);
+    var t = rr(e, e === Ue ? He : 0);
+    if (t === 0) (i !== null && hl(i), (e.callbackNode = null), (e.callbackPriority = 0));
+    else if (((n = t & -t), e.callbackPriority !== n)) {
+      if ((i != null && hl(i), n === 1))
+        (e.tag === 0 ? jd(Pu.bind(null, e)) : ma(Pu.bind(null, e)),
+          _d(function () {
+            (ae & 6) === 0 && ii();
+          }),
+          (i = null));
+      else {
+        switch (_l(t)) {
+          case 1:
+            i = ps;
+            break;
+          case 4:
+            i = gl;
+            break;
+          case 16:
+            i = er;
+            break;
+          case 536870912:
+            i = vl;
+            break;
+          default:
+            i = er;
+        }
+        i = zu(i, Cu.bind(null, e));
+      }
+      ((e.callbackPriority = n), (e.callbackNode = i));
+    }
+  }
+  function Cu(e, n) {
+    if (((Kr = -1), (Qr = 0), (ae & 6) !== 0)) throw Error(a(327));
+    var i = e.callbackNode;
+    if (nt() && e.callbackNode !== i) return null;
+    var t = rr(e, e === Ue ? He : 0);
+    if (t === 0) return null;
+    if ((t & 30) !== 0 || (t & e.expiredLanes) !== 0 || n) n = Yr(e, t);
+    else {
+      n = t;
+      var s = ae;
+      ae |= 2;
+      var o = Eu();
+      (Ue !== e || He !== n) && ((Un = null), (et = be() + 500), Si(e, n));
+      do
+        try {
+          qd();
+          break;
+        } catch (d) {
+          Tu(e, d);
+        }
+      while (!0);
+      (Xs(), (Ur.current = o), (ae = s), Fe !== null ? (n = 0) : ((Ue = null), (He = 0), (n = Oe)));
+    }
+    if (n !== 0) {
+      if ((n === 2 && ((s = fs(e)), s !== 0 && ((t = s), (n = Oo(e, s)))), n === 1))
+        throw ((i = $t), Si(e, 0), ui(e, t), an(e, be()), i);
+      if (n === 6) ui(e, t);
+      else {
+        if (
+          ((s = e.current.alternate),
+          (t & 30) === 0 &&
+            !$d(s) &&
+            ((n = Yr(e, t)),
+            n === 2 && ((o = fs(e)), o !== 0 && ((t = o), (n = Oo(e, o)))),
+            n === 1))
+        )
+          throw ((i = $t), Si(e, 0), ui(e, t), an(e, be()), i);
+        switch (((e.finishedWork = s), (e.finishedLanes = t), n)) {
+          case 0:
+          case 1:
+            throw Error(a(345));
+          case 2:
+            Ci(e, ln, Un);
+            break;
+          case 3:
+            if ((ui(e, t), (t & 130023424) === t && ((n = Mo + 500 - be()), 10 < n))) {
+              if (rr(e, 0) !== 0) break;
+              if (((s = e.suspendedLanes), (s & t) !== t)) {
+                (tn(), (e.pingedLanes |= e.suspendedLanes & s));
+                break;
+              }
+              e.timeoutHandle = Bs(Ci.bind(null, e, ln, Un), n);
+              break;
+            }
+            Ci(e, ln, Un);
+            break;
+          case 4:
+            if ((ui(e, t), (t & 4194240) === t)) break;
+            for (n = e.eventTimes, s = -1; 0 < t; ) {
+              var u = 31 - Nn(t);
+              ((o = 1 << u), (u = n[u]), u > s && (s = u), (t &= ~o));
+            }
+            if (
+              ((t = s),
+              (t = be() - t),
+              (t =
+                (120 > t
+                  ? 120
+                  : 480 > t
+                    ? 480
+                    : 1080 > t
+                      ? 1080
+                      : 1920 > t
+                        ? 1920
+                        : 3e3 > t
+                          ? 3e3
+                          : 4320 > t
+                            ? 4320
+                            : 1960 * Bd(t / 1960)) - t),
+              10 < t)
+            ) {
+              e.timeoutHandle = Bs(Ci.bind(null, e, ln, Un), t);
+              break;
+            }
+            Ci(e, ln, Un);
+            break;
+          case 5:
+            Ci(e, ln, Un);
+            break;
+          default:
+            throw Error(a(329));
+        }
+      }
+    }
+    return (an(e, be()), e.callbackNode === i ? Cu.bind(null, e) : null);
+  }
+  function Oo(e, n) {
+    var i = Ut;
+    return (
+      e.current.memoizedState.isDehydrated && (Si(e, n).flags |= 256),
+      (e = Yr(e, n)),
+      e !== 2 && ((n = ln), (ln = i), n !== null && Io(n)),
+      e
+    );
+  }
+  function Io(e) {
+    ln === null ? (ln = e) : ln.push.apply(ln, e);
+  }
+  function $d(e) {
+    for (var n = e; ; ) {
+      if (n.flags & 16384) {
+        var i = n.updateQueue;
+        if (i !== null && ((i = i.stores), i !== null))
+          for (var t = 0; t < i.length; t++) {
+            var s = i[t],
+              o = s.getSnapshot;
+            s = s.value;
+            try {
+              if (!jn(o(), s)) return !1;
+            } catch {
+              return !1;
+            }
+          }
+      }
+      if (((i = n.child), n.subtreeFlags & 16384 && i !== null)) ((i.return = n), (n = i));
+      else {
+        if (n === e) break;
+        for (; n.sibling === null; ) {
+          if (n.return === null || n.return === e) return !0;
+          n = n.return;
+        }
+        ((n.sibling.return = n.return), (n = n.sibling));
+      }
+    }
+    return !0;
+  }
+  function ui(e, n) {
+    for (
+      n &= ~bo, n &= ~qr, e.suspendedLanes |= n, e.pingedLanes &= ~n, e = e.expirationTimes;
+      0 < n;
+
+    ) {
+      var i = 31 - Nn(n),
+        t = 1 << i;
+      ((e[i] = -1), (n &= ~t));
+    }
+  }
+  function Pu(e) {
+    if ((ae & 6) !== 0) throw Error(a(327));
+    nt();
+    var n = rr(e, 0);
+    if ((n & 1) === 0) return (an(e, be()), null);
+    var i = Yr(e, n);
+    if (e.tag !== 0 && i === 2) {
+      var t = fs(e);
+      t !== 0 && ((n = t), (i = Oo(e, t)));
+    }
+    if (i === 1) throw ((i = $t), Si(e, 0), ui(e, n), an(e, be()), i);
+    if (i === 6) throw Error(a(345));
+    return (
+      (e.finishedWork = e.current.alternate),
+      (e.finishedLanes = n),
+      Ci(e, ln, Un),
+      an(e, be()),
+      null
+    );
+  }
+  function Wo(e, n) {
+    var i = ae;
+    ae |= 1;
+    try {
+      return e(n);
+    } finally {
+      ((ae = i), ae === 0 && ((et = be() + 500), jr && ii()));
+    }
+  }
+  function ki(e) {
+    li !== null && li.tag === 0 && (ae & 6) === 0 && nt();
+    var n = ae;
+    ae |= 1;
+    var i = xn.transition,
+      t = he;
+    try {
+      if (((xn.transition = null), (he = 1), e)) return e();
+    } finally {
+      ((he = t), (xn.transition = i), (ae = n), (ae & 6) === 0 && ii());
+    }
+  }
+  function Ao() {
+    ((fn = Ji.current), je(Ji));
+  }
+  function Si(e, n) {
+    ((e.finishedWork = null), (e.finishedLanes = 0));
+    var i = e.timeoutHandle;
+    if ((i !== -1 && ((e.timeoutHandle = -1), yd(i)), Fe !== null))
+      for (i = Fe.return; i !== null; ) {
+        var t = i;
+        switch ((Gs(t), t.tag)) {
+          case 1:
+            ((t = t.type.childContextTypes), t != null && wr());
+            break;
+          case 3:
+            (Yi(), je(rn), je(Ye), oo());
+            break;
+          case 5:
+            ro(t);
+            break;
+          case 4:
+            Yi();
+            break;
+          case 13:
+            je(Se);
+            break;
+          case 19:
+            je(Se);
+            break;
+          case 10:
+            Js(t.type._context);
+            break;
+          case 22:
+          case 23:
+            Ao();
+        }
+        i = i.return;
+      }
+    if (
+      ((Ue = e),
+      (Fe = e = ci(e.current, null)),
+      (He = fn = n),
+      (Oe = 0),
+      ($t = null),
+      (bo = qr = ji = 0),
+      (ln = Ut = null),
+      xi !== null)
+    ) {
+      for (n = 0; n < xi.length; n++)
+        if (((i = xi[n]), (t = i.interleaved), t !== null)) {
+          i.interleaved = null;
+          var s = t.next,
+            o = i.pending;
+          if (o !== null) {
+            var u = o.next;
+            ((o.next = s), (t.next = u));
+          }
+          i.pending = t;
+        }
+      xi = null;
+    }
+    return e;
+  }
+  function Tu(e, n) {
+    do {
+      var i = Fe;
+      try {
+        if ((Xs(), (Mr.current = Ir), Fr)) {
+          for (var t = Ce.memoizedState; t !== null; ) {
+            var s = t.queue;
+            (s !== null && (s.pending = null), (t = t.next));
+          }
+          Fr = !1;
+        }
+        if (
+          ((Ni = 0),
+          ($e = ze = Ce = null),
+          (Ot = !1),
+          (It = 0),
+          (Ro.current = null),
+          i === null || i.return === null)
+        ) {
+          ((Oe = 1), ($t = n), (Fe = null));
+          break;
+        }
+        e: {
+          var o = e,
+            u = i.return,
+            d = i,
+            m = n;
+          if (
+            ((n = He),
+            (d.flags |= 32768),
+            m !== null && typeof m == 'object' && typeof m.then == 'function')
+          ) {
+            var x = m,
+              E = d,
+              R = E.tag;
+            if ((E.mode & 1) === 0 && (R === 0 || R === 11 || R === 15)) {
+              var T = E.alternate;
+              T
+                ? ((E.updateQueue = T.updateQueue),
+                  (E.memoizedState = T.memoizedState),
+                  (E.lanes = T.lanes))
+                : ((E.updateQueue = null), (E.memoizedState = null));
+            }
+            var B = Ja(u);
+            if (B !== null) {
+              ((B.flags &= -257), eu(B, u, d, o, n), B.mode & 1 && Xa(o, x, n), (n = B), (m = x));
+              var U = n.updateQueue;
+              if (U === null) {
+                var q = new Set();
+                (q.add(m), (n.updateQueue = q));
+              } else U.add(m);
+              break e;
+            } else {
+              if ((n & 1) === 0) {
+                (Xa(o, x, n), Vo());
+                break e;
+              }
+              m = Error(a(426));
+            }
+          } else if (ke && d.mode & 1) {
+            var Me = Ja(u);
+            if (Me !== null) {
+              ((Me.flags & 65536) === 0 && (Me.flags |= 256), eu(Me, u, d, o, n), Ys(Zi(m, d)));
+              break e;
+            }
+          }
+          ((o = m = Zi(m, d)),
+            Oe !== 4 && (Oe = 2),
+            Ut === null ? (Ut = [o]) : Ut.push(o),
+            (o = u));
+          do {
+            switch (o.tag) {
+              case 3:
+                ((o.flags |= 65536), (n &= -n), (o.lanes |= n));
+                var v = Ya(o, m, n);
+                ja(o, v);
+                break e;
+              case 1:
+                d = m;
+                var g = o.type,
+                  _ = o.stateNode;
+                if (
+                  (o.flags & 128) === 0 &&
+                  (typeof g.getDerivedStateFromError == 'function' ||
+                    (_ !== null &&
+                      typeof _.componentDidCatch == 'function' &&
+                      (oi === null || !oi.has(_))))
+                ) {
+                  ((o.flags |= 65536), (n &= -n), (o.lanes |= n));
+                  var M = Za(o, d, n);
+                  ja(o, M);
+                  break e;
+                }
+            }
+            o = o.return;
+          } while (o !== null);
+        }
+        Ru(i);
+      } catch (G) {
+        ((n = G), Fe === i && i !== null && (Fe = i = i.return));
+        continue;
+      }
+      break;
+    } while (!0);
+  }
+  function Eu() {
+    var e = Ur.current;
+    return ((Ur.current = Ir), e === null ? Ir : e);
+  }
+  function Vo() {
+    ((Oe === 0 || Oe === 3 || Oe === 2) && (Oe = 4),
+      Ue === null || ((ji & 268435455) === 0 && (qr & 268435455) === 0) || ui(Ue, He));
+  }
+  function Yr(e, n) {
+    var i = ae;
+    ae |= 2;
+    var t = Eu();
+    (Ue !== e || He !== n) && ((Un = null), Si(e, n));
+    do
+      try {
+        Ud();
+        break;
+      } catch (s) {
+        Tu(e, s);
+      }
+    while (!0);
+    if ((Xs(), (ae = i), (Ur.current = t), Fe !== null)) throw Error(a(261));
+    return ((Ue = null), (He = 0), Oe);
+  }
+  function Ud() {
+    for (; Fe !== null; ) Lu(Fe);
+  }
+  function qd() {
+    for (; Fe !== null && !hc(); ) Lu(Fe);
+  }
+  function Lu(e) {
+    var n = Fu(e.alternate, e, fn);
+    ((e.memoizedProps = e.pendingProps), n === null ? Ru(e) : (Fe = n), (Ro.current = null));
+  }
+  function Ru(e) {
+    var n = e;
+    do {
+      var i = n.alternate;
+      if (((e = n.return), (n.flags & 32768) === 0)) {
+        if (((i = Od(i, n, fn)), i !== null)) {
+          Fe = i;
+          return;
+        }
+      } else {
+        if (((i = Id(i, n)), i !== null)) {
+          ((i.flags &= 32767), (Fe = i));
+          return;
+        }
+        if (e !== null) ((e.flags |= 32768), (e.subtreeFlags = 0), (e.deletions = null));
+        else {
+          ((Oe = 6), (Fe = null));
+          return;
+        }
+      }
+      if (((n = n.sibling), n !== null)) {
+        Fe = n;
+        return;
+      }
+      Fe = n = e;
+    } while (n !== null);
+    Oe === 0 && (Oe = 5);
+  }
+  function Ci(e, n, i) {
+    var t = he,
+      s = xn.transition;
+    try {
+      ((xn.transition = null), (he = 1), Dd(e, n, i, t));
+    } finally {
+      ((xn.transition = s), (he = t));
+    }
+    return null;
+  }
+  function Dd(e, n, i, t) {
+    do nt();
+    while (li !== null);
+    if ((ae & 6) !== 0) throw Error(a(327));
+    i = e.finishedWork;
+    var s = e.finishedLanes;
+    if (i === null) return null;
+    if (((e.finishedWork = null), (e.finishedLanes = 0), i === e.current)) throw Error(a(177));
+    ((e.callbackNode = null), (e.callbackPriority = 0));
+    var o = i.lanes | i.childLanes;
+    if (
+      (Sc(e, o),
+      e === Ue && ((Fe = Ue = null), (He = 0)),
+      ((i.subtreeFlags & 2064) === 0 && (i.flags & 2064) === 0) ||
+        Hr ||
+        ((Hr = !0),
+        zu(er, function () {
+          return (nt(), null);
+        })),
+      (o = (i.flags & 15990) !== 0),
+      (i.subtreeFlags & 15990) !== 0 || o)
+    ) {
+      ((o = xn.transition), (xn.transition = null));
+      var u = he;
+      he = 1;
+      var d = ae;
+      ((ae |= 4),
+        (Ro.current = null),
+        Ad(e, i),
+        wu(i, e),
+        dd(As),
+        (lr = !!Ws),
+        (As = Ws = null),
+        (e.current = i),
+        Vd(i),
+        gc(),
+        (ae = d),
+        (he = u),
+        (xn.transition = o));
+    } else e.current = i;
+    if (
+      (Hr && ((Hr = !1), (li = e), (Gr = s)),
+      (o = e.pendingLanes),
+      o === 0 && (oi = null),
+      _c(i.stateNode),
+      an(e, be()),
+      n !== null)
+    )
+      for (t = e.onRecoverableError, i = 0; i < n.length; i++)
+        ((s = n[i]), t(s.value, { componentStack: s.stack, digest: s.digest }));
+    if (Dr) throw ((Dr = !1), (e = Fo), (Fo = null), e);
+    return (
+      (Gr & 1) !== 0 && e.tag !== 0 && nt(),
+      (o = e.pendingLanes),
+      (o & 1) !== 0 ? (e === zo ? qt++ : ((qt = 0), (zo = e))) : (qt = 0),
+      ii(),
+      null
+    );
+  }
+  function nt() {
+    if (li !== null) {
+      var e = _l(Gr),
+        n = xn.transition,
+        i = he;
+      try {
+        if (((xn.transition = null), (he = 16 > e ? 16 : e), li === null)) var t = !1;
+        else {
+          if (((e = li), (li = null), (Gr = 0), (ae & 6) !== 0)) throw Error(a(331));
+          var s = ae;
+          for (ae |= 4, $ = e.current; $ !== null; ) {
+            var o = $,
+              u = o.child;
+            if (($.flags & 16) !== 0) {
+              var d = o.deletions;
+              if (d !== null) {
+                for (var m = 0; m < d.length; m++) {
+                  var x = d[m];
+                  for ($ = x; $ !== null; ) {
+                    var E = $;
+                    switch (E.tag) {
+                      case 0:
+                      case 11:
+                      case 15:
+                        Bt(8, E, o);
+                    }
+                    var R = E.child;
+                    if (R !== null) ((R.return = E), ($ = R));
+                    else
+                      for (; $ !== null; ) {
+                        E = $;
+                        var T = E.sibling,
+                          B = E.return;
+                        if ((gu(E), E === x)) {
+                          $ = null;
+                          break;
+                        }
+                        if (T !== null) {
+                          ((T.return = B), ($ = T));
+                          break;
+                        }
+                        $ = B;
+                      }
+                  }
+                }
+                var U = o.alternate;
+                if (U !== null) {
+                  var q = U.child;
+                  if (q !== null) {
+                    U.child = null;
+                    do {
+                      var Me = q.sibling;
+                      ((q.sibling = null), (q = Me));
+                    } while (q !== null);
+                  }
+                }
+                $ = o;
+              }
+            }
+            if ((o.subtreeFlags & 2064) !== 0 && u !== null) ((u.return = o), ($ = u));
+            else
+              e: for (; $ !== null; ) {
+                if (((o = $), (o.flags & 2048) !== 0))
+                  switch (o.tag) {
+                    case 0:
+                    case 11:
+                    case 15:
+                      Bt(9, o, o.return);
+                  }
+                var v = o.sibling;
+                if (v !== null) {
+                  ((v.return = o.return), ($ = v));
+                  break e;
+                }
+                $ = o.return;
+              }
+          }
+          var g = e.current;
+          for ($ = g; $ !== null; ) {
+            u = $;
+            var _ = u.child;
+            if ((u.subtreeFlags & 2064) !== 0 && _ !== null) ((_.return = u), ($ = _));
+            else
+              e: for (u = g; $ !== null; ) {
+                if (((d = $), (d.flags & 2048) !== 0))
+                  try {
+                    switch (d.tag) {
+                      case 0:
+                      case 11:
+                      case 15:
+                        $r(9, d);
+                    }
+                  } catch (G) {
+                    Le(d, d.return, G);
+                  }
+                if (d === u) {
+                  $ = null;
+                  break e;
+                }
+                var M = d.sibling;
+                if (M !== null) {
+                  ((M.return = d.return), ($ = M));
+                  break e;
+                }
+                $ = d.return;
+              }
+          }
+          if (((ae = s), ii(), Rn && typeof Rn.onPostCommitFiberRoot == 'function'))
+            try {
+              Rn.onPostCommitFiberRoot(nr, e);
+            } catch {}
+          t = !0;
+        }
+        return t;
+      } finally {
+        ((he = i), (xn.transition = n));
+      }
+    }
+    return !1;
+  }
+  function bu(e, n, i) {
+    ((n = Zi(i, n)),
+      (n = Ya(e, n, 1)),
+      (e = ri(e, n, 1)),
+      (n = tn()),
+      e !== null && (ft(e, 1, n), an(e, n)));
+  }
+  function Le(e, n, i) {
+    if (e.tag === 3) bu(e, e, i);
+    else
+      for (; n !== null; ) {
+        if (n.tag === 3) {
+          bu(n, e, i);
+          break;
+        } else if (n.tag === 1) {
+          var t = n.stateNode;
+          if (
+            typeof n.type.getDerivedStateFromError == 'function' ||
+            (typeof t.componentDidCatch == 'function' && (oi === null || !oi.has(t)))
+          ) {
+            ((e = Zi(i, e)),
+              (e = Za(n, e, 1)),
+              (n = ri(n, e, 1)),
+              (e = tn()),
+              n !== null && (ft(n, 1, e), an(n, e)));
+            break;
+          }
+        }
+        n = n.return;
+      }
+  }
+  function Hd(e, n, i) {
+    var t = e.pingCache;
+    (t !== null && t.delete(n),
+      (n = tn()),
+      (e.pingedLanes |= e.suspendedLanes & i),
+      Ue === e &&
+        (He & i) === i &&
+        (Oe === 4 || (Oe === 3 && (He & 130023424) === He && 500 > be() - Mo)
+          ? Si(e, 0)
+          : (bo |= i)),
+      an(e, n));
+  }
+  function Mu(e, n) {
+    n === 0 &&
+      ((e.mode & 1) === 0
+        ? (n = 1)
+        : ((n = tr), (tr <<= 1), (tr & 130023424) === 0 && (tr = 4194304)));
+    var i = tn();
+    ((e = Vn(e, n)), e !== null && (ft(e, n, i), an(e, i)));
+  }
+  function Gd(e) {
+    var n = e.memoizedState,
+      i = 0;
+    (n !== null && (i = n.retryLane), Mu(e, i));
+  }
+  function Kd(e, n) {
+    var i = 0;
+    switch (e.tag) {
+      case 13:
+        var t = e.stateNode,
+          s = e.memoizedState;
+        s !== null && (i = s.retryLane);
+        break;
+      case 19:
+        t = e.stateNode;
+        break;
+      default:
+        throw Error(a(314));
+    }
+    (t !== null && t.delete(n), Mu(e, i));
+  }
+  var Fu;
+  Fu = function (e, n, i) {
+    if (e !== null)
+      if (e.memoizedProps !== n.pendingProps || rn.current) on = !0;
+      else {
+        if ((e.lanes & i) === 0 && (n.flags & 128) === 0) return ((on = !1), zd(e, n, i));
+        on = (e.flags & 131072) !== 0;
+      }
+    else ((on = !1), ke && (n.flags & 1048576) !== 0 && pa(n, Sr, n.index));
+    switch (((n.lanes = 0), n.tag)) {
+      case 2:
+        var t = n.type;
+        (Vr(e, n), (e = n.pendingProps));
+        var s = Ui(n, Ye.current);
+        (Qi(n, i), (s = uo(null, n, t, e, s, i)));
+        var o = co();
+        return (
+          (n.flags |= 1),
+          typeof s == 'object' &&
+          s !== null &&
+          typeof s.render == 'function' &&
+          s.$$typeof === void 0
+            ? ((n.tag = 1),
+              (n.memoizedState = null),
+              (n.updateQueue = null),
+              sn(t) ? ((o = !0), Nr(n)) : (o = !1),
+              (n.memoizedState = s.state !== null && s.state !== void 0 ? s.state : null),
+              io(n),
+              (s.updater = Wr),
+              (n.stateNode = s),
+              (s._reactInternals = n),
+              vo(n, t, e, i),
+              (n = wo(null, n, t, !0, o, i)))
+            : ((n.tag = 0), ke && o && Hs(n), nn(null, n, s, i), (n = n.child)),
+          n
+        );
+      case 16:
+        t = n.elementType;
+        e: {
+          switch (
+            (Vr(e, n),
+            (e = n.pendingProps),
+            (s = t._init),
+            (t = s(t._payload)),
+            (n.type = t),
+            (s = n.tag = Yd(t)),
+            (e = Sn(t, e)),
+            s)
+          ) {
+            case 0:
+              n = xo(null, n, t, e, i);
+              break e;
+            case 1:
+              n = ou(null, n, t, e, i);
+              break e;
+            case 11:
+              n = nu(null, n, t, e, i);
+              break e;
+            case 14:
+              n = iu(null, n, t, Sn(t.type, e), i);
+              break e;
+          }
+          throw Error(a(306, t, ''));
+        }
+        return n;
+      case 0:
+        return (
+          (t = n.type),
+          (s = n.pendingProps),
+          (s = n.elementType === t ? s : Sn(t, s)),
+          xo(e, n, t, s, i)
+        );
+      case 1:
+        return (
+          (t = n.type),
+          (s = n.pendingProps),
+          (s = n.elementType === t ? s : Sn(t, s)),
+          ou(e, n, t, s, i)
+        );
+      case 3:
+        e: {
+          if ((lu(n), e === null)) throw Error(a(387));
+          ((t = n.pendingProps),
+            (o = n.memoizedState),
+            (s = o.element),
+            Na(e, n),
+            Rr(n, t, null, i));
+          var u = n.memoizedState;
+          if (((t = u.element), o.isDehydrated))
+            if (
+              ((o = {
+                element: t,
+                isDehydrated: !1,
+                cache: u.cache,
+                pendingSuspenseBoundaries: u.pendingSuspenseBoundaries,
+                transitions: u.transitions,
+              }),
+              (n.updateQueue.baseState = o),
+              (n.memoizedState = o),
+              n.flags & 256)
+            ) {
+              ((s = Zi(Error(a(423)), n)), (n = au(e, n, t, i, s)));
+              break e;
+            } else if (t !== s) {
+              ((s = Zi(Error(a(424)), n)), (n = au(e, n, t, i, s)));
+              break e;
+            } else
+              for (
+                pn = Jn(n.stateNode.containerInfo.firstChild),
+                  mn = n,
+                  ke = !0,
+                  kn = null,
+                  i = xa(n, null, t, i),
+                  n.child = i;
+                i;
+
+              )
+                ((i.flags = (i.flags & -3) | 4096), (i = i.sibling));
+          else {
+            if ((Hi(), t === s)) {
+              n = $n(e, n, i);
+              break e;
+            }
+            nn(e, n, t, i);
+          }
+          n = n.child;
+        }
+        return n;
+      case 5:
+        return (
+          Sa(n),
+          e === null && Qs(n),
+          (t = n.type),
+          (s = n.pendingProps),
+          (o = e !== null ? e.memoizedProps : null),
+          (u = s.children),
+          Vs(t, s) ? (u = null) : o !== null && Vs(t, o) && (n.flags |= 32),
+          su(e, n),
+          nn(e, n, u, i),
+          n.child
+        );
+      case 6:
+        return (e === null && Qs(n), null);
+      case 13:
+        return uu(e, n, i);
+      case 4:
+        return (
+          to(n, n.stateNode.containerInfo),
+          (t = n.pendingProps),
+          e === null ? (n.child = Gi(n, null, t, i)) : nn(e, n, t, i),
+          n.child
+        );
+      case 11:
+        return (
+          (t = n.type),
+          (s = n.pendingProps),
+          (s = n.elementType === t ? s : Sn(t, s)),
+          nu(e, n, t, s, i)
+        );
+      case 7:
+        return (nn(e, n, n.pendingProps, i), n.child);
+      case 8:
+        return (nn(e, n, n.pendingProps.children, i), n.child);
+      case 12:
+        return (nn(e, n, n.pendingProps.children, i), n.child);
+      case 10:
+        e: {
+          if (
+            ((t = n.type._context),
+            (s = n.pendingProps),
+            (o = n.memoizedProps),
+            (u = s.value),
+            xe(Tr, t._currentValue),
+            (t._currentValue = u),
+            o !== null)
+          )
+            if (jn(o.value, u)) {
+              if (o.children === s.children && !rn.current) {
+                n = $n(e, n, i);
+                break e;
+              }
+            } else
+              for (o = n.child, o !== null && (o.return = n); o !== null; ) {
+                var d = o.dependencies;
+                if (d !== null) {
+                  u = o.child;
+                  for (var m = d.firstContext; m !== null; ) {
+                    if (m.context === t) {
+                      if (o.tag === 1) {
+                        ((m = Bn(-1, i & -i)), (m.tag = 2));
+                        var x = o.updateQueue;
+                        if (x !== null) {
+                          x = x.shared;
+                          var E = x.pending;
+                          (E === null ? (m.next = m) : ((m.next = E.next), (E.next = m)),
+                            (x.pending = m));
+                        }
+                      }
+                      ((o.lanes |= i),
+                        (m = o.alternate),
+                        m !== null && (m.lanes |= i),
+                        eo(o.return, i, n),
+                        (d.lanes |= i));
+                      break;
+                    }
+                    m = m.next;
+                  }
+                } else if (o.tag === 10) u = o.type === n.type ? null : o.child;
+                else if (o.tag === 18) {
+                  if (((u = o.return), u === null)) throw Error(a(341));
+                  ((u.lanes |= i),
+                    (d = u.alternate),
+                    d !== null && (d.lanes |= i),
+                    eo(u, i, n),
+                    (u = o.sibling));
+                } else u = o.child;
+                if (u !== null) u.return = o;
+                else
+                  for (u = o; u !== null; ) {
+                    if (u === n) {
+                      u = null;
+                      break;
+                    }
+                    if (((o = u.sibling), o !== null)) {
+                      ((o.return = u.return), (u = o));
+                      break;
+                    }
+                    u = u.return;
+                  }
+                o = u;
+              }
+          (nn(e, n, s.children, i), (n = n.child));
+        }
+        return n;
+      case 9:
+        return (
+          (s = n.type),
+          (t = n.pendingProps.children),
+          Qi(n, i),
+          (s = yn(s)),
+          (t = t(s)),
+          (n.flags |= 1),
+          nn(e, n, t, i),
+          n.child
+        );
+      case 14:
+        return ((t = n.type), (s = Sn(t, n.pendingProps)), (s = Sn(t.type, s)), iu(e, n, t, s, i));
+      case 15:
+        return tu(e, n, n.type, n.pendingProps, i);
+      case 17:
+        return (
+          (t = n.type),
+          (s = n.pendingProps),
+          (s = n.elementType === t ? s : Sn(t, s)),
+          Vr(e, n),
+          (n.tag = 1),
+          sn(t) ? ((e = !0), Nr(n)) : (e = !1),
+          Qi(n, i),
+          Ka(n, t, s),
+          vo(n, t, s, i),
+          wo(null, n, t, !0, e, i)
+        );
+      case 19:
+        return du(e, n, i);
+      case 22:
+        return ru(e, n, i);
+    }
+    throw Error(a(156, n.tag));
+  };
+  function zu(e, n) {
+    return fl(e, n);
+  }
+  function Qd(e, n, i, t) {
+    ((this.tag = e),
+      (this.key = i),
+      (this.sibling =
+        this.child =
+        this.return =
+        this.stateNode =
+        this.type =
+        this.elementType =
+          null),
+      (this.index = 0),
+      (this.ref = null),
+      (this.pendingProps = n),
+      (this.dependencies = this.memoizedState = this.updateQueue = this.memoizedProps = null),
+      (this.mode = t),
+      (this.subtreeFlags = this.flags = 0),
+      (this.deletions = null),
+      (this.childLanes = this.lanes = 0),
+      (this.alternate = null));
+  }
+  function wn(e, n, i, t) {
+    return new Qd(e, n, i, t);
+  }
+  function Bo(e) {
+    return ((e = e.prototype), !(!e || !e.isReactComponent));
+  }
+  function Yd(e) {
+    if (typeof e == 'function') return Bo(e) ? 1 : 0;
+    if (e != null) {
+      if (((e = e.$$typeof), e === Ae)) return 11;
+      if (e === Ve) return 14;
+    }
+    return 2;
+  }
+  function ci(e, n) {
+    var i = e.alternate;
+    return (
+      i === null
+        ? ((i = wn(e.tag, n, e.key, e.mode)),
+          (i.elementType = e.elementType),
+          (i.type = e.type),
+          (i.stateNode = e.stateNode),
+          (i.alternate = e),
+          (e.alternate = i))
+        : ((i.pendingProps = n),
+          (i.type = e.type),
+          (i.flags = 0),
+          (i.subtreeFlags = 0),
+          (i.deletions = null)),
+      (i.flags = e.flags & 14680064),
+      (i.childLanes = e.childLanes),
+      (i.lanes = e.lanes),
+      (i.child = e.child),
+      (i.memoizedProps = e.memoizedProps),
+      (i.memoizedState = e.memoizedState),
+      (i.updateQueue = e.updateQueue),
+      (n = e.dependencies),
+      (i.dependencies = n === null ? null : { lanes: n.lanes, firstContext: n.firstContext }),
+      (i.sibling = e.sibling),
+      (i.index = e.index),
+      (i.ref = e.ref),
+      i
+    );
+  }
+  function Zr(e, n, i, t, s, o) {
+    var u = 2;
+    if (((t = e), typeof e == 'function')) Bo(e) && (u = 1);
+    else if (typeof e == 'string') u = 5;
+    else
+      e: switch (e) {
+        case ve:
+          return Pi(i.children, s, o, n);
+        case Ie:
+          ((u = 8), (s |= 8));
+          break;
+        case Ge:
+          return ((e = wn(12, i, n, s | 2)), (e.elementType = Ge), (e.lanes = o), e);
+        case X:
+          return ((e = wn(13, i, n, s)), (e.elementType = X), (e.lanes = o), e);
+        case Te:
+          return ((e = wn(19, i, n, s)), (e.elementType = Te), (e.lanes = o), e);
+        case K:
+          return Xr(i, s, o, n);
+        default:
+          if (typeof e == 'object' && e !== null)
+            switch (e.$$typeof) {
+              case We:
+                u = 10;
+                break e;
+              case cn:
+                u = 9;
+                break e;
+              case Ae:
+                u = 11;
+                break e;
+              case Ve:
+                u = 14;
+                break e;
+              case Re:
+                ((u = 16), (t = null));
+                break e;
+            }
+          throw Error(a(130, e == null ? e : typeof e, ''));
+      }
+    return ((n = wn(u, i, n, s)), (n.elementType = e), (n.type = t), (n.lanes = o), n);
+  }
+  function Pi(e, n, i, t) {
+    return ((e = wn(7, e, t, n)), (e.lanes = i), e);
+  }
+  function Xr(e, n, i, t) {
+    return (
+      (e = wn(22, e, t, n)),
+      (e.elementType = K),
+      (e.lanes = i),
+      (e.stateNode = { isHidden: !1 }),
+      e
+    );
+  }
+  function $o(e, n, i) {
+    return ((e = wn(6, e, null, n)), (e.lanes = i), e);
+  }
+  function Uo(e, n, i) {
+    return (
+      (n = wn(4, e.children !== null ? e.children : [], e.key, n)),
+      (n.lanes = i),
+      (n.stateNode = {
+        containerInfo: e.containerInfo,
+        pendingChildren: null,
+        implementation: e.implementation,
+      }),
+      n
+    );
+  }
+  function Zd(e, n, i, t, s) {
+    ((this.tag = n),
+      (this.containerInfo = e),
+      (this.finishedWork = this.pingCache = this.current = this.pendingChildren = null),
+      (this.timeoutHandle = -1),
+      (this.callbackNode = this.pendingContext = this.context = null),
+      (this.callbackPriority = 0),
+      (this.eventTimes = hs(0)),
+      (this.expirationTimes = hs(-1)),
+      (this.entangledLanes =
+        this.finishedLanes =
+        this.mutableReadLanes =
+        this.expiredLanes =
+        this.pingedLanes =
+        this.suspendedLanes =
+        this.pendingLanes =
+          0),
+      (this.entanglements = hs(0)),
+      (this.identifierPrefix = t),
+      (this.onRecoverableError = s),
+      (this.mutableSourceEagerHydrationData = null));
+  }
+  function qo(e, n, i, t, s, o, u, d, m) {
+    return (
+      (e = new Zd(e, n, i, d, m)),
+      n === 1 ? ((n = 1), o === !0 && (n |= 8)) : (n = 0),
+      (o = wn(3, null, null, n)),
+      (e.current = o),
+      (o.stateNode = e),
+      (o.memoizedState = {
+        element: t,
+        isDehydrated: i,
+        cache: null,
+        transitions: null,
+        pendingSuspenseBoundaries: null,
+      }),
+      io(o),
+      e
+    );
+  }
+  function Xd(e, n, i) {
+    var t = 3 < arguments.length && arguments[3] !== void 0 ? arguments[3] : null;
+    return {
+      $$typeof: fe,
+      key: t == null ? null : '' + t,
+      children: e,
+      containerInfo: n,
+      implementation: i,
+    };
+  }
+  function Ou(e) {
+    if (!e) return ni;
+    e = e._reactInternals;
+    e: {
+      if (hi(e) !== e || e.tag !== 1) throw Error(a(170));
+      var n = e;
+      do {
+        switch (n.tag) {
+          case 3:
+            n = n.stateNode.context;
+            break e;
+          case 1:
+            if (sn(n.type)) {
+              n = n.stateNode.__reactInternalMemoizedMergedChildContext;
+              break e;
+            }
+        }
+        n = n.return;
+      } while (n !== null);
+      throw Error(a(171));
+    }
+    if (e.tag === 1) {
+      var i = e.type;
+      if (sn(i)) return ca(e, i, n);
+    }
+    return n;
+  }
+  function Iu(e, n, i, t, s, o, u, d, m) {
+    return (
+      (e = qo(i, t, !0, e, s, o, u, d, m)),
+      (e.context = Ou(null)),
+      (i = e.current),
+      (t = tn()),
+      (s = ai(i)),
+      (o = Bn(t, s)),
+      (o.callback = n ?? null),
+      ri(i, o, s),
+      (e.current.lanes = s),
+      ft(e, s, t),
+      an(e, t),
+      e
+    );
+  }
+  function Jr(e, n, i, t) {
+    var s = n.current,
+      o = tn(),
+      u = ai(s);
+    return (
+      (i = Ou(i)),
+      n.context === null ? (n.context = i) : (n.pendingContext = i),
+      (n = Bn(o, u)),
+      (n.payload = { element: e }),
+      (t = t === void 0 ? null : t),
+      t !== null && (n.callback = t),
+      (e = ri(s, n, u)),
+      e !== null && (Tn(e, s, u, o), Lr(e, s, u)),
+      u
+    );
+  }
+  function es(e) {
+    if (((e = e.current), !e.child)) return null;
+    switch (e.child.tag) {
+      case 5:
+        return e.child.stateNode;
+      default:
+        return e.child.stateNode;
+    }
+  }
+  function Wu(e, n) {
+    if (((e = e.memoizedState), e !== null && e.dehydrated !== null)) {
+      var i = e.retryLane;
+      e.retryLane = i !== 0 && i < n ? i : n;
+    }
+  }
+  function Do(e, n) {
+    (Wu(e, n), (e = e.alternate) && Wu(e, n));
+  }
+  function Jd() {
+    return null;
+  }
+  var Au =
+    typeof reportError == 'function'
+      ? reportError
+      : function (e) {
+          console.error(e);
+        };
+  function Ho(e) {
+    this._internalRoot = e;
+  }
+  ((ns.prototype.render = Ho.prototype.render =
+    function (e) {
+      var n = this._internalRoot;
+      if (n === null) throw Error(a(409));
+      Jr(e, n, null, null);
+    }),
+    (ns.prototype.unmount = Ho.prototype.unmount =
+      function () {
+        var e = this._internalRoot;
+        if (e !== null) {
+          this._internalRoot = null;
+          var n = e.containerInfo;
+          (ki(function () {
+            Jr(null, e, null, null);
+          }),
+            (n[On] = null));
+        }
+      }));
+  function ns(e) {
+    this._internalRoot = e;
+  }
+  ns.prototype.unstable_scheduleHydration = function (e) {
+    if (e) {
+      var n = Nl();
+      e = { blockedOn: null, target: e, priority: n };
+      for (var i = 0; i < Yn.length && n !== 0 && n < Yn[i].priority; i++);
+      (Yn.splice(i, 0, e), i === 0 && Sl(e));
+    }
+  };
+  function Go(e) {
+    return !(!e || (e.nodeType !== 1 && e.nodeType !== 9 && e.nodeType !== 11));
+  }
+  function is(e) {
+    return !(
+      !e ||
+      (e.nodeType !== 1 &&
+        e.nodeType !== 9 &&
+        e.nodeType !== 11 &&
+        (e.nodeType !== 8 || e.nodeValue !== ' react-mount-point-unstable '))
+    );
+  }
+  function Vu() {}
+  function em(e, n, i, t, s) {
+    if (s) {
+      if (typeof t == 'function') {
+        var o = t;
+        t = function () {
+          var x = es(u);
+          o.call(x);
+        };
+      }
+      var u = Iu(n, t, e, 0, null, !1, !1, '', Vu);
+      return (
+        (e._reactRootContainer = u),
+        (e[On] = u.current),
+        Tt(e.nodeType === 8 ? e.parentNode : e),
+        ki(),
+        u
+      );
+    }
+    for (; (s = e.lastChild); ) e.removeChild(s);
+    if (typeof t == 'function') {
+      var d = t;
+      t = function () {
+        var x = es(m);
+        d.call(x);
+      };
+    }
+    var m = qo(e, 0, !1, null, null, !1, !1, '', Vu);
+    return (
+      (e._reactRootContainer = m),
+      (e[On] = m.current),
+      Tt(e.nodeType === 8 ? e.parentNode : e),
+      ki(function () {
+        Jr(n, m, i, t);
+      }),
+      m
+    );
+  }
+  function ts(e, n, i, t, s) {
+    var o = i._reactRootContainer;
+    if (o) {
+      var u = o;
+      if (typeof s == 'function') {
+        var d = s;
+        s = function () {
+          var m = es(u);
+          d.call(m);
+        };
+      }
+      Jr(n, u, e, s);
+    } else u = em(i, n, e, s, t);
+    return es(u);
+  }
+  ((xl = function (e) {
+    switch (e.tag) {
+      case 3:
+        var n = e.stateNode;
+        if (n.current.memoizedState.isDehydrated) {
+          var i = pt(n.pendingLanes);
+          i !== 0 && (gs(n, i | 1), an(n, be()), (ae & 6) === 0 && ((et = be() + 500), ii()));
+        }
+        break;
+      case 13:
+        (ki(function () {
+          var t = Vn(e, 1);
+          if (t !== null) {
+            var s = tn();
+            Tn(t, e, 1, s);
+          }
+        }),
+          Do(e, 1));
+    }
+  }),
+    (vs = function (e) {
+      if (e.tag === 13) {
+        var n = Vn(e, 134217728);
+        if (n !== null) {
+          var i = tn();
+          Tn(n, e, 134217728, i);
+        }
+        Do(e, 134217728);
+      }
+    }),
+    (wl = function (e) {
+      if (e.tag === 13) {
+        var n = ai(e),
+          i = Vn(e, n);
+        if (i !== null) {
+          var t = tn();
+          Tn(i, e, n, t);
+        }
+        Do(e, n);
+      }
+    }),
+    (Nl = function () {
+      return he;
+    }),
+    (jl = function (e, n) {
+      var i = he;
+      try {
+        return ((he = e), n());
+      } finally {
+        he = i;
+      }
+    }),
+    (Mi = function (e, n, i) {
+      switch (n) {
+        case 'input':
+          if ((Li(e, i), (n = i.name), i.type === 'radio' && n != null)) {
+            for (i = e; i.parentNode; ) i = i.parentNode;
+            for (
+              i = i.querySelectorAll('input[name=' + JSON.stringify('' + n) + '][type="radio"]'),
+                n = 0;
+              n < i.length;
+              n++
+            ) {
+              var t = i[n];
+              if (t !== e && t.form === e.form) {
+                var s = xr(t);
+                if (!s) throw Error(a(90));
+                (pi(t), Li(t, s));
+              }
+            }
+          }
+          break;
+        case 'textarea':
+          Qe(e, i);
+          break;
+        case 'select':
+          ((n = i.value), n != null && En(e, !!i.multiple, n, !1));
+      }
+    }),
+    (ll = Wo),
+    (al = ki));
+  var nm = { usingClientEntryPoint: !1, Events: [Rt, Bi, xr, we, Ln, Wo] },
+    Dt = {
+      findFiberByHostInstance: gi,
+      bundleType: 0,
+      version: '18.3.1',
+      rendererPackageName: 'react-dom',
+    },
+    im = {
+      bundleType: Dt.bundleType,
+      version: Dt.version,
+      rendererPackageName: Dt.rendererPackageName,
+      rendererConfig: Dt.rendererConfig,
+      overrideHookState: null,
+      overrideHookStateDeletePath: null,
+      overrideHookStateRenamePath: null,
+      overrideProps: null,
+      overridePropsDeletePath: null,
+      overridePropsRenamePath: null,
+      setErrorHandler: null,
+      setSuspenseHandler: null,
+      scheduleUpdate: null,
+      currentDispatcherRef: re.ReactCurrentDispatcher,
+      findHostInstanceByFiber: function (e) {
+        return ((e = ml(e)), e === null ? null : e.stateNode);
+      },
+      findFiberByHostInstance: Dt.findFiberByHostInstance || Jd,
+      findHostInstancesForRefresh: null,
+      scheduleRefresh: null,
+      scheduleRoot: null,
+      setRefreshHandler: null,
+      getCurrentFiber: null,
+      reconcilerVersion: '18.3.1-next-f1338f8080-20240426',
+    };
+  if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ < 'u') {
+    var rs = __REACT_DEVTOOLS_GLOBAL_HOOK__;
+    if (!rs.isDisabled && rs.supportsFiber)
+      try {
+        ((nr = rs.inject(im)), (Rn = rs));
+      } catch {}
+  }
+  return (
+    (un.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = nm),
+    (un.createPortal = function (e, n) {
+      var i = 2 < arguments.length && arguments[2] !== void 0 ? arguments[2] : null;
+      if (!Go(n)) throw Error(a(200));
+      return Xd(e, n, null, i);
+    }),
+    (un.createRoot = function (e, n) {
+      if (!Go(e)) throw Error(a(299));
+      var i = !1,
+        t = '',
+        s = Au;
+      return (
+        n != null &&
+          (n.unstable_strictMode === !0 && (i = !0),
+          n.identifierPrefix !== void 0 && (t = n.identifierPrefix),
+          n.onRecoverableError !== void 0 && (s = n.onRecoverableError)),
+        (n = qo(e, 1, !1, null, null, i, !1, t, s)),
+        (e[On] = n.current),
+        Tt(e.nodeType === 8 ? e.parentNode : e),
+        new Ho(n)
+      );
+    }),
+    (un.findDOMNode = function (e) {
+      if (e == null) return null;
+      if (e.nodeType === 1) return e;
+      var n = e._reactInternals;
+      if (n === void 0)
+        throw typeof e.render == 'function'
+          ? Error(a(188))
+          : ((e = Object.keys(e).join(',')), Error(a(268, e)));
+      return ((e = ml(n)), (e = e === null ? null : e.stateNode), e);
+    }),
+    (un.flushSync = function (e) {
+      return ki(e);
+    }),
+    (un.hydrate = function (e, n, i) {
+      if (!is(n)) throw Error(a(200));
+      return ts(null, e, n, !0, i);
+    }),
+    (un.hydrateRoot = function (e, n, i) {
+      if (!Go(e)) throw Error(a(405));
+      var t = (i != null && i.hydratedSources) || null,
+        s = !1,
+        o = '',
+        u = Au;
+      if (
+        (i != null &&
+          (i.unstable_strictMode === !0 && (s = !0),
+          i.identifierPrefix !== void 0 && (o = i.identifierPrefix),
+          i.onRecoverableError !== void 0 && (u = i.onRecoverableError)),
+        (n = Iu(n, null, e, 1, i ?? null, s, !1, o, u)),
+        (e[On] = n.current),
+        Tt(e),
+        t)
+      )
+        for (e = 0; e < t.length; e++)
+          ((i = t[e]),
+            (s = i._getVersion),
+            (s = s(i._source)),
+            n.mutableSourceEagerHydrationData == null
+              ? (n.mutableSourceEagerHydrationData = [i, s])
+              : n.mutableSourceEagerHydrationData.push(i, s));
+      return new ns(n);
+    }),
+    (un.render = function (e, n, i) {
+      if (!is(n)) throw Error(a(200));
+      return ts(null, e, n, !1, i);
+    }),
+    (un.unmountComponentAtNode = function (e) {
+      if (!is(e)) throw Error(a(40));
+      return e._reactRootContainer
+        ? (ki(function () {
+            ts(null, null, e, !1, function () {
+              ((e._reactRootContainer = null), (e[On] = null));
+            });
+          }),
+          !0)
+        : !1;
+    }),
+    (un.unstable_batchedUpdates = Wo),
+    (un.unstable_renderSubtreeIntoContainer = function (e, n, i, t) {
+      if (!is(i)) throw Error(a(200));
+      if (e == null || e._reactInternals === void 0) throw Error(a(38));
+      return ts(e, n, i, !1, t);
+    }),
+    (un.version = '18.3.1-next-f1338f8080-20240426'),
+    un
+  );
+}
+var Ku;
+function cm() {
+  if (Ku) return Yo.exports;
+  Ku = 1;
+  function l() {
+    if (
+      !(
+        typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > 'u' ||
+        typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != 'function'
+      )
+    )
+      try {
+        __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(l);
+      } catch (c) {
+        console.error(c);
+      }
+  }
+  return (l(), (Yo.exports = um()), Yo.exports);
+}
+var Qu;
+function dm() {
+  if (Qu) return ss;
+  Qu = 1;
+  var l = cm();
+  return ((ss.createRoot = l.createRoot), (ss.hydrateRoot = l.hydrateRoot), ss);
+}
+var mm = dm();
+const pm = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    phoneCountryCode: '+33',
+    companyName: '',
+    customerType: '',
+    shipperType: '',
+    country: '',
+    destCity: '',
+    destZipCode: '',
+    destLocationType: '',
+    origin: '',
+    city: '',
+    zipCode: '',
+    locationType: '',
+    mode: '',
+    incoterm: '',
+    goodsDescription: '',
+    totalWeight: '',
+    numberOfUnits: 1,
+    dimensions: { length: '', width: '', height: '' },
+    weightPerUnit: '',
+    goodsValue: '',
+    goodsCurrency: 'USD',
+    areGoodsReady: '',
+    annualVolume: '',
+    isPersonalOrHazardous: !1,
+    remarks: '',
+    servicesRequested: {
+      shipping: !0,
+      sourcing: !1,
+      dropshipping: !1,
+      warehousing: !1,
+      qc: !1,
+      chinaVisits: !1,
+      other: !1,
+    },
+    sourcing: {
+      productDescription: '',
+      referenceLink: '',
+      targetPrice: null,
+      targetCurrency: 'USD',
+      moq: null,
+      platform: '',
+      hasSupplier: null,
+      targetMarkets: '',
+      requiredCertifications: '',
+      timeline: '',
+      qualityStandards: '',
+      packagingRequirements: '',
+      notes: '',
+    },
+    warehousing: {
+      duration: '',
+      skuCount: null,
+      consolidation: null,
+      extraServices: [],
+      notes: '',
+    },
+    dropshipping: {
+      products: '',
+      model: '',
+      customerCountries: '',
+      dailyOrders: null,
+      hasCatalog: null,
+      brandingNeeded: null,
+      notes: '',
+    },
+    qc: { type: '', productionStage: '', factoryCity: '', preferredDate: '', notes: '' },
+    chinaVisit: {
+      visitType: [],
+      mainCity: '',
+      otherCities: '',
+      fairName: '',
+      factoryDescription: '',
+      cantonPhase: '',
+      startDate: '',
+      endDate: '',
+      numberOfDays: null,
+      numberOfTravelers: null,
+      needGuide: null,
+      needTransport: null,
+      needHotels: null,
+      notes: '',
+    },
+    otherProject: { projectType: '', description: '', budget: '', timeline: '' },
+  },
+  ic = W.createContext(void 0),
+  fm = ({ children: l }) => {
+    const [c, a] = W.useState(pm),
+      w = W.useCallback((C) => {
+        const { name: j, value: f, type: h } = C.target,
+          O = C.target.checked;
+        a((D) => ({ ...D, [j]: h === 'checkbox' ? O : f }));
+      }, []),
+      N = { formData: c, setFormData: a, handleInputChange: w };
+    return r.jsx(ic.Provider, { value: N, children: l });
+  };
+function hm() {
+  const l = W.useContext(ic);
+  if (!l) throw new Error('useSimpleForm must be used inside <SimpleFormProvider>');
+  return l;
+}
+const gm = ({
+  formData: l,
+  setFormData: c,
+  t: a,
+  stepLabel: w,
+  shippingOnly: N = !1,
+  isQuickQuote: C = !1,
+  setIsQuickQuote: j,
+}) => {
+  const f = (h) => {
+    c((O) => ({
+      ...O,
+      servicesRequested: { ...O.servicesRequested, [h]: !O.servicesRequested[h] },
+    }));
+  };
+  return r.jsxs('section', {
+    className: 'sino-simple-form__section sino-simple-form__section--services',
+    children: [
+      r.jsxs('header', {
+        className: 'sino-simple-form__header',
+        children: [
+          r.jsxs('div', {
+            className: 'sino-simple-form__header-top',
+            children: [
+              r.jsx('p', {
+                className: 'sino-simple-form__eyebrow',
+                children: N
+                  ? a('simpleEyebrowShippingOnly', 'Shipping from China')
+                  : a('simpleEyebrowMulti', 'Projects with China'),
+              }),
+              C &&
+                r.jsx('span', {
+                  className: 'sino-simple-form__quick-quote-badge',
+                  children: a('quickQuoteBadge', 'Quick quote'),
+                }),
+            ],
+          }),
+          r.jsx('h1', {
+            className: 'sino-simple-form__title',
+            children: a('simpleTitle', 'Plan your project with China in one request'),
+          }),
+          r.jsx('p', {
+            className: 'sino-simple-form__subtitle',
+            children: N
+              ? a(
+                  'simpleSubtitleShippingOnly',
+                  'Answer a few key questions about your route, cargo and timing to get a tailored shipping plan.'
+                )
+              : a(
+                  'simpleSubtitleMulti',
+                  "Answer a few key questions and we'll route your request to the right specialists for shipping, sourcing, QC, visits and more."
+                ),
+          }),
+          j &&
+            r.jsx('div', {
+              className: 'sino-simple-form__quick-quote-toggle',
+              children: r.jsxs('label', {
+                className: 'sino-simple-form__quick-quote-toggle-label',
+                children: [
+                  r.jsx('input', {
+                    type: 'checkbox',
+                    checked: C,
+                    onChange: (h) => j(h.target.checked),
+                    className: 'sino-simple-form__quick-quote-toggle-input',
+                  }),
+                  r.jsx('span', { className: 'sino-simple-form__quick-quote-toggle-slider' }),
+                  r.jsx('span', {
+                    className: 'sino-simple-form__quick-quote-toggle-text',
+                    children: a('quickQuoteToggle', 'Quick quote mode (essential fields only)'),
+                  }),
+                ],
+              }),
+            }),
+          r.jsx('p', {
+            className: 'sino-simple-form__hint',
+            children: a(
+              'simpleRequiredHint',
+              'Fields marked with * are required. The rest can stay approximate or empty for now.'
+            ),
+          }),
+        ],
+      }),
+      r.jsxs('h2', {
+        className: 'sino-simple-form__section-title',
+        children: [
+          r.jsx('span', { className: 'sino-simple-form__section-step', children: w ?? 'Step 0' }),
+          r.jsx('span', {
+            children: a('simpleServicesStepTitle', 'What do you need help with from China?'),
+          }),
+        ],
+      }),
+      r.jsx('p', {
+        className: 'sino-simple-form__hint',
+        children: a(
+          'simpleServicesStepHint',
+          'Select all that apply (most people pick 1–3 options). Shipping remains the core module and we tailor the rest around your needs.'
+        ),
+      }),
+      r.jsx('div', {
+        className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+        children: r.jsx('div', {
+          className: 'sino-simple-form__field',
+          children: r.jsx('div', {
+            className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+            children: [
+              {
+                key: 'shipping',
+                label: a('serviceShipping', 'Ship goods from China'),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('path', {
+                      d: 'M2 17h20M5 17V7l8-4v10M19 17V7l-6 4M7 11h6M7 7h6',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('circle', {
+                      cx: '7',
+                      cy: '17',
+                      r: '2',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                    }),
+                    r.jsx('circle', {
+                      cx: '17',
+                      cy: '17',
+                      r: '2',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                    }),
+                  ],
+                }),
+              },
+              {
+                key: 'sourcing',
+                label: a('serviceSourcing', 'Find suppliers / get product sourcing help'),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('circle', {
+                      cx: '11',
+                      cy: '11',
+                      r: '8',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('path', {
+                      d: 'm21 21-4.35-4.35',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                  ],
+                }),
+              },
+              {
+                key: 'dropshipping',
+                label: a('serviceDropshipping', 'Set up dropshipping or fulfillment from China'),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('path', {
+                      d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('polyline', {
+                      points: '3.27 6.96 12 12.01 20.73 6.96',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('line', {
+                      x1: '12',
+                      y1: '22.08',
+                      x2: '12',
+                      y2: '12',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                  ],
+                }),
+              },
+              {
+                key: 'warehousing',
+                label: a('serviceWarehousing', 'Store & consolidate goods in China'),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('path', {
+                      d: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('polyline', {
+                      points: '9 22 9 12 15 12 15 22',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                  ],
+                }),
+              },
+              {
+                key: 'qc',
+                label: a('serviceQc', 'Book a quality inspection'),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('path', {
+                      d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('polyline', {
+                      points: '22 4 12 14.01 9 11.01',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                  ],
+                }),
+              },
+              {
+                key: 'chinaVisits',
+                label: a(
+                  'serviceChinaVisits',
+                  'Plan a visit or fair in China (Canton Fair, Yiwu…)'
+                ),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('rect', {
+                      x: '3',
+                      y: '4',
+                      width: '18',
+                      height: '18',
+                      rx: '2',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('line', {
+                      x1: '16',
+                      y1: '2',
+                      x2: '16',
+                      y2: '6',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('line', {
+                      x1: '8',
+                      y1: '2',
+                      x2: '8',
+                      y2: '6',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('line', {
+                      x1: '3',
+                      y1: '10',
+                      x2: '21',
+                      y2: '10',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('path', {
+                      d: 'M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                  ],
+                }),
+              },
+              {
+                key: 'other',
+                label: a('serviceOther', 'Other project (tell us more)'),
+                icon: r.jsxs('svg', {
+                  width: '18',
+                  height: '18',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('circle', {
+                      cx: '12',
+                      cy: '12',
+                      r: '10',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('line', {
+                      x1: '12',
+                      y1: '8',
+                      x2: '12',
+                      y2: '16',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                    r.jsx('line', {
+                      x1: '8',
+                      y1: '12',
+                      x2: '16',
+                      y2: '12',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                    }),
+                  ],
+                }),
+              },
+            ].map((h) =>
+              r.jsxs(
+                'button',
+                {
+                  type: 'button',
+                  className: `sino-simple-chip sino-simple-chip--service-${h.key}${l.servicesRequested[h.key] ? ' sino-simple-chip--active' : ''}`,
+                  onClick: () => f(h.key),
+                  'aria-pressed': l.servicesRequested[h.key] ? 'true' : 'false',
+                  'aria-label': `${h.label}${l.servicesRequested[h.key] ? ', selected' : ', not selected'}`,
+                  onKeyDown: (O) => {
+                    (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), f(h.key));
+                  },
+                  children: [
+                    r.jsx('span', {
+                      className: 'sino-simple-chip__icon',
+                      'aria-hidden': 'true',
+                      children: h.icon,
+                    }),
+                    r.jsx('span', { className: 'sino-simple-chip__label', children: h.label }),
+                  ],
+                },
+                h.key
+              )
+            ),
+          }),
+        }),
+      }),
+    ],
+  });
+};
+function os(l) {
+  return l == null
+    ? !1
+    : typeof l == 'string'
+      ? l.trim().length > 0
+      : typeof l == 'number'
+        ? l > 0
+        : typeof l == 'boolean'
+          ? !0
+          : Array.isArray(l)
+            ? l.length > 0
+            : typeof l == 'object'
+              ? Object.values(l).some((c) => os(c))
+              : !1;
+}
+function vm(l) {
+  switch (l) {
+    case 'services':
+      return [];
+    case 'shippingRoute':
+      return [
+        'country',
+        'destCity',
+        'mode',
+        'origin',
+        'city',
+        'destLocationType',
+        'destZipCode',
+        'destPort',
+      ];
+    case 'shippingCargo':
+      return [
+        'totalWeight',
+        'goodsDescription',
+        'goodsValue',
+        'goodsCurrency',
+        'shippingType',
+        'numberOfUnits',
+        'areGoodsReady',
+        'isPersonalOrHazardous',
+      ];
+    case 'sourcing':
+      return ['sourcing'];
+    case 'warehousing':
+      return ['warehousing'];
+    case 'dropshipping':
+      return ['dropshipping'];
+    case 'qc':
+      return ['qc'];
+    case 'chinaVisit':
+      return ['chinaVisit'];
+    case 'contact':
+      return [
+        'firstName',
+        'lastName',
+        'email',
+        'phone',
+        'companyName',
+        'customerType',
+        'shipperType',
+      ];
+    default:
+      return [];
+  }
+}
+function nl(l, c) {
+  const a = vm(l);
+  if (a.length === 0)
+    return l === 'services'
+      ? { filled: 1, total: 1, percentage: 100 }
+      : { filled: 0, total: 0, percentage: 0 };
+  let w = 0,
+    N = 0;
+  for (const j of a)
+    if (
+      j === 'sourcing' ||
+      j === 'warehousing' ||
+      j === 'dropshipping' ||
+      j === 'qc' ||
+      j === 'chinaVisit'
+    ) {
+      const f = c[j];
+      if (f && typeof f == 'object' && !Array.isArray(f)) {
+        const h = Object.entries(f);
+        for (const [, O] of h) (N++, os(O) && w++);
+        h.length;
+      }
+    } else if (j === 'totalWeight') (N++, os(c.totalWeight) && w++);
+    else {
+      N++;
+      const f = c[j];
+      os(f) && w++;
+    }
+  const C = N > 0 ? Math.round((w / N) * 100) : 0;
+  return { filled: w, total: N, percentage: C };
+}
+function ym(l, c) {
+  switch (l) {
+    case 'services':
+      return c('stepServicesLabel', 'Services');
+    case 'shippingRoute':
+      return c('stepShippingRouteLabel', 'Route');
+    case 'shippingCargo':
+      return c('stepShippingCargoLabel', 'Cargo');
+    case 'sourcing':
+      return c('stepSourcingLabel', 'Sourcing');
+    case 'warehousing':
+      return c('stepWarehousingLabel', 'Warehousing');
+    case 'dropshipping':
+      return c('stepDropshippingLabel', 'Dropshipping');
+    case 'qc':
+      return c('stepQcLabel', 'Quality Control');
+    case 'chinaVisit':
+      return c('stepChinaVisitLabel', 'China Visit');
+    case 'contact':
+      return c('stepContactLabel', 'Contact');
+    default:
+      return l;
+  }
+}
+const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }) => {
+    const C = nl(l, c),
+      j = ym(l, N);
+    return l === 'services' || C.total === 0
+      ? null
+      : r.jsxs('div', {
+          className: 'sino-simple-form__step-progress-indicator',
+          children: [
+            r.jsxs('div', {
+              className: 'sino-simple-form__step-progress-header',
+              children: [
+                r.jsx('span', { className: 'sino-simple-form__step-progress-label', children: j }),
+                r.jsxs('span', {
+                  className: 'sino-simple-form__step-progress-count',
+                  children: [C.filled, '/', C.total, ' ', N('stepProgressFields', 'fields')],
+                }),
+              ],
+            }),
+            r.jsx('div', {
+              className: 'sino-simple-form__step-progress-bar-container',
+              children: r.jsx('div', {
+                className: 'sino-simple-form__step-progress-bar-fill',
+                style: { width: `${C.percentage}%` },
+                role: 'progressbar',
+                'aria-valuenow': C.percentage,
+                'aria-valuemin': 0,
+                'aria-valuemax': 100,
+                'aria-label': `${j}: ${C.filled} of ${C.total} fields completed`,
+              }),
+            }),
+          ],
+        });
+  },
+  Yu = [
+    { name: 'John D.', location: 'France', text: 'Got my quote in 18h, very professional' },
+    { name: 'Sarah M.', location: 'Germany', text: 'Clear communication and fast response time' },
+    {
+      name: 'Michael K.',
+      location: 'UK',
+      text: 'Excellent service, helped me understand the process',
+    },
+  ],
+  _m = ({ t: l, count: c = 2 }) => {
+    const a = W.useMemo(
+      () => [...Yu].sort(() => Math.random() - 0.5).slice(0, Math.min(c, Yu.length)),
+      [c]
+    );
+    return a.length === 0
+      ? null
+      : r.jsx('div', {
+          className: 'sino-simple-form__testimonials',
+          role: 'complementary',
+          'aria-label': l('testimonialsAriaLabel', 'Customer testimonials'),
+          children: a.map((w, N) =>
+            r.jsx(
+              'div',
+              {
+                className: 'sino-simple-form__testimonial',
+                children: r.jsxs('div', {
+                  className: 'sino-simple-form__testimonial-content',
+                  children: [
+                    r.jsxs('p', {
+                      className: 'sino-simple-form__testimonial-text',
+                      children: ['"', w.text, '"'],
+                    }),
+                    r.jsxs('p', {
+                      className: 'sino-simple-form__testimonial-author',
+                      children: [w.name, ' — ', w.location],
+                    }),
+                  ],
+                }),
+              },
+              `${w.name}-${N}`
+            )
+          ),
+        });
+  },
+  xm = ({
+    formData: l,
+    setFormData: c,
+    t: a,
+    isFilled: w,
+    onChange: N,
+    onBlur: C,
+    fieldErrors: j,
+    fieldTouched: f,
+    firstNameRef: h,
+    emailRef: O,
+    phoneRef: D,
+    stepLabel: z,
+    currentStepIndex: b,
+    totalSteps: Z,
+  }) =>
+    r.jsxs('section', {
+      className: 'sino-simple-form__section sino-simple-form__section--contact',
+      children: [
+        r.jsxs('h2', {
+          className: 'sino-simple-form__section-title',
+          children: [
+            r.jsx('span', { className: 'sino-simple-form__section-step', children: z ?? 'Step 4' }),
+            r.jsx('span', { children: a('simpleStep5Title', 'Your details') }),
+          ],
+        }),
+        r.jsx(il, { stepId: 'contact', formData: l, currentStepIndex: b, totalSteps: Z, t: a }),
+        r.jsx('p', {
+          className: 'sino-simple-form__hint',
+          children: a(
+            'simpleStep5Hint',
+            'Use a work email and a phone with WhatsApp if possible – it makes the follow-up much smoother. Not sure about every detail yet? That is normal – we will help you structure the shipment.'
+          ),
+        }),
+        r.jsx(_m, { t: a, count: 2 }),
+        r.jsxs('div', {
+          className: 'sino-simple-form__group',
+          children: [
+            r.jsx('p', {
+              className: 'sino-simple-form__group-title',
+              children: a('aboutYouTitle', 'About you'),
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a('customerType', 'Are you a company or an individual?'),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips',
+                      children: [
+                        { value: 'company', label: a('customerTypeCompany', 'Company') },
+                        { value: 'individual', label: a('customerTypeIndividual', 'Individual') },
+                      ].map((H) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.customerType === H.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((Y) => ({
+                                ...Y,
+                                customerType: Y.customerType === H.value ? '' : H.value,
+                              })),
+                            children: H.label,
+                          },
+                          H.value
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a('shipperType', 'How often do you ship from China?'),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+                      children: [
+                        { value: 'first-time', label: a('shipperFirstTime', "It's my first time") },
+                        {
+                          value: 'up-to-10x',
+                          label: a('shipperFewTimes', 'A few times per year (up to ~10 shipments)'),
+                        },
+                        {
+                          value: 'more-than-10x',
+                          label: a('shipperMoreThan10', 'More than 10 shipments per year'),
+                        },
+                        { value: 'regular', label: a('shipperRegular', 'Regular shipper') },
+                      ].map((H) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.shipperType === H.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((Y) => ({
+                                ...Y,
+                                shipperType: Y.shipperType === H.value ? '' : H.value,
+                              })),
+                            'aria-pressed': l.shipperType === H.value ? 'true' : 'false',
+                            'aria-label': `${H.label}${l.shipperType === H.value ? ', selected' : ', not selected'}`,
+                            onKeyDown: (Y) => {
+                              (Y.key === 'Enter' || Y.key === ' ') &&
+                                (Y.preventDefault(),
+                                c((P) => ({
+                                  ...P,
+                                  shipperType: P.shipperType === H.value ? '' : H.value,
+                                })));
+                            },
+                            children: H.label,
+                          },
+                          H.value
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+        r.jsx('p', {
+          className: 'sino-simple-form__group-title',
+          children: a('contactDetailsTitle', 'How we contact you'),
+        }),
+        r.jsxs('div', {
+          className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+          children: [
+            r.jsxs('div', {
+              className: `sino-simple-form__field${f.firstName && j.firstName ? ' sino-simple-form__field--error' : ''}${f.firstName && !j.firstName && w(l.firstName) ? ' sino-simple-form__field--success' : ''}`,
+              children: [
+                r.jsxs('label', {
+                  className: 'sino-simple-form__label',
+                  htmlFor: 'firstName',
+                  children: [
+                    a('firstName', 'First name'),
+                    r.jsx('span', {
+                      className: 'sino-simple-form__required',
+                      'aria-label': 'required',
+                      children: '*',
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field-wrapper',
+                  children: [
+                    r.jsx('input', {
+                      className: `sino-simple-form__input${j.firstName ? ' sino-simple-form__input--error' : ''}${f.firstName && !j.firstName && w(l.firstName) ? ' sino-simple-form__input--success' : ''}`,
+                      type: 'text',
+                      name: 'firstName',
+                      id: 'firstName',
+                      ref: h,
+                      value: l.firstName,
+                      onChange: N,
+                      onBlur: () => C('firstName', l.firstName),
+                      placeholder: a('firstNamePlaceholder', 'John'),
+                      'aria-label': a('firstName', 'First name'),
+                      'aria-describedby': j.firstName
+                        ? 'firstName-error'
+                        : f.firstName && !j.firstName && w(l.firstName)
+                          ? 'firstName-success'
+                          : void 0,
+                      'aria-invalid': j.firstName ? 'true' : 'false',
+                      'aria-required': 'true',
+                    }),
+                    f.firstName &&
+                      r.jsxs(r.Fragment, {
+                        children: [
+                          j.firstName &&
+                            r.jsx('span', {
+                              className:
+                                'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                              'aria-hidden': 'true',
+                              children: r.jsxs('svg', {
+                                width: '20',
+                                height: '20',
+                                viewBox: '0 0 24 24',
+                                fill: 'none',
+                                xmlns: 'http://www.w3.org/2000/svg',
+                                children: [
+                                  r.jsx('circle', {
+                                    cx: '12',
+                                    cy: '12',
+                                    r: '10',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                  }),
+                                  r.jsx('line', {
+                                    x1: '12',
+                                    y1: '8',
+                                    x2: '12',
+                                    y2: '12',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                  }),
+                                  r.jsx('line', {
+                                    x1: '12',
+                                    y1: '16',
+                                    x2: '12.01',
+                                    y2: '16',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                  }),
+                                ],
+                              }),
+                            }),
+                          !j.firstName &&
+                            w(l.firstName) &&
+                            r.jsx('span', {
+                              className:
+                                'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                              'aria-hidden': 'true',
+                              children: r.jsxs('svg', {
+                                width: '20',
+                                height: '20',
+                                viewBox: '0 0 24 24',
+                                fill: 'none',
+                                xmlns: 'http://www.w3.org/2000/svg',
+                                children: [
+                                  r.jsx('circle', {
+                                    cx: '12',
+                                    cy: '12',
+                                    r: '10',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                  }),
+                                  r.jsx('path', {
+                                    d: 'M8 12l2 2 4-4',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                    strokeLinejoin: 'round',
+                                  }),
+                                ],
+                              }),
+                            }),
+                        ],
+                      }),
+                  ],
+                }),
+                j.firstName &&
+                  r.jsx('p', {
+                    id: 'firstName-error',
+                    className: 'sino-simple-form__field-error',
+                    role: 'alert',
+                    'aria-live': 'polite',
+                    children: j.firstName,
+                  }),
+                f.firstName &&
+                  !j.firstName &&
+                  w(l.firstName) &&
+                  r.jsx('p', {
+                    id: 'firstName-success',
+                    className: 'sino-simple-form__sr-only',
+                    'aria-live': 'polite',
+                    children: a('fieldValid', 'Field is valid'),
+                  }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__field',
+              children: [
+                r.jsx('label', {
+                  className: 'sino-simple-form__label',
+                  htmlFor: 'lastName',
+                  children: a('lastName', 'Last name'),
+                }),
+                r.jsx('input', {
+                  className: 'sino-simple-form__input',
+                  type: 'text',
+                  name: 'lastName',
+                  id: 'lastName',
+                  value: l.lastName,
+                  onChange: N,
+                  placeholder: a('lastNamePlaceholder', 'Doe'),
+                }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__field',
+              children: [
+                r.jsxs('label', {
+                  className: 'sino-simple-form__label',
+                  htmlFor: 'companyName',
+                  children: [
+                    a('companyName', 'Company name'),
+                    r.jsx('span', {
+                      className: 'sino-simple-form__label-hint',
+                      children: a('ifApplicable', 'if applicable'),
+                    }),
+                  ],
+                }),
+                r.jsx('input', {
+                  className: 'sino-simple-form__input',
+                  type: 'text',
+                  name: 'companyName',
+                  id: 'companyName',
+                  value: l.companyName,
+                  onChange: N,
+                  placeholder: a('companyNamePlaceholder', 'Your company'),
+                }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: `sino-simple-form__field${f.email && j.email ? ' sino-simple-form__field--error' : ''}${f.email && !j.email && w(l.email) ? ' sino-simple-form__field--success' : ''}`,
+              children: [
+                r.jsxs('label', {
+                  className: 'sino-simple-form__label',
+                  htmlFor: 'email',
+                  children: [
+                    a('email', 'Work email'),
+                    r.jsx('span', {
+                      className: 'sino-simple-form__required',
+                      'aria-label': 'required',
+                      children: '*',
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field-wrapper',
+                  children: [
+                    r.jsx('input', {
+                      className: `sino-simple-form__input${j.email ? ' sino-simple-form__input--error' : ''}${f.email && !j.email && w(l.email) ? ' sino-simple-form__input--success' : ''}`,
+                      type: 'email',
+                      name: 'email',
+                      id: 'email',
+                      ref: O,
+                      value: l.email,
+                      onChange: N,
+                      onBlur: () => C('email', l.email),
+                      placeholder: a('emailPlaceholder', 'you@example.com'),
+                      'aria-label': a('email', 'Work email'),
+                      'aria-describedby': j.email
+                        ? 'email-error'
+                        : f.email && !j.email && w(l.email)
+                          ? 'email-success'
+                          : void 0,
+                      'aria-invalid': j.email ? 'true' : 'false',
+                      'aria-required': 'true',
+                    }),
+                    f.email &&
+                      r.jsxs(r.Fragment, {
+                        children: [
+                          j.email &&
+                            r.jsx('span', {
+                              className:
+                                'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                              'aria-hidden': 'true',
+                              children: r.jsxs('svg', {
+                                width: '20',
+                                height: '20',
+                                viewBox: '0 0 24 24',
+                                fill: 'none',
+                                xmlns: 'http://www.w3.org/2000/svg',
+                                children: [
+                                  r.jsx('circle', {
+                                    cx: '12',
+                                    cy: '12',
+                                    r: '10',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                  }),
+                                  r.jsx('line', {
+                                    x1: '12',
+                                    y1: '8',
+                                    x2: '12',
+                                    y2: '12',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                  }),
+                                  r.jsx('line', {
+                                    x1: '12',
+                                    y1: '16',
+                                    x2: '12.01',
+                                    y2: '16',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                  }),
+                                ],
+                              }),
+                            }),
+                          !j.email &&
+                            w(l.email) &&
+                            r.jsx('span', {
+                              className:
+                                'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                              'aria-hidden': 'true',
+                              children: r.jsxs('svg', {
+                                width: '20',
+                                height: '20',
+                                viewBox: '0 0 24 24',
+                                fill: 'none',
+                                xmlns: 'http://www.w3.org/2000/svg',
+                                children: [
+                                  r.jsx('circle', {
+                                    cx: '12',
+                                    cy: '12',
+                                    r: '10',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                  }),
+                                  r.jsx('path', {
+                                    d: 'M8 12l2 2 4-4',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                    strokeLinejoin: 'round',
+                                  }),
+                                ],
+                              }),
+                            }),
+                        ],
+                      }),
+                  ],
+                }),
+                j.email &&
+                  r.jsx('p', {
+                    id: 'email-error',
+                    className: 'sino-simple-form__field-error',
+                    role: 'alert',
+                    'aria-live': 'polite',
+                    children: j.email,
+                  }),
+                f.email &&
+                  !j.email &&
+                  w(l.email) &&
+                  r.jsx('p', {
+                    id: 'email-success',
+                    className: 'sino-simple-form__sr-only',
+                    'aria-live': 'polite',
+                    children: a('fieldValid', 'Field is valid'),
+                  }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: `sino-simple-form__field${f.phone && j.phone ? ' sino-simple-form__field--error' : ''}${f.phone && !j.phone && w(l.phone) ? ' sino-simple-form__field--success' : ''}`,
+              children: [
+                r.jsxs('label', {
+                  className: 'sino-simple-form__label',
+                  htmlFor: 'phone',
+                  children: [
+                    a('phone', 'Phone number (with country code)'),
+                    r.jsx('span', {
+                      className: 'sino-simple-form__required',
+                      'aria-label': 'required',
+                      children: '*',
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field-wrapper',
+                  children: [
+                    r.jsx('input', {
+                      className: `sino-simple-form__input${j.phone ? ' sino-simple-form__input--error' : ''}${f.phone && !j.phone && w(l.phone) ? ' sino-simple-form__input--success' : ''}`,
+                      type: 'tel',
+                      name: 'phone',
+                      id: 'phone',
+                      ref: D,
+                      value: l.phone,
+                      onChange: N,
+                      onBlur: () => C('phone', l.phone),
+                      placeholder: a('phonePlaceholder', '+33…'),
+                      'aria-label': a('phone', 'Phone number (with country code)'),
+                      'aria-describedby': j.phone
+                        ? 'phone-error'
+                        : f.phone && !j.phone && w(l.phone)
+                          ? 'phone-success'
+                          : void 0,
+                      'aria-invalid': j.phone ? 'true' : 'false',
+                      'aria-required': 'true',
+                    }),
+                    f.phone &&
+                      r.jsxs(r.Fragment, {
+                        children: [
+                          j.phone &&
+                            r.jsx('span', {
+                              className:
+                                'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                              'aria-hidden': 'true',
+                              children: r.jsxs('svg', {
+                                width: '20',
+                                height: '20',
+                                viewBox: '0 0 24 24',
+                                fill: 'none',
+                                xmlns: 'http://www.w3.org/2000/svg',
+                                children: [
+                                  r.jsx('circle', {
+                                    cx: '12',
+                                    cy: '12',
+                                    r: '10',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                  }),
+                                  r.jsx('line', {
+                                    x1: '12',
+                                    y1: '8',
+                                    x2: '12',
+                                    y2: '12',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                  }),
+                                  r.jsx('line', {
+                                    x1: '12',
+                                    y1: '16',
+                                    x2: '12.01',
+                                    y2: '16',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                  }),
+                                ],
+                              }),
+                            }),
+                          !j.phone &&
+                            w(l.phone) &&
+                            r.jsx('span', {
+                              className:
+                                'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                              'aria-hidden': 'true',
+                              children: r.jsxs('svg', {
+                                width: '20',
+                                height: '20',
+                                viewBox: '0 0 24 24',
+                                fill: 'none',
+                                xmlns: 'http://www.w3.org/2000/svg',
+                                children: [
+                                  r.jsx('circle', {
+                                    cx: '12',
+                                    cy: '12',
+                                    r: '10',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                  }),
+                                  r.jsx('path', {
+                                    d: 'M8 12l2 2 4-4',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                    strokeLinejoin: 'round',
+                                  }),
+                                ],
+                              }),
+                            }),
+                        ],
+                      }),
+                  ],
+                }),
+                j.phone &&
+                  r.jsx('p', {
+                    id: 'phone-error',
+                    className: 'sino-simple-form__field-error',
+                    role: 'alert',
+                    'aria-live': 'polite',
+                    children: j.phone,
+                  }),
+                f.phone &&
+                  !j.phone &&
+                  w(l.phone) &&
+                  r.jsx('p', {
+                    id: 'phone-success',
+                    className: 'sino-simple-form__sr-only',
+                    'aria-live': 'polite',
+                    children: a('fieldValid', 'Field is valid'),
+                  }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    }),
+  Qt = [
+    { name: 'Afghanistan', code: 'AF', flag: '🇦🇫', phonePrefix: '+93' },
+    { name: 'Albania', code: 'AL', flag: '🇦🇱', phonePrefix: '+355' },
+    { name: 'Algeria', code: 'DZ', flag: '🇩🇿', phonePrefix: '+213' },
+    { name: 'American Samoa', code: 'AS', flag: '🇦🇸', phonePrefix: '+1684' },
+    { name: 'Andorra', code: 'AD', flag: '🇦🇩', phonePrefix: '+376' },
+    { name: 'Angola', code: 'AO', flag: '🇦🇴', phonePrefix: '+244' },
+    { name: 'Anguilla', code: 'AI', flag: '🇦🇮', phonePrefix: '+1264' },
+    { name: 'Antarctica', code: 'AQ', flag: '🇦🇶', phonePrefix: '+672' },
+    { name: 'Antigua and Barbuda', code: 'AG', flag: '🇦🇬', phonePrefix: '+1268' },
+    { name: 'Argentina', code: 'AR', flag: '🇦🇷', phonePrefix: '+54' },
+    { name: 'Armenia', code: 'AM', flag: '🇦🇲', phonePrefix: '+374' },
+    { name: 'Aruba', code: 'AW', flag: '🇦🇼', phonePrefix: '+297' },
+    { name: 'Australia', code: 'AU', flag: '🇦🇺', phonePrefix: '+61' },
+    { name: 'Austria', code: 'AT', flag: '🇦🇹', phonePrefix: '+43' },
+    { name: 'Azerbaijan', code: 'AZ', flag: '🇦🇿', phonePrefix: '+994' },
+    { name: 'Bahamas', code: 'BS', flag: '🇧🇸', phonePrefix: '+1242' },
+    { name: 'Bahrain', code: 'BH', flag: '🇧🇭', phonePrefix: '+973' },
+    { name: 'Bangladesh', code: 'BD', flag: '🇧🇩', phonePrefix: '+880' },
+    { name: 'Barbados', code: 'BB', flag: '🇧🇧', phonePrefix: '+1246' },
+    { name: 'Belarus', code: 'BY', flag: '🇧🇾', phonePrefix: '+375' },
+    { name: 'Belgium', code: 'BE', flag: '🇧🇪', phonePrefix: '+32' },
+    { name: 'Belize', code: 'BZ', flag: '🇧🇿', phonePrefix: '+501' },
+    { name: 'Benin', code: 'BJ', flag: '🇧🇯', phonePrefix: '+229' },
+    { name: 'Bermuda', code: 'BM', flag: '🇧🇲', phonePrefix: '+1441' },
+    { name: 'Bhutan', code: 'BT', flag: '🇧🇹', phonePrefix: '+975' },
+    { name: 'Bolivia', code: 'BO', flag: '🇧🇴', phonePrefix: '+591' },
+    { name: 'Bosnia and Herzegovina', code: 'BA', flag: '🇧🇦', phonePrefix: '+387' },
+    { name: 'Botswana', code: 'BW', flag: '🇧🇼', phonePrefix: '+267' },
+    { name: 'Bouvet Island', code: 'BV', flag: '🇧🇻', phonePrefix: '+47' },
+    { name: 'Brazil', code: 'BR', flag: '🇧🇷', phonePrefix: '+55' },
+    { name: 'British Indian Ocean Territory', code: 'IO', flag: '🇮🇴', phonePrefix: '+246' },
+    { name: 'Brunei Darussalam', code: 'BN', flag: '🇧🇳', phonePrefix: '+673' },
+    { name: 'Bulgaria', code: 'BG', flag: '🇧🇬', phonePrefix: '+359' },
+    { name: 'Burkina Faso', code: 'BF', flag: '🇧🇫', phonePrefix: '+226' },
+    { name: 'Burundi', code: 'BI', flag: '🇧🇮', phonePrefix: '+257' },
+    { name: 'Cambodia', code: 'KH', flag: '🇰🇭', phonePrefix: '+855' },
+    { name: 'Cameroon', code: 'CM', flag: '🇨🇲', phonePrefix: '+237' },
+    { name: 'Canada', code: 'CA', flag: '🇨🇦', phonePrefix: '+1' },
+    { name: 'Cape Verde', code: 'CV', flag: '🇨🇻', phonePrefix: '+238' },
+    { name: 'Cayman Islands', code: 'KY', flag: '🇰🇾', phonePrefix: '+1345' },
+    { name: 'Central African Republic', code: 'CF', flag: '🇨🇫', phonePrefix: '+236' },
+    { name: 'Chad', code: 'TD', flag: '🇹🇩', phonePrefix: '+235' },
+    { name: 'Chile', code: 'CL', flag: '🇨🇱', phonePrefix: '+56' },
+    { name: 'China', code: 'CN', flag: '🇨🇳', phonePrefix: '+86' },
+    { name: 'Christmas Island', code: 'CX', flag: '🇨🇽', phonePrefix: '+61' },
+    { name: 'Cocos (Keeling) Islands', code: 'CC', flag: '🇨🇨', phonePrefix: '+61' },
+    { name: 'Colombia', code: 'CO', flag: '🇨🇴', phonePrefix: '+57' },
+    { name: 'Comoros', code: 'KM', flag: '🇰🇲', phonePrefix: '+269' },
+    { name: 'Congo', code: 'CG', flag: '🇨🇬', phonePrefix: '+242' },
+    { name: 'Congo, the Democratic Republic of the', code: 'CD', flag: '🇨🇩', phonePrefix: '+243' },
+    { name: 'Cook Islands', code: 'CK', flag: '🇨🇰', phonePrefix: '+682' },
+    { name: 'Costa Rica', code: 'CR', flag: '🇨🇷', phonePrefix: '+506' },
+    { name: "Cote D'Ivoire", code: 'CI', flag: '🇨🇮', phonePrefix: '+225' },
+    { name: 'Croatia', code: 'HR', flag: '🇭🇷', phonePrefix: '+385' },
+    { name: 'Cuba', code: 'CU', flag: '🇨🇺', phonePrefix: '+53' },
+    { name: 'Cyprus', code: 'CY', flag: '🇨🇾', phonePrefix: '+357' },
+    { name: 'Czech Republic', code: 'CZ', flag: '🇨🇿', phonePrefix: '+420' },
+    { name: 'Denmark', code: 'DK', flag: '🇩🇰', phonePrefix: '+45' },
+    { name: 'Djibouti', code: 'DJ', flag: '🇩🇯', phonePrefix: '+253' },
+    { name: 'Dominica', code: 'DM', flag: '🇩🇲', phonePrefix: '+1767' },
+    { name: 'Dominican Republic', code: 'DO', flag: '🇩🇴', phonePrefix: '+1' },
+    { name: 'Ecuador', code: 'EC', flag: '🇪🇨', phonePrefix: '+593' },
+    { name: 'Egypt', code: 'EG', flag: '🇪🇬', phonePrefix: '+20' },
+    { name: 'El Salvador', code: 'SV', flag: '🇸🇻', phonePrefix: '+503' },
+    { name: 'Equatorial Guinea', code: 'GQ', flag: '🇬🇶', phonePrefix: '+240' },
+    { name: 'Eritrea', code: 'ER', flag: '🇪🇷', phonePrefix: '+291' },
+    { name: 'Estonia', code: 'EE', flag: '🇪🇪', phonePrefix: '+372' },
+    { name: 'Ethiopia', code: 'ET', flag: '🇪🇹', phonePrefix: '+251' },
+    { name: 'Falkland Islands (Malvinas)', code: 'FK', flag: '🇫🇰', phonePrefix: '+500' },
+    { name: 'Faroe Islands', code: 'FO', flag: '🇫🇴', phonePrefix: '+298' },
+    { name: 'Fiji', code: 'FJ', flag: '🇫🇯', phonePrefix: '+679' },
+    { name: 'Finland', code: 'FI', flag: '🇫🇮', phonePrefix: '+358' },
+    { name: 'France', code: 'FR', flag: '🇫🇷', phonePrefix: '+33' },
+    { name: 'French Guiana', code: 'GF', flag: '🇬🇫', phonePrefix: '+594' },
+    { name: 'French Polynesia', code: 'PF', flag: '🇵🇫', phonePrefix: '+689' },
+    { name: 'French Southern Territories', code: 'TF', flag: '🇹🇫', phonePrefix: '+262' },
+    { name: 'Gabon', code: 'GA', flag: '🇬🇦', phonePrefix: '+241' },
+    { name: 'Gambia', code: 'GM', flag: '🇬🇲', phonePrefix: '+220' },
+    { name: 'Georgia', code: 'GE', flag: '🇬🇪', phonePrefix: '+995' },
+    { name: 'Germany', code: 'DE', flag: '🇩🇪', phonePrefix: '+49' },
+    { name: 'Ghana', code: 'GH', flag: '🇬🇭', phonePrefix: '+233' },
+    { name: 'Gibraltar', code: 'GI', flag: '🇬🇮', phonePrefix: '+350' },
+    { name: 'Greece', code: 'GR', flag: '🇬🇷', phonePrefix: '+30' },
+    { name: 'Greenland', code: 'GL', flag: '🇬🇱', phonePrefix: '+299' },
+    { name: 'Grenada', code: 'GD', flag: '🇬🇩', phonePrefix: '+1473' },
+    { name: 'Guadeloupe', code: 'GP', flag: '🇬🇵', phonePrefix: '+590' },
+    { name: 'Guam', code: 'GU', flag: '🇬🇺', phonePrefix: '+1671' },
+    { name: 'Guatemala', code: 'GT', flag: '🇬🇹', phonePrefix: '+502' },
+    { name: 'Guinea', code: 'GN', flag: '🇬🇳', phonePrefix: '+224' },
+    { name: 'Guinea-Bissau', code: 'GW', flag: '🇬🇼', phonePrefix: '+245' },
+    { name: 'Guyana', code: 'GY', flag: '🇬🇾', phonePrefix: '+592' },
+    { name: 'Haiti', code: 'HT', flag: '🇭🇹', phonePrefix: '+509' },
+    { name: 'Heard Island and Mcdonald Islands', code: 'HM', flag: '🇭🇲', phonePrefix: '+672' },
+    { name: 'Holy See (Vatican City State)', code: 'VA', flag: '🇻🇦', phonePrefix: '+379' },
+    { name: 'Honduras', code: 'HN', flag: '🇭🇳', phonePrefix: '+504' },
+    { name: 'Hong Kong', code: 'HK', flag: '🇭🇰', phonePrefix: '+852' },
+    { name: 'Hungary', code: 'HU', flag: '🇭🇺', phonePrefix: '+36' },
+    { name: 'Iceland', code: 'IS', flag: '🇮🇸', phonePrefix: '+354' },
+    { name: 'India', code: 'IN', flag: '🇮🇳', phonePrefix: '+91' },
+    { name: 'Indonesia', code: 'ID', flag: '🇮🇩', phonePrefix: '+62' },
+    { name: 'Iran, Islamic Republic of', code: 'IR', flag: '🇮🇷', phonePrefix: '+98' },
+    { name: 'Iraq', code: 'IQ', flag: '🇮🇶', phonePrefix: '+964' },
+    { name: 'Ireland', code: 'IE', flag: '🇮🇪', phonePrefix: '+353' },
+    { name: 'Israel', code: 'IL', flag: '🇮🇱', phonePrefix: '+972' },
+    { name: 'Italy', code: 'IT', flag: '🇮🇹', phonePrefix: '+39' },
+    { name: 'Jamaica', code: 'JM', flag: '🇯🇲', phonePrefix: '+1876' },
+    { name: 'Japan', code: 'JP', flag: '🇯🇵', phonePrefix: '+81' },
+    { name: 'Jordan', code: 'JO', flag: '🇯🇴', phonePrefix: '+962' },
+    { name: 'Kazakhstan', code: 'KZ', flag: '🇰🇿', phonePrefix: '+7' },
+    { name: 'Kenya', code: 'KE', flag: '🇰🇪', phonePrefix: '+254' },
+    { name: 'Kiribati', code: 'KI', flag: '🇰🇮', phonePrefix: '+686' },
+    { name: 'Korea, Democratic Peoples Republic of', code: 'KP', flag: '🇰🇵', phonePrefix: '+850' },
+    { name: 'Korea, Republic of', code: 'KR', flag: '🇰🇷', phonePrefix: '+82' },
+    { name: 'Kuwait', code: 'KW', flag: '🇰🇼', phonePrefix: '+965' },
+    { name: 'Kyrgyzstan', code: 'KG', flag: '🇰🇬', phonePrefix: '+996' },
+    { name: 'Lao Peoples Democratic Republic', code: 'LA', flag: '🇱🇦', phonePrefix: '+856' },
+    { name: 'Latvia', code: 'LV', flag: '🇱🇻', phonePrefix: '+371' },
+    { name: 'Lebanon', code: 'LB', flag: '🇱🇧', phonePrefix: '+961' },
+    { name: 'Lesotho', code: 'LS', flag: '🇱🇸', phonePrefix: '+266' },
+    { name: 'Liberia', code: 'LR', flag: '🇱🇷', phonePrefix: '+231' },
+    { name: 'Libyan Arab Jamahiriya', code: 'LY', flag: '🇱🇾', phonePrefix: '+218' },
+    { name: 'Liechtenstein', code: 'LI', flag: '🇱🇮', phonePrefix: '+423' },
+    { name: 'Lithuania', code: 'LT', flag: '🇱🇹', phonePrefix: '+370' },
+    { name: 'Luxembourg', code: 'LU', flag: '🇱🇺', phonePrefix: '+352' },
+    { name: 'Macao', code: 'MO', flag: '🇲🇴', phonePrefix: '+853' },
+    {
+      name: 'Macedonia, the Former Yugoslav Republic of',
+      code: 'MK',
+      flag: '🇲🇰',
+      phonePrefix: '+389',
+    },
+    { name: 'Madagascar', code: 'MG', flag: '🇲🇬', phonePrefix: '+261' },
+    { name: 'Malawi', code: 'MW', flag: '🇲🇼', phonePrefix: '+265' },
+    { name: 'Malaysia', code: 'MY', flag: '🇲🇾', phonePrefix: '+60' },
+    { name: 'Maldives', code: 'MV', flag: '🇲🇻', phonePrefix: '+960' },
+    { name: 'Mali', code: 'ML', flag: '🇲🇱', phonePrefix: '+223' },
+    { name: 'Malta', code: 'MT', flag: '🇲🇹', phonePrefix: '+356' },
+    { name: 'Marshall Islands', code: 'MH', flag: '🇲🇭', phonePrefix: '+692' },
+    { name: 'Martinique', code: 'MQ', flag: '🇲🇶', phonePrefix: '+596' },
+    { name: 'Mauritania', code: 'MR', flag: '🇲🇷', phonePrefix: '+222' },
+    { name: 'Mauritius', code: 'MU', flag: '🇲🇺', phonePrefix: '+230' },
+    { name: 'Mayotte', code: 'YT', flag: '🇾🇹', phonePrefix: '+262' },
+    { name: 'Mexico', code: 'MX', flag: '🇲🇽', phonePrefix: '+52' },
+    { name: 'Micronesia, Federated States of', code: 'FM', flag: '🇫🇲', phonePrefix: '+691' },
+    { name: 'Moldova, Republic of', code: 'MD', flag: '🇲🇩', phonePrefix: '+373' },
+    { name: 'Monaco', code: 'MC', flag: '🇲🇨', phonePrefix: '+377' },
+    { name: 'Mongolia', code: 'MN', flag: '🇲🇳', phonePrefix: '+976' },
+    { name: 'Montserrat', code: 'MS', flag: '🇲🇸', phonePrefix: '+1664' },
+    { name: 'Morocco', code: 'MA', flag: '🇲🇦', phonePrefix: '+212' },
+    { name: 'Mozambique', code: 'MZ', flag: '🇲🇿', phonePrefix: '+258' },
+    { name: 'Myanmar', code: 'MM', flag: '🇲🇲', phonePrefix: '+95' },
+    { name: 'Namibia', code: 'NA', flag: '🇳🇦', phonePrefix: '+264' },
+    { name: 'Nauru', code: 'NR', flag: '🇳🇷', phonePrefix: '+674' },
+    { name: 'Nepal', code: 'NP', flag: '🇳🇵', phonePrefix: '+977' },
+    { name: 'Netherlands', code: 'NL', flag: '🇳🇱', phonePrefix: '+31' },
+    { name: 'Netherlands Antilles', code: 'AN', flag: '🇧🇶', phonePrefix: '+599' },
+    { name: 'New Caledonia', code: 'NC', flag: '🇳🇨', phonePrefix: '+687' },
+    { name: 'New Zealand', code: 'NZ', flag: '🇳🇿', phonePrefix: '+64' },
+    { name: 'Nicaragua', code: 'NI', flag: '🇳🇮', phonePrefix: '+505' },
+    { name: 'Niger', code: 'NE', flag: '🇳🇪', phonePrefix: '+227' },
+    { name: 'Nigeria', code: 'NG', flag: '🇳🇬', phonePrefix: '+234' },
+    { name: 'Niue', code: 'NU', flag: '🇳🇺', phonePrefix: '+683' },
+    { name: 'Norfolk Island', code: 'NF', flag: '🇳🇫', phonePrefix: '+672' },
+    { name: 'Northern Mariana Islands', code: 'MP', flag: '🇲🇵', phonePrefix: '+1670' },
+    { name: 'Norway', code: 'NO', flag: '🇳🇴', phonePrefix: '+47' },
+    { name: 'Oman', code: 'OM', flag: '🇴🇲', phonePrefix: '+968' },
+    { name: 'Pakistan', code: 'PK', flag: '🇵🇰', phonePrefix: '+92' },
+    { name: 'Palau', code: 'PW', flag: '🇵🇼', phonePrefix: '+680' },
+    { name: 'Palestinian Territory, Occupied', code: 'PS', flag: '🇵🇸', phonePrefix: '+970' },
+    { name: 'Panama', code: 'PA', flag: '🇵🇦', phonePrefix: '+507' },
+    { name: 'Papua New Guinea', code: 'PG', flag: '🇵🇬', phonePrefix: '+675' },
+    { name: 'Paraguay', code: 'PY', flag: '🇵🇾', phonePrefix: '+595' },
+    { name: 'Peru', code: 'PE', flag: '🇵🇪', phonePrefix: '+51' },
+    { name: 'Philippines', code: 'PH', flag: '🇵🇭', phonePrefix: '+63' },
+    { name: 'Pitcairn', code: 'PN', flag: '🇵🇳', phonePrefix: '+64' },
+    { name: 'Poland', code: 'PL', flag: '🇵🇱', phonePrefix: '+48' },
+    { name: 'Portugal', code: 'PT', flag: '🇵🇹', phonePrefix: '+351' },
+    { name: 'Puerto Rico', code: 'PR', flag: '🇵🇷', phonePrefix: '+1' },
+    { name: 'Qatar', code: 'QA', flag: '🇶🇦', phonePrefix: '+974' },
+    { name: 'Reunion', code: 'RE', flag: '🇷🇪', phonePrefix: '+262' },
+    { name: 'Romania', code: 'RO', flag: '🇷🇴', phonePrefix: '+40' },
+    { name: 'Russian Federation', code: 'RU', flag: '🇷🇺', phonePrefix: '+7' },
+    { name: 'Rwanda', code: 'RW', flag: '🇷🇼', phonePrefix: '+250' },
+    { name: 'Saint Helena', code: 'SH', flag: '🇸🇭', phonePrefix: '+290' },
+    { name: 'Saint Kitts and Nevis', code: 'KN', flag: '🇰🇳', phonePrefix: '+1869' },
+    { name: 'Saint Lucia', code: 'LC', flag: '🇱🇨', phonePrefix: '+1758' },
+    { name: 'Saint Martin', code: 'MF', flag: '🇲🇫', phonePrefix: '+590' },
+    { name: 'Saint Pierre and Miquelon', code: 'PM', flag: '🇵🇲', phonePrefix: '+508' },
+    { name: 'Saint Vincent and the Grenadines', code: 'VC', flag: '🇻🇨', phonePrefix: '+1784' },
+    { name: 'Samoa', code: 'WS', flag: '🇼🇸', phonePrefix: '+685' },
+    { name: 'San Marino', code: 'SM', flag: '🇸🇲', phonePrefix: '+378' },
+    { name: 'Sao Tome and Principe', code: 'ST', flag: '🇸🇹', phonePrefix: '+239' },
+    { name: 'Saudi Arabia', code: 'SA', flag: '🇸🇦', phonePrefix: '+966' },
+    { name: 'Senegal', code: 'SN', flag: '🇸🇳', phonePrefix: '+221' },
+    { name: 'Serbia and Montenegro', code: 'RS', flag: '🇷🇸', phonePrefix: '+381' },
+    { name: 'Seychelles', code: 'SC', flag: '🇸🇨', phonePrefix: '+248' },
+    { name: 'Sierra Leone', code: 'SL', flag: '🇸🇱', phonePrefix: '+232' },
+    { name: 'Singapore', code: 'SG', flag: '🇸🇬', phonePrefix: '+65' },
+    { name: 'Slovakia', code: 'SK', flag: '🇸🇰', phonePrefix: '+421' },
+    { name: 'Slovenia', code: 'SI', flag: '🇸🇮', phonePrefix: '+386' },
+    { name: 'Solomon Islands', code: 'SB', flag: '🇸🇧', phonePrefix: '+677' },
+    { name: 'Somalia', code: 'SO', flag: '🇸🇴', phonePrefix: '+252' },
+    { name: 'South Africa', code: 'ZA', flag: '🇿🇦', phonePrefix: '+27' },
+    {
+      name: 'South Georgia and the South Sandwich Islands',
+      code: 'GS',
+      flag: '🇬🇸',
+      phonePrefix: '+500',
+    },
+    { name: 'Spain', code: 'ES', flag: '🇪🇸', phonePrefix: '+34' },
+    { name: 'Sri Lanka', code: 'LK', flag: '🇱🇰', phonePrefix: '+94' },
+    { name: 'Sudan', code: 'SD', flag: '🇸🇩', phonePrefix: '+249' },
+    { name: 'Suriname', code: 'SR', flag: '🇸🇷', phonePrefix: '+597' },
+    { name: 'Svalbard and Jan Mayen', code: 'SJ', flag: '🇸🇯', phonePrefix: '+47' },
+    { name: 'Swaziland', code: 'SZ', flag: '🇸🇿', phonePrefix: '+268' },
+    { name: 'Sweden', code: 'SE', flag: '🇸🇪', phonePrefix: '+46' },
+    { name: 'Switzerland', code: 'CH', flag: '🇨🇭', phonePrefix: '+41' },
+    { name: 'Syrian Arab Republic', code: 'SY', flag: '🇸🇾', phonePrefix: '+963' },
+    { name: 'Taiwan, Province of China', code: 'TW', flag: '🇹🇼', phonePrefix: '+886' },
+    { name: 'Tajikistan', code: 'TJ', flag: '🇹🇯', phonePrefix: '+992' },
+    { name: 'Tanzania, United Republic of', code: 'TZ', flag: '🇹🇿', phonePrefix: '+255' },
+    { name: 'Thailand', code: 'TH', flag: '🇹🇭', phonePrefix: '+66' },
+    { name: 'Timor-Leste', code: 'TL', flag: '🇹🇱', phonePrefix: '+670' },
+    { name: 'Togo', code: 'TG', flag: '🇹🇬', phonePrefix: '+228' },
+    { name: 'Tokelau', code: 'TK', flag: '🇹🇰', phonePrefix: '+690' },
+    { name: 'Tonga', code: 'TO', flag: '🇹🇴', phonePrefix: '+676' },
+    { name: 'Trinidad and Tobago', code: 'TT', flag: '🇹🇹', phonePrefix: '+1868' },
+    { name: 'Tunisia', code: 'TN', flag: '🇹🇳', phonePrefix: '+216' },
+    { name: 'Turkey', code: 'TR', flag: '🇹🇷', phonePrefix: '+90' },
+    { name: 'Turkmenistan', code: 'TM', flag: '🇹🇲', phonePrefix: '+993' },
+    { name: 'Turks and Caicos Islands', code: 'TC', flag: '🇹🇨', phonePrefix: '+1649' },
+    { name: 'Tuvalu', code: 'TV', flag: '🇹🇻', phonePrefix: '+688' },
+    { name: 'Uganda', code: 'UG', flag: '🇺🇬', phonePrefix: '+256' },
+    { name: 'Ukraine', code: 'UA', flag: '🇺🇦', phonePrefix: '+380' },
+    { name: 'United Arab Emirates', code: 'AE', flag: '🇦🇪', phonePrefix: '+971' },
+    { name: 'United Kingdom', code: 'GB', flag: '🇬🇧', phonePrefix: '+44' },
+    { name: 'United States', code: 'US', flag: '🇺🇸', phonePrefix: '+1' },
+    { name: 'United States Minor Outlying Islands', code: 'UM', flag: '🇺🇲', phonePrefix: '+1' },
+    { name: 'Uruguay', code: 'UY', flag: '🇺🇾', phonePrefix: '+598' },
+    { name: 'Uzbekistan', code: 'UZ', flag: '🇺🇿', phonePrefix: '+998' },
+    { name: 'Vanuatu', code: 'VU', flag: '🇻🇺', phonePrefix: '+678' },
+    { name: 'Venezuela', code: 'VE', flag: '🇻🇪', phonePrefix: '+58' },
+    { name: 'Viet Nam', code: 'VN', flag: '🇻🇳', phonePrefix: '+84' },
+    { name: 'Virgin Islands, British', code: 'VG', flag: '🇻🇬', phonePrefix: '+1284' },
+    { name: 'Virgin Islands, U.s.', code: 'VI', flag: '🇻🇮', phonePrefix: '+1340' },
+    { name: 'Wallis and Futuna', code: 'WF', flag: '🇼🇫', phonePrefix: '+681' },
+    { name: 'Western Sahara', code: 'EH', flag: '🇪🇭', phonePrefix: '+212' },
+    { name: 'Yemen', code: 'YE', flag: '🇾🇪', phonePrefix: '+967' },
+    { name: 'Zambia', code: 'ZM', flag: '🇿🇲', phonePrefix: '+260' },
+    { name: 'Zimbabwe', code: 'ZW', flag: '🇿🇼', phonePrefix: '+263' },
+    { name: 'Curacao', code: 'CW', flag: '🇨🇼', phonePrefix: '+599' },
+  ].sort((l, c) => l.name.localeCompare(c.name)),
+  wm = [
+    { code: 'SHA', name: 'Shanghai', type: 'sea' },
+    { code: 'SZX', name: 'Shenzhen', type: 'sea' },
+    { code: 'NGB', name: 'Ningbo-Zhoushan', type: 'sea' },
+    { code: 'GZH', name: 'Guangzhou', type: 'sea' },
+    { code: 'QIN', name: 'Qingdao', type: 'sea' },
+    { code: 'TJN', name: 'Tianjin', type: 'sea' },
+    { code: 'XMN', name: 'Xiamen', type: 'sea' },
+    { code: 'DLN', name: 'Dalian', type: 'sea' },
+    { code: 'YTN', name: 'Yantian', type: 'sea' },
+    { code: 'LYG', name: 'Lianyungang', type: 'sea' },
+  ],
+  Nm = [
+    { code: 'PEK', name: 'Beijing Capital', type: 'air' },
+    { code: 'PVG', name: 'Shanghai Pudong', type: 'air' },
+    { code: 'CAN', name: 'Guangzhou Baiyun', type: 'air' },
+    { code: 'SZX', name: "Shenzhen Bao'an", type: 'air' },
+    { code: 'CTU', name: 'Chengdu Shuangliu', type: 'air' },
+    { code: 'SHA', name: 'Shanghai Hongqiao', type: 'air' },
+    { code: 'KMG', name: 'Kunming Changshui', type: 'air' },
+    { code: 'XIY', name: "Xi'an Xianyang", type: 'air' },
+    { code: 'HGH', name: 'Hangzhou Xiaoshan', type: 'air' },
+    { code: 'NKG', name: 'Nanjing Lukou', type: 'air' },
+  ],
+  jm = [
+    { code: 'ZIH', name: 'Zhengzhou Rail Terminal', type: 'rail' },
+    { code: 'CQN', name: 'Chongqing Rail Terminal', type: 'rail' },
+    { code: 'XIY', name: "Xi'an Rail Terminal", type: 'rail' },
+    { code: 'WUH', name: 'Wuhan Rail Terminal', type: 'rail' },
+    { code: 'CDU', name: 'Chengdu Rail Terminal', type: 'rail' },
+  ];
+function km(l) {
+  const c = { ...l },
+    a = Qt.find((Z) => Z.code === l.country);
+  a && (c.country = a.name);
+  const N = [...wm, ...Nm, ...jm].find((Z) => Z.code === l.origin);
+  N && (c.origin = N.name);
+  const C = new Date(),
+    j = C.toLocaleDateString('en-CA', { timeZone: 'Asia/Hong_Kong' }),
+    f = C.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hourCycle: 'h23' }),
+    h = `${j}T${f}+08:00`,
+    D = `form-${l.country || 'N/A'}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    z = [];
+  (l.servicesRequested.shipping && z.push('Shipping from China'),
+    l.servicesRequested.sourcing && z.push('Product Sourcing'),
+    l.servicesRequested.dropshipping && z.push('Dropshipping & Fulfillment'),
+    l.servicesRequested.warehousing && z.push('Warehousing & Consolidation'),
+    l.servicesRequested.qc && z.push('Quality Control'),
+    l.servicesRequested.chinaVisits && z.push('China Business Visit'),
+    l.servicesRequested.other && z.push('Other Project'));
+  const b = {
+    submissionId: D,
+    timestamp: h,
+    servicesList: z,
+    contact: {
+      firstName: c.firstName,
+      lastName: c.lastName,
+      email: c.email,
+      phone: c.phone,
+      phoneCountryCode: c.phoneCountryCode,
+      companyName: c.companyName,
+      customerType: c.customerType,
+      shipperType: c.shipperType,
+    },
+    shippingRoute: {
+      destinationCountry: a ? a.name : c.country,
+      destinationCity: c.destCity,
+      destinationZipCode: c.destZipCode,
+      destinationLocationType: c.destLocationType,
+      originCity: c.city,
+      originZipCode: c.zipCode,
+      originLocationType: c.locationType,
+      originPortOfLoading: N ? N.name : c.origin,
+      shippingMode: c.mode,
+      incoterm: c.incoterm,
+    },
+    shippingCargo: {
+      goodsDescription: c.goodsDescription,
+      totalWeight: c.totalWeight,
+      numberOfUnits: c.numberOfUnits,
+      goodsValue: c.goodsValue,
+      goodsCurrency: c.goodsCurrency,
+      areGoodsReady: c.areGoodsReady,
+      annualVolume: c.annualVolume,
+      isPersonalOrHazardous: c.isPersonalOrHazardous,
+      dimensions: c.dimensions,
+      weightPerUnit: c.weightPerUnit,
+      remarks: c.remarks,
+    },
+    servicesRequested: c.servicesRequested,
+    sourcing: c.sourcing,
+    warehousing: c.warehousing,
+    dropshipping: c.dropshipping,
+    qc: c.qc,
+    chinaVisit: c.chinaVisit,
+    otherProject: c.otherProject,
+  };
+  return { submissionId: D, timestamp: h, payload: b };
+}
+async function Sm(l, c) {
+  const w =
+    typeof window < 'u' && window.location.hostname === 'localhost'
+      ? '/api/n8n'
+      : 'https://n8n.srv783609.hstgr.cloud/webhook/5e52c71e-b113-4b3c-8c7d-91c78496ea91';
+  console.log('[submitFormData] Starting submission with payload:', {
+    submissionId: l.submissionId,
+    hasEmail: !!l.email,
+    hasPhone: !!l.phone,
+  });
+  try {
+    const N = await fetch(w, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(l),
+    });
+    if (!N.ok) {
+      let C = '';
+      try {
+        C = await N.text();
+      } catch {
+        C = 'Unknown error';
+      }
+      const j = N.status;
+      console.error('[submitFormData] Webhook failed:', j, C);
+      const f = `We could not send your quote request (status ${j}). Please try again in a few minutes or contact us directly.`;
+      throw (c && c(f), new Error(f));
+    }
+    return (
+      console.log('[submitFormData] Webhook succeeded:', N.status),
+      console.log('[submitFormData] Submission successful, submissionId:', l.submissionId),
+      l.submissionId
+    );
+  } catch (N) {
+    if (
+      (console.error('[submitFormData] Unexpected error during submission:', N),
+      N instanceof Error && N.message.includes('status'))
+    )
+      throw N;
+    if (N instanceof Error && N.name === 'TypeError' && N.message.includes('fetch')) {
+      const j =
+        'Network error: Could not reach our servers. Please check your internet connection and try again.';
+      throw (console.error('[submitFormData] Network error:', N), c && c(j), new Error(j));
+    }
+    const C =
+      'Something went wrong while sending your request. Please try again in a moment or contact us directly.';
+    throw (c && c(C), new Error(C));
+  }
+}
+function tc(l) {
+  var N;
+  if (!l || typeof l != 'string') return { valid: !1, error: 'Email is required' };
+  const c = l.trim();
+  if (c.length === 0) return { valid: !1, error: 'Email is required' };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c))
+    return { valid: !1, error: 'Please enter a valid email address' };
+  const w = (N = c.split('@')[1]) == null ? void 0 : N.toLowerCase();
+  if (w) {
+    const C = {
+      'gmial.com': 'gmail.com',
+      'gmai.com': 'gmail.com',
+      'gmal.com': 'gmail.com',
+      'yaho.com': 'yahoo.com',
+      'hotmial.com': 'hotmail.com',
+    };
+    if (C[w]) return { valid: !1, error: `Did you mean ${c.split('@')[0]}@${C[w]}?` };
+  }
+  return { valid: !0 };
+}
+function rc(l) {
+  if (!l || typeof l != 'string') return { valid: !1, error: 'Phone number is required' };
+  const c = l.trim();
+  if (c.length === 0) return { valid: !1, error: 'Phone number is required' };
+  const a = c.replace(/[\s\-\(\)]/g, '');
+  if (!a.startsWith('+'))
+    return { valid: !1, error: 'Please include country code (e.g., +33 for France, +1 for USA)' };
+  if (a.length < 8)
+    return {
+      valid: !1,
+      error: 'Phone number seems too short. Please include country code and number',
+    };
+  if (a.length > 20)
+    return { valid: !1, error: 'Phone number seems too long. Please check and try again' };
+  const w = a.substring(1);
+  return /^\d+$/.test(w)
+    ? { valid: !0 }
+    : { valid: !1, error: 'Phone number should contain only numbers after the country code' };
+}
+function sc(l, c) {
+  return l == null
+    ? { valid: !1, error: c ? `${c} is required` : 'This field is required' }
+    : typeof l != 'string'
+      ? { valid: !1, error: c ? `${c} is required` : 'This field is required' }
+      : l.trim().length === 0
+        ? { valid: !1, error: c ? `${c} is required` : 'This field is required' }
+        : { valid: !0 };
+}
+function tl(l) {
+  if (!l || typeof l != 'string') return { valid: !1, error: 'Destination country is required' };
+  const c = l.trim();
+  return c.length === 0
+    ? { valid: !1, error: 'Destination country is required' }
+    : /^[A-Z]{2,3}$/i.test(c)
+      ? Qt.find((N) => N.code.toUpperCase() === c.toUpperCase())
+        ? { valid: !0 }
+        : { valid: !1, error: 'Please enter a valid country code' }
+      : c.length <= 2
+        ? { valid: !1, error: 'Country name is too short' }
+        : { valid: !0 };
+}
+function rl(l) {
+  if (!l || typeof l != 'string') return { valid: !1, error: 'City or port is required' };
+  const c = l.trim();
+  return c.length === 0
+    ? { valid: !1, error: 'City or port is required' }
+    : c.length <= 2
+      ? { valid: !1, error: 'City or port name is too short' }
+      : { valid: !0 };
+}
+function oc(l) {
+  if (l == null || l === '') return { valid: !1, error: 'Total weight is required' };
+  const c = typeof l == 'number' ? l.toString() : String(l).trim();
+  if (c.length === 0) return { valid: !1, error: 'Total weight is required' };
+  const a = c.replace(/[\s,]/g, ''),
+    w = parseFloat(a);
+  return isNaN(w)
+    ? { valid: !1, error: 'Please enter a valid weight (numbers only)' }
+    : w <= 0
+      ? { valid: !1, error: 'Weight must be greater than 0' }
+      : w > 1e6
+        ? { valid: !1, error: 'Weight seems too high. Please check and try again' }
+        : { valid: !0 };
+}
+function ol(l, c) {
+  const a = {};
+  switch (l) {
+    case 'services':
+      break;
+    case 'shippingRoute':
+      ((a.country = tl(c.country)), (a.destCity = rl(c.destCity)));
+      break;
+    case 'shippingCargo':
+      a.totalWeight = oc(c.totalWeight);
+      break;
+    case 'contact':
+      ((a.firstName = sc(c.firstName, 'First name')),
+        (a.email = tc(c.email)),
+        (a.phone = rc(c.phone)));
+      break;
+  }
+  return a;
+}
+function Cm(l, c) {
+  const a = ol(l, c);
+  return Object.values(a).every((w) => w.valid);
+}
+const Pm = [
+    { code: 'SHA', name: 'Shanghai', type: 'sea' },
+    { code: 'SZX', name: 'Shenzhen', type: 'sea' },
+    { code: 'NGB', name: 'Ningbo-Zhoushan', type: 'sea' },
+    { code: 'GZH', name: 'Guangzhou', type: 'sea' },
+    { code: 'QIN', name: 'Qingdao', type: 'sea' },
+    { code: 'TJN', name: 'Tianjin', type: 'sea' },
+    { code: 'XMN', name: 'Xiamen', type: 'sea' },
+    { code: 'DLN', name: 'Dalian', type: 'sea' },
+    { code: 'YTN', name: 'Yantian', type: 'sea' },
+    { code: 'LYG', name: 'Lianyungang', type: 'sea' },
+  ],
+  Tm = [
+    { code: 'PEK', name: 'Beijing Capital', type: 'air' },
+    { code: 'PVG', name: 'Shanghai Pudong', type: 'air' },
+    { code: 'CAN', name: 'Guangzhou Baiyun', type: 'air' },
+    { code: 'SZX', name: "Shenzhen Bao'an", type: 'air' },
+    { code: 'CTU', name: 'Chengdu Shuangliu', type: 'air' },
+    { code: 'SHA', name: 'Shanghai Hongqiao', type: 'air' },
+    { code: 'KMG', name: 'Kunming Changshui', type: 'air' },
+    { code: 'XIY', name: "Xi'an Xianyang", type: 'air' },
+    { code: 'HGH', name: 'Hangzhou Xiaoshan', type: 'air' },
+    { code: 'NKG', name: 'Nanjing Lukou', type: 'air' },
+  ],
+  Em = [
+    { code: 'ZIH', name: 'Zhengzhou Rail Terminal', type: 'rail' },
+    { code: 'CQN', name: 'Chongqing Rail Terminal', type: 'rail' },
+    { code: 'XIY', name: "Xi'an Rail Terminal", type: 'rail' },
+    { code: 'WUH', name: 'Wuhan Rail Terminal', type: 'rail' },
+    { code: 'CDU', name: 'Chengdu Rail Terminal', type: 'rail' },
+  ],
+  Lm = ({ formData: l, t: c, selectedServiceLabels: a, orderedSteps: w, onEditStep: N }) => {
+    var z;
+    const C = (b) => {
+        if (!b) return '';
+        const Z = Qt.find((H) => H.code === b || H.name === b);
+        return Z ? Z.name : b;
+      },
+      j = (b) => {
+        if (!b) return '';
+        const H = [...Pm, ...Tm, ...Em].find((Y) => Y.code === b);
+        return H ? H.name : b;
+      },
+      f = (b) =>
+        b
+          ? {
+              Sea: c('modeSea', 'Sea'),
+              Air: c('modeAir', 'Air'),
+              Rail: c('modeRail', 'Rail'),
+              Express: c('modeExpress', 'Express'),
+              not_sure: c('modeNotSure', "I'm not sure"),
+            }[b] || b
+          : '',
+      h = (b) => {
+        if (!b) return '';
+        const Z = String(b).trim();
+        return Z ? `${Z} kg` : '';
+      },
+      O = (b) => w.indexOf(b),
+      D =
+        ((z = l.servicesRequested) == null ? void 0 : z.shipping) === void 0
+          ? !0
+          : l.servicesRequested.shipping;
+    return r.jsxs('div', {
+      className: 'sino-simple-form__review-section',
+      children: [
+        r.jsx('h3', {
+          className: 'sino-simple-form__review-title',
+          children: c('reviewTitle', 'Review your request'),
+        }),
+        r.jsx('p', {
+          className: 'sino-simple-form__review-subtitle',
+          children: c('reviewSubtitle', 'Please review the information below before submitting.'),
+        }),
+        r.jsxs('div', {
+          className: 'sino-simple-form__review-items',
+          children: [
+            a.length > 0 &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__review-item',
+                children: [
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-header',
+                    children: [
+                      r.jsx('span', {
+                        className: 'sino-simple-form__review-item-label',
+                        children: c('reviewServices', 'Services'),
+                      }),
+                      r.jsx('button', {
+                        type: 'button',
+                        className: 'sino-simple-form__review-edit-button',
+                        onClick: () => N(O('services')),
+                        'aria-label': c('reviewEditServices', 'Edit services'),
+                        children: c('reviewEdit', 'Edit'),
+                      }),
+                    ],
+                  }),
+                  r.jsx('div', {
+                    className: 'sino-simple-form__review-item-content',
+                    children: a.join(', '),
+                  }),
+                ],
+              }),
+            D &&
+              (l.country || l.destCity || l.mode || l.origin) &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__review-item',
+                children: [
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-header',
+                    children: [
+                      r.jsx('span', {
+                        className: 'sino-simple-form__review-item-label',
+                        children: c('reviewRoute', 'Route'),
+                      }),
+                      r.jsx('button', {
+                        type: 'button',
+                        className: 'sino-simple-form__review-edit-button',
+                        onClick: () => N(O('shippingRoute')),
+                        'aria-label': c('reviewEditRoute', 'Edit route'),
+                        children: c('reviewEdit', 'Edit'),
+                      }),
+                    ],
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-content',
+                    children: [
+                      r.jsx('div', {
+                        className: 'sino-simple-form__review-item-row',
+                        children:
+                          l.country &&
+                          r.jsxs('div', {
+                            children: [
+                              r.jsxs('strong', {
+                                children: [c('reviewDestination', 'Destination'), ':'],
+                              }),
+                              ' ',
+                              C(l.country),
+                              l.destCity && `, ${l.destCity}`,
+                            ],
+                          }),
+                      }),
+                      l.mode &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewMode', 'Mode'), ':'] }),
+                            ' ',
+                            f(l.mode),
+                          ],
+                        }),
+                      l.origin &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewOrigin', 'Origin'), ':'] }),
+                            ' ',
+                            j(l.origin),
+                            l.city && `, ${l.city}`,
+                          ],
+                        }),
+                    ],
+                  }),
+                ],
+              }),
+            D &&
+              (l.totalWeight || l.goodsDescription || l.numberOfUnits) &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__review-item',
+                children: [
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-header',
+                    children: [
+                      r.jsx('span', {
+                        className: 'sino-simple-form__review-item-label',
+                        children: c('reviewCargo', 'Cargo'),
+                      }),
+                      r.jsx('button', {
+                        type: 'button',
+                        className: 'sino-simple-form__review-edit-button',
+                        onClick: () => N(O('shippingCargo')),
+                        'aria-label': c('reviewEditCargo', 'Edit cargo'),
+                        children: c('reviewEdit', 'Edit'),
+                      }),
+                    ],
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-content',
+                    children: [
+                      l.goodsDescription &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', {
+                              children: [c('reviewDescription', 'Description'), ':'],
+                            }),
+                            ' ',
+                            l.goodsDescription,
+                          ],
+                        }),
+                      l.totalWeight &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewWeight', 'Weight'), ':'] }),
+                            ' ',
+                            h(l.totalWeight),
+                          ],
+                        }),
+                      l.numberOfUnits &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewUnits', 'Units'), ':'] }),
+                            ' ',
+                            l.numberOfUnits,
+                          ],
+                        }),
+                      l.areGoodsReady &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewReady', 'Ready'), ':'] }),
+                            ' ',
+                            c(`goodsReady${l.areGoodsReady}`, l.areGoodsReady),
+                          ],
+                        }),
+                    ],
+                  }),
+                ],
+              }),
+            (l.firstName || l.email || l.phone) &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__review-item',
+                children: [
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-header',
+                    children: [
+                      r.jsx('span', {
+                        className: 'sino-simple-form__review-item-label',
+                        children: c('reviewContact', 'Contact'),
+                      }),
+                      r.jsx('button', {
+                        type: 'button',
+                        className: 'sino-simple-form__review-edit-button',
+                        onClick: () => N(O('contact')),
+                        'aria-label': c('reviewEditContact', 'Edit contact'),
+                        children: c('reviewEdit', 'Edit'),
+                      }),
+                    ],
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__review-item-content',
+                    children: [
+                      l.firstName &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewName', 'Name'), ':'] }),
+                            ' ',
+                            l.firstName,
+                            l.lastName && ` ${l.lastName}`,
+                          ],
+                        }),
+                      l.email &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewEmail', 'Email'), ':'] }),
+                            ' ',
+                            l.email,
+                          ],
+                        }),
+                      l.phone &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewPhone', 'Phone'), ':'] }),
+                            ' ',
+                            l.phone,
+                          ],
+                        }),
+                      l.companyName &&
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__review-item-row',
+                          children: [
+                            r.jsxs('strong', { children: [c('reviewCompany', 'Company'), ':'] }),
+                            ' ',
+                            l.companyName,
+                          ],
+                        }),
+                    ],
+                  }),
+                ],
+              }),
+          ],
+        }),
+      ],
+    });
+  },
+  Rm = ({
+    formData: l,
+    t: c,
+    selectedServiceLabels: a,
+    submitError: w,
+    setSubmitError: N,
+    isSubmitting: C,
+    setIsSubmitting: j,
+    scrollToFirstError: f,
+    onSubmissionSuccess: h,
+    setFieldErrors: O,
+    setFieldTouched: D,
+    orderedSteps: z,
+    onEditStep: b,
+  }) =>
+    r.jsx('section', {
+      className: 'sino-simple-form__section sino-simple-form__section--footer',
+      children: r.jsxs('div', {
+        className: 'sino-simple-form__footer',
+        children: [
+          r.jsx(Lm, {
+            formData: l,
+            t: c,
+            selectedServiceLabels: a,
+            orderedSteps: z,
+            onEditStep: b,
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__footer-text',
+            children: [
+              r.jsx('p', {
+                className: 'sino-simple-form__footer-title',
+                children: c('simpleFooterTitle', 'Ready to get your plan?'),
+              }),
+              r.jsx('p', {
+                id: 'sino-simple-form__footer-subtitle',
+                className: 'sino-simple-form__footer-subtitle',
+                children: c(
+                  'simpleFooterSubtitle',
+                  'A SINO expert (not a bot) will email you a first quote within 24h (Mon–Fri).'
+                ),
+              }),
+              r.jsx('p', {
+                className: 'sino-simple-form__footer-trust',
+                children: c(
+                  'simpleFooterTrust',
+                  'No spam. Just one clear plan, with transparent pricing and timelines.'
+                ),
+              }),
+            ],
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__footer-actions',
+            children: [
+              w && r.jsx('p', { className: 'sino-simple-form__footer-error', children: w }),
+              r.jsx('button', {
+                type: 'button',
+                className: 'sino-simple-form__cta-button',
+                'aria-label': c('getQuoteAria', 'Submit form to get your quote'),
+                'aria-describedby': 'sino-simple-form__footer-subtitle',
+                onClick: async () => {
+                  var me;
+                  if (C) return;
+                  console.log(
+                    '[SimpleFooterSection] Button clicked, validating all required fields...'
+                  );
+                  const Z =
+                      ((me = l.servicesRequested) == null ? void 0 : me.shipping) === void 0
+                        ? !0
+                        : l.servicesRequested.shipping,
+                    H = [];
+                  (Z && H.push('shippingRoute', 'shippingCargo'), H.push('contact'));
+                  const Y = {},
+                    P = {};
+                  for (const re of H) {
+                    const ue = ol(re, l);
+                    Object.entries(ue).forEach(([fe, ve]) => {
+                      !ve.valid && ve.error && ((Y[fe] = ve.error), (P[fe] = !0));
+                    });
+                  }
+                  if ((O(Y), D((re) => ({ ...re, ...P })), Object.keys(Y).length > 0)) {
+                    const re = Object.keys(Y);
+                    console.error('[SimpleFooterSection] Validation failed for fields:', re);
+                    const ue = re.length,
+                      fe =
+                        ue === 1
+                          ? c(
+                              'simpleSubmitErrorSingle',
+                              'Please complete the required field before submitting.'
+                            )
+                          : c(
+                              'simpleSubmitErrorMultiple',
+                              `Please complete ${ue} required fields before submitting.`
+                            );
+                    (N(fe),
+                      setTimeout(() => {
+                        f();
+                      }, 100));
+                    return;
+                  }
+                  (console.log(
+                    '[SimpleFooterSection] All validations passed, starting submission...'
+                  ),
+                    N(null),
+                    j(!0));
+                  let pe = !1;
+                  try {
+                    console.log('[SimpleFooterSection] Preparing submission payload...');
+                    const { submissionId: re, payload: ue } = km(l);
+                    (console.log('[SimpleFooterSection] Payload prepared, submissionId:', re),
+                      console.log('[SimpleFooterSection] Submitting to webhooks...'));
+                    const fe = await Sm(ue, (ve) => {
+                      (console.error('[SimpleFooterSection] Error callback triggered:', ve),
+                        (pe = !0),
+                        N(ve));
+                    });
+                    (console.log(
+                      '[SimpleFooterSection] Submission successful, calling onSubmissionSuccess with:',
+                      fe
+                    ),
+                      h(fe));
+                  } catch (re) {
+                    if (
+                      (console.error('[SimpleFooterSection] Submission error caught:', re),
+                      !pe && re instanceof Error)
+                    ) {
+                      const ue = re.message || 'An error occurred. Please try again.';
+                      (console.error('[SimpleFooterSection] Setting error message:', ue), N(ue));
+                    }
+                  } finally {
+                    j(!1);
+                  }
+                },
+                disabled: C,
+                children: C
+                  ? c('simpleFooterCtaLoading', 'Sending your request…')
+                  : c('simpleFooterCta', 'Get my quote'),
+              }),
+              r.jsx('p', {
+                className: 'sino-simple-form__footer-note',
+                children: c(
+                  'simpleFooterNote',
+                  'By submitting, you agree that SINO Shipping may contact you about this request.'
+                ),
+              }),
+            ],
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__footer-trust-badges',
+            children: [
+              r.jsxs('a', {
+                href: 'https://www.sino-shipping.com/privacy-policy',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                className: 'sino-simple-form__footer-trust-badge',
+                'aria-label': c('trustBadgeGDPR', 'GDPR Compliant'),
+                children: [
+                  r.jsxs('svg', {
+                    width: '20',
+                    height: '20',
+                    viewBox: '0 0 24 24',
+                    fill: 'none',
+                    xmlns: 'http://www.w3.org/2000/svg',
+                    children: [
+                      r.jsx('rect', {
+                        x: '3',
+                        y: '3',
+                        width: '18',
+                        height: '18',
+                        rx: '2',
+                        stroke: 'currentColor',
+                        strokeWidth: '2',
+                        strokeLinecap: 'round',
+                        strokeLinejoin: 'round',
+                      }),
+                      r.jsx('path', {
+                        d: 'M9 12l2 2 4-4',
+                        stroke: 'currentColor',
+                        strokeWidth: '2',
+                        strokeLinecap: 'round',
+                        strokeLinejoin: 'round',
+                      }),
+                    ],
+                  }),
+                  r.jsx('span', {
+                    className: 'sino-simple-form__footer-trust-badge-text',
+                    children: c('trustBadgeGDPR', 'GDPR Compliant'),
+                  }),
+                ],
+              }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__footer-trust-badge',
+                'aria-label': c('trustBadgeSecure', 'Secure & Encrypted'),
+                children: [
+                  r.jsxs('svg', {
+                    width: '20',
+                    height: '20',
+                    viewBox: '0 0 24 24',
+                    fill: 'none',
+                    xmlns: 'http://www.w3.org/2000/svg',
+                    children: [
+                      r.jsx('rect', {
+                        x: '3',
+                        y: '11',
+                        width: '18',
+                        height: '11',
+                        rx: '2',
+                        stroke: 'currentColor',
+                        strokeWidth: '2',
+                        strokeLinecap: 'round',
+                        strokeLinejoin: 'round',
+                      }),
+                      r.jsx('path', {
+                        d: 'M7 11V7a5 5 0 0 1 10 0v4',
+                        stroke: 'currentColor',
+                        strokeWidth: '2',
+                        strokeLinecap: 'round',
+                        strokeLinejoin: 'round',
+                      }),
+                    ],
+                  }),
+                  r.jsx('span', {
+                    className: 'sino-simple-form__footer-trust-badge-text',
+                    children: c('trustBadgeSecure', 'Secure & Encrypted'),
+                  }),
+                ],
+              }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__footer-trust-badge',
+                'aria-label': c('trustBadgeNoSpam', 'No Spam Guarantee'),
+                children: [
+                  r.jsxs('svg', {
+                    width: '20',
+                    height: '20',
+                    viewBox: '0 0 24 24',
+                    fill: 'none',
+                    xmlns: 'http://www.w3.org/2000/svg',
+                    children: [
+                      r.jsx('path', {
+                        d: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z',
+                        stroke: 'currentColor',
+                        strokeWidth: '2',
+                        strokeLinecap: 'round',
+                        strokeLinejoin: 'round',
+                      }),
+                      r.jsx('line', {
+                        x1: '18',
+                        y1: '6',
+                        x2: '18',
+                        y2: '6',
+                        stroke: 'currentColor',
+                        strokeWidth: '2',
+                        strokeLinecap: 'round',
+                      }),
+                    ],
+                  }),
+                  r.jsx('span', {
+                    className: 'sino-simple-form__footer-trust-badge-text',
+                    children: c('trustBadgeNoSpam', 'No Spam Guarantee'),
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
+    });
+function bm(l, c, a, w) {
+  if (c - (l + 1) <= 0) return { minutes: 0, message: 'Almost done!', isAlmostDone: !0 };
+  let C = 0,
+    j = 0;
+  for (const z of a) {
+    const b = nl(z, w);
+    ((C += b.total), (j += b.filled));
+  }
+  const f = {
+    services: 15,
+    shippingRoute: 45,
+    shippingCargo: 60,
+    contact: 30,
+    sourcing: 45,
+    warehousing: 45,
+    dropshipping: 45,
+    qc: 45,
+    chinaVisit: 60,
+  };
+  let h = 0;
+  for (let z = l + 1; z < a.length; z++) {
+    const b = a[z],
+      Z = f[b] || 90,
+      H = nl(b, w),
+      Y = H.total > 0 ? H.filled / H.total : 0,
+      P = Z * (1 - Y * 0.5);
+    h += P;
+  }
+  const O = Math.ceil(h / 60);
+  let D;
+  return (
+    O <= 1
+      ? (D = 'Almost done!')
+      : O <= 2
+        ? (D = `~${O} minute${O > 1 ? 's' : ''} remaining`)
+        : (D = `~${O} minutes remaining`),
+    { minutes: O, message: D, isAlmostDone: O <= 1 }
+  );
+}
+const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, t: N }) => {
+    const C = W.useMemo(() => bm(l, c, a, w), [l, c, a, w]);
+    return r.jsxs('div', {
+      className: `sino-simple-form__time-estimate${C.isAlmostDone ? ' sino-simple-form__time-estimate--almost-done' : ''}`,
+      role: 'status',
+      'aria-live': 'polite',
+      children: [
+        r.jsx('div', {
+          className: 'sino-simple-form__time-estimate-icon',
+          children: r.jsxs('svg', {
+            width: '16',
+            height: '16',
+            viewBox: '0 0 24 24',
+            fill: 'none',
+            xmlns: 'http://www.w3.org/2000/svg',
+            children: [
+              r.jsx('circle', {
+                cx: '12',
+                cy: '12',
+                r: '10',
+                stroke: 'currentColor',
+                strokeWidth: '2',
+                strokeLinecap: 'round',
+                strokeLinejoin: 'round',
+              }),
+              r.jsx('polyline', {
+                points: '12 6 12 12 16 14',
+                stroke: 'currentColor',
+                strokeWidth: '2',
+                strokeLinecap: 'round',
+                strokeLinejoin: 'round',
+              }),
+            ],
+          }),
+        }),
+        r.jsx('span', {
+          className: 'sino-simple-form__time-estimate-text',
+          children: C.isAlmostDone
+            ? N('timeEstimateAlmostDone', C.message)
+            : N('timeEstimateRemaining', C.message),
+        }),
+      ],
+    });
+  },
+  Fm = ({
+    currentStep: l,
+    totalSteps: c,
+    onNext: a,
+    onPrevious: w,
+    isFirstStep: N,
+    isLastStep: C,
+    orderedSteps: j,
+    formData: f,
+    t: h,
+  }) =>
+    r.jsxs('div', {
+      className: 'sino-simple-form__step-navigation',
+      children: [
+        r.jsx('div', {
+          className: 'sino-simple-form__step-progress',
+          children: r.jsx('div', {
+            className: 'sino-simple-form__step-progress-bar',
+            children: r.jsx('div', {
+              className: 'sino-simple-form__step-progress-fill',
+              style: { width: `${((l + 1) / c) * 100}%` },
+            }),
+          }),
+        }),
+        r.jsx(Mm, { currentStepIndex: l, totalSteps: c, orderedSteps: j, formData: f, t: h }),
+        r.jsxs('div', {
+          className: 'sino-simple-form__step-buttons',
+          children: [
+            !N &&
+              r.jsxs('button', {
+                type: 'button',
+                className: 'sino-simple-form__step-button sino-simple-form__step-button--previous',
+                onClick: w,
+                'aria-label': h('previousStepAria', `Go to previous step, step ${l} of ${c}`),
+                onKeyDown: (O) => {
+                  (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), w());
+                },
+                children: [
+                  r.jsx('span', {
+                    className: 'sino-simple-form__step-button-arrow',
+                    'aria-hidden': 'true',
+                    children: '←',
+                  }),
+                  h('previousStep', 'Previous'),
+                ],
+              }),
+            !C &&
+              r.jsxs('button', {
+                type: 'button',
+                className: 'sino-simple-form__step-button sino-simple-form__step-button--next',
+                onClick: a,
+                'aria-label': h('nextStepAria', `Go to next step, step ${l + 2} of ${c}`),
+                onKeyDown: (O) => {
+                  (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), a());
+                },
+                children: [
+                  h('nextStep', 'Next'),
+                  r.jsx('span', {
+                    className: 'sino-simple-form__step-button-arrow',
+                    'aria-hidden': 'true',
+                    children: '→',
+                  }),
+                ],
+              }),
+          ],
+        }),
+      ],
+    }),
+  zm = {
+    FR: [
+      'Paris',
+      'Lyon',
+      'Marseille',
+      'Toulouse',
+      'Nice',
+      'Nantes',
+      'Strasbourg',
+      'Montpellier',
+      'Bordeaux',
+      'Lille',
+      'Le Havre',
+    ],
+    US: [
+      'New York',
+      'Los Angeles',
+      'Chicago',
+      'Houston',
+      'Phoenix',
+      'Philadelphia',
+      'San Antonio',
+      'San Diego',
+      'Dallas',
+      'San Jose',
+      'Miami',
+    ],
+    GB: [
+      'London',
+      'Manchester',
+      'Birmingham',
+      'Glasgow',
+      'Liverpool',
+      'Leeds',
+      'Edinburgh',
+      'Bristol',
+      'Cardiff',
+      'Belfast',
+    ],
+    DE: [
+      'Berlin',
+      'Munich',
+      'Hamburg',
+      'Frankfurt',
+      'Cologne',
+      'Stuttgart',
+      'Düsseldorf',
+      'Dortmund',
+      'Essen',
+      'Leipzig',
+    ],
+    IT: [
+      'Rome',
+      'Milan',
+      'Naples',
+      'Turin',
+      'Palermo',
+      'Genoa',
+      'Bologna',
+      'Florence',
+      'Bari',
+      'Catania',
+    ],
+    ES: [
+      'Madrid',
+      'Barcelona',
+      'Valencia',
+      'Seville',
+      'Zaragoza',
+      'Málaga',
+      'Murcia',
+      'Palma',
+      'Las Palmas',
+      'Bilbao',
+    ],
+    NL: [
+      'Amsterdam',
+      'Rotterdam',
+      'The Hague',
+      'Utrecht',
+      'Eindhoven',
+      'Groningen',
+      'Tilburg',
+      'Almere',
+      'Breda',
+      'Nijmegen',
+    ],
+    BE: [
+      'Brussels',
+      'Antwerp',
+      'Ghent',
+      'Charleroi',
+      'Liège',
+      'Bruges',
+      'Namur',
+      'Leuven',
+      'Mons',
+      'Aalst',
+    ],
+    CA: [
+      'Toronto',
+      'Montreal',
+      'Vancouver',
+      'Calgary',
+      'Edmonton',
+      'Ottawa',
+      'Winnipeg',
+      'Quebec City',
+      'Hamilton',
+      'Kitchener',
+    ],
+    AU: [
+      'Sydney',
+      'Melbourne',
+      'Brisbane',
+      'Perth',
+      'Adelaide',
+      'Gold Coast',
+      'Newcastle',
+      'Canberra',
+      'Sunshine Coast',
+      'Wollongong',
+    ],
+    CN: [
+      'Shanghai',
+      'Beijing',
+      'Guangzhou',
+      'Shenzhen',
+      'Chengdu',
+      'Hangzhou',
+      'Wuhan',
+      "Xi'an",
+      'Nanjing',
+      'Tianjin',
+    ],
+    JP: [
+      'Tokyo',
+      'Yokohama',
+      'Osaka',
+      'Nagoya',
+      'Sapporo',
+      'Fukuoka',
+      'Kobe',
+      'Kawasaki',
+      'Kyoto',
+      'Saitama',
+    ],
+    KR: [
+      'Seoul',
+      'Busan',
+      'Incheon',
+      'Daegu',
+      'Daejeon',
+      'Gwangju',
+      'Suwon',
+      'Ulsan',
+      'Changwon',
+      'Goyang',
+    ],
+    IN: [
+      'Mumbai',
+      'Delhi',
+      'Bangalore',
+      'Hyderabad',
+      'Ahmedabad',
+      'Chennai',
+      'Kolkata',
+      'Surat',
+      'Pune',
+      'Jaipur',
+    ],
+    BR: [
+      'São Paulo',
+      'Rio de Janeiro',
+      'Brasília',
+      'Salvador',
+      'Fortaleza',
+      'Belo Horizonte',
+      'Manaus',
+      'Curitiba',
+      'Recife',
+      'Porto Alegre',
+    ],
+    MX: [
+      'Mexico City',
+      'Guadalajara',
+      'Monterrey',
+      'Puebla',
+      'Tijuana',
+      'León',
+      'Juárez',
+      'Torreón',
+      'Querétaro',
+      'San Luis Potosí',
+    ],
+    AR: [
+      'Buenos Aires',
+      'Córdoba',
+      'Rosario',
+      'Mendoza',
+      'Tucumán',
+      'La Plata',
+      'Mar del Plata',
+      'Salta',
+      'Santa Fe',
+      'San Juan',
+    ],
+    ZA: [
+      'Johannesburg',
+      'Cape Town',
+      'Durban',
+      'Pretoria',
+      'Port Elizabeth',
+      'Bloemfontein',
+      'East London',
+      'Kimberley',
+      'Polokwane',
+      'Nelspruit',
+    ],
+    AE: [
+      'Dubai',
+      'Abu Dhabi',
+      'Sharjah',
+      'Al Ain',
+      'Ajman',
+      'Ras Al Khaimah',
+      'Fujairah',
+      'Umm Al Quwain',
+    ],
+    SA: [
+      'Riyadh',
+      'Jeddah',
+      'Mecca',
+      'Medina',
+      'Dammam',
+      'Khobar',
+      'Taif',
+      'Abha',
+      'Tabuk',
+      'Buraydah',
+    ],
+    TR: [
+      'Istanbul',
+      'Ankara',
+      'Izmir',
+      'Bursa',
+      'Antalya',
+      'Adana',
+      'Gaziantep',
+      'Konya',
+      'Kayseri',
+      'Mersin',
+    ],
+    PL: [
+      'Warsaw',
+      'Kraków',
+      'Łódź',
+      'Wrocław',
+      'Poznań',
+      'Gdańsk',
+      'Szczecin',
+      'Bydgoszcz',
+      'Lublin',
+      'Katowice',
+    ],
+    SE: [
+      'Stockholm',
+      'Gothenburg',
+      'Malmö',
+      'Uppsala',
+      'Västerås',
+      'Örebro',
+      'Linköping',
+      'Helsingborg',
+      'Jönköping',
+      'Norrköping',
+    ],
+    NO: [
+      'Oslo',
+      'Bergen',
+      'Trondheim',
+      'Stavanger',
+      'Bærum',
+      'Kristiansand',
+      'Fredrikstad',
+      'Tromsø',
+      'Sandnes',
+      'Asker',
+    ],
+    DK: [
+      'Copenhagen',
+      'Aarhus',
+      'Odense',
+      'Aalborg',
+      'Esbjerg',
+      'Randers',
+      'Kolding',
+      'Horsens',
+      'Vejle',
+      'Roskilde',
+    ],
+    FI: [
+      'Helsinki',
+      'Espoo',
+      'Tampere',
+      'Vantaa',
+      'Oulu',
+      'Turku',
+      'Jyväskylä',
+      'Lahti',
+      'Kuopio',
+      'Pori',
+    ],
+    CH: [
+      'Zurich',
+      'Geneva',
+      'Basel',
+      'Bern',
+      'Lausanne',
+      'Winterthur',
+      'Lucerne',
+      'St. Gallen',
+      'Lugano',
+      'Biel',
+    ],
+    AT: [
+      'Vienna',
+      'Graz',
+      'Linz',
+      'Salzburg',
+      'Innsbruck',
+      'Klagenfurt',
+      'Villach',
+      'Wels',
+      'Sankt Pölten',
+      'Dornbirn',
+    ],
+    PT: [
+      'Lisbon',
+      'Porto',
+      'Vila Nova de Gaia',
+      'Amadora',
+      'Braga',
+      'Funchal',
+      'Coimbra',
+      'Setúbal',
+      'Almada',
+      'Agualva-Cacém',
+    ],
+    GR: [
+      'Athens',
+      'Thessaloniki',
+      'Patras',
+      'Heraklion',
+      'Larissa',
+      'Volos',
+      'Rhodes',
+      'Ioannina',
+      'Chania',
+      'Kavala',
+    ],
+    IE: [
+      'Dublin',
+      'Cork',
+      'Limerick',
+      'Galway',
+      'Waterford',
+      'Drogheda',
+      'Dundalk',
+      'Swords',
+      'Bray',
+      'Navan',
+    ],
+    NZ: [
+      'Auckland',
+      'Wellington',
+      'Christchurch',
+      'Hamilton',
+      'Tauranga',
+      'Napier',
+      'Dunedin',
+      'Palmerston North',
+      'Nelson',
+      'Rotorua',
+    ],
+    SG: ['Singapore'],
+    MY: [
+      'Kuala Lumpur',
+      'George Town',
+      'Ipoh',
+      'Shah Alam',
+      'Petaling Jaya',
+      'Subang Jaya',
+      'Johor Bahru',
+      'Kota Kinabalu',
+      'Kuching',
+      'Kota Bharu',
+    ],
+    TH: [
+      'Bangkok',
+      'Nonthaburi',
+      'Nakhon Ratchasima',
+      'Chiang Mai',
+      'Hat Yai',
+      'Udon Thani',
+      'Pak Kret',
+      'Khon Kaen',
+      'Nakhon Si Thammarat',
+      'Ubon Ratchathani',
+    ],
+    VN: [
+      'Ho Chi Minh City',
+      'Hanoi',
+      'Da Nang',
+      'Haiphong',
+      'Can Tho',
+      'Bien Hoa',
+      'Hue',
+      'Nha Trang',
+      'Vung Tau',
+      'Quy Nhon',
+    ],
+    PH: [
+      'Manila',
+      'Quezon City',
+      'Caloocan',
+      'Davao City',
+      'Cebu City',
+      'Zamboanga City',
+      'Antipolo',
+      'Pasig',
+      'Cagayan de Oro',
+      'Valenzuela',
+    ],
+    ID: [
+      'Jakarta',
+      'Surabaya',
+      'Bandung',
+      'Medan',
+      'Semarang',
+      'Palembang',
+      'Makassar',
+      'Tangerang',
+      'Depok',
+      'South Tangerang',
+    ],
+  },
+  Zu = ({
+    id: l,
+    name: c,
+    value: a,
+    onChange: w,
+    onBlur: N,
+    onSelect: C,
+    onSelectWithValidation: j,
+    placeholder: f,
+    options: h,
+    isLoading: O = !1,
+    className: D = '',
+    inputRef: z,
+    error: b,
+    touched: Z,
+    isValid: H,
+    maxResults: Y = 10,
+  }) => {
+    const [P, I] = W.useState(!1),
+      [pe, me] = W.useState(-1),
+      [re, ue] = W.useState(''),
+      [fe, ve] = W.useState(!1),
+      Ie = W.useRef(null),
+      Ge = W.useRef(null),
+      We = W.useRef(null),
+      cn = W.useRef(!1),
+      Ae = h.length > 0 && h[0].flag !== void 0;
+    W.useEffect(() => {
+      if (!a) {
+        ue('');
+        return;
+      }
+      if (Ae) {
+        const p = h.find((k) => k.value === a);
+        ue(p ? p.label : a);
+      } else ue(a);
+    }, [a, h, Ae]);
+    const X = h
+      .filter((p) => {
+        if (!re.trim()) return !1;
+        const k = re.toLowerCase();
+        return (
+          p.label.toLowerCase().includes(k) ||
+          p.value.toLowerCase().includes(k) ||
+          (Ae && p.value.toLowerCase() === k)
+        );
+      })
+      .slice(0, Y);
+    (W.useEffect(
+      () => (
+        re.trim() && P
+          ? (ve(!0),
+            We.current && clearTimeout(We.current),
+            (We.current = setTimeout(() => {
+              ve(!1);
+            }, 300)))
+          : ve(!1),
+        () => {
+          We.current && clearTimeout(We.current);
+        }
+      ),
+      [re, P]
+    ),
+      W.useEffect(() => {
+        const p = (k) => {
+          Ie.current && !Ie.current.contains(k.target) && (I(!1), me(-1));
+        };
+        if (P)
+          return (
+            document.addEventListener('mousedown', p),
+            () => document.removeEventListener('mousedown', p)
+          );
+      }, [P]));
+    const Te = (p) => {
+        const k = p.target.value;
+        (ue(k), w(p), I(!0), me(-1));
+      },
+      Ve = () => {
+        X.length > 0 && I(!0);
+      },
+      Re = (p) => {
+        ((cn.current = !0), ue(p.label), I(!1), me(-1), j && j(p.value));
+        const k = { target: { name: c, value: p.value } };
+        (w(k),
+          C && C(p.value),
+          setTimeout(() => {
+            cn.current = !1;
+          }, 300));
+      },
+      K = (p) => {
+        var k;
+        if (!P || X.length === 0) {
+          p.key === 'ArrowDown' && X.length > 0 && (I(!0), me(0));
+          return;
+        }
+        switch (p.key) {
+          case 'ArrowDown':
+            (p.preventDefault(),
+              me((Q) => {
+                const ie = Q < X.length - 1 ? Q + 1 : Q;
+                if (Ge.current && ie >= 0) {
+                  const se = Ge.current.children[ie];
+                  se && se.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+                return ie;
+              }));
+            break;
+          case 'ArrowUp':
+            (p.preventDefault(),
+              me((Q) => {
+                const ie = Q > 0 ? Q - 1 : -1;
+                if (Ge.current && ie >= 0) {
+                  const se = Ge.current.children[ie];
+                  se && se.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+                return ie;
+              }));
+            break;
+          case 'Enter':
+            (p.preventDefault(), pe >= 0 && pe < X.length && Re(X[pe]));
+            break;
+          case 'Escape':
+            (p.preventDefault(), I(!1), me(-1), (k = z.current) == null || k.focus());
+            break;
+          case 'Tab':
+            (I(!1), me(-1));
+            break;
+        }
+      },
+      F = O || fe,
+      V = F && re.trim() && P,
+      A = F && !(Z && !b && H);
+    return r.jsxs('div', {
+      ref: Ie,
+      className: 'sino-simple-form__autocomplete-wrapper',
+      children: [
+        r.jsxs('div', {
+          className: 'sino-simple-form__autocomplete-input-wrapper',
+          children: [
+            r.jsx('input', {
+              ref: z,
+              id: l,
+              name: c,
+              type: 'text',
+              value: re,
+              onChange: Te,
+              onFocus: Ve,
+              onBlur: () => {
+                setTimeout(() => {
+                  (cn.current || N(), I(!1), me(-1));
+                }, 200);
+              },
+              onKeyDown: K,
+              placeholder: f,
+              className: `sino-simple-form__input${b ? ' sino-simple-form__input--error' : ''}${Z && !b && H ? ' sino-simple-form__input--success' : ''}${F && !(Z && !b && H) ? ' sino-simple-form__input--loading' : ''}${D ? ` ${D}` : ''}`,
+              autoComplete: 'off',
+              'aria-autocomplete': 'list',
+              'aria-expanded': P,
+              'aria-haspopup': 'listbox',
+              'aria-controls': `${l}-listbox`,
+              'aria-label': f,
+              'aria-describedby': b ? `${l}-error` : Z && !b && H ? `${l}-success` : void 0,
+              'aria-invalid': b ? 'true' : 'false',
+              'aria-activedescendant': pe >= 0 ? `${l}-option-${pe}` : void 0,
+            }),
+            A &&
+              r.jsx('span', {
+                className: 'sino-simple-form__autocomplete-spinner',
+                'aria-hidden': 'true',
+                children: r.jsxs('svg', {
+                  width: '16',
+                  height: '16',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  children: [
+                    r.jsx('circle', {
+                      cx: '12',
+                      cy: '12',
+                      r: '10',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeDasharray: '32',
+                      strokeDashoffset: '32',
+                      opacity: '0.3',
+                    }),
+                    r.jsx('circle', {
+                      cx: '12',
+                      cy: '12',
+                      r: '10',
+                      stroke: 'currentColor',
+                      strokeWidth: '2',
+                      strokeLinecap: 'round',
+                      strokeDasharray: '32',
+                      strokeDashoffset: '24',
+                      children: r.jsx('animateTransform', {
+                        attributeName: 'transform',
+                        type: 'rotate',
+                        from: '0 12 12',
+                        to: '360 12 12',
+                        dur: '0.8s',
+                        repeatCount: 'indefinite',
+                      }),
+                    }),
+                  ],
+                }),
+              }),
+          ],
+        }),
+        P &&
+          (X.length > 0 || V) &&
+          r.jsx('ul', {
+            ref: Ge,
+            id: `${l}-listbox`,
+            className: 'sino-simple-form__autocomplete-list',
+            role: 'listbox',
+            children: V
+              ? r.jsxs(r.Fragment, {
+                  children: [
+                    Array.from({ length: 3 }).map((p, k) =>
+                      r.jsxs(
+                        'li',
+                        {
+                          className: 'sino-simple-form__autocomplete-skeleton',
+                          role: 'option',
+                          children: [
+                            Ae &&
+                              r.jsx('span', {
+                                className: 'sino-simple-form__autocomplete-skeleton-flag',
+                              }),
+                            r.jsx('span', {
+                              className: 'sino-simple-form__autocomplete-skeleton-text',
+                            }),
+                          ],
+                        },
+                        `skeleton-${k}`
+                      )
+                    ),
+                    r.jsx('li', {
+                      className: 'sino-simple-form__autocomplete-loading',
+                      children: r.jsx('span', {
+                        className: 'sino-simple-form__autocomplete-loading-text',
+                        children: Ae ? 'Loading countries...' : 'Loading suggestions...',
+                      }),
+                    }),
+                  ],
+                })
+              : X.map((p, k) =>
+                  r.jsxs(
+                    'li',
+                    {
+                      id: `${l}-option-${k}`,
+                      className: `sino-simple-form__autocomplete-option${pe === k ? ' sino-simple-form__autocomplete-option--highlighted' : ''}`,
+                      role: 'option',
+                      'aria-selected': pe === k,
+                      onClick: () => Re(p),
+                      onMouseEnter: () => me(k),
+                      onKeyDown: (Q) => {
+                        (Q.key === 'Enter' || Q.key === ' ') && (Q.preventDefault(), Re(p));
+                      },
+                      tabIndex: -1,
+                      children: [
+                        p.flag &&
+                          r.jsx('span', {
+                            className: 'sino-simple-form__autocomplete-flag',
+                            'aria-hidden': 'true',
+                            children: p.flag,
+                          }),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__autocomplete-label',
+                          children: p.label,
+                        }),
+                      ],
+                    },
+                    p.value
+                  )
+                ),
+          }),
+      ],
+    });
+  },
+  Om = () => Qt.map((l) => ({ value: l.code, label: l.name, flag: l.flag })),
+  Im = (l) => (zm[l] || []).map((a) => ({ value: a, label: a }));
+function ls(l) {
+  if (l == null || l === '') return null;
+  if (typeof l == 'number') return isNaN(l) || l <= 0 ? null : l;
+  const c = String(l).trim().replace(/[\s,]/g, '');
+  if (c === '') return null;
+  const a = parseFloat(c);
+  return isNaN(a) || a <= 0 ? null : a;
+}
+function Jo(l, c) {
+  return l / 100;
+}
+function Wm(l, c, a) {
+  if (!l || !a || a <= 0) return { value: null, formatted: '' };
+  const w = ls(l.length),
+    N = ls(l.width),
+    C = ls(l.height);
+  if (!w || !N || !C) return { value: null, formatted: '' };
+  const j = Jo(w),
+    f = Jo(N),
+    h = Jo(C),
+    D = j * f * h * a,
+    z = D.toFixed(3).replace(/\.?0+$/, '');
+  return { value: D, formatted: `${z} CBM` };
+}
+function Am(l, c, a) {
+  if (!l || !a || a <= 0) return { value: null, formatted: '' };
+  const w = ls(l);
+  if (!w) return { value: null, formatted: '' };
+  const N = w * a,
+    C = c,
+    j = N.toLocaleString('en-US', { maximumFractionDigits: 2, useGrouping: !0 });
+  return { value: N, formatted: `${j} ${C}` };
+}
+function Vm(l) {
+  const c = Wm(l.dimensions, 'CM', l.numberOfUnits),
+    a = Am(l.weightPerUnit, 'KG', l.numberOfUnits);
+  return { totalVolume: c, totalWeightFromUnits: a };
+}
+const Bm = ({ formData: l, setFormData: c, t: a }) => {
+    const w = W.useMemo(() => Vm(l), [l.dimensions, l.numberOfUnits, l.weightPerUnit]),
+      N = w.totalVolume.value !== null || w.totalWeightFromUnits.value !== null,
+      C = W.useRef(!1);
+    return (
+      W.useEffect(() => {
+        if (w.totalWeightFromUnits.value !== null && !C.current) {
+          const j = l.totalWeight,
+            f = Math.round(w.totalWeightFromUnits.value).toString();
+          if (!j || j.trim() === '') {
+            C.current = !0;
+            const h = setTimeout(() => {
+              (c((O) =>
+                !O.totalWeight || O.totalWeight.trim() === '' ? { ...O, totalWeight: f } : O
+              ),
+                (C.current = !1));
+            }, 1e3);
+            return () => {
+              (clearTimeout(h), (C.current = !1));
+            };
+          }
+        }
+      }, [w.totalWeightFromUnits.value, l.totalWeight, c]),
+      N
+        ? r.jsxs('div', {
+            className: 'sino-simple-form__cargo-calculations',
+            children: [
+              r.jsx('div', {
+                className: 'sino-simple-form__cargo-calculations-header',
+                children: r.jsx('span', {
+                  className: 'sino-simple-form__cargo-calculations-title',
+                  children: a('cargoCalculationsTitle', 'Calculated values'),
+                }),
+              }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__cargo-calculations-items',
+                children: [
+                  w.totalVolume.value !== null &&
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__cargo-calculation-item',
+                      children: [
+                        r.jsxs('span', {
+                          className: 'sino-simple-form__cargo-calculation-label',
+                          children: [a('cargoCalculatedVolume', 'Total volume'), ':'],
+                        }),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__cargo-calculation-value',
+                          children: w.totalVolume.formatted,
+                        }),
+                      ],
+                    }),
+                  w.totalWeightFromUnits.value !== null &&
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__cargo-calculation-item',
+                      children: [
+                        r.jsxs('span', {
+                          className: 'sino-simple-form__cargo-calculation-label',
+                          children: [a('cargoCalculatedWeight', 'Total weight (from units)'), ':'],
+                        }),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__cargo-calculation-value',
+                          children: w.totalWeightFromUnits.formatted,
+                        }),
+                      ],
+                    }),
+                ],
+              }),
+              r.jsx('p', {
+                className: 'sino-simple-form__cargo-calculations-hint',
+                children: a(
+                  'cargoCalculationsHint',
+                  'These values are calculated automatically and can help you verify your inputs.'
+                ),
+              }),
+            ],
+          })
+        : null
+    );
+  },
+  Xu = 'sinoSimpleFormSocialProofWidgetCollapsed',
+  $m = ({ t: l }) => {
+    const [c, a] = W.useState(!1),
+      [w, N] = W.useState(!1);
+    W.useEffect(() => {
+      if (typeof window > 'u') return;
+      try {
+        window.localStorage.getItem(Xu) === 'true' && N(!0);
+      } catch {}
+      const j = setTimeout(() => {
+        a(!0);
+      }, 500);
+      return () => clearTimeout(j);
+    }, []);
+    const C = () => {
+      const j = !w;
+      if ((N(j), typeof window < 'u'))
+        try {
+          window.localStorage.setItem(Xu, String(j));
+        } catch {}
+    };
+    return r.jsx('div', {
+      className: `sino-simple-form__social-proof-widget${c ? ' sino-simple-form__social-proof-widget--visible' : ''}${w ? ' sino-simple-form__social-proof-widget--collapsed' : ''}`,
+      role: 'complementary',
+      'aria-label': l('socialProofAriaLabel', 'Social proof and trust indicators'),
+      children: r.jsxs('div', {
+        className: 'sino-simple-form__social-proof-widget-content',
+        children: [
+          r.jsxs('div', {
+            className: 'sino-simple-form__social-proof-widget-header',
+            children: [
+              r.jsx('span', {
+                className: 'sino-simple-form__social-proof-widget-title',
+                children: l('socialProofTitle', 'Trusted by'),
+              }),
+              r.jsx('button', {
+                type: 'button',
+                className: 'sino-simple-form__social-proof-widget-toggle',
+                onClick: C,
+                'aria-label': w
+                  ? l('expandWidget', 'Expand widget')
+                  : l('collapseWidget', 'Collapse widget'),
+                title: w
+                  ? l('expandWidget', 'Expand widget')
+                  : l('collapseWidget', 'Collapse widget'),
+                'aria-expanded': !w,
+                children: r.jsx('svg', {
+                  width: '16',
+                  height: '16',
+                  viewBox: '0 0 24 24',
+                  fill: 'none',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                  className: `sino-simple-form__social-proof-widget-toggle-icon${w ? ' sino-simple-form__social-proof-widget-toggle-icon--collapsed' : ''}`,
+                  children: r.jsx('polyline', {
+                    points: '18 15 12 9 6 15',
+                    stroke: 'currentColor',
+                    strokeWidth: '2',
+                    strokeLinecap: 'round',
+                    strokeLinejoin: 'round',
+                  }),
+                }),
+              }),
+            ],
+          }),
+          !w &&
+            r.jsxs('div', {
+              className: 'sino-simple-form__social-proof-widget-items',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__social-proof-widget-item',
+                  children: [
+                    r.jsx('div', {
+                      className: 'sino-simple-form__social-proof-widget-icon',
+                      children: r.jsxs('svg', {
+                        width: '20',
+                        height: '20',
+                        viewBox: '0 0 24 24',
+                        fill: 'none',
+                        xmlns: 'http://www.w3.org/2000/svg',
+                        children: [
+                          r.jsx('path', {
+                            d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                          r.jsx('circle', {
+                            cx: '9',
+                            cy: '7',
+                            r: '4',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                          r.jsx('path', {
+                            d: 'M23 21v-2a4 4 0 0 0-3-3.87',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                          r.jsx('path', {
+                            d: 'M16 3.13a4 4 0 0 1 0 7.75',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                        ],
+                      }),
+                    }),
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__social-proof-widget-text',
+                      children: [
+                        r.jsx('strong', {
+                          className: 'sino-simple-form__social-proof-widget-value',
+                          children: '55,000+',
+                        }),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__social-proof-widget-label',
+                          children: l('socialProofCustomers', 'Satisfied Customers'),
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__social-proof-widget-item',
+                  children: [
+                    r.jsx('div', {
+                      className: 'sino-simple-form__social-proof-widget-icon',
+                      children: r.jsx('svg', {
+                        width: '20',
+                        height: '20',
+                        viewBox: '0 0 24 24',
+                        fill: 'none',
+                        xmlns: 'http://www.w3.org/2000/svg',
+                        children: r.jsx('polygon', {
+                          points:
+                            '12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2',
+                          stroke: 'currentColor',
+                          strokeWidth: '2',
+                          strokeLinecap: 'round',
+                          strokeLinejoin: 'round',
+                          fill: 'currentColor',
+                        }),
+                      }),
+                    }),
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__social-proof-widget-text',
+                      children: [
+                        r.jsx('strong', {
+                          className: 'sino-simple-form__social-proof-widget-value',
+                          children: '4.8/5',
+                        }),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__social-proof-widget-label',
+                          children: l('socialProofRating', 'Customer Satisfaction'),
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__social-proof-widget-item',
+                  children: [
+                    r.jsx('div', {
+                      className: 'sino-simple-form__social-proof-widget-icon',
+                      children: r.jsxs('svg', {
+                        width: '20',
+                        height: '20',
+                        viewBox: '0 0 24 24',
+                        fill: 'none',
+                        xmlns: 'http://www.w3.org/2000/svg',
+                        children: [
+                          r.jsx('circle', {
+                            cx: '12',
+                            cy: '12',
+                            r: '10',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                          r.jsx('polyline', {
+                            points: '12 6 12 12 16 14',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                        ],
+                      }),
+                    }),
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__social-proof-widget-text',
+                      children: [
+                        r.jsx('strong', {
+                          className: 'sino-simple-form__social-proof-widget-value',
+                          children: '24h',
+                        }),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__social-proof-widget-label',
+                          children: l('socialProofResponse', 'Response Time'),
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+        ],
+      }),
+    });
+  },
+  Um = ({
+    formData: l,
+    setFormData: c,
+    t: a,
+    stepLabel: w,
+    showSourcingAdvanced: N,
+    setShowSourcingAdvanced: C,
+    isQuickQuote: j = !1,
+  }) =>
+    r.jsx(r.Fragment, {
+      children:
+        l.servicesRequested.sourcing &&
+        r.jsxs('section', {
+          className: 'sino-simple-form__section sino-simple-form__section--service-sourcing',
+          children: [
+            r.jsxs('h2', {
+              className: 'sino-simple-form__section-title',
+              children: [
+                r.jsx('span', {
+                  className: 'sino-simple-form__section-step',
+                  children: w ?? 'Step 1',
+                }),
+                r.jsx('span', { children: a('simpleSourcingTitle', 'Product sourcing') }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingProductDescription',
+                      children: [
+                        a('sourcingProductDescription', 'What product are you looking for?'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('textarea', {
+                      id: 'sourcingProductDescription',
+                      className: 'sino-simple-form__input sino-simple-form__input--textarea',
+                      name: 'sourcingProductDescription',
+                      value: l.sourcing.productDescription,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          sourcing: { ...h.sourcing, productDescription: f.target.value },
+                        })),
+                      placeholder: a(
+                        'sourcingProductDescriptionPlaceholder',
+                        'Briefly describe the product, specs, or categories you need.'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingReferenceLink',
+                      children: [
+                        a('sourcingReferenceLink', 'Reference link'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifAny', 'if any'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'sourcingReferenceLink',
+                      className: 'sino-simple-form__input',
+                      type: 'url',
+                      value: l.sourcing.referenceLink,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          sourcing: { ...h.sourcing, referenceLink: f.target.value },
+                        })),
+                      placeholder: a(
+                        'sourcingReferenceLinkPlaceholder',
+                        'Alibaba, 1688, Taobao, or any reference URL.'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingTargetPrice',
+                      children: a('sourcingTargetPrice', 'Target price per unit'),
+                    }),
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__fields sino-simple-form__fields--inline',
+                      children: [
+                        r.jsx('input', {
+                          id: 'sourcingTargetPrice',
+                          className: 'sino-simple-form__input',
+                          type: 'number',
+                          min: 0,
+                          value: l.sourcing.targetPrice ?? '',
+                          onChange: (f) =>
+                            c((h) => ({
+                              ...h,
+                              sourcing: {
+                                ...h.sourcing,
+                                targetPrice: f.target.value ? Number(f.target.value) : null,
+                              },
+                            })),
+                          placeholder: a('sourcingTargetPricePlaceholder', 'e.g. 5.50'),
+                        }),
+                        r.jsx('input', {
+                          className: 'sino-simple-form__input',
+                          type: 'text',
+                          value: l.sourcing.targetCurrency,
+                          onChange: (f) =>
+                            c((h) => ({
+                              ...h,
+                              sourcing: { ...h.sourcing, targetCurrency: f.target.value },
+                            })),
+                          placeholder: a('sourcingTargetCurrencyPlaceholder', 'USD, EUR…'),
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingMoq',
+                      children: a('sourcingMoq', 'Expected order quantity (MOQ)'),
+                    }),
+                    r.jsx('input', {
+                      id: 'sourcingMoq',
+                      className: 'sino-simple-form__input',
+                      type: 'number',
+                      min: 0,
+                      value: l.sourcing.moq ?? '',
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          sourcing: {
+                            ...h.sourcing,
+                            moq: f.target.value ? Number(f.target.value) : null,
+                          },
+                        })),
+                      placeholder: a('sourcingMoqPlaceholder', 'Approximate number of units'),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingPlatform',
+                      children: a('sourcingPlatform', 'Which market/platform is this for?'),
+                    }),
+                    r.jsx('input', {
+                      id: 'sourcingPlatform',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: l.sourcing.platform,
+                      onChange: (f) =>
+                        c((h) => ({ ...h, sourcing: { ...h.sourcing, platform: f.target.value } })),
+                      placeholder: a(
+                        'sourcingPlatformPlaceholder',
+                        'Amazon FBA, Shopify store, wholesale, etc.'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a('sourcingHasSupplier', 'Do you already have a supplier?'),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips',
+                      children: [
+                        { value: !0, label: a('sourcingHasSupplierYes', 'Yes') },
+                        { value: !1, label: a('sourcingHasSupplierNo', 'No') },
+                      ].map((f) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.sourcing.hasSupplier === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((h) => ({
+                                ...h,
+                                sourcing: {
+                                  ...h.sourcing,
+                                  hasSupplier: h.sourcing.hasSupplier === f.value ? null : f.value,
+                                },
+                              })),
+                            children: f.label,
+                          },
+                          String(f.value)
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingTargetMarkets',
+                      children: a('sourcingTargetMarkets', 'Which markets are you selling to?'),
+                    }),
+                    r.jsx('input', {
+                      id: 'sourcingTargetMarkets',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: l.sourcing.targetMarkets,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          sourcing: { ...h.sourcing, targetMarkets: f.target.value },
+                        })),
+                      placeholder: a(
+                        'sourcingTargetMarketsPlaceholder',
+                        'e.g. EU, UK, US, Middle East…'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'sourcingRequiredCertifications',
+                      children: [
+                        a('sourcingRequiredCertifications', 'Required certifications'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifAny', 'if any'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'sourcingRequiredCertifications',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: l.sourcing.requiredCertifications,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          sourcing: { ...h.sourcing, requiredCertifications: f.target.value },
+                        })),
+                      placeholder: a(
+                        'sourcingRequiredCertificationsPlaceholder',
+                        'e.g. CE, RoHS, FDA...'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: `sino-simple-form__subsection${N ? ' sino-simple-form__subsection--open' : ''}`,
+                  children: [
+                    r.jsxs('button', {
+                      type: 'button',
+                      className: 'sino-simple-form__subsection-toggle',
+                      onClick: () => C((f) => !f),
+                      children: [
+                        r.jsxs('span', {
+                          className: 'sino-simple-form__subsection-label',
+                          children: [
+                            a('sourcingAdvancedTitle', 'Advanced sourcing details (optional)'),
+                            r.jsx('small', {
+                              children: a(
+                                'sourcingAdvancedSubtitle',
+                                'Timeline, quality standards, packaging requirements.'
+                              ),
+                            }),
+                          ],
+                        }),
+                        r.jsx('span', {
+                          className: `sino-simple-form__subsection-chevron${N ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          children: '▾',
+                        }),
+                      ],
+                    }),
+                    N &&
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                        children: [
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsx('label', {
+                                className: 'sino-simple-form__label',
+                                htmlFor: 'sourcingTimeline',
+                                children: a('sourcingTimeline', 'Timeline / urgency'),
+                              }),
+                              r.jsx('input', {
+                                id: 'sourcingTimeline',
+                                className: 'sino-simple-form__input',
+                                type: 'text',
+                                value: l.sourcing.timeline || '',
+                                onChange: (f) =>
+                                  c((h) => ({
+                                    ...h,
+                                    sourcing: { ...h.sourcing, timeline: f.target.value },
+                                  })),
+                                placeholder: a(
+                                  'sourcingTimelinePlaceholder',
+                                  'e.g. Need samples within 2 weeks, production start in 1 month…'
+                                ),
+                              }),
+                            ],
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsxs('label', {
+                                className: 'sino-simple-form__label',
+                                htmlFor: 'sourcingQualityStandards',
+                                children: [
+                                  a('sourcingQualityStandards', 'Quality standards'),
+                                  r.jsx('span', {
+                                    className: 'sino-simple-form__label-hint',
+                                    children: a('ifAny', 'if any'),
+                                  }),
+                                ],
+                              }),
+                              r.jsx('input', {
+                                id: 'sourcingQualityStandards',
+                                className: 'sino-simple-form__input',
+                                type: 'text',
+                                value: l.sourcing.qualityStandards || '',
+                                onChange: (f) =>
+                                  c((h) => ({
+                                    ...h,
+                                    sourcing: { ...h.sourcing, qualityStandards: f.target.value },
+                                  })),
+                                placeholder: a(
+                                  'sourcingQualityStandardsPlaceholder',
+                                  'e.g. ISO 9001, specific quality grades…'
+                                ),
+                              }),
+                            ],
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsxs('label', {
+                                className: 'sino-simple-form__label',
+                                htmlFor: 'sourcingPackagingRequirements',
+                                children: [
+                                  a('sourcingPackagingRequirements', 'Packaging requirements'),
+                                  r.jsx('span', {
+                                    className: 'sino-simple-form__label-hint',
+                                    children: a('ifAny', 'if any'),
+                                  }),
+                                ],
+                              }),
+                              r.jsx('input', {
+                                id: 'sourcingPackagingRequirements',
+                                className: 'sino-simple-form__input',
+                                type: 'text',
+                                value: l.sourcing.packagingRequirements || '',
+                                onChange: (f) =>
+                                  c((h) => ({
+                                    ...h,
+                                    sourcing: {
+                                      ...h.sourcing,
+                                      packagingRequirements: f.target.value,
+                                    },
+                                  })),
+                                placeholder: a(
+                                  'sourcingPackagingRequirementsPlaceholder',
+                                  'e.g. Retail-ready, eco-friendly materials…'
+                                ),
+                              }),
+                            ],
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsx('label', {
+                                className: 'sino-simple-form__label',
+                                htmlFor: 'sourcingNotes',
+                                children: a('sourcingAdvancedNotes', 'Any other details?'),
+                              }),
+                              r.jsx('textarea', {
+                                id: 'sourcingNotes',
+                                className:
+                                  'sino-simple-form__input sino-simple-form__input--textarea',
+                                value: l.sourcing.notes || '',
+                                onChange: (f) =>
+                                  c((h) => ({
+                                    ...h,
+                                    sourcing: { ...h.sourcing, notes: f.target.value },
+                                  })),
+                                placeholder: a(
+                                  'sourcingAdvancedNotesPlaceholder',
+                                  'Custom labeling, branding, sample requirements, factory audits…'
+                                ),
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+    }),
+  qm = ({
+    formData: l,
+    setFormData: c,
+    t: a,
+    showWarehousingAdvanced: w,
+    setShowWarehousingAdvanced: N,
+    stepLabel: C,
+    isQuickQuote: j = !1,
+  }) =>
+    l.servicesRequested.warehousing
+      ? r.jsxs('section', {
+          className: 'sino-simple-form__section sino-simple-form__section--service-warehousing',
+          children: [
+            r.jsxs('h2', {
+              className: 'sino-simple-form__section-title',
+              children: [
+                r.jsx('span', {
+                  className: 'sino-simple-form__section-step',
+                  children: C ?? 'Service',
+                }),
+                r.jsx('span', {
+                  children: a('warehousingTitle', 'Warehousing & consolidation in China'),
+                }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      children: [
+                        a('warehousingDuration', 'How long do you plan to store goods in China?'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips',
+                      children: [
+                        {
+                          value: 'lt_1_month',
+                          label: a('warehousingDurationLt1', 'Less than 1 month'),
+                        },
+                        {
+                          value: '1_3_months',
+                          label: a('warehousingDuration1to3', 'Between 1 and 3 months'),
+                        },
+                        {
+                          value: 'gt_3_months',
+                          label: a('warehousingDurationGt3', 'More than 3 months'),
+                        },
+                      ].map((f) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.warehousing.duration === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((h) => ({
+                                ...h,
+                                warehousing: {
+                                  ...h.warehousing,
+                                  duration: h.warehousing.duration === f.value ? '' : f.value,
+                                },
+                              })),
+                            children: f.label,
+                          },
+                          f.value
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'warehousingSkuCount',
+                      children: a('warehousingSkuCount', 'Approximate number of SKUs'),
+                    }),
+                    r.jsx('input', {
+                      id: 'warehousingSkuCount',
+                      className: 'sino-simple-form__input',
+                      type: 'number',
+                      min: 0,
+                      value: l.warehousing.skuCount ?? '',
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          warehousing: {
+                            ...h.warehousing,
+                            skuCount: f.target.value ? Number(f.target.value) : null,
+                          },
+                        })),
+                      placeholder: a('warehousingSkuCountPlaceholder', 'e.g. 10–50'),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a(
+                        'warehousingConsolidation',
+                        'Do you need consolidation from multiple suppliers?'
+                      ),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips',
+                      children: [
+                        { value: !0, label: a('warehousingConsolidationYes', 'Yes') },
+                        { value: !1, label: a('warehousingConsolidationNo', 'No') },
+                      ].map((f) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.warehousing.consolidation === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((h) => ({
+                                ...h,
+                                warehousing: {
+                                  ...h.warehousing,
+                                  consolidation:
+                                    h.warehousing.consolidation === f.value ? null : f.value,
+                                },
+                              })),
+                            children: f.label,
+                          },
+                          String(f.value)
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+                  children: [
+                    r.jsxs('button', {
+                      type: 'button',
+                      className: 'sino-simple-form__subsection-toggle',
+                      onClick: () => N((f) => !f),
+                      children: [
+                        r.jsxs('span', {
+                          className: 'sino-simple-form__subsection-label',
+                          children: [
+                            a(
+                              'warehousingAdvancedTitle',
+                              'Advanced warehousing preferences (optional)'
+                            ),
+                            r.jsx('small', {
+                              children: a(
+                                'warehousingAdvancedSubtitle',
+                                'Extra services and special requirements.'
+                              ),
+                            }),
+                          ],
+                        }),
+                        r.jsx('span', {
+                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          children: '▾',
+                        }),
+                      ],
+                    }),
+                    w &&
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                        children: [
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsxs('label', {
+                                className: 'sino-simple-form__label',
+                                children: [
+                                  a('warehousingExtraServices', 'Extra services'),
+                                  r.jsx('span', {
+                                    className: 'sino-simple-form__label-hint',
+                                    children: a('ifAny', 'if any'),
+                                  }),
+                                ],
+                              }),
+                              r.jsx('div', {
+                                className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                children: [
+                                  { value: 'Repackage', label: 'Repackage' },
+                                  { value: 'Shipment Tracking', label: 'Shipment Tracking' },
+                                  { value: 'Inventory Management', label: 'Inventory Management' },
+                                  { value: 'Quality Control', label: 'Quality Control' },
+                                  { value: 'Returns Handling', label: 'Returns Handling' },
+                                  { value: 'Product Photography', label: 'Product Photography' },
+                                  {
+                                    value: 'Product Listing Optimization',
+                                    label: 'Product Listing Optimization',
+                                  },
+                                  {
+                                    value: 'Fulfillment by Amazon (FBA) Preparation',
+                                    label: 'FBA Preparation',
+                                  },
+                                  { value: 'Other', label: 'Other' },
+                                ].map((f) => {
+                                  const h = l.warehousing.extraServices.includes(f.value);
+                                  return r.jsx(
+                                    'button',
+                                    {
+                                      type: 'button',
+                                      className: `sino-simple-chip${h ? ' sino-simple-chip--active' : ''}`,
+                                      onClick: () =>
+                                        c((O) => {
+                                          const D = O.warehousing.extraServices,
+                                            z = h
+                                              ? D.filter((b) => b !== f.value)
+                                              : [...D, f.value];
+                                          return {
+                                            ...O,
+                                            warehousing: { ...O.warehousing, extraServices: z },
+                                          };
+                                        }),
+                                      children: f.label,
+                                    },
+                                    f.value
+                                  );
+                                }),
+                              }),
+                            ],
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsx('label', {
+                                className: 'sino-simple-form__label',
+                                htmlFor: 'warehousingNotes',
+                                children: a('warehousingNotes', 'Anything else we should know?'),
+                              }),
+                              r.jsx('textarea', {
+                                id: 'warehousingNotes',
+                                className:
+                                  'sino-simple-form__input sino-simple-form__input--textarea',
+                                value: l.warehousing.notes,
+                                onChange: (f) =>
+                                  c((h) => ({
+                                    ...h,
+                                    warehousing: { ...h.warehousing, notes: f.target.value },
+                                  })),
+                                placeholder: a(
+                                  'warehousingNotesPlaceholder',
+                                  'Special handling, temperature control, rotation rules…'
+                                ),
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        })
+      : null,
+  Dm = ({
+    formData: l,
+    setFormData: c,
+    t: a,
+    showDropshippingAdvanced: w,
+    setShowDropshippingAdvanced: N,
+    stepLabel: C,
+    isQuickQuote: j = !1,
+  }) =>
+    l.servicesRequested.dropshipping
+      ? r.jsxs('section', {
+          className: 'sino-simple-form__section sino-simple-form__section--service-dropshipping',
+          children: [
+            r.jsxs('h2', {
+              className: 'sino-simple-form__section-title',
+              children: [
+                r.jsx('span', {
+                  className: 'sino-simple-form__section-step',
+                  children: C ?? 'Service',
+                }),
+                r.jsx('span', {
+                  children: a('dropshippingTitle', 'Dropshipping & fulfillment from China'),
+                }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'dropshippingProducts',
+                      children: [
+                        a('dropshippingProducts', 'What type of products do you plan to ship?'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('textarea', {
+                      id: 'dropshippingProducts',
+                      className: 'sino-simple-form__input sino-simple-form__input--textarea',
+                      value: l.dropshipping.products,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          dropshipping: { ...h.dropshipping, products: f.target.value },
+                        })),
+                      placeholder: a(
+                        'dropshippingProductsPlaceholder',
+                        'Main categories, product types, or existing catalog link.'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'dropshippingModel',
+                      children: a('dropshippingModel', 'What is your business model?'),
+                    }),
+                    r.jsx('input', {
+                      id: 'dropshippingModel',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: l.dropshipping.model,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          dropshipping: { ...h.dropshipping, model: f.target.value },
+                        })),
+                      placeholder: a(
+                        'dropshippingModelPlaceholder',
+                        'Shopify store, Amazon FBA, marketplace, D2C…'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'dropshippingCustomerCountries',
+                      children: [
+                        a(
+                          'dropshippingCustomerCountries',
+                          'Where are your final customers located?'
+                        ),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'dropshippingCustomerCountries',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: l.dropshipping.customerCountries,
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          dropshipping: { ...h.dropshipping, customerCountries: f.target.value },
+                        })),
+                      placeholder: a(
+                        'dropshippingCustomerCountriesPlaceholder',
+                        'Countries or regions (e.g. US, EU, UK).'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'dropshippingDailyOrders',
+                      children: a('dropshippingDailyOrders', 'Average or expected daily orders'),
+                    }),
+                    r.jsx('input', {
+                      id: 'dropshippingDailyOrders',
+                      className: 'sino-simple-form__input',
+                      type: 'number',
+                      min: 0,
+                      value: l.dropshipping.dailyOrders ?? '',
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          dropshipping: {
+                            ...h.dropshipping,
+                            dailyOrders: f.target.value ? Number(f.target.value) : null,
+                          },
+                        })),
+                      placeholder: a('dropshippingDailyOrdersPlaceholder', 'e.g. 20'),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a(
+                        'dropshippingHasCatalog',
+                        'Do you already have a main product or catalog?'
+                      ),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips',
+                      children: [
+                        { value: !0, label: a('dropshippingHasCatalogYes', 'Yes') },
+                        { value: !1, label: a('dropshippingHasCatalogNo', 'No') },
+                      ].map((f) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.dropshipping.hasCatalog === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((h) => ({
+                                ...h,
+                                dropshipping: {
+                                  ...h.dropshipping,
+                                  hasCatalog:
+                                    h.dropshipping.hasCatalog === f.value ? null : f.value,
+                                },
+                              })),
+                            children: f.label,
+                          },
+                          String(f.value)
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+                  children: [
+                    r.jsxs('button', {
+                      type: 'button',
+                      className: 'sino-simple-form__subsection-toggle',
+                      onClick: () => N((f) => !f),
+                      children: [
+                        r.jsxs('span', {
+                          className: 'sino-simple-form__subsection-label',
+                          children: [
+                            a(
+                              'dropshippingAdvancedTitle',
+                              'Advanced dropshipping details (optional)'
+                            ),
+                            r.jsx('small', {
+                              children: a(
+                                'dropshippingAdvancedSubtitle',
+                                'Branding needs and additional notes.'
+                              ),
+                            }),
+                          ],
+                        }),
+                        r.jsx('span', {
+                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          children: '▾',
+                        }),
+                      ],
+                    }),
+                    w &&
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                        children: [
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsx('label', {
+                                className: 'sino-simple-form__label',
+                                children: a(
+                                  'dropshippingBrandingNeeded',
+                                  'Do you need branded packaging or inserts?'
+                                ),
+                              }),
+                              r.jsx('div', {
+                                className: 'sino-simple-form__chips',
+                                children: [
+                                  { value: !0, label: a('dropshippingBrandingNeededYes', 'Yes') },
+                                  { value: !1, label: a('dropshippingBrandingNeededNo', 'No') },
+                                ].map((f) =>
+                                  r.jsx(
+                                    'button',
+                                    {
+                                      type: 'button',
+                                      className: `sino-simple-chip${l.dropshipping.brandingNeeded === f.value ? ' sino-simple-chip--active' : ''}`,
+                                      onClick: () =>
+                                        c((h) => ({
+                                          ...h,
+                                          dropshipping: {
+                                            ...h.dropshipping,
+                                            brandingNeeded:
+                                              h.dropshipping.brandingNeeded === f.value
+                                                ? null
+                                                : f.value,
+                                          },
+                                        })),
+                                      children: f.label,
+                                    },
+                                    String(f.value)
+                                  )
+                                ),
+                              }),
+                            ],
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__field',
+                            children: [
+                              r.jsx('label', {
+                                className: 'sino-simple-form__label',
+                                htmlFor: 'dropshippingNotes',
+                                children: a('dropshippingNotes', 'Anything else we should know?'),
+                              }),
+                              r.jsx('textarea', {
+                                id: 'dropshippingNotes',
+                                className:
+                                  'sino-simple-form__input sino-simple-form__input--textarea',
+                                value: l.dropshipping.notes,
+                                onChange: (f) =>
+                                  c((h) => ({
+                                    ...h,
+                                    dropshipping: { ...h.dropshipping, notes: f.target.value },
+                                  })),
+                                placeholder: a(
+                                  'dropshippingNotesPlaceholder',
+                                  'Catalog links, current 3PL setup, pain points…'
+                                ),
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        })
+      : null,
+  Hm = ({
+    formData: l,
+    setFormData: c,
+    t: a,
+    showQcAdvanced: w,
+    setShowQcAdvanced: N,
+    stepLabel: C,
+    isQuickQuote: j = !1,
+  }) =>
+    l.servicesRequested.qc
+      ? r.jsxs('section', {
+          className: 'sino-simple-form__section sino-simple-form__section--service-qc',
+          children: [
+            r.jsxs('h2', {
+              className: 'sino-simple-form__section-title',
+              children: [
+                r.jsx('span', {
+                  className: 'sino-simple-form__section-step',
+                  children: C ?? 'Service',
+                }),
+                r.jsx('span', { children: a('qcTitle', 'Quality control & inspections') }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      children: [
+                        a('qcType', 'What type of inspection do you need?'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+                      children: [
+                        {
+                          value: 'pre_production',
+                          label: a('qcTypePreProduction', 'Pre-production'),
+                        },
+                        {
+                          value: 'during_production',
+                          label: a('qcTypeDuringProduction', 'During production'),
+                        },
+                        { value: 'pre_shipment', label: a('qcTypePreShipment', 'Pre-shipment') },
+                        { value: 'factory_audit', label: a('qcTypeFactoryAudit', 'Factory audit') },
+                      ].map((f) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.qc.type === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((h) => ({
+                                ...h,
+                                qc: { ...h.qc, type: h.qc.type === f.value ? '' : f.value },
+                              })),
+                            children: f.label,
+                          },
+                          f.value
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a('qcProductionStage', 'At which stage is your production?'),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips',
+                      children: [
+                        { value: 'not_started', label: a('qcStageNotStarted', 'Not started') },
+                        { value: 'in_progress', label: a('qcStageInProgress', 'In progress') },
+                        { value: 'finished', label: a('qcStageFinished', 'Finished') },
+                      ].map((f) =>
+                        r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${l.qc.productionStage === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((h) => ({
+                                ...h,
+                                qc: {
+                                  ...h.qc,
+                                  productionStage: h.qc.productionStage === f.value ? '' : f.value,
+                                },
+                              })),
+                            children: f.label,
+                          },
+                          f.value
+                        )
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'qcFactoryCity',
+                      children: [
+                        a('qcFactoryCity', 'Factory location (city in China)'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'qcFactoryCity',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: l.qc.factoryCity,
+                      onChange: (f) =>
+                        c((h) => ({ ...h, qc: { ...h.qc, factoryCity: f.target.value } })),
+                      placeholder: a('qcFactoryCityPlaceholder', 'e.g. Shenzhen, Ningbo, Yiwu…'),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'qcPreferredDate',
+                      children: [
+                        a('qcPreferredDate', 'Preferred inspection date'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifKnown', 'if known'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'qcPreferredDate',
+                      className: 'sino-simple-form__input',
+                      type: 'date',
+                      value: l.qc.preferredDate,
+                      onChange: (f) =>
+                        c((h) => ({ ...h, qc: { ...h.qc, preferredDate: f.target.value } })),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+                  children: [
+                    r.jsxs('button', {
+                      type: 'button',
+                      className: 'sino-simple-form__subsection-toggle',
+                      onClick: () => N((f) => !f),
+                      children: [
+                        r.jsxs('span', {
+                          className: 'sino-simple-form__subsection-label',
+                          children: [
+                            a('qcAdvancedTitle', 'Additional inspection details (optional)'),
+                            r.jsx('small', {
+                              children: a(
+                                'qcAdvancedSubtitle',
+                                'Specific checkpoints, batch sizes or constraints.'
+                              ),
+                            }),
+                          ],
+                        }),
+                        r.jsx('span', {
+                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          children: '▾',
+                        }),
+                      ],
+                    }),
+                    w &&
+                      r.jsx('div', {
+                        className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                        children: r.jsxs('div', {
+                          className: 'sino-simple-form__field',
+                          children: [
+                            r.jsx('label', {
+                              className: 'sino-simple-form__label',
+                              htmlFor: 'qcNotes',
+                              children: a('qcNotes', 'Anything else we should know?'),
+                            }),
+                            r.jsx('textarea', {
+                              id: 'qcNotes',
+                              className:
+                                'sino-simple-form__input sino-simple-form__input--textarea',
+                              value: l.qc.notes,
+                              onChange: (f) =>
+                                c((h) => ({ ...h, qc: { ...h.qc, notes: f.target.value } })),
+                              placeholder: a(
+                                'qcNotesPlaceholder',
+                                'Product type, quantities, deadlines, specific checkpoints…'
+                              ),
+                            }),
+                          ],
+                        }),
+                      }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        })
+      : null,
+  Gm = ({
+    formData: l,
+    setFormData: c,
+    t: a,
+    showChinaVisitLogistics: w,
+    setShowChinaVisitLogistics: N,
+    stepLabel: C,
+  }) => {
+    if (!l.servicesRequested.chinaVisits) return null;
+    const j = l.chinaVisit.visitType,
+      f = (P) => {
+        c((I) => {
+          const pe = I.chinaVisit.visitType,
+            re = pe.includes(P) ? pe.filter((ue) => ue !== P) : [...pe, P];
+          return { ...I, chinaVisit: { ...I.chinaVisit, visitType: re } };
+        });
+      },
+      h = j.includes('Canton Fair'),
+      O = j.includes('Yiwu Market'),
+      D = j.includes('Factory Visits'),
+      z = j.includes('Other Trade Fair'),
+      b = D || z,
+      Z = j.length > 0,
+      Y =
+        h && !O && !D && !z
+          ? 'Guangzhou'
+          : O && !h && !D && !z
+            ? 'Yiwu'
+            : h && O && !D && !z
+              ? 'Guangzhou, Yiwu'
+              : '';
+    return r.jsxs('section', {
+      className: 'sino-simple-form__section sino-simple-form__section--service-chinaVisits',
+      children: [
+        r.jsxs('h2', {
+          className: 'sino-simple-form__section-title',
+          children: [
+            r.jsx('span', {
+              className: 'sino-simple-form__section-step',
+              children: C ?? 'Service',
+            }),
+            r.jsx('span', { children: a('chinaVisitTitle', 'China visits & trade fairs') }),
+          ],
+        }),
+        r.jsx('p', {
+          className: 'sino-simple-form__hint',
+          children: a(
+            'chinaVisitHint',
+            'Select all that apply. We can help you plan a multi-stop trip.'
+          ),
+        }),
+        r.jsxs('div', {
+          className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+          children: [
+            r.jsxs('div', {
+              className: 'sino-simple-form__field',
+              children: [
+                r.jsxs('label', {
+                  className: 'sino-simple-form__label',
+                  children: [
+                    a('chinaVisitType', 'What would you like to visit?'),
+                    r.jsx('span', {
+                      className: 'sino-simple-form__required',
+                      'aria-label': 'required',
+                      children: '*',
+                    }),
+                  ],
+                }),
+                r.jsx('div', {
+                  className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+                  children: [
+                    { value: 'Canton Fair', label: 'Canton Fair (Guangzhou)' },
+                    { value: 'Yiwu Market', label: 'Yiwu Market' },
+                    { value: 'Factory Visits', label: 'Factory Visits' },
+                    { value: 'Other Trade Fair', label: 'Other Trade Fair' },
+                  ].map((P) => {
+                    const I = j.includes(P.value);
+                    return r.jsx(
+                      'button',
+                      {
+                        type: 'button',
+                        className: `sino-simple-chip${I ? ' sino-simple-chip--active' : ''}`,
+                        onClick: () => f(P.value),
+                        'aria-pressed': I ? 'true' : 'false',
+                        children: P.label,
+                      },
+                      P.value
+                    );
+                  }),
+                }),
+              ],
+            }),
+            h &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__field',
+                children: [
+                  r.jsx('label', {
+                    className: 'sino-simple-form__label',
+                    children: a('chinaVisitCantonPhase', 'Which phase?'),
+                  }),
+                  r.jsx('div', {
+                    className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+                    children: [
+                      {
+                        value: 'Phase 1',
+                        label: 'Phase 1',
+                        tooltip: 'Electronics, Machinery, Vehicles, Building Materials',
+                      },
+                      {
+                        value: 'Phase 2',
+                        label: 'Phase 2',
+                        tooltip: 'Consumer Goods, Gifts, Home Decor',
+                      },
+                      {
+                        value: 'Phase 3',
+                        label: 'Phase 3',
+                        tooltip: 'Textiles, Shoes, Office Supplies, Food',
+                      },
+                    ].map((P) =>
+                      r.jsx(
+                        'button',
+                        {
+                          type: 'button',
+                          className: `sino-simple-chip${l.chinaVisit.cantonPhase === P.value ? ' sino-simple-chip--active' : ''}`,
+                          'data-tooltip': P.tooltip,
+                          onClick: () =>
+                            c((I) => ({
+                              ...I,
+                              chinaVisit: { ...I.chinaVisit, cantonPhase: P.value },
+                            })),
+                          children: P.label,
+                        },
+                        P.value
+                      )
+                    ),
+                  }),
+                  r.jsx('p', {
+                    className: 'sino-simple-form__help',
+                    children: a(
+                      'cantonPhaseHelp',
+                      'Held in April/May and October/November each year.'
+                    ),
+                  }),
+                ],
+              }),
+            z &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__field',
+                children: [
+                  r.jsxs('label', {
+                    className: 'sino-simple-form__label',
+                    htmlFor: 'chinaVisitFairName',
+                    children: [
+                      a('chinaVisitFairName', 'Which trade fair?'),
+                      r.jsx('span', {
+                        className: 'sino-simple-form__required',
+                        'aria-label': 'required',
+                        children: '*',
+                      }),
+                    ],
+                  }),
+                  r.jsx('input', {
+                    id: 'chinaVisitFairName',
+                    className: 'sino-simple-form__input',
+                    type: 'text',
+                    value: l.chinaVisit.fairName,
+                    onChange: (P) =>
+                      c((I) => ({
+                        ...I,
+                        chinaVisit: { ...I.chinaVisit, fairName: P.target.value },
+                      })),
+                    placeholder: 'e.g. CIFF Furniture Fair, China Beauty Expo…',
+                  }),
+                ],
+              }),
+            D &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__field',
+                children: [
+                  r.jsx('label', {
+                    className: 'sino-simple-form__label',
+                    htmlFor: 'chinaVisitFactoryDescription',
+                    children: a('chinaVisitFactoryDescription', 'What kind of factories?'),
+                  }),
+                  r.jsx('textarea', {
+                    id: 'chinaVisitFactoryDescription',
+                    className: 'sino-simple-form__input sino-simple-form__input--textarea',
+                    value: l.chinaVisit.factoryDescription || '',
+                    onChange: (P) =>
+                      c((I) => ({
+                        ...I,
+                        chinaVisit: { ...I.chinaVisit, factoryDescription: P.target.value },
+                      })),
+                    placeholder: 'Product categories, specific suppliers, regions…',
+                  }),
+                ],
+              }),
+            b &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__field',
+                children: [
+                  r.jsxs('label', {
+                    className: 'sino-simple-form__label',
+                    htmlFor: 'chinaVisitMainCity',
+                    children: [
+                      a('chinaVisitMainCity', 'Main city or region'),
+                      r.jsx('span', {
+                        className: 'sino-simple-form__required',
+                        'aria-label': 'required',
+                        children: '*',
+                      }),
+                    ],
+                  }),
+                  r.jsx('input', {
+                    id: 'chinaVisitMainCity',
+                    className: 'sino-simple-form__input',
+                    type: 'text',
+                    value: l.chinaVisit.mainCity,
+                    onChange: (P) =>
+                      c((I) => ({
+                        ...I,
+                        chinaVisit: { ...I.chinaVisit, mainCity: P.target.value },
+                      })),
+                    placeholder: 'Shenzhen, Dongguan, Shanghai…',
+                  }),
+                ],
+              }),
+            Y &&
+              !b &&
+              r.jsx('div', {
+                className: 'sino-simple-form__field',
+                children: r.jsxs('p', {
+                  className: 'sino-simple-form__info',
+                  children: [
+                    '📍 ',
+                    a('autoDetectedCity', 'Your trip will be based in'),
+                    ': ',
+                    r.jsx('strong', { children: Y }),
+                  ],
+                }),
+              }),
+            Z &&
+              r.jsxs('div', {
+                className: 'sino-simple-form__field',
+                children: [
+                  r.jsxs('label', {
+                    className: 'sino-simple-form__label',
+                    htmlFor: 'chinaVisitOtherCities',
+                    children: [
+                      D && !h && !O
+                        ? a('chinaVisitFactoryCities', 'Cities/regions to visit')
+                        : a('chinaVisitOtherCities', 'Other cities to visit'),
+                      ' ',
+                      !(D && !h && !O) &&
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifApplicable', 'if applicable'),
+                        }),
+                    ],
+                  }),
+                  r.jsx('input', {
+                    id: 'chinaVisitOtherCities',
+                    className: 'sino-simple-form__input',
+                    type: 'text',
+                    value: l.chinaVisit.otherCities,
+                    onChange: (P) =>
+                      c((I) => ({
+                        ...I,
+                        chinaVisit: { ...I.chinaVisit, otherCities: P.target.value },
+                      })),
+                    placeholder: 'Separated by commas',
+                  }),
+                ],
+              }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--inline',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'chinaVisitStartDate',
+                      children: [
+                        a('chinaVisitStartDate', 'Start date'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifKnown', 'if known'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'chinaVisitStartDate',
+                      className: 'sino-simple-form__input',
+                      type: 'date',
+                      value: l.chinaVisit.startDate,
+                      onChange: (P) =>
+                        c((I) => ({
+                          ...I,
+                          chinaVisit: { ...I.chinaVisit, startDate: P.target.value },
+                        })),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'chinaVisitEndDate',
+                      children: [
+                        a('chinaVisitEndDate', 'End date'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifKnown', 'if known'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'chinaVisitEndDate',
+                      className: 'sino-simple-form__input',
+                      type: 'date',
+                      value: l.chinaVisit.endDate,
+                      onChange: (P) =>
+                        c((I) => ({
+                          ...I,
+                          chinaVisit: { ...I.chinaVisit, endDate: P.target.value },
+                        })),
+                    }),
+                  ],
+                }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--inline',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'chinaVisitNumberOfDays',
+                      children: a('chinaVisitNumberOfDays', 'Days on site'),
+                    }),
+                    r.jsx('input', {
+                      id: 'chinaVisitNumberOfDays',
+                      className: 'sino-simple-form__input',
+                      type: 'number',
+                      min: 1,
+                      value: l.chinaVisit.numberOfDays ?? '',
+                      onChange: (P) =>
+                        c((I) => ({
+                          ...I,
+                          chinaVisit: {
+                            ...I.chinaVisit,
+                            numberOfDays: P.target.value ? Number(P.target.value) : null,
+                          },
+                        })),
+                      placeholder: 'e.g. 5',
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'chinaVisitNumberOfTravelers',
+                      children: a('chinaVisitNumberOfTravelers', 'Travelers'),
+                    }),
+                    r.jsx('input', {
+                      id: 'chinaVisitNumberOfTravelers',
+                      className: 'sino-simple-form__input',
+                      type: 'number',
+                      min: 1,
+                      value: l.chinaVisit.numberOfTravelers ?? '',
+                      onChange: (P) =>
+                        c((I) => ({
+                          ...I,
+                          chinaVisit: {
+                            ...I.chinaVisit,
+                            numberOfTravelers: P.target.value ? Number(P.target.value) : null,
+                          },
+                        })),
+                      placeholder: 'e.g. 2',
+                    }),
+                  ],
+                }),
+              ],
+            }),
+            r.jsxs('div', {
+              className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+              children: [
+                r.jsxs('button', {
+                  type: 'button',
+                  className: 'sino-simple-form__subsection-toggle',
+                  onClick: () => N((P) => !P),
+                  'aria-expanded': w,
+                  children: [
+                    r.jsxs('span', {
+                      className: 'sino-simple-form__subsection-label',
+                      children: [
+                        a('chinaVisitLogisticsTitle', 'Advanced trip logistics (optional)'),
+                        r.jsx('small', {
+                          children: a(
+                            'chinaVisitLogisticsSubtitle',
+                            'Local guide, transport arrangements, hotel booking.'
+                          ),
+                        }),
+                      ],
+                    }),
+                    r.jsx('span', {
+                      className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                      children: '▾',
+                    }),
+                  ],
+                }),
+                w &&
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                    children: [
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__field',
+                        children: [
+                          r.jsx('label', {
+                            className: 'sino-simple-form__label',
+                            children: a('chinaVisitNeedGuide', 'Local guide / interpreter?'),
+                          }),
+                          r.jsx('div', {
+                            className: 'sino-simple-form__chips',
+                            children: [!0, !1].map((P) =>
+                              r.jsx(
+                                'button',
+                                {
+                                  type: 'button',
+                                  className: `sino-simple-chip${l.chinaVisit.needGuide === P ? ' sino-simple-chip--active' : ''}`,
+                                  onClick: () =>
+                                    c((I) => ({
+                                      ...I,
+                                      chinaVisit: {
+                                        ...I.chinaVisit,
+                                        needGuide: I.chinaVisit.needGuide === P ? null : P,
+                                      },
+                                    })),
+                                  children: P ? 'Yes' : 'No',
+                                },
+                                String(P)
+                              )
+                            ),
+                          }),
+                        ],
+                      }),
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__field',
+                        children: [
+                          r.jsx('label', {
+                            className: 'sino-simple-form__label',
+                            children: a('chinaVisitNeedTransport', 'Local transport?'),
+                          }),
+                          r.jsx('div', {
+                            className: 'sino-simple-form__chips',
+                            children: [!0, !1].map((P) =>
+                              r.jsx(
+                                'button',
+                                {
+                                  type: 'button',
+                                  className: `sino-simple-chip${l.chinaVisit.needTransport === P ? ' sino-simple-chip--active' : ''}`,
+                                  onClick: () =>
+                                    c((I) => ({
+                                      ...I,
+                                      chinaVisit: {
+                                        ...I.chinaVisit,
+                                        needTransport: I.chinaVisit.needTransport === P ? null : P,
+                                      },
+                                    })),
+                                  children: P ? 'Yes' : 'No',
+                                },
+                                String(P)
+                              )
+                            ),
+                          }),
+                        ],
+                      }),
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__field',
+                        children: [
+                          r.jsx('label', {
+                            className: 'sino-simple-form__label',
+                            children: a('chinaVisitNeedHotels', 'Hotel booking help?'),
+                          }),
+                          r.jsx('div', {
+                            className: 'sino-simple-form__chips',
+                            children: [!0, !1].map((P) =>
+                              r.jsx(
+                                'button',
+                                {
+                                  type: 'button',
+                                  className: `sino-simple-chip${l.chinaVisit.needHotels === P ? ' sino-simple-chip--active' : ''}`,
+                                  onClick: () =>
+                                    c((I) => ({
+                                      ...I,
+                                      chinaVisit: {
+                                        ...I.chinaVisit,
+                                        needHotels: I.chinaVisit.needHotels === P ? null : P,
+                                      },
+                                    })),
+                                  children: P ? 'Yes' : 'No',
+                                },
+                                String(P)
+                              )
+                            ),
+                          }),
+                        ],
+                      }),
+                      r.jsxs('div', {
+                        className: 'sino-simple-form__field',
+                        children: [
+                          r.jsx('label', {
+                            className: 'sino-simple-form__label',
+                            htmlFor: 'chinaVisitNotes',
+                            children: a('chinaVisitNotes', 'Anything else?'),
+                          }),
+                          r.jsx('textarea', {
+                            id: 'chinaVisitNotes',
+                            className: 'sino-simple-form__input sino-simple-form__input--textarea',
+                            value: l.chinaVisit.notes,
+                            onChange: (P) =>
+                              c((I) => ({
+                                ...I,
+                                chinaVisit: { ...I.chinaVisit, notes: P.target.value },
+                              })),
+                            placeholder: 'Visa, budget, preferences…',
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    });
+  },
+  Km = ({ formData: l, setFormData: c, t: a, stepLabel: w }) => {
+    var N, C, j;
+    return r.jsx(r.Fragment, {
+      children:
+        l.servicesRequested.other &&
+        r.jsxs('section', {
+          className: 'sino-simple-form__section sino-simple-form__section--service-other',
+          children: [
+            r.jsxs('h2', {
+              className: 'sino-simple-form__section-title',
+              children: [
+                r.jsx('span', {
+                  className: 'sino-simple-form__section-step',
+                  children: w ?? 'Step',
+                }),
+                r.jsx('span', { children: a('simpleOtherTitle', 'Tell us about your project') }),
+              ],
+            }),
+            r.jsx('p', {
+              className: 'sino-simple-form__hint',
+              children: a(
+                'simpleOtherHint',
+                "Describe your project in detail and we'll route it to the right specialist."
+              ),
+            }),
+            r.jsxs('div', {
+              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+              children: [
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsx('label', {
+                      className: 'sino-simple-form__label',
+                      children: a('otherProjectType', 'What type of project is this?'),
+                    }),
+                    r.jsx('div', {
+                      className: 'sino-simple-form__chips sino-simple-form__chips--wrap',
+                      children: [
+                        {
+                          value: 'consulting',
+                          label: a('otherTypeConsulting', 'Consulting / Advice'),
+                        },
+                        {
+                          value: 'manufacturing',
+                          label: a('otherTypeManufacturing', 'Manufacturing'),
+                        },
+                        {
+                          value: 'import-export',
+                          label: a('otherTypeImportExport', 'Import / Export'),
+                        },
+                        { value: 'partnership', label: a('otherTypePartnership', 'Partnership') },
+                        { value: 'other', label: a('otherTypeOther', 'Other') },
+                      ].map((f) => {
+                        var h, O, D;
+                        return r.jsx(
+                          'button',
+                          {
+                            type: 'button',
+                            className: `sino-simple-chip${((h = l.otherProject) == null ? void 0 : h.projectType) === f.value ? ' sino-simple-chip--active' : ''}`,
+                            onClick: () =>
+                              c((z) => {
+                                var b;
+                                return {
+                                  ...z,
+                                  otherProject: {
+                                    ...z.otherProject,
+                                    projectType:
+                                      ((b = z.otherProject) == null ? void 0 : b.projectType) ===
+                                      f.value
+                                        ? ''
+                                        : f.value,
+                                  },
+                                };
+                              }),
+                            'aria-pressed':
+                              ((O = l.otherProject) == null ? void 0 : O.projectType) === f.value
+                                ? 'true'
+                                : 'false',
+                            'aria-label': `${f.label}${((D = l.otherProject) == null ? void 0 : D.projectType) === f.value ? ', selected' : ', not selected'}`,
+                            onKeyDown: (z) => {
+                              (z.key === 'Enter' || z.key === ' ') &&
+                                (z.preventDefault(),
+                                c((b) => {
+                                  var Z;
+                                  return {
+                                    ...b,
+                                    otherProject: {
+                                      ...b.otherProject,
+                                      projectType:
+                                        ((Z = b.otherProject) == null ? void 0 : Z.projectType) ===
+                                        f.value
+                                          ? ''
+                                          : f.value,
+                                    },
+                                  };
+                                }));
+                            },
+                            children: f.label,
+                          },
+                          f.value
+                        );
+                      }),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'otherProjectDescription',
+                      children: [
+                        a('otherProjectDescription', 'Describe your project'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__required',
+                          'aria-label': 'required',
+                          children: '*',
+                        }),
+                      ],
+                    }),
+                    r.jsx('textarea', {
+                      id: 'otherProjectDescription',
+                      className: 'sino-simple-form__input sino-simple-form__input--textarea',
+                      rows: 5,
+                      value: ((N = l.otherProject) == null ? void 0 : N.description) || '',
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          otherProject: { ...h.otherProject, description: f.target.value },
+                        })),
+                      placeholder: a(
+                        'otherProjectDescriptionPlaceholder',
+                        'Tell us what you need help with: your goals, context, timeline, challenges…'
+                      ),
+                    }),
+                    r.jsx('p', {
+                      className: 'sino-simple-form__help',
+                      children: a(
+                        'otherProjectDescriptionHelp',
+                        'The more detail you provide, the better we can assist you.'
+                      ),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'otherProjectBudget',
+                      children: [
+                        a('otherProjectBudget', 'Estimated budget'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifKnown', 'if known'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'otherProjectBudget',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: ((C = l.otherProject) == null ? void 0 : C.budget) || '',
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          otherProject: { ...h.otherProject, budget: f.target.value },
+                        })),
+                      placeholder: a('otherProjectBudgetPlaceholder', 'e.g. $5,000 - $10,000'),
+                    }),
+                  ],
+                }),
+                r.jsxs('div', {
+                  className: 'sino-simple-form__field',
+                  children: [
+                    r.jsxs('label', {
+                      className: 'sino-simple-form__label',
+                      htmlFor: 'otherProjectTimeline',
+                      children: [
+                        a('otherProjectTimeline', 'Expected timeline'),
+                        r.jsx('span', {
+                          className: 'sino-simple-form__label-hint',
+                          children: a('ifKnown', 'if known'),
+                        }),
+                      ],
+                    }),
+                    r.jsx('input', {
+                      id: 'otherProjectTimeline',
+                      className: 'sino-simple-form__input',
+                      type: 'text',
+                      value: ((j = l.otherProject) == null ? void 0 : j.timeline) || '',
+                      onChange: (f) =>
+                        c((h) => ({
+                          ...h,
+                          otherProject: { ...h.otherProject, timeline: f.target.value },
+                        })),
+                      placeholder: a('otherProjectTimelinePlaceholder', 'e.g. Within 3 months'),
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+    });
+  },
+  Qm = ({ submissionId: l, t: c, onStartNew: a, selectedServiceLabels: w, formData: N }) => {
+    const [C, j] = W.useState(!1),
+      [f, h] = W.useState(new Date());
+    (W.useEffect(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const b = document.createElement('div');
+      ((b.className = 'sino-simple-form__confetti-container'), document.body.appendChild(b));
+      const Z = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'],
+        H = 50;
+      for (let P = 0; P < H; P++) {
+        const I = document.createElement('div');
+        ((I.className = 'sino-simple-form__confetti'),
+          (I.style.left = `${Math.random() * 100}%`),
+          (I.style.backgroundColor = Z[Math.floor(Math.random() * Z.length)]),
+          (I.style.animationDelay = `${Math.random() * 2}s`),
+          (I.style.animationDuration = `${2 + Math.random() * 2}s`),
+          b.appendChild(I));
+      }
+      const Y = setTimeout(() => {
+        b.remove();
+      }, 4e3);
+      return () => {
+        (clearTimeout(Y), b.parentNode && b.remove());
+      };
+    }, []),
+      W.useEffect(() => {
+        const z = setInterval(() => {
+          h(new Date());
+        }, 6e4);
+        return () => clearInterval(z);
+      }, []));
+    const O = W.useMemo(() => {
+        const z = f,
+          b = z.getDay(),
+          Z = z.getHours(),
+          H = b >= 1 && b <= 5,
+          Y = Z >= 9 && Z < 18;
+        let P = 0,
+          I = 0;
+        if (H && Y) {
+          const me = new Date(z.getTime() + 864e5).getTime() - z.getTime();
+          ((P = Math.max(0, Math.floor(me / (1e3 * 60 * 60)))),
+            (I = Math.max(0, Math.floor((me % (1e3 * 60 * 60)) / (1e3 * 60)))));
+        }
+        return {
+          isBusinessDay: H,
+          isBusinessHours: Y,
+          hoursRemaining: P,
+          minutesRemaining: I,
+          status: H && Y ? 'active' : 'waiting',
+        };
+      }, [f]),
+      D = async () => {
+        try {
+          (await navigator.clipboard.writeText(l), j(!0), setTimeout(() => j(!1), 2e3));
+        } catch (z) {
+          console.error('Failed to copy:', z);
+        }
+      };
+    return r.jsx('section', {
+      className: 'sino-simple-form__section sino-simple-form__section--confirmation',
+      children: r.jsxs('div', {
+        className: 'sino-simple-form__confirmation',
+        children: [
+          r.jsxs('div', {
+            className: 'sino-simple-form__confirmation-icon',
+            children: [
+              r.jsxs('svg', {
+                width: '64',
+                height: '64',
+                viewBox: '0 0 24 24',
+                fill: 'none',
+                xmlns: 'http://www.w3.org/2000/svg',
+                children: [
+                  r.jsx('circle', {
+                    cx: '12',
+                    cy: '12',
+                    r: '10',
+                    stroke: '#22c55e',
+                    strokeWidth: '2',
+                    fill: 'none',
+                    className: 'sino-simple-form__confirmation-circle',
+                  }),
+                  r.jsx('path', {
+                    d: 'M8 12l2 2 4-4',
+                    stroke: '#22c55e',
+                    strokeWidth: '2',
+                    strokeLinecap: 'round',
+                    strokeLinejoin: 'round',
+                    className: 'sino-simple-form__confirmation-check',
+                  }),
+                ],
+              }),
+              r.jsx('div', { className: 'sino-simple-form__confirmation-ripple' }),
+            ],
+          }),
+          r.jsx('h1', {
+            className: 'sino-simple-form__confirmation-title',
+            children: c('simpleConfirmationTitle', 'Request received!'),
+          }),
+          r.jsx('p', {
+            className: 'sino-simple-form__confirmation-subtitle',
+            children: c(
+              'simpleConfirmationSubtitle',
+              'A SINO expert (not a bot) will email you a first quote within 24h (Mon–Fri).'
+            ),
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__confirmation-info-block',
+            children: [
+              N.email &&
+                r.jsxs('div', {
+                  className: 'sino-simple-form__confirmation-email',
+                  children: [
+                    r.jsx('div', {
+                      className: 'sino-simple-form__confirmation-email-icon',
+                      children: r.jsxs('svg', {
+                        width: '24',
+                        height: '24',
+                        viewBox: '0 0 24 24',
+                        fill: 'none',
+                        xmlns: 'http://www.w3.org/2000/svg',
+                        children: [
+                          r.jsx('path', {
+                            d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                          r.jsx('polyline', {
+                            points: '22,6 12,13 2,6',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                        ],
+                      }),
+                    }),
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__confirmation-email-content',
+                      children: [
+                        r.jsx('strong', {
+                          children: c('confirmationEmailTitle', 'Check your inbox'),
+                        }),
+                        r.jsxs('span', {
+                          children: [
+                            c('confirmationEmailText', 'Confirmation email sent to'),
+                            ' ',
+                            r.jsx('strong', { children: N.email }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              r.jsxs('div', {
+                className: `sino-simple-form__confirmation-response-time ${O.status === 'active' ? 'sino-simple-form__confirmation-response-time--active' : ''}`,
+                children: [
+                  r.jsx('div', {
+                    className: 'sino-simple-form__confirmation-response-time-icon',
+                    children: r.jsxs('svg', {
+                      width: '20',
+                      height: '20',
+                      viewBox: '0 0 24 24',
+                      fill: 'none',
+                      xmlns: 'http://www.w3.org/2000/svg',
+                      children: [
+                        r.jsx('circle', {
+                          cx: '12',
+                          cy: '12',
+                          r: '10',
+                          stroke: 'currentColor',
+                          strokeWidth: '2',
+                        }),
+                        r.jsx('polyline', {
+                          points: '12 6 12 12 16 14',
+                          stroke: 'currentColor',
+                          strokeWidth: '2',
+                          strokeLinecap: 'round',
+                          strokeLinejoin: 'round',
+                        }),
+                      ],
+                    }),
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__confirmation-response-time-content',
+                    children: [
+                      r.jsx('strong', {
+                        children: c('confirmationResponseTime', 'Response time: 24h (Mon–Fri)'),
+                      }),
+                      O.status === 'waiting' &&
+                        r.jsx('span', {
+                          className: 'sino-simple-form__confirmation-response-time-status',
+                          children: O.isBusinessDay
+                            ? c(
+                                'confirmationResponseTimeAfterHours',
+                                'Response will start during business hours'
+                              )
+                            : c(
+                                'confirmationResponseTimeWeekend',
+                                'Response will start on next business day'
+                              ),
+                        }),
+                    ],
+                  }),
+                ],
+              }),
+            ],
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__confirmation-badges',
+            children: [
+              r.jsx('div', {
+                className: 'sino-simple-form__confirmation-badge',
+                children: r.jsxs('div', {
+                  className: 'sino-simple-form__confirmation-badge-content',
+                  children: [
+                    r.jsx('strong', {
+                      className: 'sino-simple-form__confirmation-badge-value',
+                      children: '55,000+',
+                    }),
+                    r.jsxs('span', {
+                      className: 'sino-simple-form__confirmation-badge-label',
+                      children: [
+                        c('confirmationBadgeClients', 'Satisfied Customers'),
+                        r.jsx('small', {
+                          className: 'sino-simple-form__confirmation-badge-sublabel',
+                          children: 'since 1989',
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              }),
+              r.jsx('div', {
+                className: 'sino-simple-form__confirmation-badge',
+                children: r.jsxs('div', {
+                  className: 'sino-simple-form__confirmation-badge-content',
+                  children: [
+                    r.jsx('strong', {
+                      className: 'sino-simple-form__confirmation-badge-value',
+                      children: '400+',
+                    }),
+                    r.jsxs('span', {
+                      className: 'sino-simple-form__confirmation-badge-label',
+                      children: [
+                        c('confirmationBadgeTeam', 'Professional Team Members'),
+                        r.jsx('small', {
+                          className: 'sino-simple-form__confirmation-badge-sublabel',
+                          children: 'In China',
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              }),
+              r.jsx('div', {
+                className: 'sino-simple-form__confirmation-badge',
+                children: r.jsxs('div', {
+                  className: 'sino-simple-form__confirmation-badge-content',
+                  children: [
+                    r.jsx('strong', {
+                      className: 'sino-simple-form__confirmation-badge-value',
+                      children: '8',
+                    }),
+                    r.jsxs('span', {
+                      className: 'sino-simple-form__confirmation-badge-label',
+                      children: [
+                        c('confirmationBadgeOffices', 'Wholly Owned Offices'),
+                        r.jsx('small', {
+                          className: 'sino-simple-form__confirmation-badge-sublabel',
+                          children: 'In China',
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              }),
+              r.jsx('div', {
+                className: 'sino-simple-form__confirmation-badge',
+                children: r.jsxs('div', {
+                  className: 'sino-simple-form__confirmation-badge-content',
+                  children: [
+                    r.jsx('strong', {
+                      className: 'sino-simple-form__confirmation-badge-value',
+                      children: '519,000+',
+                    }),
+                    r.jsxs('span', {
+                      className: 'sino-simple-form__confirmation-badge-label',
+                      children: [
+                        c('confirmationBadgeCFS', 'CFS Facility Nationwide'),
+                        r.jsx('small', {
+                          className: 'sino-simple-form__confirmation-badge-sublabel',
+                          children: 'm²',
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              }),
+            ],
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__confirmation-details-card',
+            children: [
+              (w.length > 0 || N.country) &&
+                r.jsxs('div', {
+                  className: 'sino-simple-form__confirmation-summary',
+                  children: [
+                    r.jsx('h3', {
+                      className: 'sino-simple-form__confirmation-summary-title',
+                      children: c('confirmationSummaryTitle', 'Your request summary'),
+                    }),
+                    r.jsxs('div', {
+                      className: 'sino-simple-form__confirmation-summary-content',
+                      children: [
+                        w.length > 0 &&
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__confirmation-summary-item',
+                            children: [
+                              r.jsx('strong', {
+                                children: c('confirmationSummaryServices', 'Services:'),
+                              }),
+                              r.jsx('span', { children: w.join(', ') }),
+                            ],
+                          }),
+                        N.country &&
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__confirmation-summary-item',
+                            children: [
+                              r.jsx('strong', {
+                                children: c('confirmationSummaryDestination', 'Destination:'),
+                              }),
+                              r.jsxs('span', {
+                                children: [
+                                  (() => {
+                                    const z = Qt.find((b) => b.code === N.country);
+                                    return z ? z.name : N.country;
+                                  })(),
+                                  N.destCity && `, ${N.destCity}`,
+                                ],
+                              }),
+                            ],
+                          }),
+                        N.mode &&
+                          N.mode !== 'not_sure' &&
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__confirmation-summary-item',
+                            children: [
+                              r.jsx('strong', { children: c('confirmationSummaryMode', 'Mode:') }),
+                              r.jsx('span', { children: N.mode }),
+                            ],
+                          }),
+                      ],
+                    }),
+                  ],
+                }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__confirmation-details',
+                children: [
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__confirmation-id-container',
+                    children: [
+                      r.jsxs('p', {
+                        className: 'sino-simple-form__confirmation-id',
+                        children: [
+                          r.jsx('strong', {
+                            children: c('simpleConfirmationIdLabel', 'Reference:'),
+                          }),
+                          r.jsx('code', {
+                            className: 'sino-simple-form__confirmation-id-code',
+                            children: l,
+                          }),
+                        ],
+                      }),
+                      r.jsx('button', {
+                        type: 'button',
+                        className: `sino-simple-form__confirmation-copy ${C ? 'sino-simple-form__confirmation-copy--copied' : ''}`,
+                        onClick: D,
+                        title: C
+                          ? c('confirmationCopied', 'Copied!')
+                          : c('confirmationCopy', 'Copy reference'),
+                        children: C
+                          ? r.jsxs(r.Fragment, {
+                              children: [
+                                r.jsx('svg', {
+                                  width: '16',
+                                  height: '16',
+                                  viewBox: '0 0 24 24',
+                                  fill: 'none',
+                                  xmlns: 'http://www.w3.org/2000/svg',
+                                  children: r.jsx('path', {
+                                    d: 'M20 6L9 17l-5-5',
+                                    stroke: 'currentColor',
+                                    strokeWidth: '2',
+                                    strokeLinecap: 'round',
+                                    strokeLinejoin: 'round',
+                                  }),
+                                }),
+                                c('confirmationCopied', 'Copied!'),
+                              ],
+                            })
+                          : r.jsxs(r.Fragment, {
+                              children: [
+                                r.jsxs('svg', {
+                                  width: '16',
+                                  height: '16',
+                                  viewBox: '0 0 24 24',
+                                  fill: 'none',
+                                  xmlns: 'http://www.w3.org/2000/svg',
+                                  children: [
+                                    r.jsx('rect', {
+                                      x: '9',
+                                      y: '9',
+                                      width: '13',
+                                      height: '13',
+                                      rx: '2',
+                                      ry: '2',
+                                      stroke: 'currentColor',
+                                      strokeWidth: '2',
+                                      strokeLinecap: 'round',
+                                      strokeLinejoin: 'round',
+                                    }),
+                                    r.jsx('path', {
+                                      d: 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1',
+                                      stroke: 'currentColor',
+                                      strokeWidth: '2',
+                                      strokeLinecap: 'round',
+                                      strokeLinejoin: 'round',
+                                    }),
+                                  ],
+                                }),
+                                c('confirmationCopy', 'Copy'),
+                              ],
+                            }),
+                      }),
+                    ],
+                  }),
+                  r.jsx('p', {
+                    className: 'sino-simple-form__confirmation-note',
+                    children: c(
+                      'simpleConfirmationNote',
+                      'Keep this reference number for your records. You can use it if you need to follow up on your request.'
+                    ),
+                  }),
+                ],
+              }),
+            ],
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__confirmation-timeline',
+            children: [
+              r.jsxs('div', {
+                className: 'sino-simple-form__confirmation-timeline-item',
+                children: [
+                  r.jsx('div', {
+                    className: 'sino-simple-form__confirmation-timeline-icon',
+                    children: '1',
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__confirmation-timeline-content',
+                    children: [
+                      r.jsx('strong', {
+                        children: c('confirmationStep1Title', 'Email confirmation'),
+                      }),
+                      r.jsx('span', {
+                        children: c(
+                          'confirmationStep1Desc',
+                          "You'll receive a confirmation email within minutes"
+                        ),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__confirmation-timeline-item',
+                children: [
+                  r.jsx('div', {
+                    className: 'sino-simple-form__confirmation-timeline-icon',
+                    children: '2',
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__confirmation-timeline-content',
+                    children: [
+                      r.jsx('strong', { children: c('confirmationStep2Title', 'Expert review') }),
+                      r.jsx('span', {
+                        children: c('confirmationStep2Desc', 'A SINO expert reviews your request'),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__confirmation-timeline-item',
+                children: [
+                  r.jsx('div', {
+                    className: 'sino-simple-form__confirmation-timeline-icon',
+                    children: '3',
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__confirmation-timeline-content',
+                    children: [
+                      r.jsx('strong', { children: c('confirmationStep3Title', 'Your quote') }),
+                      r.jsx('span', {
+                        children: c(
+                          'confirmationStep3Desc',
+                          'Personalized quote sent within 24h (Mon–Fri)'
+                        ),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            ],
+          }),
+          r.jsx('div', {
+            className: 'sino-simple-form__confirmation-actions',
+            children: r.jsx('button', {
+              type: 'button',
+              className: 'sino-simple-form__cta-button sino-simple-form__cta-button--primary',
+              onClick: a,
+              children: c('simpleConfirmationNewRequest', 'Start a new request'),
+            }),
+          }),
+          r.jsxs('div', {
+            className: 'sino-simple-form__confirmation-secondary-section',
+            children: [
+              r.jsxs('div', {
+                className: 'sino-simple-form__confirmation-secondary-actions',
+                children: [
+                  r.jsx('a', {
+                    href: 'https://www.sino-shipping.com/international-shipping-knowledge-base/',
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                    className: 'sino-simple-form__confirmation-link',
+                    children: c('confirmationBrowseGuides', 'Browse our guides'),
+                  }),
+                  r.jsx('a', {
+                    href: 'mailto:info@sino-shipping.com',
+                    className: 'sino-simple-form__confirmation-link',
+                    children: c('confirmationContactSupport', 'Contact support'),
+                  }),
+                ],
+              }),
+              r.jsxs('div', {
+                className: 'sino-simple-form__confirmation-social',
+                children: [
+                  r.jsx('p', {
+                    className: 'sino-simple-form__confirmation-social-title',
+                    children: c('confirmationSocialTitle', 'Check our social networks'),
+                  }),
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__confirmation-social-links',
+                    children: [
+                      r.jsx('a', {
+                        href: 'https://hk.linkedin.com/company/sino-shipping-official',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        className: 'sino-simple-form__confirmation-social-link',
+                        'aria-label': 'LinkedIn',
+                        children: r.jsx('svg', {
+                          width: '20',
+                          height: '20',
+                          viewBox: '0 0 24 24',
+                          fill: 'currentColor',
+                          xmlns: 'http://www.w3.org/2000/svg',
+                          children: r.jsx('path', {
+                            d: 'M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z',
+                          }),
+                        }),
+                      }),
+                      r.jsx('a', {
+                        href: 'https://www.youtube.com/@SINO-Shipping',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        className: 'sino-simple-form__confirmation-social-link',
+                        'aria-label': 'YouTube',
+                        children: r.jsx('svg', {
+                          width: '20',
+                          height: '20',
+                          viewBox: '0 0 24 24',
+                          fill: 'currentColor',
+                          xmlns: 'http://www.w3.org/2000/svg',
+                          children: r.jsx('path', {
+                            d: 'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z',
+                          }),
+                        }),
+                      }),
+                      r.jsx('a', {
+                        href: 'https://www.instagram.com/sino.shipping/?hl=en',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        className: 'sino-simple-form__confirmation-social-link',
+                        'aria-label': 'Instagram',
+                        children: r.jsx('svg', {
+                          width: '20',
+                          height: '20',
+                          viewBox: '0 0 24 24',
+                          fill: 'currentColor',
+                          xmlns: 'http://www.w3.org/2000/svg',
+                          children: r.jsx('path', {
+                            d: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z',
+                          }),
+                        }),
+                      }),
+                      r.jsx('a', {
+                        href: 'https://www.tiktok.com/@sinoshipping',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        className: 'sino-simple-form__confirmation-social-link',
+                        'aria-label': 'TikTok',
+                        children: r.jsx('svg', {
+                          width: '20',
+                          height: '20',
+                          viewBox: '0 0 24 24',
+                          fill: 'currentColor',
+                          xmlns: 'http://www.w3.org/2000/svg',
+                          children: r.jsx('path', {
+                            d: 'M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z',
+                          }),
+                        }),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            ],
+          }),
+          r.jsx('div', {
+            className: 'sino-simple-form__confirmation-trust',
+            children: r.jsx('p', {
+              className: 'sino-simple-form__footer-trust',
+              children: c(
+                'simpleConfirmationTrust',
+                'No spam. Just one clear plan, with transparent pricing and timelines.'
+              ),
+            }),
+          }),
+        ],
+      }),
+    });
+  },
+  lc = 'sinoSimpleFormDraft',
+  Ju = 'sinoSimpleFormSessionId';
+function el() {
+  return `session-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+}
+function Ym() {
+  if (typeof window > 'u') return el();
+  try {
+    const l = window.localStorage.getItem(Ju);
+    if (l) return l;
+    const c = el();
+    return (window.localStorage.setItem(Ju, c), c);
+  } catch {
+    return el();
+  }
+}
+function Zm(l, c) {
+  if (!(typeof window > 'u'))
+    try {
+      const a = `${lc}-${l}`,
+        w = { sessionId: l, formData: c, savedAt: new Date().toISOString() };
+      window.localStorage.setItem(a, JSON.stringify(w));
+    } catch (a) {
+      console.warn('[saveFormDraft] Failed to save draft:', a);
+    }
+}
+function Xm(l) {
+  if (typeof window > 'u') return null;
+  try {
+    const c = `${lc}-${l}`,
+      a = window.localStorage.getItem(c);
+    return a ? JSON.parse(a).formData : null;
+  } catch {
+    return null;
+  }
+}
+let Pe = null,
+  it = null,
+  Gt = null;
+function Jm(l) {
+  ((Pe = {
+    sessionId: l,
+    startTime: Date.now(),
+    currentStep: 'services',
+    stepsCompleted: [],
+    totalTime: 0,
+    completionRate: 0,
+    problematicFields: {},
+  }),
+    (it = Date.now()),
+    (Gt = 'services'),
+    mi('form_started', { session_id: l }));
+}
+function ec(l, c, a, w) {
+  if (Pe) {
+    if (it && Gt) {
+      const N = Math.round((Date.now() - it) / 1e3);
+      (mi('step_completed', { step_id: l, step_index: a - 1, time_spent: N, total_steps: w }),
+        Pe.stepsCompleted.push(l),
+        (Pe.totalTime += N));
+    }
+    ((it = Date.now()),
+      (Gt = c),
+      (Pe.currentStep = c),
+      mi('step_changed', { from_step: l, to_step: c, step_index: a, total_steps: w }));
+  }
+}
+function nc(l, c) {
+  Pe &&
+    ((Pe.problematicFields[l] = (Pe.problematicFields[l] || 0) + 1),
+    mi('field_error', { field_name: l, error_message: c, error_count: Pe.problematicFields[l] }));
+}
+function ep(l, c) {
+  mi('field_completed', { field_name: l, step_id: c });
+}
+function np(l, c) {
+  if (!Pe) return;
+  const a = Math.round((Date.now() - Pe.startTime) / 1e3),
+    w = ['services', 'shippingRoute', 'shippingCargo', 'contact'],
+    N = (Pe.stepsCompleted.length / w.length) * 100;
+  mi('form_submitted', {
+    submission_id: l,
+    session_id: Pe.sessionId,
+    total_time: a,
+    completion_rate: N,
+    steps_completed: Pe.stepsCompleted.length,
+    problematic_fields: Object.keys(Pe.problematicFields),
+    error_count: Object.values(Pe.problematicFields).reduce((j, f) => j + f, 0),
+  });
+  const C = Object.entries(Pe.problematicFields)
+    .sort(([, j], [, f]) => f - j)
+    .slice(0, 5);
+  C.length > 0 &&
+    mi('form_problematic_fields', {
+      submission_id: l,
+      fields: C.map(([j]) => j),
+      error_counts: C.map(([, j]) => j),
+    });
+}
+function ip() {
+  if (!Pe || !Gt) return;
+  const l = it ? Math.round((Date.now() - it) / 1e3) : 0,
+    c = Math.round((Date.now() - Pe.startTime) / 1e3);
+  mi('form_abandoned', {
+    session_id: Pe.sessionId,
+    abandoned_at_step: Gt,
+    step_index: Pe.stepsCompleted.length,
+    time_on_current_step: l,
+    total_time: c,
+    steps_completed: Pe.stepsCompleted.length,
+    problematic_fields: Object.keys(Pe.problematicFields),
+  });
+}
+function mi(l, c) {
+  typeof window > 'u' ||
+    (typeof window.gtag == 'function' &&
+      window.gtag('event', l, { event_category: 'Simple Quote Form', ...c }),
+    typeof window.plausible == 'function' && window.plausible(l, { props: c }));
+}
+const tp = () => {
+    var bi, Mi;
+    const { formData: l, setFormData: c, handleInputChange: a } = hm(),
+      [w, N] = W.useState(!1),
+      [C, j] = W.useState(!1),
+      [f, h] = W.useState(!1),
+      [O, D] = W.useState(!0),
+      [z, b] = W.useState(!0),
+      [Z, H] = W.useState(!0),
+      [Y, P] = W.useState(!0),
+      [I, pe] = W.useState(!0),
+      [me, re] = W.useState(!0),
+      [ue, fe] = W.useState(!0),
+      [ve, Ie] = W.useState(!1),
+      [Ge, We] = W.useState(null),
+      [cn, Ae] = W.useState(!1),
+      [X, Te] = W.useState(0),
+      [Ve, Re] = W.useState(null),
+      [K, F] = W.useState({}),
+      [V, A] = W.useState({}),
+      [p, k] = W.useState(!1),
+      [Q, ie] = W.useState(null),
+      [se, le] = W.useState(!1),
+      [ge, ce] = W.useState(''),
+      [ye, Ke] = W.useState(''),
+      [Ti, pi] = W.useState(!1),
+      Ei = W.useMemo(() => Om(), []),
+      tt = W.useMemo(() => Im(l.country), [l.country]),
+      rt = W.useRef(null),
+      st = W.useRef(null),
+      Li = W.useRef(null),
+      ot = W.useRef(null),
+      Ri = W.useRef(null),
+      qn = W.useRef(null),
+      En = W.useCallback(() => {
+        const L = [ot.current, Ri.current, qn.current, rt.current, st.current, Li.current].find(
+          (ne) => ne !== null
+        );
+        L && (L.scrollIntoView({ block: 'center', behavior: 'smooth' }), L.focus());
+      }, []),
+      Be = W.useCallback((y) => typeof y == 'string' && y.trim().length > 0, []),
+      S = W.useCallback((y, L) => L, []),
+      Qe = W.useCallback(
+        (y) => {
+          a(y);
+          const L = y.target.name;
+          (K[L] &&
+            !V[L] &&
+            F((ne) => {
+              const we = { ...ne };
+              return (delete we[L], we);
+            }),
+            L === 'country' ? ce(y.target.value) : L === 'destCity' && Ke(y.target.value));
+        },
+        [a, K, V]
+      ),
+      lt =
+        ((bi = l.servicesRequested) == null ? void 0 : bi.shipping) === void 0
+          ? !0
+          : l.servicesRequested.shipping,
+      en = W.useMemo(() => {
+        const y = ['services'],
+          L = l.servicesRequested || {};
+        return (
+          L.sourcing && y.push('sourcing'),
+          L.warehousing && y.push('warehousing'),
+          L.dropshipping && y.push('dropshipping'),
+          L.qc && y.push('qc'),
+          L.chinaVisits && y.push('chinaVisit'),
+          lt && (y.push('shippingRoute'), y.push('shippingCargo')),
+          L.other && y.push('other'),
+          y.push('contact'),
+          y
+        );
+      }, [l.servicesRequested, lt]),
+      Ee = W.useMemo(() => en.length, [en]),
+      _e = en[X] || 'services',
+      fi = W.useCallback(
+        (y, L) => {
+          if (!L || (typeof L == 'string' && L.trim().length === 0)) {
+            A((we) => ({ ...we, [y]: !0 }));
+            return;
+          }
+          A((we) => ({ ...we, [y]: !0 }));
+          let ne = { valid: !0 };
+          switch (y) {
+            case 'email':
+              ne = tc(L);
+              break;
+            case 'phone':
+              ne = rc(L);
+              break;
+            case 'firstName':
+              ne = sc(L, 'First name');
+              break;
+            case 'country':
+              ne = tl(L);
+              break;
+            case 'destCity':
+              ne = rl(L);
+              break;
+            case 'totalWeight':
+              ne = oc(L);
+              break;
+          }
+          !ne.valid && ne.error
+            ? (F((we) => ({ ...we, [y]: ne.error })), nc(y, ne.error))
+            : (F((we) => {
+                const Ln = { ...we };
+                return (delete Ln[y], Ln);
+              }),
+              L && typeof L == 'string' && L.trim().length > 0 && ep(y, _e));
+        },
+        [_e]
+      ),
+      Dn = W.useMemo(
+        () =>
+          ['shipping', 'sourcing', 'dropshipping', 'warehousing', 'qc', 'chinaVisits', 'other']
+            .filter((y) => {
+              var L;
+              return (L = l.servicesRequested) == null ? void 0 : L[y];
+            })
+            .map((y) => {
+              switch (y) {
+                case 'shipping':
+                  return S('serviceShippingSummary', 'Shipping from China');
+                case 'sourcing':
+                  return S('serviceSourcingSummary', 'Product sourcing');
+                case 'dropshipping':
+                  return S('serviceDropshippingSummary', 'Dropshipping & fulfillment');
+                case 'warehousing':
+                  return S('serviceWarehousingSummary', 'Warehousing & consolidation');
+                case 'qc':
+                  return S('serviceQcSummary', 'Quality control & inspections');
+                case 'chinaVisits':
+                  return S('serviceChinaVisitsSummary', 'China visits & trade fairs');
+                case 'other':
+                  return S('serviceOtherSummary', 'Other project');
+                default:
+                  return '';
+              }
+            })
+            .filter(Boolean),
+        [l.servicesRequested, S]
+      ),
+      Hn =
+        ((Mi = l.servicesRequested) == null ? void 0 : Mi.shipping) === void 0
+          ? !0
+          : l.servicesRequested.shipping,
+      as = X === Ee - 1,
+      Yt = X === 0,
+      Zt = W.useCallback(() => {
+        if (!Cm(_e, l)) {
+          const y = ol(_e, l);
+          (F((L) => {
+            const ne = { ...L };
+            return (
+              Object.entries(y).forEach(([we, Ln]) => {
+                !Ln.valid && Ln.error ? ((ne[we] = Ln.error), nc(we, Ln.error)) : delete ne[we];
+              }),
+              ne
+            );
+          }),
+            A((L) => {
+              const ne = { ...L };
+              return (
+                Object.keys(y).forEach((we) => {
+                  ne[we] = !0;
+                }),
+                ne
+              );
+            }),
+            setTimeout(() => {
+              En();
+            }, 100));
+          return;
+        }
+        if (X < Ee - 1) {
+          const y = X + 1,
+            L = en[y];
+          (ec(_e, L, y, Ee),
+            pi(!0),
+            setTimeout(() => {
+              (Te(y),
+                typeof window < 'u' && window.scrollTo({ top: 0, behavior: 'smooth' }),
+                setTimeout(() => pi(!1), 50));
+            }, 150));
+        }
+      }, [_e, l, X, Ee, En, en]),
+      us = W.useCallback(() => {
+        if (X > 0) {
+          const y = X - 1,
+            L = en[y];
+          (ec(_e, L, y, Ee),
+            pi(!0),
+            setTimeout(() => {
+              (Te(y),
+                typeof window < 'u' && window.scrollTo({ top: 0, behavior: 'smooth' }),
+                setTimeout(() => pi(!1), 50));
+            }, 150));
+        }
+      }, [X, _e, en, Ee]);
+    (W.useEffect(() => {
+      if (X >= Ee && Ee > 0) {
+        Te(Ee - 1);
+        return;
+      }
+      const y = en[X];
+      if (!y || y !== _e) {
+        const L = en.indexOf(_e);
+        L >= 0 ? Te(L) : X >= Ee && Ee > 0 ? Te(Ee - 1) : X > 0 && Te(0);
+      }
+    }, [Ee, en, _e, X]),
+      W.useEffect(() => {
+        p
+          ? (D(!1), b(!1), H(!1), P(!1), pe(!1), re(!1), fe(!1))
+          : (D(!0), b(!0), H(!0), P(!0), pe(!0), re(!0), fe(!0));
+      }, [p]),
+      W.useEffect(() => {
+        if (typeof window > 'u') return;
+        const y = Ym();
+        (ie(y), Jm(y));
+        try {
+          const L = Xm(y);
+          L && c((ne) => ({ ...ne, ...L }));
+        } catch {}
+      }, []),
+      W.useEffect(() => {
+        if (typeof window > 'u' || Ve) return;
+        const y = () => {
+          ip();
+        };
+        return (
+          window.addEventListener('beforeunload', y),
+          () => {
+            window.removeEventListener('beforeunload', y);
+          }
+        );
+      }, [Ve]),
+      W.useEffect(() => {
+        if (typeof window > 'u' || !Q) return;
+        const y = setTimeout(() => {
+          try {
+            const L = {
+              country: l.country,
+              origin: l.origin,
+              mode: l.mode,
+              email: l.email,
+              phone: l.phone,
+              phoneCountryCode: l.phoneCountryCode,
+              customerType: l.customerType,
+              locationType: l.locationType,
+              city: l.city,
+              zipCode: l.zipCode,
+              destLocationType: l.destLocationType,
+              destCity: l.destCity,
+              destZipCode: l.destZipCode,
+              destPort: l.destPort,
+              firstName: l.firstName,
+              lastName: l.lastName,
+              companyName: l.companyName,
+              shipperType: l.shipperType,
+              totalWeight: l.totalWeight,
+              numberOfUnits: l.numberOfUnits,
+              dimensions: l.dimensions,
+              weightPerUnit: l.weightPerUnit,
+              goodsValue: l.goodsValue,
+              goodsCurrency: l.goodsCurrency,
+              isPersonalOrHazardous: l.isPersonalOrHazardous,
+              areGoodsReady: l.areGoodsReady,
+              goodsDescription: l.goodsDescription,
+              specialRequirements: l.specialRequirements,
+              remarks: l.remarks,
+              incoterm: l.incoterm,
+              annualVolume: l.annualVolume,
+              servicesRequested: l.servicesRequested,
+              sourcing: l.sourcing,
+              warehousing: l.warehousing,
+              dropshipping: l.dropshipping,
+              qc: l.qc,
+              chinaVisit: l.chinaVisit,
+              otherProject: l.otherProject,
+            };
+            Zm(Q, L);
+          } catch {}
+        }, 2e3);
+        return () => clearTimeout(y);
+      }, [l, Q]),
+      W.useEffect(() => {
+        if (typeof window > 'u' || !Q) return;
+        const y = setTimeout(() => {
+          (le(!0),
+            setTimeout(() => {
+              le(!1);
+            }, 2e3));
+        }, 5e3);
+        return () => clearTimeout(y);
+      }, [l, Q]));
+    const hn = W.useCallback(
+        (y, L) => {
+          c((ne) => ({ ...ne, [y]: L }));
+        },
+        [c]
+      ),
+      at = W.useCallback(
+        (y) => {
+          if ((Re(y), np(y), typeof window < 'u' && Q))
+            try {
+              const L = `sinoSimpleFormDraft-${Q}`;
+              (window.localStorage.removeItem(L),
+                window.localStorage.removeItem('sinoSimpleFormSessionId'));
+            } catch {}
+        },
+        [Q]
+      ),
+      ut = W.useCallback(() => {
+        (Re(null), Te(0), We(null));
+      }, []);
+    return Ve
+      ? r.jsx('div', {
+          className: 'sino-simple-form',
+          children: r.jsx(Qm, {
+            submissionId: Ve,
+            t: S,
+            onStartNew: ut,
+            selectedServiceLabels: Dn,
+            formData: l,
+          }),
+        })
+      : r.jsxs('div', {
+          className: 'sino-simple-form',
+          children: [
+            r.jsx('a', {
+              href: '#sino-simple-form-main',
+              className: 'sino-simple-form__skip-link',
+              children: S('skipToMainContent', 'Skip to main content'),
+            }),
+            r.jsxs('main', {
+              id: 'sino-simple-form-main',
+              role: 'main',
+              'aria-label': S('formAriaLabel', 'Quote request form'),
+              children: [
+                se &&
+                  r.jsxs('div', {
+                    className: 'sino-simple-form__save-notification',
+                    role: 'status',
+                    'aria-live': 'polite',
+                    children: [
+                      r.jsx('span', {
+                        className: 'sino-simple-form__save-notification-icon',
+                        'aria-hidden': 'true',
+                        children: r.jsx('svg', {
+                          width: '16',
+                          height: '16',
+                          viewBox: '0 0 24 24',
+                          fill: 'none',
+                          xmlns: 'http://www.w3.org/2000/svg',
+                          children: r.jsx('path', {
+                            d: 'M20 6L9 17l-5-5',
+                            stroke: 'currentColor',
+                            strokeWidth: '2',
+                            strokeLinecap: 'round',
+                            strokeLinejoin: 'round',
+                          }),
+                        }),
+                      }),
+                      r.jsx('span', {
+                        className: 'sino-simple-form__save-notification-text',
+                        children: S('saveNotification', 'Your progress is saved'),
+                      }),
+                    ],
+                  }),
+                !Ve && r.jsx($m, { t: S }),
+                r.jsxs('div', {
+                  className: `sino-simple-form__step-content${Ti ? ' sino-simple-form__step-content--transitioning' : ''}`,
+                  children: [
+                    _e === 'services' &&
+                      r.jsx(gm, {
+                        formData: l,
+                        setFormData: c,
+                        t: S,
+                        stepLabel: `Step ${X + 1}`,
+                        shippingOnly: !1,
+                        isQuickQuote: p,
+                        setIsQuickQuote: k,
+                      }),
+                    _e === 'sourcing' &&
+                      r.jsx(Um, {
+                        formData: l,
+                        setFormData: c,
+                        t: S,
+                        stepLabel: `Step ${X + 1}`,
+                        showSourcingAdvanced: Y,
+                        setShowSourcingAdvanced: P,
+                        isQuickQuote: p,
+                      }),
+                    _e === 'warehousing' &&
+                      r.jsx(qm, {
+                        formData: l,
+                        setFormData: c,
+                        t: S,
+                        showWarehousingAdvanced: I,
+                        setShowWarehousingAdvanced: pe,
+                        stepLabel: `Step ${X + 1}`,
+                      }),
+                    _e === 'dropshipping' &&
+                      r.jsx(Dm, {
+                        formData: l,
+                        setFormData: c,
+                        t: S,
+                        showDropshippingAdvanced: me,
+                        setShowDropshippingAdvanced: re,
+                        stepLabel: `Step ${X + 1}`,
+                      }),
+                    _e === 'qc' &&
+                      r.jsx(Hm, {
+                        formData: l,
+                        setFormData: c,
+                        t: S,
+                        showQcAdvanced: ue,
+                        setShowQcAdvanced: fe,
+                        stepLabel: `Step ${X + 1}`,
+                      }),
+                    _e === 'chinaVisit' &&
+                      r.jsx(Gm, {
+                        formData: l,
+                        setFormData: c,
+                        t: S,
+                        showChinaVisitLogistics: ve,
+                        setShowChinaVisitLogistics: Ie,
+                        stepLabel: `Step ${X + 1}`,
+                      }),
+                    _e === 'other' &&
+                      r.jsx(Km, { formData: l, setFormData: c, t: S, stepLabel: `Step ${X + 1}` }),
+                    _e === 'shippingRoute' &&
+                      Hn &&
+                      r.jsx(r.Fragment, {
+                        children: r.jsxs('section', {
+                          className:
+                            'sino-simple-form__section sino-simple-form__section--service-shipping',
+                          children: [
+                            r.jsxs('h2', {
+                              className: 'sino-simple-form__section-title',
+                              children: [
+                                r.jsx('span', {
+                                  className: 'sino-simple-form__section-step',
+                                  children: `Step ${X + 1}`,
+                                }),
+                                r.jsx('span', {
+                                  children: S('shippingFromChinaTitle', 'Shipping from China'),
+                                }),
+                              ],
+                            }),
+                            r.jsx(il, {
+                              stepId: 'shippingRoute',
+                              formData: l,
+                              currentStepIndex: X,
+                              totalSteps: Ee,
+                              t: S,
+                            }),
+                            r.jsx('h3', {
+                              className: 'sino-simple-form__subsection-title',
+                              children: S('simpleStep1Title', 'Destination & mode'),
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__fields',
+                              children: [
+                                r.jsxs('div', {
+                                  className: `sino-simple-form__field sino-simple-form__field--primary${V.country && K.country ? ' sino-simple-form__field--error' : ''}${V.country && !K.country && Be(l.country) ? ' sino-simple-form__field--success' : ''}`,
+                                  children: [
+                                    r.jsxs('label', {
+                                      className: 'sino-simple-form__label',
+                                      htmlFor: 'country',
+                                      children: [
+                                        S('destinationCountry', 'Destination country'),
+                                        r.jsx('span', {
+                                          className: 'sino-simple-form__required',
+                                          'aria-label': 'required',
+                                          children: '*',
+                                        }),
+                                      ],
+                                    }),
+                                    r.jsxs('div', {
+                                      className: 'sino-simple-form__field-wrapper',
+                                      children: [
+                                        r.jsx(Zu, {
+                                          id: 'country',
+                                          name: 'country',
+                                          value: l.country,
+                                          onChange: Qe,
+                                          onBlur: () => {
+                                            l.country &&
+                                              l.country.trim().length > 0 &&
+                                              fi('country', l.country);
+                                          },
+                                          onSelect: (y) => {
+                                            c((L) => ({ ...L, country: y }));
+                                          },
+                                          onSelectWithValidation: (y) => {
+                                            (c((ne) => ({ ...ne, country: y })),
+                                              ce(y),
+                                              A((ne) => ({ ...ne, country: !0 })));
+                                            const L = tl(y);
+                                            !L.valid && L.error
+                                              ? F((ne) => ({ ...ne, country: L.error }))
+                                              : F((ne) => {
+                                                  const we = { ...ne };
+                                                  return (delete we.country, we);
+                                                });
+                                          },
+                                          placeholder: S(
+                                            'destinationCountryPlaceholder',
+                                            'France, USA, Canada…'
+                                          ),
+                                          options: Ei,
+                                          inputRef: rt,
+                                          error: K.country,
+                                          touched: V.country,
+                                          isValid: !K.country && Be(ge || l.country),
+                                          maxResults: 10,
+                                        }),
+                                        V.country &&
+                                          r.jsxs(r.Fragment, {
+                                            children: [
+                                              K.country &&
+                                                r.jsx('span', {
+                                                  className:
+                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                                                  'aria-hidden': 'true',
+                                                  children: r.jsxs('svg', {
+                                                    width: '20',
+                                                    height: '20',
+                                                    viewBox: '0 0 24 24',
+                                                    fill: 'none',
+                                                    xmlns: 'http://www.w3.org/2000/svg',
+                                                    children: [
+                                                      r.jsx('circle', {
+                                                        cx: '12',
+                                                        cy: '12',
+                                                        r: '10',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                      }),
+                                                      r.jsx('line', {
+                                                        x1: '12',
+                                                        y1: '8',
+                                                        x2: '12',
+                                                        y2: '12',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                        strokeLinecap: 'round',
+                                                      }),
+                                                      r.jsx('line', {
+                                                        x1: '12',
+                                                        y1: '16',
+                                                        x2: '12.01',
+                                                        y2: '16',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                        strokeLinecap: 'round',
+                                                      }),
+                                                    ],
+                                                  }),
+                                                }),
+                                              !K.country &&
+                                                Be(l.country) &&
+                                                r.jsx('span', {
+                                                  className:
+                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                                                  'aria-hidden': 'true',
+                                                  children: r.jsxs('svg', {
+                                                    width: '20',
+                                                    height: '20',
+                                                    viewBox: '0 0 24 24',
+                                                    fill: 'none',
+                                                    xmlns: 'http://www.w3.org/2000/svg',
+                                                    children: [
+                                                      r.jsx('circle', {
+                                                        cx: '12',
+                                                        cy: '12',
+                                                        r: '10',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                      }),
+                                                      r.jsx('path', {
+                                                        d: 'M8 12l2 2 4-4',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                        strokeLinecap: 'round',
+                                                        strokeLinejoin: 'round',
+                                                      }),
+                                                    ],
+                                                  }),
+                                                }),
+                                            ],
+                                          }),
+                                      ],
+                                    }),
+                                    K.country &&
+                                      r.jsx('p', {
+                                        id: 'country-error',
+                                        className: 'sino-simple-form__field-error',
+                                        role: 'alert',
+                                        'aria-live': 'polite',
+                                        children: K.country,
+                                      }),
+                                    V.country &&
+                                      !K.country &&
+                                      Be(l.country) &&
+                                      r.jsx('p', {
+                                        id: 'country-success',
+                                        className: 'sino-simple-form__sr-only',
+                                        'aria-live': 'polite',
+                                        children: S('fieldValid', 'Field is valid'),
+                                      }),
+                                  ],
+                                }),
+                                r.jsxs('div', {
+                                  className: `sino-simple-form__field sino-simple-form__field--primary${V.destCity && K.destCity ? ' sino-simple-form__field--error' : ''}${V.destCity && !K.destCity && Be(l.destCity) ? ' sino-simple-form__field--success' : ''}`,
+                                  children: [
+                                    r.jsxs('label', {
+                                      className: 'sino-simple-form__label',
+                                      htmlFor: 'destCity',
+                                      children: [
+                                        S('destinationCityOrPort', 'City or port'),
+                                        r.jsx('span', {
+                                          className: 'sino-simple-form__required',
+                                          'aria-label': 'required',
+                                          children: '*',
+                                        }),
+                                      ],
+                                    }),
+                                    r.jsxs('div', {
+                                      className: 'sino-simple-form__field-wrapper',
+                                      children: [
+                                        r.jsx(Zu, {
+                                          id: 'destCity',
+                                          name: 'destCity',
+                                          value: l.destCity,
+                                          onChange: Qe,
+                                          onBlur: () => {
+                                            l.destCity &&
+                                              l.destCity.trim().length > 0 &&
+                                              fi('destCity', l.destCity);
+                                          },
+                                          onSelectWithValidation: (y) => {
+                                            (c((ne) => ({ ...ne, destCity: y })),
+                                              Ke(y),
+                                              A((ne) => ({ ...ne, destCity: !0 })));
+                                            const L = rl(y);
+                                            !L.valid && L.error
+                                              ? F((ne) => ({ ...ne, destCity: L.error }))
+                                              : F((ne) => {
+                                                  const we = { ...ne };
+                                                  return (delete we.destCity, we);
+                                                });
+                                          },
+                                          placeholder: S(
+                                            'destinationCityPlaceholder',
+                                            'e.g. Paris, Le Havre…'
+                                          ),
+                                          options: tt,
+                                          inputRef: st,
+                                          error: K.destCity,
+                                          touched: V.destCity,
+                                          isValid: !K.destCity && Be(ye || l.destCity),
+                                          maxResults: 8,
+                                        }),
+                                        V.destCity &&
+                                          r.jsxs(r.Fragment, {
+                                            children: [
+                                              K.destCity &&
+                                                r.jsx('span', {
+                                                  className:
+                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                                                  'aria-hidden': 'true',
+                                                  'aria-label': S('fieldError', 'Error'),
+                                                  children: r.jsxs('svg', {
+                                                    width: '20',
+                                                    height: '20',
+                                                    viewBox: '0 0 24 24',
+                                                    fill: 'none',
+                                                    xmlns: 'http://www.w3.org/2000/svg',
+                                                    children: [
+                                                      r.jsx('circle', {
+                                                        cx: '12',
+                                                        cy: '12',
+                                                        r: '10',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                      }),
+                                                      r.jsx('line', {
+                                                        x1: '12',
+                                                        y1: '8',
+                                                        x2: '12',
+                                                        y2: '12',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                        strokeLinecap: 'round',
+                                                      }),
+                                                      r.jsx('line', {
+                                                        x1: '12',
+                                                        y1: '16',
+                                                        x2: '12.01',
+                                                        y2: '16',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                        strokeLinecap: 'round',
+                                                      }),
+                                                    ],
+                                                  }),
+                                                }),
+                                              !K.destCity &&
+                                                Be(l.destCity) &&
+                                                r.jsx('span', {
+                                                  className:
+                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                                                  'aria-hidden': 'true',
+                                                  'aria-label': S('fieldValid', 'Field is valid'),
+                                                  children: r.jsxs('svg', {
+                                                    width: '20',
+                                                    height: '20',
+                                                    viewBox: '0 0 24 24',
+                                                    fill: 'none',
+                                                    xmlns: 'http://www.w3.org/2000/svg',
+                                                    children: [
+                                                      r.jsx('circle', {
+                                                        cx: '12',
+                                                        cy: '12',
+                                                        r: '10',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                      }),
+                                                      r.jsx('path', {
+                                                        d: 'M8 12l2 2 4-4',
+                                                        stroke: 'currentColor',
+                                                        strokeWidth: '2',
+                                                        strokeLinecap: 'round',
+                                                        strokeLinejoin: 'round',
+                                                      }),
+                                                    ],
+                                                  }),
+                                                }),
+                                            ],
+                                          }),
+                                      ],
+                                    }),
+                                    K.destCity &&
+                                      r.jsx('p', {
+                                        id: 'destCity-error',
+                                        className: 'sino-simple-form__field-error',
+                                        role: 'alert',
+                                        'aria-live': 'polite',
+                                        children: K.destCity,
+                                      }),
+                                    V.destCity &&
+                                      !K.destCity &&
+                                      Be(l.destCity) &&
+                                      r.jsx('p', {
+                                        id: 'destCity-success',
+                                        className: 'sino-simple-form__sr-only',
+                                        'aria-live': 'polite',
+                                        children: S('fieldValid', 'Field is valid'),
+                                      }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: `sino-simple-form__subsection${O ? ' sino-simple-form__subsection--open' : ''}`,
+                              children: [
+                                r.jsxs('button', {
+                                  type: 'button',
+                                  className: 'sino-simple-form__subsection-toggle',
+                                  onClick: () => D((y) => !y),
+                                  'aria-expanded': O,
+                                  'aria-controls': 'destination-details-content',
+                                  'aria-label': O
+                                    ? S('collapseSection', 'Collapse destination details')
+                                    : S('expandSection', 'Expand destination details'),
+                                  onKeyDown: (y) => {
+                                    (y.key === 'Enter' || y.key === ' ') &&
+                                      (y.preventDefault(), D((L) => !L));
+                                  },
+                                  children: [
+                                    r.jsxs('span', {
+                                      className: 'sino-simple-form__subsection-label',
+                                      children: [
+                                        S(
+                                          'destinationDetailsTitle',
+                                          'Advanced delivery details (optional)'
+                                        ),
+                                        r.jsx('small', {
+                                          children: S(
+                                            'destinationDetailsSubtitle',
+                                            'Helps us refine delivery but you can skip this for now.'
+                                          ),
+                                        }),
+                                      ],
+                                    }),
+                                    r.jsx('span', {
+                                      className: `sino-simple-form__subsection-chevron${O ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                                      children: '▾',
+                                    }),
+                                  ],
+                                }),
+                                O &&
+                                  r.jsxs('div', {
+                                    id: 'destination-details-content',
+                                    className:
+                                      'sino-simple-form__fields sino-simple-form__fields--rows',
+                                    children: [
+                                      r.jsxs('div', {
+                                        className: 'sino-simple-form__field',
+                                        children: [
+                                          r.jsx('label', {
+                                            className: 'sino-simple-form__label',
+                                            children: S(
+                                              'destinationLocationType',
+                                              'Delivery location type'
+                                            ),
+                                          }),
+                                          r.jsx('input', {
+                                            className: 'sino-simple-form__input',
+                                            type: 'text',
+                                            name: 'destLocationType',
+                                            value: l.destLocationType,
+                                            onChange: Qe,
+                                            placeholder: S(
+                                              'destinationLocationTypePlaceholder',
+                                              'Port, warehouse, home address…'
+                                            ),
+                                          }),
+                                        ],
+                                      }),
+                                      r.jsxs('div', {
+                                        className: 'sino-simple-form__field',
+                                        children: [
+                                          r.jsx('label', {
+                                            className: 'sino-simple-form__label',
+                                            children: S('destinationZipCode', 'ZIP / postal code'),
+                                          }),
+                                          r.jsx('input', {
+                                            className: 'sino-simple-form__input',
+                                            type: 'text',
+                                            name: 'destZipCode',
+                                            value: l.destZipCode,
+                                            onChange: Qe,
+                                            placeholder: S(
+                                              'destinationZipCodePlaceholder',
+                                              'e.g. 75001'
+                                            ),
+                                          }),
+                                        ],
+                                      }),
+                                    ],
+                                  }),
+                              ],
+                            }),
+                            r.jsx('div', {
+                              className:
+                                'sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top',
+                              children: r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsx('label', {
+                                    className: 'sino-simple-form__label',
+                                    children: S('shippingMode', 'Preferred mode'),
+                                  }),
+                                  r.jsx('div', {
+                                    className: 'sino-simple-form__chips',
+                                    children: [
+                                      {
+                                        value: 'Sea',
+                                        label: 'Sea',
+                                        tooltip: S(
+                                          'modeSeaHelp',
+                                          'Best for large volumes and lower cost when you have a few weeks.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'Air',
+                                        label: 'Air',
+                                        tooltip: S(
+                                          'modeAirHelp',
+                                          'Faster than sea, ideal for smaller, time-sensitive shipments.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'Railway',
+                                        label: 'Railway',
+                                        tooltip: S(
+                                          'modeRailHelp',
+                                          'Balanced option Europe–China: faster than sea, cheaper than air.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'Express',
+                                        label: 'Express',
+                                        tooltip: S(
+                                          'modeExpressHelp',
+                                          'Door‑to‑door courier (DHL/UPS/FedEx) for urgent small parcels.'
+                                        ),
+                                      },
+                                    ].map((y) =>
+                                      r.jsx(
+                                        'button',
+                                        {
+                                          type: 'button',
+                                          className: `sino-simple-chip${l.mode === y.value ? ' sino-simple-chip--active' : ''}`,
+                                          'data-tooltip': y.tooltip,
+                                          onClick: () =>
+                                            c((L) => ({
+                                              ...L,
+                                              mode: L.mode === y.value ? '' : y.value,
+                                            })),
+                                          'aria-pressed': l.mode === y.value ? 'true' : 'false',
+                                          'aria-label': `${y.label}${l.mode === y.value ? ', selected' : ', not selected'}. ${y.tooltip}`,
+                                          onKeyDown: (L) => {
+                                            (L.key === 'Enter' || L.key === ' ') &&
+                                              (L.preventDefault(),
+                                              c((ne) => ({
+                                                ...ne,
+                                                mode: ne.mode === y.value ? '' : y.value,
+                                              })));
+                                          },
+                                          children: y.label,
+                                        },
+                                        y.value
+                                      )
+                                    ),
+                                  }),
+                                ],
+                              }),
+                            }),
+                            r.jsx('div', {
+                              className:
+                                'sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top',
+                              children: r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsxs('label', {
+                                    className: 'sino-simple-form__label',
+                                    children: [
+                                      S('incotermLabel', 'Trade terms (Incoterm)'),
+                                      r.jsx('span', {
+                                        className: 'sino-simple-form__label-hint',
+                                        children: S('ifKnown', 'if known'),
+                                      }),
+                                    ],
+                                  }),
+                                  r.jsx('div', {
+                                    className:
+                                      'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                    children: [
+                                      {
+                                        value: 'EXW (Ex Work)',
+                                        label: 'EXW (Ex Work)',
+                                        tooltip: S(
+                                          'incotermEXWTooltip',
+                                          'Ex Works: You handle everything from the factory. We pick up at the supplier.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'FOB (Free On Board)',
+                                        label: 'FOB (Free On Board)',
+                                        tooltip: S(
+                                          'incotermFOBTooltip',
+                                          'Free On Board: Supplier delivers to port, you handle shipping and destination costs.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'CIF (Cost Insurance and Freight)',
+                                        label: 'CIF (Cost Insurance and Freight)',
+                                        tooltip: S(
+                                          'incotermCIFTooltip',
+                                          'Cost, Insurance & Freight: Supplier pays shipping to your port, you handle destination.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'CFR (Cost & Freight)',
+                                        label: 'CFR (Cost & Freight)',
+                                        tooltip: S(
+                                          'incotermCFRTooltip',
+                                          'Cost and Freight: Supplier pays shipping to your port.'
+                                        ),
+                                      },
+                                      {
+                                        value: 'DAT (Delivery at Terminal)',
+                                        label: 'DAT (Delivery at Terminal)',
+                                        tooltip: S(
+                                          'incotermDATTooltip',
+                                          'Delivered At Terminal: Delivered at a named terminal at destination.'
+                                        ),
+                                      },
+                                      {
+                                        value: "I don't know yet",
+                                        label: "I don't know yet",
+                                        tooltip: S(
+                                          'incotermNotSureTooltip',
+                                          "No problem! We'll help you choose the best option based on your needs."
+                                        ),
+                                      },
+                                    ].map((y) =>
+                                      r.jsx(
+                                        'button',
+                                        {
+                                          type: 'button',
+                                          className: `sino-simple-chip${l.incoterm === y.value ? ' sino-simple-chip--active' : ''}`,
+                                          'data-tooltip': y.tooltip,
+                                          'aria-pressed': l.incoterm === y.value ? 'true' : 'false',
+                                          onClick: () =>
+                                            c((L) => ({
+                                              ...L,
+                                              incoterm: L.incoterm === y.value ? '' : y.value,
+                                            })),
+                                          children: y.label,
+                                        },
+                                        y.value
+                                      )
+                                    ),
+                                  }),
+                                ],
+                              }),
+                            }),
+                            r.jsx('h3', {
+                              className: 'sino-simple-form__subsection-title',
+                              children: S('simpleStep2Title', 'Pickup in China'),
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                              children: [
+                                r.jsxs('div', {
+                                  className:
+                                    'sino-simple-form__field sino-simple-form__field--primary',
+                                  children: [
+                                    r.jsx('label', {
+                                      className: 'sino-simple-form__label',
+                                      htmlFor: 'city',
+                                      children: S('originCity', 'City in China'),
+                                    }),
+                                    r.jsx('input', {
+                                      className: 'sino-simple-form__input',
+                                      type: 'text',
+                                      name: 'city',
+                                      id: 'city',
+                                      value: l.city,
+                                      onChange: Qe,
+                                      placeholder: S(
+                                        'originCityPlaceholder',
+                                        'e.g. Shenzhen, Guangzhou…'
+                                      ),
+                                    }),
+                                    r.jsx('p', {
+                                      className: 'sino-simple-form__help',
+                                      children: S(
+                                        'originCityHelp',
+                                        'City is enough for now. You can skip the pickup details below if you prefer.'
+                                      ),
+                                    }),
+                                  ],
+                                }),
+                                r.jsxs('div', {
+                                  className: `sino-simple-form__subsection${z ? ' sino-simple-form__subsection--open' : ''}`,
+                                  children: [
+                                    r.jsxs('button', {
+                                      type: 'button',
+                                      className: 'sino-simple-form__subsection-toggle',
+                                      onClick: () => b((y) => !y),
+                                      'aria-expanded': z,
+                                      'aria-controls': 'origin-details-content',
+                                      'aria-label': z
+                                        ? S('collapseSection', 'Collapse origin details')
+                                        : S('expandSection', 'Expand origin details'),
+                                      onKeyDown: (y) => {
+                                        (y.key === 'Enter' || y.key === ' ') &&
+                                          (y.preventDefault(), b((L) => !L));
+                                      },
+                                      children: [
+                                        r.jsxs('span', {
+                                          className: 'sino-simple-form__subsection-label',
+                                          children: [
+                                            S(
+                                              'originDetailsTitle',
+                                              'Advanced pickup details (optional)'
+                                            ),
+                                            r.jsx('small', {
+                                              children: S(
+                                                'originDetailsSubtitle',
+                                                'Useful for door pickup but optional at this stage.'
+                                              ),
+                                            }),
+                                          ],
+                                        }),
+                                        r.jsx('span', {
+                                          className: `sino-simple-form__subsection-chevron${z ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                                          children: '▾',
+                                        }),
+                                      ],
+                                    }),
+                                    z &&
+                                      r.jsxs('div', {
+                                        id: 'origin-details-content',
+                                        className:
+                                          'sino-simple-form__fields sino-simple-form__fields--rows',
+                                        children: [
+                                          r.jsxs('div', {
+                                            className: 'sino-simple-form__field',
+                                            children: [
+                                              r.jsx('label', {
+                                                className: 'sino-simple-form__label',
+                                                children: S(
+                                                  'originLocationType',
+                                                  'Pickup location type'
+                                                ),
+                                              }),
+                                              r.jsx('input', {
+                                                className: 'sino-simple-form__input',
+                                                type: 'text',
+                                                name: 'locationType',
+                                                value: l.locationType,
+                                                onChange: Qe,
+                                                placeholder: S(
+                                                  'originLocationTypePlaceholder',
+                                                  'Factory, warehouse, port…'
+                                                ),
+                                              }),
+                                            ],
+                                          }),
+                                          r.jsx('div', {
+                                            className: 'sino-simple-form__field',
+                                            children: r.jsx('div', {
+                                              className: 'sino-simple-form__chips',
+                                              children: r.jsx('button', {
+                                                type: 'button',
+                                                className: `sino-simple-chip${l.locationType === 'unknown' ? ' sino-simple-chip--active' : ''}`,
+                                                onClick: () =>
+                                                  c((y) => ({ ...y, locationType: 'unknown' })),
+                                                'aria-pressed':
+                                                  l.locationType === 'unknown' ? 'true' : 'false',
+                                                'aria-label': `${S('originLocationTypeUnknown', "I'm still discussing with my supplier")}${l.locationType === 'unknown' ? ', selected' : ', not selected'}`,
+                                                onKeyDown: (y) => {
+                                                  (y.key === 'Enter' || y.key === ' ') &&
+                                                    (y.preventDefault(),
+                                                    c((L) => ({ ...L, locationType: 'unknown' })));
+                                                },
+                                                children: S(
+                                                  'originLocationTypeUnknown',
+                                                  "I'm still discussing with my supplier"
+                                                ),
+                                              }),
+                                            }),
+                                          }),
+                                          r.jsxs('div', {
+                                            className: 'sino-simple-form__field',
+                                            children: [
+                                              r.jsx('label', {
+                                                className: 'sino-simple-form__label',
+                                                children: S(
+                                                  'originZipCode',
+                                                  'ZIP / postal code in China'
+                                                ),
+                                              }),
+                                              r.jsx('input', {
+                                                className: 'sino-simple-form__input',
+                                                type: 'text',
+                                                name: 'zipCode',
+                                                value: l.zipCode,
+                                                onChange: Qe,
+                                                placeholder: S(
+                                                  'originZipCodePlaceholder',
+                                                  'e.g. 518000'
+                                                ),
+                                              }),
+                                            ],
+                                          }),
+                                          r.jsxs('div', {
+                                            className: 'sino-simple-form__field',
+                                            children: [
+                                              r.jsxs('label', {
+                                                className: 'sino-simple-form__label',
+                                                children: [
+                                                  S('originPort', 'Port of loading'),
+                                                  r.jsx('span', {
+                                                    className: 'sino-simple-form__label-hint',
+                                                    children: S('ifKnown', 'if known'),
+                                                  }),
+                                                ],
+                                              }),
+                                              r.jsx('input', {
+                                                className: 'sino-simple-form__input',
+                                                type: 'text',
+                                                name: 'origin',
+                                                value: l.origin,
+                                                onChange: Qe,
+                                                placeholder: S(
+                                                  'originPortPlaceholder',
+                                                  'e.g. Shenzhen (Yantian), Ningbo…'
+                                                ),
+                                              }),
+                                            ],
+                                          }),
+                                        ],
+                                      }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      }),
+                    _e === 'shippingCargo' &&
+                      Hn &&
+                      r.jsxs('section', {
+                        className:
+                          'sino-simple-form__section sino-simple-form__section--service-shipping',
+                        children: [
+                          r.jsxs('h2', {
+                            className: 'sino-simple-form__section-title',
+                            children: [
+                              r.jsx('span', {
+                                className: 'sino-simple-form__section-step',
+                                children: `Step ${X + 1}`,
+                              }),
+                              r.jsx('span', { children: S('simpleStep3Title', 'Cargo details') }),
+                            ],
+                          }),
+                          r.jsx(il, {
+                            stepId: 'shippingCargo',
+                            formData: l,
+                            currentStepIndex: X,
+                            totalSteps: Ee,
+                            t: S,
+                          }),
+                          r.jsx('p', {
+                            className: 'sino-simple-form__hint',
+                            children: S(
+                              'simpleStep3Hint',
+                              'A short description, an approximate weight and a rough number of cartons/pallets is enough for a first quote.'
+                            ),
+                          }),
+                          r.jsx('p', {
+                            className: 'sino-simple-form__hint sino-simple-form__hint--secondary',
+                            children: S(
+                              'simpleStep3ImpactHint',
+                              'These 4 fields have the biggest impact on your rates: route, mode, total weight and when the goods are ready.'
+                            ),
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                            children: [
+                              r.jsxs('div', {
+                                className:
+                                  'sino-simple-form__field sino-simple-form__field--primary',
+                                children: [
+                                  r.jsx('label', {
+                                    className: 'sino-simple-form__label',
+                                    htmlFor: 'goodsDescription',
+                                    children: S('goodsDescription', 'What are you shipping?'),
+                                  }),
+                                  r.jsx('input', {
+                                    className: 'sino-simple-form__input',
+                                    type: 'text',
+                                    name: 'goodsDescription',
+                                    id: 'goodsDescription',
+                                    value: l.goodsDescription,
+                                    onChange: Qe,
+                                    placeholder: S(
+                                      'goodsDescriptionPlaceholder',
+                                      'e.g. electronics, furniture, clothing…'
+                                    ),
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: `sino-simple-form__field sino-simple-form__field--primary${V.totalWeight && K.totalWeight ? ' sino-simple-form__field--error' : ''}${V.totalWeight && !K.totalWeight && Be(l.totalWeight) ? ' sino-simple-form__field--success' : ''}`,
+                                children: [
+                                  r.jsxs('label', {
+                                    className: 'sino-simple-form__label',
+                                    htmlFor: 'totalWeight',
+                                    children: [
+                                      S('totalWeight', 'Total Weight (kg)'),
+                                      r.jsx('span', {
+                                        className: 'sino-simple-form__required',
+                                        'aria-label': 'required',
+                                        children: '*',
+                                      }),
+                                    ],
+                                  }),
+                                  r.jsxs('div', {
+                                    className: 'sino-simple-form__field-wrapper',
+                                    children: [
+                                      r.jsx('input', {
+                                        className: `sino-simple-form__input${K.totalWeight ? ' sino-simple-form__input--error' : ''}${V.totalWeight && !K.totalWeight && Be(l.totalWeight) ? ' sino-simple-form__input--success' : ''}`,
+                                        type: 'text',
+                                        id: 'totalWeight',
+                                        name: 'totalWeight',
+                                        ref: Li,
+                                        value: l.totalWeight,
+                                        onChange: (y) => {
+                                          (hn('totalWeight', y.target.value),
+                                            K.totalWeight &&
+                                              F((L) => {
+                                                const ne = { ...L };
+                                                return (delete ne.totalWeight, ne);
+                                              }));
+                                        },
+                                        onBlur: () => fi('totalWeight', l.totalWeight),
+                                        placeholder: S('totalWeightPlaceholder', 'e.g. 1 200'),
+                                        'aria-label': S('totalWeight', 'Estimated total weight'),
+                                        'aria-describedby': K.totalWeight
+                                          ? 'totalWeight-error'
+                                          : V.totalWeight && !K.totalWeight && Be(l.totalWeight)
+                                            ? 'totalWeight-success'
+                                            : void 0,
+                                        'aria-invalid': K.totalWeight ? 'true' : 'false',
+                                        'aria-required': 'true',
+                                      }),
+                                      V.totalWeight &&
+                                        r.jsxs(r.Fragment, {
+                                          children: [
+                                            K.totalWeight &&
+                                              r.jsx('span', {
+                                                className:
+                                                  'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                                                'aria-hidden': 'true',
+                                                children: r.jsxs('svg', {
+                                                  width: '20',
+                                                  height: '20',
+                                                  viewBox: '0 0 24 24',
+                                                  fill: 'none',
+                                                  xmlns: 'http://www.w3.org/2000/svg',
+                                                  children: [
+                                                    r.jsx('circle', {
+                                                      cx: '12',
+                                                      cy: '12',
+                                                      r: '10',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                    }),
+                                                    r.jsx('line', {
+                                                      x1: '12',
+                                                      y1: '8',
+                                                      x2: '12',
+                                                      y2: '12',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                      strokeLinecap: 'round',
+                                                    }),
+                                                    r.jsx('line', {
+                                                      x1: '12',
+                                                      y1: '16',
+                                                      x2: '12.01',
+                                                      y2: '16',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                      strokeLinecap: 'round',
+                                                    }),
+                                                  ],
+                                                }),
+                                              }),
+                                            !K.totalWeight &&
+                                              Be(l.totalWeight) &&
+                                              r.jsx('span', {
+                                                className:
+                                                  'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                                                'aria-hidden': 'true',
+                                                children: r.jsxs('svg', {
+                                                  width: '20',
+                                                  height: '20',
+                                                  viewBox: '0 0 24 24',
+                                                  fill: 'none',
+                                                  xmlns: 'http://www.w3.org/2000/svg',
+                                                  children: [
+                                                    r.jsx('circle', {
+                                                      cx: '12',
+                                                      cy: '12',
+                                                      r: '10',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                    }),
+                                                    r.jsx('path', {
+                                                      d: 'M8 12l2 2 4-4',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                      strokeLinecap: 'round',
+                                                      strokeLinejoin: 'round',
+                                                    }),
+                                                  ],
+                                                }),
+                                              }),
+                                          ],
+                                        }),
+                                    ],
+                                  }),
+                                  K.totalWeight &&
+                                    r.jsx('p', {
+                                      id: 'totalWeight-error',
+                                      className: 'sino-simple-form__field-error',
+                                      role: 'alert',
+                                      'aria-live': 'polite',
+                                      children: K.totalWeight,
+                                    }),
+                                  V.totalWeight &&
+                                    !K.totalWeight &&
+                                    Be(l.totalWeight) &&
+                                    r.jsx('p', {
+                                      id: 'totalWeight-success',
+                                      className: 'sino-simple-form__sr-only',
+                                      'aria-live': 'polite',
+                                      children: S('fieldValid', 'Field is valid'),
+                                    }),
+                                  r.jsx('p', {
+                                    className: 'sino-simple-form__help',
+                                    children: S(
+                                      'totalWeightHelp',
+                                      'Rough estimate is OK. We refine it together before booking.'
+                                    ),
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsx('label', {
+                                    className: `sino-simple-form__label${f ? ' sino-simple-form__label--muted' : ''}`,
+                                    htmlFor: 'numberOfUnits',
+                                    children: S('numberOfUnits', 'Number of cartons / pallets'),
+                                  }),
+                                  r.jsxs('div', {
+                                    className: 'sino-simple-form__field-input-group',
+                                    children: [
+                                      r.jsx('input', {
+                                        className: 'sino-simple-form__input',
+                                        type: 'number',
+                                        min: 1,
+                                        id: 'numberOfUnits',
+                                        value: l.numberOfUnits,
+                                        onChange: (y) => {
+                                          (h(!1), hn('numberOfUnits', Number(y.target.value)));
+                                        },
+                                        placeholder: S(
+                                          'numberOfUnitsPlaceholder',
+                                          'e.g. 10 pallets'
+                                        ),
+                                      }),
+                                      r.jsx('div', {
+                                        className: 'sino-simple-form__chips',
+                                        children: r.jsx('button', {
+                                          type: 'button',
+                                          className: `sino-simple-chip${f ? ' sino-simple-chip--active' : ''}`,
+                                          'aria-pressed': f ? 'true' : 'false',
+                                          onClick: () => {
+                                            (h(!0), hn('numberOfUnits', 0));
+                                          },
+                                          children: S(
+                                            'numberOfUnitsUnknown',
+                                            "I don't know the exact number yet"
+                                          ),
+                                        }),
+                                      }),
+                                    ],
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsx('label', {
+                                    className: `sino-simple-form__label${w ? ' sino-simple-form__label--muted' : ''}`,
+                                    htmlFor: 'goodsValue',
+                                    children: S('goodsValue', 'Estimated cargo value'),
+                                  }),
+                                  r.jsxs('div', {
+                                    className: 'sino-simple-form__field-input-group',
+                                    children: [
+                                      r.jsx('input', {
+                                        className: 'sino-simple-form__input',
+                                        type: 'text',
+                                        name: 'goodsValue',
+                                        id: 'goodsValue',
+                                        value: l.goodsValue,
+                                        onChange: (y) => {
+                                          (N(!1), Qe(y));
+                                        },
+                                        placeholder: S('goodsValuePlaceholder', 'e.g. 25 000'),
+                                      }),
+                                      r.jsx('div', {
+                                        className: 'sino-simple-form__chips',
+                                        children: r.jsx('button', {
+                                          type: 'button',
+                                          className: `sino-simple-chip${w ? ' sino-simple-chip--active' : ''}`,
+                                          'aria-pressed': w ? 'true' : 'false',
+                                          onClick: () => {
+                                            (N(!0), c((y) => ({ ...y, goodsValue: '' })));
+                                          },
+                                          children: S(
+                                            'goodsValueUnknown',
+                                            "I don't know the value yet"
+                                          ),
+                                        }),
+                                      }),
+                                    ],
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsx('label', {
+                                    className: 'sino-simple-form__label',
+                                    htmlFor: 'goodsCurrency',
+                                    children: S('goodsCurrency', 'Currency'),
+                                  }),
+                                  r.jsx('input', {
+                                    className: 'sino-simple-form__input',
+                                    type: 'text',
+                                    name: 'goodsCurrency',
+                                    id: 'goodsCurrency',
+                                    value: l.goodsCurrency,
+                                    onChange: Qe,
+                                    placeholder: S('goodsCurrencyPlaceholder', 'USD, EUR…'),
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className:
+                                  'sino-simple-form__field sino-simple-form__field--primary',
+                                children: [
+                                  r.jsx('label', {
+                                    className: 'sino-simple-form__label',
+                                    children: S('areGoodsReady', 'Are the goods ready?'),
+                                  }),
+                                  r.jsx('div', {
+                                    className:
+                                      'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                    children: [
+                                      { value: 'yes', label: S('goodsReadyNow', 'Ready now') },
+                                      {
+                                        value: 'no_in_1_week',
+                                        label: S('goodsReady1Week', 'In ~1 week'),
+                                      },
+                                      {
+                                        value: 'no_in_2_weeks',
+                                        label: S('goodsReady2Weeks', 'In ~2 weeks'),
+                                      },
+                                      {
+                                        value: 'no_in_1_month',
+                                        label: S('goodsReady1Month', 'In ~1 month'),
+                                      },
+                                      {
+                                        value: 'no_date_set',
+                                        label: S('goodsReadyNoDate', 'No date set yet'),
+                                      },
+                                    ].map((y) =>
+                                      r.jsx(
+                                        'button',
+                                        {
+                                          type: 'button',
+                                          className: `sino-simple-chip${l.areGoodsReady === y.value ? ' sino-simple-chip--active' : ''}`,
+                                          'aria-pressed':
+                                            l.areGoodsReady === y.value ? 'true' : 'false',
+                                          onClick: () =>
+                                            c((L) => ({
+                                              ...L,
+                                              areGoodsReady:
+                                                L.areGoodsReady === y.value ? '' : y.value,
+                                            })),
+                                          children: y.label,
+                                        },
+                                        y.value
+                                      )
+                                    ),
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsxs('label', {
+                                    className: 'sino-simple-form__label',
+                                    children: [
+                                      S('annualVolumeLabel', 'Rough annual volume from China'),
+                                      r.jsx('span', {
+                                        className: 'sino-simple-form__label-hint',
+                                        children: S('ifKnown', 'if known'),
+                                      }),
+                                    ],
+                                  }),
+                                  r.jsx('div', {
+                                    className:
+                                      'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                    children: [
+                                      { value: '50 ~ 500', label: '50 ~ 500' },
+                                      { value: '501 ~ 1000', label: '501 ~ 1000' },
+                                      { value: '1001 ~ 5000', label: '1001 ~ 5000' },
+                                      { value: '5001+', label: '5001+' },
+                                    ].map((y) =>
+                                      r.jsx(
+                                        'button',
+                                        {
+                                          type: 'button',
+                                          className: `sino-simple-chip${l.annualVolume === y.value ? ' sino-simple-chip--active' : ''}`,
+                                          'aria-pressed':
+                                            l.annualVolume === y.value ? 'true' : 'false',
+                                          onClick: () =>
+                                            c((L) => ({
+                                              ...L,
+                                              annualVolume:
+                                                L.annualVolume === y.value ? '' : y.value,
+                                            })),
+                                          children: y.label,
+                                        },
+                                        y.value
+                                      )
+                                    ),
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: 'sino-simple-form__field',
+                                children: [
+                                  r.jsx('label', {
+                                    className: 'sino-simple-form__label',
+                                    children: S(
+                                      'isPersonalOrHazardous',
+                                      'Personal effects or hazardous goods?'
+                                    ),
+                                  }),
+                                  r.jsx('div', {
+                                    className: 'sino-simple-form__chips',
+                                    children: [
+                                      {
+                                        value: !0,
+                                        label: S(
+                                          'personalOrHazardousYes',
+                                          'Yes, personal or hazardous'
+                                        ),
+                                      },
+                                      {
+                                        value: !1,
+                                        label: S(
+                                          'personalOrHazardousNo',
+                                          'No, standard commercial goods'
+                                        ),
+                                      },
+                                    ].map((y) =>
+                                      r.jsx(
+                                        'button',
+                                        {
+                                          type: 'button',
+                                          className: `sino-simple-chip${l.isPersonalOrHazardous === y.value ? ' sino-simple-chip--active' : ''}`,
+                                          'aria-pressed':
+                                            l.isPersonalOrHazardous === y.value ? 'true' : 'false',
+                                          onClick: () =>
+                                            c((L) => ({ ...L, isPersonalOrHazardous: y.value })),
+                                          children: y.label,
+                                        },
+                                        String(y.value)
+                                      )
+                                    ),
+                                  }),
+                                  r.jsx('p', {
+                                    className: 'sino-simple-form__help',
+                                    children: S(
+                                      'isPersonalOrHazardousHelp',
+                                      'This only helps us pick the right specialist on our side – it does not change your pricing automatically.'
+                                    ),
+                                  }),
+                                ],
+                              }),
+                              r.jsxs('div', {
+                                className: `sino-simple-form__subsection${Z ? ' sino-simple-form__subsection--open' : ''}`,
+                                children: [
+                                  r.jsxs('button', {
+                                    type: 'button',
+                                    className: 'sino-simple-form__subsection-toggle',
+                                    onClick: () => H((y) => !y),
+                                    'aria-expanded': Z,
+                                    'aria-controls': 'advanced-details-content',
+                                    'aria-label': Z
+                                      ? S('collapseSection', 'Collapse advanced cargo details')
+                                      : S('expandSection', 'Expand advanced cargo details'),
+                                    onKeyDown: (y) => {
+                                      (y.key === 'Enter' || y.key === ' ') &&
+                                        (y.preventDefault(), H((L) => !L));
+                                    },
+                                    children: [
+                                      r.jsxs('span', {
+                                        className: 'sino-simple-form__subsection-label',
+                                        children: [
+                                          S(
+                                            'simpleStep4Title',
+                                            'Advanced cargo details (optional)'
+                                          ),
+                                          r.jsx('small', {
+                                            children: S(
+                                              'simpleStep4Subtitle',
+                                              'Dimensions and remarks help us fine-tune the quote but are not mandatory.'
+                                            ),
+                                          }),
+                                        ],
+                                      }),
+                                      r.jsx('span', {
+                                        className: `sino-simple-form__subsection-chevron${Z ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                                        children: '▾',
+                                      }),
+                                    ],
+                                  }),
+                                  Z &&
+                                    r.jsxs('div', {
+                                      id: 'advanced-details-content',
+                                      className:
+                                        'sino-simple-form__fields sino-simple-form__fields--rows',
+                                      children: [
+                                        r.jsxs('div', {
+                                          className: 'sino-simple-form__field',
+                                          children: [
+                                            r.jsx('label', {
+                                              className: `sino-simple-form__label${C ? ' sino-simple-form__label--muted' : ''}`,
+                                              children: S(
+                                                'dimensions',
+                                                'Approximate dimensions per unit'
+                                              ),
+                                            }),
+                                            r.jsxs('div', {
+                                              className:
+                                                'sino-simple-form__fields sino-simple-form__fields--inline',
+                                              children: [
+                                                r.jsx('input', {
+                                                  className: 'sino-simple-form__input',
+                                                  type: 'text',
+                                                  value: l.dimensions.length,
+                                                  onChange: (y) =>
+                                                    hn('dimensions', {
+                                                      ...l.dimensions,
+                                                      length: y.target.value,
+                                                    }),
+                                                  placeholder: S('lengthPlaceholder', 'L (cm)'),
+                                                }),
+                                                r.jsx('input', {
+                                                  className: 'sino-simple-form__input',
+                                                  type: 'text',
+                                                  value: l.dimensions.width,
+                                                  onChange: (y) =>
+                                                    hn('dimensions', {
+                                                      ...l.dimensions,
+                                                      width: y.target.value,
+                                                    }),
+                                                  placeholder: S('widthPlaceholder', 'W (cm)'),
+                                                }),
+                                                r.jsx('input', {
+                                                  className: 'sino-simple-form__input',
+                                                  type: 'text',
+                                                  value: l.dimensions.height,
+                                                  onChange: (y) =>
+                                                    hn('dimensions', {
+                                                      ...l.dimensions,
+                                                      height: y.target.value,
+                                                    }),
+                                                  placeholder: S('heightPlaceholder', 'H (cm)'),
+                                                }),
+                                              ],
+                                            }),
+                                            r.jsx('div', {
+                                              className:
+                                                'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                              children: r.jsx('button', {
+                                                type: 'button',
+                                                className: `sino-simple-chip${C ? ' sino-simple-chip--active' : ''}`,
+                                                'aria-pressed': C ? 'true' : 'false',
+                                                onClick: () => {
+                                                  (j(!0),
+                                                    hn('dimensions', {
+                                                      length: '',
+                                                      width: '',
+                                                      height: '',
+                                                    }));
+                                                },
+                                                children: S(
+                                                  'dimensionsUnknown',
+                                                  "I don't know the exact dimensions yet"
+                                                ),
+                                              }),
+                                            }),
+                                          ],
+                                        }),
+                                        r.jsxs('div', {
+                                          className: 'sino-simple-form__field',
+                                          children: [
+                                            r.jsxs('label', {
+                                              className: 'sino-simple-form__label',
+                                              children: [
+                                                S('weightPerUnit', 'Weight per unit'),
+                                                r.jsx('span', {
+                                                  className: 'sino-simple-form__label-hint',
+                                                  children: S('ifKnown', 'if known'),
+                                                }),
+                                              ],
+                                            }),
+                                            r.jsx('input', {
+                                              className: 'sino-simple-form__input',
+                                              type: 'text',
+                                              value: l.weightPerUnit,
+                                              onChange: (y) => {
+                                                hn('weightPerUnit', y.target.value);
+                                              },
+                                              placeholder: S(
+                                                'weightPerUnitPlaceholder',
+                                                'e.g. 25 kg per pallet'
+                                              ),
+                                            }),
+                                            r.jsx('p', {
+                                              className: 'sino-simple-form__help',
+                                              children: S(
+                                                'weightPerUnitHelp',
+                                                'If you know the weight per unit, we can calculate the total weight automatically.'
+                                              ),
+                                            }),
+                                          ],
+                                        }),
+                                        r.jsx(Bm, { formData: l, setFormData: c, t: S }),
+                                        r.jsxs('div', {
+                                          className: 'sino-simple-form__field',
+                                          children: [
+                                            r.jsx('label', {
+                                              className: 'sino-simple-form__label',
+                                              children: S('remarks', 'Anything we should know?'),
+                                            }),
+                                            r.jsx('input', {
+                                              className: 'sino-simple-form__input',
+                                              type: 'text',
+                                              name: 'remarks',
+                                              value: l.remarks,
+                                              onChange: Qe,
+                                              placeholder: S(
+                                                'remarksPlaceholder',
+                                                'Fragile goods, specific deadlines, preferred routing…'
+                                              ),
+                                            }),
+                                          ],
+                                        }),
+                                      ],
+                                    }),
+                                ],
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                    _e === 'contact' &&
+                      r.jsxs(r.Fragment, {
+                        children: [
+                          r.jsx(xm, {
+                            formData: l,
+                            setFormData: c,
+                            t: S,
+                            isFilled: Be,
+                            onChange: Qe,
+                            onBlur: fi,
+                            fieldErrors: K,
+                            fieldTouched: V,
+                            firstNameRef: ot,
+                            emailRef: Ri,
+                            phoneRef: qn,
+                            stepLabel: `Step ${X + 1}`,
+                            currentStepIndex: X,
+                            totalSteps: Ee,
+                          }),
+                          r.jsx(Rm, {
+                            formData: l,
+                            t: S,
+                            selectedServiceLabels: Dn,
+                            submitError: Ge,
+                            setSubmitError: We,
+                            isSubmitting: cn,
+                            setIsSubmitting: Ae,
+                            scrollToFirstError: En,
+                            onSubmissionSuccess: at,
+                            setFieldErrors: F,
+                            setFieldTouched: A,
+                            orderedSteps: en,
+                            onEditStep: (y) => {
+                              (Te(y),
+                                typeof window < 'u' &&
+                                  window.scrollTo({ top: 0, behavior: 'smooth' }));
+                            },
+                          }),
+                        ],
+                      }),
+                  ],
+                }),
+                r.jsx(
+                  Fm,
+                  {
+                    currentStep: X,
+                    totalSteps: Ee,
+                    onNext: Zt,
+                    onPrevious: us,
+                    isFirstStep: Yt,
+                    isLastStep: as,
+                    orderedSteps: en,
+                    formData: l,
+                    t: S,
+                  },
+                  `nav-${Ee}-${X}-${JSON.stringify(l.servicesRequested)}`
+                ),
+              ],
+            }),
+          ],
+        });
+  },
+  Kt = new Map();
+function ac(l) {
+  const c = document.getElementById(l);
+  if (!c) {
+    console.error(`[SinoSimpleForm] Container with id "${l}" not found`);
+    return;
+  }
+  if (Kt.has(l)) {
+    console.warn(`[SinoSimpleForm] Container "${l}" is already initialized`);
+    return;
+  }
+  c.innerHTML = '';
+  const a = mm.createRoot(c);
+  (a.render(
+    r.jsx(W.StrictMode, {
+      children: r.jsx('div', {
+        className: 'sino-simple-form-root',
+        children: r.jsx(fm, { children: r.jsx(tp, {}) }),
+      }),
+    })
+  ),
+    Kt.set(l, a),
+    console.log(`[SinoSimpleForm] Initialized in container "${l}"`));
+}
+function rp(l) {
+  const c = Kt.get(l);
+  if (!c) {
+    console.warn(`[SinoSimpleForm] No instance found for container "${l}"`);
+    return;
+  }
+  (c.unmount(), Kt.delete(l));
+  const a = document.getElementById(l);
+  (a && (a.innerHTML = ''), console.log(`[SinoSimpleForm] Destroyed instance in container "${l}"`));
+}
+function uc(l) {
+  return Kt.has(l);
+}
+const sp = { init: ac, destroy: rp, isInitialized: uc };
+typeof window < 'u' &&
+  ((window.SinoSimpleForm = sp),
+  console.log('[SinoSimpleForm] Global API initialized (simple v2)'),
+  window.addEventListener('DOMContentLoaded', () => {
+    const l = 'sinoform-react-root';
+    document.getElementById(l) && !uc(l) && ac(l);
+  }));
