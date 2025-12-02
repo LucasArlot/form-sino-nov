@@ -24,7 +24,10 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
       {formData.servicesRequested.sourcing && (
         <section className="sino-simple-form__section sino-simple-form__section--service-sourcing">
           <h2 className="sino-simple-form__section-title">
-            <span className="sino-simple-form__section-step">{stepLabel ?? 'Step 1'}</span>
+            <span className="sino-simple-form__section-step">
+              <span className="sino-simple-form__step-label">Step</span>
+              <span className="sino-simple-form__step-number">{stepLabel?.replace('Step ', '') ?? '1'}</span>
+            </span>
             <span>{t('simpleSourcingTitle', 'Product sourcing')}</span>
           </h2>
 

@@ -323,7 +323,7 @@ body {
 }
 
 .sino-simple-form__section-step {
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: 9999px;
   background: var(--sino-simple-step-bg);
   color: var(--sino-simple-step-fg);
@@ -335,11 +335,28 @@ body {
   box-shadow:
     0 2px 8px rgba(29, 78, 216, 0.2),
     0 0 0 1px rgba(29, 78, 216, 0.1);
-  /* Center text inside badge - including multi-line */
+  line-height: 1.3;
+  /* Flex layout for centering STEP and number */
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 4px;
+  text-align: center;
+}
+
+/* On mobile, stack STEP and number vertically */
+@media (max-width: 480px) {
+  .sino-simple-form__section-step {
+    flex-direction: column;
+    gap: 0;
+    min-width: 44px;
+  }
+}
+
+.sino-simple-form__step-label,
+.sino-simple-form__step-number {
+  display: block;
   text-align: center;
 }
 

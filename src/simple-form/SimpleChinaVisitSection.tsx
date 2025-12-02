@@ -65,7 +65,10 @@ const SimpleChinaVisitSection: FC<SimpleChinaVisitSectionProps> = ({
   return (
     <section className="sino-simple-form__section sino-simple-form__section--service-chinaVisits">
       <h2 className="sino-simple-form__section-title">
-        <span className="sino-simple-form__section-step">{stepLabel ?? 'Service'}</span>
+        <span className="sino-simple-form__section-step">
+          <span className="sino-simple-form__step-label">Step</span>
+          <span className="sino-simple-form__step-number">{stepLabel?.replace('Step ', '') ?? '?'}</span>
+        </span>
         <span>{t('chinaVisitTitle', 'China visits & trade fairs')}</span>
       </h2>
 
