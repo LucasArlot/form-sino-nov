@@ -24,10 +24,7 @@ const SimpleWarehousingSection: FC<SimpleWarehousingSectionProps> = ({
   return (
     <section className="sino-simple-form__section sino-simple-form__section--service-warehousing">
       <h2 className="sino-simple-form__section-title">
-        <span className="sino-simple-form__section-step">
-          <span className="sino-simple-form__step-label">Step</span>
-          <span className="sino-simple-form__step-number">{stepLabel?.replace('Step ', '') ?? '?'}</span>
-        </span>
+        <span className="sino-simple-form__section-step">{stepLabel ?? 'Service'}</span>
         <span>{t('warehousingTitle', 'Warehousing & consolidation in China')}</span>
       </h2>
 

@@ -310,19 +310,8 @@ body {
   margin: 0 0 12px;
 }
 
-/* On mobile, align badge to top when title wraps to multiple lines */
-@media (max-width: 480px) {
-  .sino-simple-form__section-title {
-    align-items: flex-start;
-  }
-
-  .sino-simple-form__section-step {
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-}
-
 .sino-simple-form__section-step {
+  display: inline-block;
   padding: 4px 10px;
   border-radius: 9999px;
   background: var(--sino-simple-step-bg);
@@ -332,32 +321,10 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   position: relative;
+  text-align: center;
   box-shadow:
     0 2px 8px rgba(29, 78, 216, 0.2),
     0 0 0 1px rgba(29, 78, 216, 0.1);
-  line-height: 1.3;
-  /* Flex layout for centering STEP and number */
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  text-align: center;
-}
-
-/* On mobile, stack STEP and number vertically */
-@media (max-width: 480px) {
-  .sino-simple-form__section-step {
-    flex-direction: column;
-    gap: 0;
-    min-width: 44px;
-  }
-}
-
-.sino-simple-form__step-label,
-.sino-simple-form__step-number {
-  display: block;
-  text-align: center;
 }
 
 .sino-simple-form__section-step::after {

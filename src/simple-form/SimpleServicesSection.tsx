@@ -94,10 +94,7 @@ const SimpleServicesSection: FC<SimpleServicesSectionPropsWithHeader> = ({
       </header>
 
       <h2 className="sino-simple-form__section-title">
-        <span className="sino-simple-form__section-step">
-                  <span className="sino-simple-form__step-label">Step</span>
-                  <span className="sino-simple-form__step-number">{stepLabel?.replace('Step ', '') ?? '0'}</span>
-                </span>
+        <span className="sino-simple-form__section-step">{stepLabel ?? 'Step 0'}</span>
         <span>{t('simpleServicesStepTitle', 'What do you need help with from China?')}</span>
       </h2>
 

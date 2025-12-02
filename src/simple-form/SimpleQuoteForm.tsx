@@ -702,8 +702,7 @@ const SimpleQuoteForm: FC = () => {
               <section className="sino-simple-form__section sino-simple-form__section--service-shipping">
                 <h2 className="sino-simple-form__section-title">
                   <span className="sino-simple-form__section-step">
-                    <span className="sino-simple-form__step-label">Step</span>
-                    <span className="sino-simple-form__step-number">{currentStepIndex + 1}</span>
+                    {`Step ${currentStepIndex + 1}`}
                   </span>
                   <span>{t('shippingFromChinaTitle', 'Shipping from China')}</span>
                 </h2>
@@ -1440,10 +1439,7 @@ const SimpleQuoteForm: FC = () => {
           {currentStepId === 'shippingCargo' && shippingSelected && (
             <section className="sino-simple-form__section sino-simple-form__section--service-shipping">
               <h2 className="sino-simple-form__section-title">
-                <span className="sino-simple-form__section-step">
-                  <span className="sino-simple-form__step-label">Step</span>
-                  <span className="sino-simple-form__step-number">{currentStepIndex + 1}</span>
-                </span>
+                <span className="sino-simple-form__section-step">{`Step ${currentStepIndex + 1}`}</span>
                 <span>{t('simpleStep3Title', 'Cargo details')}</span>
               </h2>
 

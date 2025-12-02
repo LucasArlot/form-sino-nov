@@ -37,10 +37,7 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
   return (
     <section className="sino-simple-form__section sino-simple-form__section--contact">
       <h2 className="sino-simple-form__section-title">
-        <span className="sino-simple-form__section-step">
-          <span className="sino-simple-form__step-label">Step</span>
-          <span className="sino-simple-form__step-number">{stepLabel?.replace('Step ', '') ?? '4'}</span>
-        </span>
+        <span className="sino-simple-form__section-step">{stepLabel ?? 'Step 4'}</span>
         <span>{t('simpleStep5Title', 'Your details')}</span>
       </h2>
 

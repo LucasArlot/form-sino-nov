@@ -10759,7 +10759,8 @@ body:not(:has(.min-h-screen)) {
   margin: 0 0 12px;
 }
 .sino-simple-form__section-step {
-  padding: 2px 8px;
+  display: inline-block;
+  padding: 4px 10px;
   border-radius: 9999px;
   background: var(--sino-simple-step-bg);
   color: var(--sino-simple-step-fg);
@@ -10768,6 +10769,7 @@ body:not(:has(.min-h-screen)) {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   position: relative;
+  text-align: center;
   box-shadow:
     0 2px 8px #1d4ed833,
     0 0 0 1px #1d4ed81a;

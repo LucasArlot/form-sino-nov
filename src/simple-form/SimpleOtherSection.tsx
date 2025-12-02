@@ -17,10 +17,7 @@ const SimpleOtherSection: FC<SimpleOtherSectionProps> = ({
       {formData.servicesRequested.other && (
         <section className="sino-simple-form__section sino-simple-form__section--service-other">
           <h2 className="sino-simple-form__section-title">
-            <span className="sino-simple-form__section-step">
-              <span className="sino-simple-form__step-label">Step</span>
-              <span className="sino-simple-form__step-number">{stepLabel?.replace('Step ', '') ?? '?'}</span>
-            </span>
+            <span className="sino-simple-form__section-step">{stepLabel ?? 'Step'}</span>
             <span>{t('simpleOtherTitle', 'Tell us about your project')}</span>
           </h2>
 
