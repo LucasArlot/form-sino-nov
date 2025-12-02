@@ -583,17 +583,8 @@ const SimpleQuoteForm: FC = () => {
 
   return (
     <div className="sino-simple-form">
-      {/* Skip to main content link for screen readers */}
-      <a href="#sino-simple-form-main" className="sino-simple-form__skip-link">
-        {t('skipToMainContent', 'Skip to main content')}
-      </a>
-
       {/* Main form content */}
-      <main
-        id="sino-simple-form-main"
-        role="main"
-        aria-label={t('formAriaLabel', 'Quote request form')}
-      >
+      <main role="main" aria-label={t('formAriaLabel', 'Quote request form')}>
         {/* Save notification */}
         {showSaveNotification && (
           <div className="sino-simple-form__save-notification" role="status" aria-live="polite">

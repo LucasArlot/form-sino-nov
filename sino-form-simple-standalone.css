@@ -12402,6 +12402,24 @@ body:not(:has(.min-h-screen)) {
   .sino-simple-chip[data-tooltip]:after {
     max-width: min(220px, 90vw);
   }
+  .sino-simple-form {
+    padding: 0 !important;
+  }
+  .sino-simple-form__section--service-sourcing,
+  .sino-simple-form__section--service-warehousing,
+  .sino-simple-form__section--service-dropshipping,
+  .sino-simple-form__section--service-qc,
+  .sino-simple-form__section--service-chinaVisits,
+  .sino-simple-form__section--service-other,
+  .sino-simple-form__section--service-shipping,
+  .sino-simple-form__section--services,
+  .sino-simple-form__section--contact {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding: 24px 20px 28px !important;
+    border-radius: 0;
+  }
 }
 @media (max-width: 640px) {
   .sino-simple-form__title {
@@ -12409,6 +12427,17 @@ body:not(:has(.min-h-screen)) {
   }
   .sino-simple-form__section {
     padding: 20px 16px;
+  }
+  .sino-simple-form__section--service-sourcing,
+  .sino-simple-form__section--service-warehousing,
+  .sino-simple-form__section--service-dropshipping,
+  .sino-simple-form__section--service-qc,
+  .sino-simple-form__section--service-chinaVisits,
+  .sino-simple-form__section--service-other,
+  .sino-simple-form__section--service-shipping,
+  .sino-simple-form__section--services,
+  .sino-simple-form__section--contact {
+    padding: 20px 16px 24px !important;
   }
 }
 .sino-simple-form__section--services {
@@ -14785,19 +14814,4 @@ body:not(:has(.min-h-screen)) {
 .sino-simple-form__subsection-toggle:focus-visible {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
-}
-.sino-simple-form__skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: #3b82f6;
-  color: #fff;
-  padding: 8px 16px;
-  text-decoration: none;
-  z-index: 10000;
-  border-radius: 4px;
-  font-weight: 600;
-}
-.sino-simple-form__skip-link:focus {
-  top: 0;
 }

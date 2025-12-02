@@ -1,30 +1,30 @@
 (function () {
   const c = document.createElement('link').relList;
   if (c && c.supports && c.supports('modulepreload')) return;
-  for (const N of document.querySelectorAll('link[rel="modulepreload"]')) w(N);
-  new MutationObserver((N) => {
-    for (const C of N)
+  for (const w of document.querySelectorAll('link[rel="modulepreload"]')) N(w);
+  new MutationObserver((w) => {
+    for (const C of w)
       if (C.type === 'childList')
-        for (const j of C.addedNodes) j.tagName === 'LINK' && j.rel === 'modulepreload' && w(j);
+        for (const j of C.addedNodes) j.tagName === 'LINK' && j.rel === 'modulepreload' && N(j);
   }).observe(document, { childList: !0, subtree: !0 });
-  function a(N) {
+  function a(w) {
     const C = {};
     return (
-      N.integrity && (C.integrity = N.integrity),
-      N.referrerPolicy && (C.referrerPolicy = N.referrerPolicy),
-      N.crossOrigin === 'use-credentials'
+      w.integrity && (C.integrity = w.integrity),
+      w.referrerPolicy && (C.referrerPolicy = w.referrerPolicy),
+      w.crossOrigin === 'use-credentials'
         ? (C.credentials = 'include')
-        : N.crossOrigin === 'anonymous'
+        : w.crossOrigin === 'anonymous'
           ? (C.credentials = 'omit')
           : (C.credentials = 'same-origin'),
       C
     );
   }
-  function w(N) {
-    if (N.ep) return;
-    N.ep = !0;
-    const C = a(N);
-    fetch(N.href, C);
+  function N(w) {
+    if (w.ep) return;
+    w.ep = !0;
+    const C = a(w);
+    fetch(w.href, C);
   }
 })();
 var Ko = { exports: {} },
@@ -39,26 +39,26 @@ var Ko = { exports: {} },
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */ var Bu;
+ */ var Vu;
 function rm() {
-  if (Bu) return oe;
-  Bu = 1;
+  if (Vu) return oe;
+  Vu = 1;
   var l = Symbol.for('react.element'),
     c = Symbol.for('react.portal'),
     a = Symbol.for('react.fragment'),
-    w = Symbol.for('react.strict_mode'),
-    N = Symbol.for('react.profiler'),
+    N = Symbol.for('react.strict_mode'),
+    w = Symbol.for('react.profiler'),
     C = Symbol.for('react.provider'),
     j = Symbol.for('react.context'),
-    f = Symbol.for('react.forward_ref'),
+    m = Symbol.for('react.forward_ref'),
     h = Symbol.for('react.suspense'),
     O = Symbol.for('react.memo'),
-    D = Symbol.for('react.lazy'),
+    K = Symbol.for('react.lazy'),
     z = Symbol.iterator;
-  function b(p) {
-    return p === null || typeof p != 'object'
+  function b(f) {
+    return f === null || typeof f != 'object'
       ? null
-      : ((p = (z && p[z]) || p['@@iterator']), typeof p == 'function' ? p : null);
+      : ((f = (z && f[z]) || f['@@iterator']), typeof f == 'function' ? f : null);
   }
   var Z = {
       isMounted: function () {
@@ -68,34 +68,34 @@ function rm() {
       enqueueReplaceState: function () {},
       enqueueSetState: function () {},
     },
-    H = Object.assign,
+    Q = Object.assign,
     Y = {};
-  function P(p, k, Q) {
-    ((this.props = p), (this.context = k), (this.refs = Y), (this.updater = Q || Z));
+  function P(f, k, G) {
+    ((this.props = f), (this.context = k), (this.refs = Y), (this.updater = G || Z));
   }
   ((P.prototype.isReactComponent = {}),
-    (P.prototype.setState = function (p, k) {
-      if (typeof p != 'object' && typeof p != 'function' && p != null)
+    (P.prototype.setState = function (f, k) {
+      if (typeof f != 'object' && typeof f != 'function' && f != null)
         throw Error(
           'setState(...): takes an object of state variables to update or a function which returns an object of state variables.'
         );
-      this.updater.enqueueSetState(this, p, k, 'setState');
+      this.updater.enqueueSetState(this, f, k, 'setState');
     }),
-    (P.prototype.forceUpdate = function (p) {
-      this.updater.enqueueForceUpdate(this, p, 'forceUpdate');
+    (P.prototype.forceUpdate = function (f) {
+      this.updater.enqueueForceUpdate(this, f, 'forceUpdate');
     }));
   function I() {}
   I.prototype = P.prototype;
-  function pe(p, k, Q) {
-    ((this.props = p), (this.context = k), (this.refs = Y), (this.updater = Q || Z));
+  function pe(f, k, G) {
+    ((this.props = f), (this.context = k), (this.refs = Y), (this.updater = G || Z));
   }
   var me = (pe.prototype = new I());
-  ((me.constructor = pe), H(me, P.prototype), (me.isPureReactComponent = !0));
+  ((me.constructor = pe), Q(me, P.prototype), (me.isPureReactComponent = !0));
   var re = Array.isArray,
     ue = Object.prototype.hasOwnProperty,
     fe = { current: null },
     ve = { key: !0, ref: !0, __self: !0, __source: !0 };
-  function Ie(p, k, Q) {
+  function Ie(f, k, G) {
     var ie,
       se = {},
       le = null,
@@ -104,39 +104,39 @@ function rm() {
       for (ie in (k.ref !== void 0 && (ge = k.ref), k.key !== void 0 && (le = '' + k.key), k))
         ue.call(k, ie) && !ve.hasOwnProperty(ie) && (se[ie] = k[ie]);
     var ce = arguments.length - 2;
-    if (ce === 1) se.children = Q;
+    if (ce === 1) se.children = G;
     else if (1 < ce) {
       for (var ye = Array(ce), Ke = 0; Ke < ce; Ke++) ye[Ke] = arguments[Ke + 2];
       se.children = ye;
     }
-    if (p && p.defaultProps)
-      for (ie in ((ce = p.defaultProps), ce)) se[ie] === void 0 && (se[ie] = ce[ie]);
-    return { $$typeof: l, type: p, key: le, ref: ge, props: se, _owner: fe.current };
+    if (f && f.defaultProps)
+      for (ie in ((ce = f.defaultProps), ce)) se[ie] === void 0 && (se[ie] = ce[ie]);
+    return { $$typeof: l, type: f, key: le, ref: ge, props: se, _owner: fe.current };
   }
-  function Ge(p, k) {
-    return { $$typeof: l, type: p.type, key: k, ref: p.ref, props: p.props, _owner: p._owner };
+  function Ge(f, k) {
+    return { $$typeof: l, type: f.type, key: k, ref: f.ref, props: f.props, _owner: f._owner };
   }
-  function We(p) {
-    return typeof p == 'object' && p !== null && p.$$typeof === l;
+  function We(f) {
+    return typeof f == 'object' && f !== null && f.$$typeof === l;
   }
-  function cn(p) {
+  function cn(f) {
     var k = { '=': '=0', ':': '=2' };
     return (
       '$' +
-      p.replace(/[=:]/g, function (Q) {
-        return k[Q];
+      f.replace(/[=:]/g, function (G) {
+        return k[G];
       })
     );
   }
   var Ae = /\/+/g;
-  function X(p, k) {
-    return typeof p == 'object' && p !== null && p.key != null ? cn('' + p.key) : k.toString(36);
+  function X(f, k) {
+    return typeof f == 'object' && f !== null && f.key != null ? cn('' + f.key) : k.toString(36);
   }
-  function Te(p, k, Q, ie, se) {
-    var le = typeof p;
-    (le === 'undefined' || le === 'boolean') && (p = null);
+  function Te(f, k, G, ie, se) {
+    var le = typeof f;
+    (le === 'undefined' || le === 'boolean') && (f = null);
     var ge = !1;
-    if (p === null) ge = !0;
+    if (f === null) ge = !0;
     else
       switch (le) {
         case 'string':
@@ -144,7 +144,7 @@ function rm() {
           ge = !0;
           break;
         case 'object':
-          switch (p.$$typeof) {
+          switch (f.$$typeof) {
             case l:
             case c:
               ge = !0;
@@ -152,248 +152,248 @@ function rm() {
       }
     if (ge)
       return (
-        (ge = p),
+        (ge = f),
         (se = se(ge)),
-        (p = ie === '' ? '.' + X(ge, 0) : ie),
+        (f = ie === '' ? '.' + X(ge, 0) : ie),
         re(se)
-          ? ((Q = ''),
-            p != null && (Q = p.replace(Ae, '$&/') + '/'),
-            Te(se, k, Q, '', function (Ke) {
+          ? ((G = ''),
+            f != null && (G = f.replace(Ae, '$&/') + '/'),
+            Te(se, k, G, '', function (Ke) {
               return Ke;
             }))
           : se != null &&
             (We(se) &&
               (se = Ge(
                 se,
-                Q +
+                G +
                   (!se.key || (ge && ge.key === se.key)
                     ? ''
                     : ('' + se.key).replace(Ae, '$&/') + '/') +
-                  p
+                  f
               )),
             k.push(se)),
         1
       );
-    if (((ge = 0), (ie = ie === '' ? '.' : ie + ':'), re(p)))
-      for (var ce = 0; ce < p.length; ce++) {
-        le = p[ce];
+    if (((ge = 0), (ie = ie === '' ? '.' : ie + ':'), re(f)))
+      for (var ce = 0; ce < f.length; ce++) {
+        le = f[ce];
         var ye = ie + X(le, ce);
-        ge += Te(le, k, Q, ye, se);
+        ge += Te(le, k, G, ye, se);
       }
-    else if (((ye = b(p)), typeof ye == 'function'))
-      for (p = ye.call(p), ce = 0; !(le = p.next()).done; )
-        ((le = le.value), (ye = ie + X(le, ce++)), (ge += Te(le, k, Q, ye, se)));
+    else if (((ye = b(f)), typeof ye == 'function'))
+      for (f = ye.call(f), ce = 0; !(le = f.next()).done; )
+        ((le = le.value), (ye = ie + X(le, ce++)), (ge += Te(le, k, G, ye, se)));
     else if (le === 'object')
       throw (
-        (k = String(p)),
+        (k = String(f)),
         Error(
           'Objects are not valid as a React child (found: ' +
-            (k === '[object Object]' ? 'object with keys {' + Object.keys(p).join(', ') + '}' : k) +
+            (k === '[object Object]' ? 'object with keys {' + Object.keys(f).join(', ') + '}' : k) +
             '). If you meant to render a collection of children, use an array instead.'
         )
       );
     return ge;
   }
-  function Ve(p, k, Q) {
-    if (p == null) return p;
+  function Ve(f, k, G) {
+    if (f == null) return f;
     var ie = [],
       se = 0;
     return (
-      Te(p, ie, '', '', function (le) {
-        return k.call(Q, le, se++);
+      Te(f, ie, '', '', function (le) {
+        return k.call(G, le, se++);
       }),
       ie
     );
   }
-  function Re(p) {
-    if (p._status === -1) {
-      var k = p._result;
+  function Re(f) {
+    if (f._status === -1) {
+      var k = f._result;
       ((k = k()),
         k.then(
-          function (Q) {
-            (p._status === 0 || p._status === -1) && ((p._status = 1), (p._result = Q));
+          function (G) {
+            (f._status === 0 || f._status === -1) && ((f._status = 1), (f._result = G));
           },
-          function (Q) {
-            (p._status === 0 || p._status === -1) && ((p._status = 2), (p._result = Q));
+          function (G) {
+            (f._status === 0 || f._status === -1) && ((f._status = 2), (f._result = G));
           }
         ),
-        p._status === -1 && ((p._status = 0), (p._result = k)));
+        f._status === -1 && ((f._status = 0), (f._result = k)));
     }
-    if (p._status === 1) return p._result.default;
-    throw p._result;
+    if (f._status === 1) return f._result.default;
+    throw f._result;
   }
-  var K = { current: null },
+  var H = { current: null },
     F = { transition: null },
-    V = { ReactCurrentDispatcher: K, ReactCurrentBatchConfig: F, ReactCurrentOwner: fe };
+    V = { ReactCurrentDispatcher: H, ReactCurrentBatchConfig: F, ReactCurrentOwner: fe };
   function A() {
     throw Error('act(...) is not supported in production builds of React.');
   }
   return (
     (oe.Children = {
       map: Ve,
-      forEach: function (p, k, Q) {
+      forEach: function (f, k, G) {
         Ve(
-          p,
+          f,
           function () {
             k.apply(this, arguments);
           },
-          Q
+          G
         );
       },
-      count: function (p) {
+      count: function (f) {
         var k = 0;
         return (
-          Ve(p, function () {
+          Ve(f, function () {
             k++;
           }),
           k
         );
       },
-      toArray: function (p) {
+      toArray: function (f) {
         return (
-          Ve(p, function (k) {
+          Ve(f, function (k) {
             return k;
           }) || []
         );
       },
-      only: function (p) {
-        if (!We(p))
+      only: function (f) {
+        if (!We(f))
           throw Error('React.Children.only expected to receive a single React element child.');
-        return p;
+        return f;
       },
     }),
     (oe.Component = P),
     (oe.Fragment = a),
-    (oe.Profiler = N),
+    (oe.Profiler = w),
     (oe.PureComponent = pe),
-    (oe.StrictMode = w),
+    (oe.StrictMode = N),
     (oe.Suspense = h),
     (oe.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = V),
     (oe.act = A),
-    (oe.cloneElement = function (p, k, Q) {
-      if (p == null)
+    (oe.cloneElement = function (f, k, G) {
+      if (f == null)
         throw Error(
-          'React.cloneElement(...): The argument must be a React element, but you passed ' + p + '.'
+          'React.cloneElement(...): The argument must be a React element, but you passed ' + f + '.'
         );
-      var ie = H({}, p.props),
-        se = p.key,
-        le = p.ref,
-        ge = p._owner;
+      var ie = Q({}, f.props),
+        se = f.key,
+        le = f.ref,
+        ge = f._owner;
       if (k != null) {
         if (
           (k.ref !== void 0 && ((le = k.ref), (ge = fe.current)),
           k.key !== void 0 && (se = '' + k.key),
-          p.type && p.type.defaultProps)
+          f.type && f.type.defaultProps)
         )
-          var ce = p.type.defaultProps;
+          var ce = f.type.defaultProps;
         for (ye in k)
           ue.call(k, ye) &&
             !ve.hasOwnProperty(ye) &&
             (ie[ye] = k[ye] === void 0 && ce !== void 0 ? ce[ye] : k[ye]);
       }
       var ye = arguments.length - 2;
-      if (ye === 1) ie.children = Q;
+      if (ye === 1) ie.children = G;
       else if (1 < ye) {
         ce = Array(ye);
         for (var Ke = 0; Ke < ye; Ke++) ce[Ke] = arguments[Ke + 2];
         ie.children = ce;
       }
-      return { $$typeof: l, type: p.type, key: se, ref: le, props: ie, _owner: ge };
+      return { $$typeof: l, type: f.type, key: se, ref: le, props: ie, _owner: ge };
     }),
-    (oe.createContext = function (p) {
+    (oe.createContext = function (f) {
       return (
-        (p = {
+        (f = {
           $$typeof: j,
-          _currentValue: p,
-          _currentValue2: p,
+          _currentValue: f,
+          _currentValue2: f,
           _threadCount: 0,
           Provider: null,
           Consumer: null,
           _defaultValue: null,
           _globalName: null,
         }),
-        (p.Provider = { $$typeof: C, _context: p }),
-        (p.Consumer = p)
+        (f.Provider = { $$typeof: C, _context: f }),
+        (f.Consumer = f)
       );
     }),
     (oe.createElement = Ie),
-    (oe.createFactory = function (p) {
-      var k = Ie.bind(null, p);
-      return ((k.type = p), k);
+    (oe.createFactory = function (f) {
+      var k = Ie.bind(null, f);
+      return ((k.type = f), k);
     }),
     (oe.createRef = function () {
       return { current: null };
     }),
-    (oe.forwardRef = function (p) {
-      return { $$typeof: f, render: p };
+    (oe.forwardRef = function (f) {
+      return { $$typeof: m, render: f };
     }),
     (oe.isValidElement = We),
-    (oe.lazy = function (p) {
-      return { $$typeof: D, _payload: { _status: -1, _result: p }, _init: Re };
+    (oe.lazy = function (f) {
+      return { $$typeof: K, _payload: { _status: -1, _result: f }, _init: Re };
     }),
-    (oe.memo = function (p, k) {
-      return { $$typeof: O, type: p, compare: k === void 0 ? null : k };
+    (oe.memo = function (f, k) {
+      return { $$typeof: O, type: f, compare: k === void 0 ? null : k };
     }),
-    (oe.startTransition = function (p) {
+    (oe.startTransition = function (f) {
       var k = F.transition;
       F.transition = {};
       try {
-        p();
+        f();
       } finally {
         F.transition = k;
       }
     }),
     (oe.unstable_act = A),
-    (oe.useCallback = function (p, k) {
-      return K.current.useCallback(p, k);
+    (oe.useCallback = function (f, k) {
+      return H.current.useCallback(f, k);
     }),
-    (oe.useContext = function (p) {
-      return K.current.useContext(p);
+    (oe.useContext = function (f) {
+      return H.current.useContext(f);
     }),
     (oe.useDebugValue = function () {}),
-    (oe.useDeferredValue = function (p) {
-      return K.current.useDeferredValue(p);
+    (oe.useDeferredValue = function (f) {
+      return H.current.useDeferredValue(f);
     }),
-    (oe.useEffect = function (p, k) {
-      return K.current.useEffect(p, k);
+    (oe.useEffect = function (f, k) {
+      return H.current.useEffect(f, k);
     }),
     (oe.useId = function () {
-      return K.current.useId();
+      return H.current.useId();
     }),
-    (oe.useImperativeHandle = function (p, k, Q) {
-      return K.current.useImperativeHandle(p, k, Q);
+    (oe.useImperativeHandle = function (f, k, G) {
+      return H.current.useImperativeHandle(f, k, G);
     }),
-    (oe.useInsertionEffect = function (p, k) {
-      return K.current.useInsertionEffect(p, k);
+    (oe.useInsertionEffect = function (f, k) {
+      return H.current.useInsertionEffect(f, k);
     }),
-    (oe.useLayoutEffect = function (p, k) {
-      return K.current.useLayoutEffect(p, k);
+    (oe.useLayoutEffect = function (f, k) {
+      return H.current.useLayoutEffect(f, k);
     }),
-    (oe.useMemo = function (p, k) {
-      return K.current.useMemo(p, k);
+    (oe.useMemo = function (f, k) {
+      return H.current.useMemo(f, k);
     }),
-    (oe.useReducer = function (p, k, Q) {
-      return K.current.useReducer(p, k, Q);
+    (oe.useReducer = function (f, k, G) {
+      return H.current.useReducer(f, k, G);
     }),
-    (oe.useRef = function (p) {
-      return K.current.useRef(p);
+    (oe.useRef = function (f) {
+      return H.current.useRef(f);
     }),
-    (oe.useState = function (p) {
-      return K.current.useState(p);
+    (oe.useState = function (f) {
+      return H.current.useState(f);
     }),
-    (oe.useSyncExternalStore = function (p, k, Q) {
-      return K.current.useSyncExternalStore(p, k, Q);
+    (oe.useSyncExternalStore = function (f, k, G) {
+      return H.current.useSyncExternalStore(f, k, G);
     }),
     (oe.useTransition = function () {
-      return K.current.useTransition();
+      return H.current.useTransition();
     }),
     (oe.version = '18.3.1'),
     oe
   );
 }
-var $u;
-function sl() {
-  return ($u || (($u = 1), (Qo.exports = rm())), Qo.exports);
+var Bu;
+function rl() {
+  return (Bu || ((Bu = 1), (Qo.exports = rm())), Qo.exports);
 }
 /**
  * @license React
@@ -403,36 +403,36 @@ function sl() {
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */ var Uu;
+ */ var $u;
 function sm() {
-  if (Uu) return Ht;
-  Uu = 1;
-  var l = sl(),
+  if ($u) return Ht;
+  $u = 1;
+  var l = rl(),
     c = Symbol.for('react.element'),
     a = Symbol.for('react.fragment'),
-    w = Object.prototype.hasOwnProperty,
-    N = l.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,
+    N = Object.prototype.hasOwnProperty,
+    w = l.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,
     C = { key: !0, ref: !0, __self: !0, __source: !0 };
-  function j(f, h, O) {
-    var D,
+  function j(m, h, O) {
+    var K,
       z = {},
       b = null,
       Z = null;
     (O !== void 0 && (b = '' + O),
       h.key !== void 0 && (b = '' + h.key),
       h.ref !== void 0 && (Z = h.ref));
-    for (D in h) w.call(h, D) && !C.hasOwnProperty(D) && (z[D] = h[D]);
-    if (f && f.defaultProps) for (D in ((h = f.defaultProps), h)) z[D] === void 0 && (z[D] = h[D]);
-    return { $$typeof: c, type: f, key: b, ref: Z, props: z, _owner: N.current };
+    for (K in h) N.call(h, K) && !C.hasOwnProperty(K) && (z[K] = h[K]);
+    if (m && m.defaultProps) for (K in ((h = m.defaultProps), h)) z[K] === void 0 && (z[K] = h[K]);
+    return { $$typeof: c, type: m, key: b, ref: Z, props: z, _owner: w.current };
   }
   return ((Ht.Fragment = a), (Ht.jsx = j), (Ht.jsxs = j), Ht);
 }
-var qu;
+var Uu;
 function om() {
-  return (qu || ((qu = 1), (Ko.exports = sm())), Ko.exports);
+  return (Uu || ((Uu = 1), (Ko.exports = sm())), Ko.exports);
 }
 var r = om(),
-  W = sl(),
+  W = rl(),
   ss = {},
   Yo = { exports: {} },
   un = {},
@@ -446,47 +446,47 @@ var r = om(),
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */ var Du;
+ */ var qu;
 function lm() {
   return (
-    Du ||
-      ((Du = 1),
+    qu ||
+      ((qu = 1),
       (function (l) {
         function c(F, V) {
           var A = F.length;
           F.push(V);
           e: for (; 0 < A; ) {
-            var p = (A - 1) >>> 1,
-              k = F[p];
-            if (0 < N(k, V)) ((F[p] = V), (F[A] = k), (A = p));
+            var f = (A - 1) >>> 1,
+              k = F[f];
+            if (0 < w(k, V)) ((F[f] = V), (F[A] = k), (A = f));
             else break e;
           }
         }
         function a(F) {
           return F.length === 0 ? null : F[0];
         }
-        function w(F) {
+        function N(F) {
           if (F.length === 0) return null;
           var V = F[0],
             A = F.pop();
           if (A !== V) {
             F[0] = A;
-            e: for (var p = 0, k = F.length, Q = k >>> 1; p < Q; ) {
-              var ie = 2 * (p + 1) - 1,
+            e: for (var f = 0, k = F.length, G = k >>> 1; f < G; ) {
+              var ie = 2 * (f + 1) - 1,
                 se = F[ie],
                 le = ie + 1,
                 ge = F[le];
-              if (0 > N(se, A))
-                le < k && 0 > N(ge, se)
-                  ? ((F[p] = ge), (F[le] = A), (p = le))
-                  : ((F[p] = se), (F[ie] = A), (p = ie));
-              else if (le < k && 0 > N(ge, A)) ((F[p] = ge), (F[le] = A), (p = le));
+              if (0 > w(se, A))
+                le < k && 0 > w(ge, se)
+                  ? ((F[f] = ge), (F[le] = A), (f = le))
+                  : ((F[f] = se), (F[ie] = A), (f = ie));
+              else if (le < k && 0 > w(ge, A)) ((F[f] = ge), (F[le] = A), (f = le));
               else break e;
             }
           }
           return V;
         }
-        function N(F, V) {
+        function w(F, V) {
           var A = F.sortIndex - V.sortIndex;
           return A !== 0 ? A : F.id - V.id;
         }
@@ -497,18 +497,18 @@ function lm() {
           };
         } else {
           var j = Date,
-            f = j.now();
+            m = j.now();
           l.unstable_now = function () {
-            return j.now() - f;
+            return j.now() - m;
           };
         }
         var h = [],
           O = [],
-          D = 1,
+          K = 1,
           z = null,
           b = 3,
           Z = !1,
-          H = !1,
+          Q = !1,
           Y = !1,
           P = typeof setTimeout == 'function' ? setTimeout : null,
           I = typeof clearTimeout == 'function' ? clearTimeout : null,
@@ -519,41 +519,41 @@ function lm() {
           navigator.scheduling.isInputPending.bind(navigator.scheduling);
         function me(F) {
           for (var V = a(O); V !== null; ) {
-            if (V.callback === null) w(O);
-            else if (V.startTime <= F) (w(O), (V.sortIndex = V.expirationTime), c(h, V));
+            if (V.callback === null) N(O);
+            else if (V.startTime <= F) (N(O), (V.sortIndex = V.expirationTime), c(h, V));
             else break;
             V = a(O);
           }
         }
         function re(F) {
-          if (((Y = !1), me(F), !H))
-            if (a(h) !== null) ((H = !0), Re(ue));
+          if (((Y = !1), me(F), !Q))
+            if (a(h) !== null) ((Q = !0), Re(ue));
             else {
               var V = a(O);
-              V !== null && K(re, V.startTime - F);
+              V !== null && H(re, V.startTime - F);
             }
         }
         function ue(F, V) {
-          ((H = !1), Y && ((Y = !1), I(Ie), (Ie = -1)), (Z = !0));
+          ((Q = !1), Y && ((Y = !1), I(Ie), (Ie = -1)), (Z = !0));
           var A = b;
           try {
             for (me(V), z = a(h); z !== null && (!(z.expirationTime > V) || (F && !cn())); ) {
-              var p = z.callback;
-              if (typeof p == 'function') {
+              var f = z.callback;
+              if (typeof f == 'function') {
                 ((z.callback = null), (b = z.priorityLevel));
-                var k = p(z.expirationTime <= V);
+                var k = f(z.expirationTime <= V);
                 ((V = l.unstable_now()),
-                  typeof k == 'function' ? (z.callback = k) : z === a(h) && w(h),
+                  typeof k == 'function' ? (z.callback = k) : z === a(h) && N(h),
                   me(V));
-              } else w(h);
+              } else N(h);
               z = a(h);
             }
-            if (z !== null) var Q = !0;
+            if (z !== null) var G = !0;
             else {
               var ie = a(O);
-              (ie !== null && K(re, ie.startTime - V), (Q = !1));
+              (ie !== null && H(re, ie.startTime - V), (G = !1));
             }
-            return Q;
+            return G;
           } finally {
             ((z = null), (b = A), (Z = !1));
           }
@@ -597,7 +597,7 @@ function lm() {
         function Re(F) {
           ((ve = F), fe || ((fe = !0), X()));
         }
-        function K(F, V) {
+        function H(F, V) {
           Ie = P(function () {
             F(l.unstable_now());
           }, V);
@@ -612,7 +612,7 @@ function lm() {
             F.callback = null;
           }),
           (l.unstable_continueExecution = function () {
-            H || Z || ((H = !0), Re(ue));
+            Q || Z || ((Q = !0), Re(ue));
           }),
           (l.unstable_forceFrameRate = function (F) {
             0 > F || 125 < F
@@ -667,11 +667,11 @@ function lm() {
             }
           }),
           (l.unstable_scheduleCallback = function (F, V, A) {
-            var p = l.unstable_now();
+            var f = l.unstable_now();
             switch (
               (typeof A == 'object' && A !== null
-                ? ((A = A.delay), (A = typeof A == 'number' && 0 < A ? p + A : p))
-                : (A = p),
+                ? ((A = A.delay), (A = typeof A == 'number' && 0 < A ? f + A : f))
+                : (A = f),
               F)
             ) {
               case 1:
@@ -692,18 +692,18 @@ function lm() {
             return (
               (k = A + k),
               (F = {
-                id: D++,
+                id: K++,
                 callback: V,
                 priorityLevel: F,
                 startTime: A,
                 expirationTime: k,
                 sortIndex: -1,
               }),
-              A > p
+              A > f
                 ? ((F.sortIndex = A),
                   c(O, F),
-                  a(h) === null && F === a(O) && (Y ? (I(Ie), (Ie = -1)) : (Y = !0), K(re, A - p)))
-                : ((F.sortIndex = k), c(h, F), H || Z || ((H = !0), Re(ue))),
+                  a(h) === null && F === a(O) && (Y ? (I(Ie), (Ie = -1)) : (Y = !0), H(re, A - f)))
+                : ((F.sortIndex = k), c(h, F), Q || Z || ((Q = !0), Re(ue))),
               F
             );
           }),
@@ -724,9 +724,9 @@ function lm() {
     Xo
   );
 }
-var Hu;
+var Du;
 function am() {
-  return (Hu || ((Hu = 1), (Zo.exports = lm())), Zo.exports);
+  return (Du || ((Du = 1), (Zo.exports = lm())), Zo.exports);
 }
 /**
  * @license React
@@ -736,11 +736,11 @@ function am() {
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */ var Gu;
+ */ var Hu;
 function um() {
-  if (Gu) return un;
-  Gu = 1;
-  var l = sl(),
+  if (Hu) return un;
+  Hu = 1;
+  var l = rl(),
     c = am();
   function a(e) {
     for (
@@ -757,15 +757,15 @@ function um() {
       ' for the full message or use the non-minified dev environment for full errors and additional helpful warnings.'
     );
   }
-  var w = new Set(),
-    N = {};
+  var N = new Set(),
+    w = {};
   function C(e, n) {
     (j(e, n), j(e + 'Capture', n));
   }
   function j(e, n) {
-    for (N[e] = n, e = 0; e < n.length; e++) w.add(n[e]);
+    for (w[e] = n, e = 0; e < n.length; e++) N.add(n[e]);
   }
-  var f = !(
+  var m = !(
       typeof window > 'u' ||
       typeof window.document > 'u' ||
       typeof window.document.createElement > 'u'
@@ -773,10 +773,10 @@ function um() {
     h = Object.prototype.hasOwnProperty,
     O =
       /^[:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD][:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*$/,
-    D = {},
+    K = {},
     z = {};
   function b(e) {
-    return h.call(z, e) ? !0 : h.call(D, e) ? !1 : O.test(e) ? (z[e] = !0) : ((D[e] = !0), !1);
+    return h.call(z, e) ? !0 : h.call(K, e) ? !1 : O.test(e) ? (z[e] = !0) : ((K[e] = !0), !1);
   }
   function Z(e, n, i, t) {
     if (i !== null && i.type === 0) return !1;
@@ -794,7 +794,7 @@ function um() {
         return !1;
     }
   }
-  function H(e, n, i, t) {
+  function Q(e, n, i, t) {
     if (n === null || typeof n > 'u' || Z(e, n, i, t)) return !0;
     if (t) return !1;
     if (i !== null)
@@ -892,7 +892,7 @@ function um() {
     (s !== null
       ? s.type !== 0
       : t || !(2 < n.length) || (n[0] !== 'o' && n[0] !== 'O') || (n[1] !== 'n' && n[1] !== 'N')) &&
-      (H(n, i, s, t) && (i = null),
+      (Q(n, i, s, t) && (i = null),
       t || s === null
         ? b(n) && (i === null ? e.removeAttribute(n) : e.setAttribute(n, '' + i))
         : s.mustUseProperty
@@ -918,7 +918,7 @@ function um() {
     Te = Symbol.for('react.suspense_list'),
     Ve = Symbol.for('react.memo'),
     Re = Symbol.for('react.lazy'),
-    K = Symbol.for('react.offscreen'),
+    H = Symbol.for('react.offscreen'),
     F = Symbol.iterator;
   function V(e) {
     return e === null || typeof e != 'object'
@@ -926,26 +926,26 @@ function um() {
       : ((e = (F && e[F]) || e['@@iterator']), typeof e == 'function' ? e : null);
   }
   var A = Object.assign,
-    p;
+    f;
   function k(e) {
-    if (p === void 0)
+    if (f === void 0)
       try {
         throw Error();
       } catch (i) {
         var n = i.stack.trim().match(/\n( *(at )?)/);
-        p = (n && n[1]) || '';
+        f = (n && n[1]) || '';
       }
     return (
       `
 ` +
-      p +
+      f +
       e
     );
   }
-  var Q = !1;
+  var G = !1;
   function ie(e, n) {
-    if (!e || Q) return '';
-    Q = !0;
+    if (!e || G) return '';
+    G = !0;
     var i = Error.prepareStackTrace;
     Error.prepareStackTrace = void 0;
     try {
@@ -1001,14 +1001,14 @@ function um() {
             if (u !== 1 || d !== 1)
               do
                 if ((u--, d--, 0 > d || s[u] !== o[d])) {
-                  var m =
+                  var p =
                     `
 ` + s[u].replace(' at new ', ' at ');
                   return (
                     e.displayName &&
-                      m.includes('<anonymous>') &&
-                      (m = m.replace('<anonymous>', e.displayName)),
-                    m
+                      p.includes('<anonymous>') &&
+                      (p = p.replace('<anonymous>', e.displayName)),
+                    p
                   );
                 }
               while (1 <= u && 0 <= d);
@@ -1016,7 +1016,7 @@ function um() {
           }
       }
     } finally {
-      ((Q = !1), (Error.prepareStackTrace = i));
+      ((G = !1), (Error.prepareStackTrace = i));
     }
     return (e = e ? e.displayName || e.name : '') ? k(e) : '';
   }
@@ -1527,18 +1527,18 @@ function um() {
       if (((L = y = null), ne(e), n)) for (e = 0; e < n.length; e++) ne(n[e]);
     }
   }
-  function ll(e, n) {
+  function ol(e, n) {
     return e(n);
   }
-  function al() {}
+  function ll() {}
   var cs = !1;
-  function ul(e, n, i) {
+  function al(e, n, i) {
     if (cs) return e(n, i);
     cs = !0;
     try {
-      return ll(e, n, i);
+      return ol(e, n, i);
     } finally {
-      ((cs = !1), (y !== null || L !== null) && (al(), Ln()));
+      ((cs = !1), (y !== null || L !== null) && (ll(), Ln()));
     }
   }
   function ct(e, n) {
@@ -1572,7 +1572,7 @@ function um() {
     return i;
   }
   var ds = !1;
-  if (f)
+  if (m)
     try {
       var dt = {};
       (Object.defineProperty(dt, 'passive', {
@@ -1585,7 +1585,7 @@ function um() {
     } catch {
       ds = !1;
     }
-  function cc(e, n, i, t, s, o, u, d, m) {
+  function cc(e, n, i, t, s, o, u, d, p) {
     var x = Array.prototype.slice.call(arguments, 3);
     try {
       n.apply(i, x);
@@ -1602,10 +1602,10 @@ function um() {
         ((mt = !0), (Xt = e));
       },
     };
-  function mc(e, n, i, t, s, o, u, d, m) {
+  function mc(e, n, i, t, s, o, u, d, p) {
     ((mt = !1), (Xt = null), cc.apply(dc, arguments));
   }
-  function pc(e, n, i, t, s, o, u, d, m) {
+  function pc(e, n, i, t, s, o, u, d, p) {
     if ((mc.apply(this, arguments), mt)) {
       if (mt) {
         var x = Xt;
@@ -1625,7 +1625,7 @@ function um() {
     }
     return n.tag === 3 ? i : null;
   }
-  function cl(e) {
+  function ul(e) {
     if (e.tag === 13) {
       var n = e.memoizedState;
       if ((n === null && ((e = e.alternate), e !== null && (n = e.memoizedState)), n !== null))
@@ -1633,7 +1633,7 @@ function um() {
     }
     return null;
   }
-  function dl(e) {
+  function cl(e) {
     if (hi(e) !== e) throw Error(a(188));
   }
   function fc(e) {
@@ -1655,8 +1655,8 @@ function um() {
       }
       if (s.child === o.child) {
         for (o = s.child; o; ) {
-          if (o === i) return (dl(s), e);
-          if (o === t) return (dl(s), n);
+          if (o === i) return (cl(s), e);
+          if (o === t) return (cl(s), n);
           o = o.sibling;
         }
         throw Error(a(188));
@@ -1694,29 +1694,29 @@ function um() {
     if (i.tag !== 3) throw Error(a(188));
     return i.stateNode.current === i ? e : n;
   }
-  function ml(e) {
-    return ((e = fc(e)), e !== null ? pl(e) : null);
+  function dl(e) {
+    return ((e = fc(e)), e !== null ? ml(e) : null);
   }
-  function pl(e) {
+  function ml(e) {
     if (e.tag === 5 || e.tag === 6) return e;
     for (e = e.child; e !== null; ) {
-      var n = pl(e);
+      var n = ml(e);
       if (n !== null) return n;
       e = e.sibling;
     }
     return null;
   }
-  var fl = c.unstable_scheduleCallback,
-    hl = c.unstable_cancelCallback,
+  var pl = c.unstable_scheduleCallback,
+    fl = c.unstable_cancelCallback,
     hc = c.unstable_shouldYield,
     gc = c.unstable_requestPaint,
     be = c.unstable_now,
     vc = c.unstable_getCurrentPriorityLevel,
     ps = c.unstable_ImmediatePriority,
-    gl = c.unstable_UserBlockingPriority,
+    hl = c.unstable_UserBlockingPriority,
     er = c.unstable_NormalPriority,
     yc = c.unstable_LowPriority,
-    vl = c.unstable_IdlePriority,
+    gl = c.unstable_IdlePriority,
     nr = null,
     Rn = null;
   function _c(e) {
@@ -1855,17 +1855,17 @@ function um() {
     ) {
       var u = 31 - Nn(o),
         d = 1 << u,
-        m = s[u];
-      (m === -1
+        p = s[u];
+      (p === -1
         ? ((d & i) === 0 || (d & t) !== 0) && (s[u] = jc(d, n))
-        : m <= n && (e.expiredLanes |= d),
+        : p <= n && (e.expiredLanes |= d),
         (o &= ~d));
     }
   }
   function fs(e) {
     return ((e = e.pendingLanes & -1073741825), e !== 0 ? e : e & 1073741824 ? 1073741824 : 0);
   }
-  function yl() {
+  function vl() {
     var e = ir;
     return ((ir <<= 1), (ir & 4194240) === 0 && (ir = 64), e);
   }
@@ -1905,14 +1905,14 @@ function um() {
     }
   }
   var he = 0;
-  function _l(e) {
+  function yl(e) {
     return ((e &= -e), 1 < e ? (4 < e ? ((e & 268435455) !== 0 ? 16 : 536870912) : 4) : 1);
   }
-  var xl,
+  var _l,
     vs,
+    xl,
     wl,
     Nl,
-    jl,
     ys = !1,
     sr = [],
     Gn = null,
@@ -1925,7 +1925,7 @@ function um() {
       'mousedown mouseup touchcancel touchend touchstart auxclick dblclick pointercancel pointerdown pointerup dragend dragstart drop compositionend compositionstart keydown keypress keyup input textInput copy cut paste click change contextmenu reset submit'.split(
         ' '
       );
-  function kl(e, n) {
+  function jl(e, n) {
     switch (e) {
       case 'focusin':
       case 'focusout':
@@ -1980,16 +1980,16 @@ function um() {
     }
     return !1;
   }
-  function Sl(e) {
+  function kl(e) {
     var n = gi(e.target);
     if (n !== null) {
       var i = hi(n);
       if (i !== null) {
         if (((n = i.tag), n === 13)) {
-          if (((n = cl(i)), n !== null)) {
+          if (((n = ul(i)), n !== null)) {
             ((e.blockedOn = n),
-              jl(e.priority, function () {
-                wl(i);
+              Nl(e.priority, function () {
+                xl(i);
               }));
             return;
           }
@@ -2014,7 +2014,7 @@ function um() {
     }
     return !0;
   }
-  function Cl(e, n, i) {
+  function Sl(e, n, i) {
     or(e) && i.delete(n);
   }
   function Tc() {
@@ -2022,8 +2022,8 @@ function um() {
       Gn !== null && or(Gn) && (Gn = null),
       Kn !== null && or(Kn) && (Kn = null),
       Qn !== null && or(Qn) && (Qn = null),
-      ht.forEach(Cl),
-      gt.forEach(Cl));
+      ht.forEach(Sl),
+      gt.forEach(Sl));
   }
   function yt(e, n) {
     e.blockedOn === n &&
@@ -2053,7 +2053,7 @@ function um() {
     )
       ((t = Yn[i]), t.blockedOn === e && (t.blockedOn = null));
     for (; 0 < Yn.length && ((i = Yn[0]), i.blockedOn === null); )
-      (Sl(i), i.blockedOn === null && Yn.shift());
+      (kl(i), i.blockedOn === null && Yn.shift());
   }
   var Fi = re.ReactCurrentBatchConfig,
     lr = !0;
@@ -2080,13 +2080,13 @@ function um() {
   function _s(e, n, i, t) {
     if (lr) {
       var s = xs(e, n, i, t);
-      if (s === null) (Is(e, n, t, ar, i), kl(e, t));
+      if (s === null) (Is(e, n, t, ar, i), jl(e, t));
       else if (Pc(s, e, n, i, t)) t.stopPropagation();
-      else if ((kl(e, t), n & 4 && -1 < Cc.indexOf(e))) {
+      else if ((jl(e, t), n & 4 && -1 < Cc.indexOf(e))) {
         for (; s !== null; ) {
           var o = Rt(s);
           if (
-            (o !== null && xl(o), (o = xs(e, n, i, t)), o === null && Is(e, n, t, ar, i), o === s)
+            (o !== null && _l(o), (o = xs(e, n, i, t)), o === null && Is(e, n, t, ar, i), o === s)
           )
             break;
           s = o;
@@ -2100,7 +2100,7 @@ function um() {
     if (((ar = null), (e = bi(t)), (e = gi(e)), e !== null))
       if (((n = hi(e)), n === null)) e = null;
       else if (((i = n.tag), i === 13)) {
-        if (((e = cl(n)), e !== null)) return e;
+        if (((e = ul(n)), e !== null)) return e;
         e = null;
       } else if (i === 3) {
         if (n.stateNode.current.memoizedState.isDehydrated)
@@ -2109,7 +2109,7 @@ function um() {
       } else n !== e && (e = null);
     return ((ar = e), null);
   }
-  function Pl(e) {
+  function Cl(e) {
     switch (e) {
       case 'cancel':
       case 'click':
@@ -2187,12 +2187,12 @@ function um() {
         switch (vc()) {
           case ps:
             return 1;
-          case gl:
+          case hl:
             return 4;
           case er:
           case yc:
             return 16;
-          case vl:
+          case gl:
             return 536870912;
           default:
             return 16;
@@ -2204,7 +2204,7 @@ function um() {
   var Zn = null,
     ws = null,
     ur = null;
-  function Tl() {
+  function Pl() {
     if (ur) return ur;
     var e,
       n = ws,
@@ -2228,7 +2228,7 @@ function um() {
   function dr() {
     return !0;
   }
-  function El() {
+  function Tl() {
     return !1;
   }
   function dn(e) {
@@ -2245,8 +2245,8 @@ function um() {
           o.defaultPrevented != null ? o.defaultPrevented : o.returnValue === !1
         )
           ? dr
-          : El),
-        (this.isPropagationStopped = El),
+          : Tl),
+        (this.isPropagationStopped = Tl),
         this
       );
     }
@@ -2326,7 +2326,7 @@ function um() {
         return 'movementY' in e ? e.movementY : ks;
       },
     }),
-    Ll = dn(mr),
+    El = dn(mr),
     bc = A({}, mr, { dataTransfer: 0 }),
     Mc = dn(bc),
     Fc = A({}, xt, { relatedTarget: 0 }),
@@ -2340,7 +2340,7 @@ function um() {
     }),
     Wc = dn(Ic),
     Ac = A({}, zi, { data: 0 }),
-    Rl = dn(Ac),
+    Ll = dn(Ac),
     Vc = {
       Esc: 'Escape',
       Spacebar: ' ',
@@ -2449,7 +2449,7 @@ function um() {
       pointerType: 0,
       isPrimary: 0,
     }),
-    bl = dn(Hc),
+    Rl = dn(Hc),
     Gc = A({}, xt, {
       touches: 0,
       targetTouches: 0,
@@ -2481,14 +2481,14 @@ function um() {
     }),
     Xc = dn(Zc),
     Jc = [9, 13, 27, 32],
-    Ps = f && 'CompositionEvent' in window,
+    Ps = m && 'CompositionEvent' in window,
     Nt = null;
-  f && 'documentMode' in document && (Nt = document.documentMode);
-  var ed = f && 'TextEvent' in window && !Nt,
-    Ml = f && (!Ps || (Nt && 8 < Nt && 11 >= Nt)),
-    Fl = ' ',
-    zl = !1;
-  function Ol(e, n) {
+  m && 'documentMode' in document && (Nt = document.documentMode);
+  var ed = m && 'TextEvent' in window && !Nt,
+    bl = m && (!Ps || (Nt && 8 < Nt && 11 >= Nt)),
+    Ml = ' ',
+    Fl = !1;
+  function zl(e, n) {
     switch (e) {
       case 'keyup':
         return Jc.indexOf(n.keyCode) !== -1;
@@ -2502,26 +2502,26 @@ function um() {
         return !1;
     }
   }
-  function Il(e) {
+  function Ol(e) {
     return ((e = e.detail), typeof e == 'object' && 'data' in e ? e.data : null);
   }
   var Oi = !1;
   function nd(e, n) {
     switch (e) {
       case 'compositionend':
-        return Il(n);
+        return Ol(n);
       case 'keypress':
-        return n.which !== 32 ? null : ((zl = !0), Fl);
+        return n.which !== 32 ? null : ((Fl = !0), Ml);
       case 'textInput':
-        return ((e = n.data), e === Fl && zl ? null : e);
+        return ((e = n.data), e === Ml && Fl ? null : e);
       default:
         return null;
     }
   }
   function id(e, n) {
     if (Oi)
-      return e === 'compositionend' || (!Ps && Ol(e, n))
-        ? ((e = Tl()), (ur = ws = Zn = null), (Oi = !1), e)
+      return e === 'compositionend' || (!Ps && zl(e, n))
+        ? ((e = Pl()), (ur = ws = Zn = null), (Oi = !1), e)
         : null;
     switch (e) {
       case 'paste':
@@ -2533,7 +2533,7 @@ function um() {
         }
         return null;
       case 'compositionend':
-        return Ml && n.locale !== 'ko' ? null : n.data;
+        return bl && n.locale !== 'ko' ? null : n.data;
       default:
         return null;
     }
@@ -2555,11 +2555,11 @@ function um() {
     url: !0,
     week: !0,
   };
-  function Wl(e) {
+  function Il(e) {
     var n = e && e.nodeName && e.nodeName.toLowerCase();
     return n === 'input' ? !!td[e.type] : n === 'textarea';
   }
-  function Al(e, n, i, t) {
+  function Wl(e, n, i, t) {
     (we(t),
       (n = vr(n, 'onChange')),
       0 < n.length &&
@@ -2568,7 +2568,7 @@ function um() {
   var jt = null,
     kt = null;
   function rd(e) {
-    ta(e, 0);
+    ia(e, 0);
   }
   function pr(e) {
     var n = Bi(e);
@@ -2577,32 +2577,32 @@ function um() {
   function sd(e, n) {
     if (e === 'change') return n;
   }
-  var Vl = !1;
-  if (f) {
+  var Al = !1;
+  if (m) {
     var Ts;
-    if (f) {
+    if (m) {
       var Es = 'oninput' in document;
       if (!Es) {
-        var Bl = document.createElement('div');
-        (Bl.setAttribute('oninput', 'return;'), (Es = typeof Bl.oninput == 'function'));
+        var Vl = document.createElement('div');
+        (Vl.setAttribute('oninput', 'return;'), (Es = typeof Vl.oninput == 'function'));
       }
       Ts = Es;
     } else Ts = !1;
-    Vl = Ts && (!document.documentMode || 9 < document.documentMode);
+    Al = Ts && (!document.documentMode || 9 < document.documentMode);
   }
-  function $l() {
-    jt && (jt.detachEvent('onpropertychange', Ul), (kt = jt = null));
+  function Bl() {
+    jt && (jt.detachEvent('onpropertychange', $l), (kt = jt = null));
   }
-  function Ul(e) {
+  function $l(e) {
     if (e.propertyName === 'value' && pr(kt)) {
       var n = [];
-      (Al(n, kt, e, bi(e)), ul(rd, n));
+      (Wl(n, kt, e, bi(e)), al(rd, n));
     }
   }
   function od(e, n, i) {
     e === 'focusin'
-      ? ($l(), (jt = n), (kt = i), jt.attachEvent('onpropertychange', Ul))
-      : e === 'focusout' && $l();
+      ? (Bl(), (jt = n), (kt = i), jt.attachEvent('onpropertychange', $l))
+      : e === 'focusout' && Bl();
   }
   function ld(e) {
     if (e === 'selectionchange' || e === 'keyup' || e === 'keydown') return pr(kt);
@@ -2629,12 +2629,12 @@ function um() {
     }
     return !0;
   }
-  function ql(e) {
+  function Ul(e) {
     for (; e && e.firstChild; ) e = e.firstChild;
     return e;
   }
-  function Dl(e, n) {
-    var i = ql(e);
+  function ql(e, n) {
+    var i = Ul(e);
     e = 0;
     for (var t; i; ) {
       if (i.nodeType === 3) {
@@ -2651,17 +2651,17 @@ function um() {
         }
         i = void 0;
       }
-      i = ql(i);
+      i = Ul(i);
     }
   }
-  function Hl(e, n) {
+  function Dl(e, n) {
     return e && n
       ? e === n
         ? !0
         : e && e.nodeType === 3
           ? !1
           : n && n.nodeType === 3
-            ? Hl(e, n.parentNode)
+            ? Dl(e, n.parentNode)
             : 'contains' in e
               ? e.contains(n)
               : e.compareDocumentPosition
@@ -2669,7 +2669,7 @@ function um() {
                 : !1
       : !1;
   }
-  function Gl() {
+  function Hl() {
     for (var e = window, n = Ei(); n instanceof e.HTMLIFrameElement; ) {
       try {
         var i = typeof n.contentWindow.location.href == 'string';
@@ -2697,10 +2697,10 @@ function um() {
     );
   }
   function dd(e) {
-    var n = Gl(),
+    var n = Hl(),
       i = e.focusedElem,
       t = e.selectionRange;
-    if (n !== i && i && i.ownerDocument && Hl(i.ownerDocument.documentElement, i)) {
+    if (n !== i && i && i.ownerDocument && Dl(i.ownerDocument.documentElement, i)) {
       if (t !== null && Ls(i)) {
         if (((n = t.start), (e = t.end), e === void 0 && (e = n), 'selectionStart' in i))
           ((i.selectionStart = n), (i.selectionEnd = Math.min(e, i.value.length)));
@@ -2712,8 +2712,8 @@ function um() {
             o = Math.min(t.start, s);
           ((t = t.end === void 0 ? o : Math.min(t.end, s)),
             !e.extend && o > t && ((s = t), (t = o), (o = s)),
-            (s = Dl(i, o)));
-          var u = Dl(i, t);
+            (s = ql(i, o)));
+          var u = ql(i, t);
           s &&
             u &&
             (e.rangeCount !== 1 ||
@@ -2735,12 +2735,12 @@ function um() {
         ((e = n[i]), (e.element.scrollLeft = e.left), (e.element.scrollTop = e.top));
     }
   }
-  var md = f && 'documentMode' in document && 11 >= document.documentMode,
+  var md = m && 'documentMode' in document && 11 >= document.documentMode,
     Ii = null,
     Rs = null,
     Ct = null,
     bs = !1;
-  function Kl(e, n, i) {
+  function Gl(e, n, i) {
     var t = i.window === i ? i.document : i.nodeType === 9 ? i : i.ownerDocument;
     bs ||
       Ii == null ||
@@ -2779,9 +2779,9 @@ function um() {
       transitionend: fr('Transition', 'TransitionEnd'),
     },
     Ms = {},
-    Ql = {};
-  f &&
-    ((Ql = document.createElement('div').style),
+    Kl = {};
+  m &&
+    ((Kl = document.createElement('div').style),
     'AnimationEvent' in window ||
       (delete Wi.animationend.animation,
       delete Wi.animationiteration.animation,
@@ -2792,34 +2792,34 @@ function um() {
     if (!Wi[e]) return e;
     var n = Wi[e],
       i;
-    for (i in n) if (n.hasOwnProperty(i) && i in Ql) return (Ms[e] = n[i]);
+    for (i in n) if (n.hasOwnProperty(i) && i in Kl) return (Ms[e] = n[i]);
     return e;
   }
-  var Yl = hr('animationend'),
-    Zl = hr('animationiteration'),
-    Xl = hr('animationstart'),
-    Jl = hr('transitionend'),
-    ea = new Map(),
-    na =
+  var Ql = hr('animationend'),
+    Yl = hr('animationiteration'),
+    Zl = hr('animationstart'),
+    Xl = hr('transitionend'),
+    Jl = new Map(),
+    ea =
       'abort auxClick cancel canPlay canPlayThrough click close contextMenu copy cut drag dragEnd dragEnter dragExit dragLeave dragOver dragStart drop durationChange emptied encrypted ended error gotPointerCapture input invalid keyDown keyPress keyUp load loadedData loadedMetadata loadStart lostPointerCapture mouseDown mouseMove mouseOut mouseOver mouseUp paste pause play playing pointerCancel pointerDown pointerMove pointerOut pointerOver pointerUp progress rateChange reset resize seeked seeking stalled submit suspend timeUpdate touchCancel touchEnd touchStart volumeChange scroll toggle touchMove waiting wheel'.split(
         ' '
       );
   function Xn(e, n) {
-    (ea.set(e, n), C(n, [e]));
+    (Jl.set(e, n), C(n, [e]));
   }
-  for (var Fs = 0; Fs < na.length; Fs++) {
-    var zs = na[Fs],
+  for (var Fs = 0; Fs < ea.length; Fs++) {
+    var zs = ea[Fs],
       pd = zs.toLowerCase(),
       fd = zs[0].toUpperCase() + zs.slice(1);
     Xn(pd, 'on' + fd);
   }
-  (Xn(Yl, 'onAnimationEnd'),
-    Xn(Zl, 'onAnimationIteration'),
-    Xn(Xl, 'onAnimationStart'),
+  (Xn(Ql, 'onAnimationEnd'),
+    Xn(Yl, 'onAnimationIteration'),
+    Xn(Zl, 'onAnimationStart'),
     Xn('dblclick', 'onDoubleClick'),
     Xn('focusin', 'onFocus'),
     Xn('focusout', 'onBlur'),
-    Xn(Jl, 'onTransitionEnd'),
+    Xn(Xl, 'onTransitionEnd'),
     j('onMouseEnter', ['mouseout', 'mouseover']),
     j('onMouseLeave', ['mouseout', 'mouseover']),
     j('onPointerEnter', ['pointerout', 'pointerover']),
@@ -2846,11 +2846,11 @@ function um() {
         ' '
       ),
     hd = new Set('cancel close invalid load scroll toggle'.split(' ').concat(Pt));
-  function ia(e, n, i) {
+  function na(e, n, i) {
     var t = e.type || 'unknown-event';
     ((e.currentTarget = i), pc(t, n, void 0, e), (e.currentTarget = null));
   }
-  function ta(e, n) {
+  function ia(e, n) {
     n = (n & 4) !== 0;
     for (var i = 0; i < e.length; i++) {
       var t = e[i],
@@ -2861,22 +2861,22 @@ function um() {
         if (n)
           for (var u = t.length - 1; 0 <= u; u--) {
             var d = t[u],
-              m = d.instance,
+              p = d.instance,
               x = d.currentTarget;
-            if (((d = d.listener), m !== o && s.isPropagationStopped())) break e;
-            (ia(s, d, x), (o = m));
+            if (((d = d.listener), p !== o && s.isPropagationStopped())) break e;
+            (na(s, d, x), (o = p));
           }
         else
           for (u = 0; u < t.length; u++) {
             if (
               ((d = t[u]),
-              (m = d.instance),
+              (p = d.instance),
               (x = d.currentTarget),
               (d = d.listener),
-              m !== o && s.isPropagationStopped())
+              p !== o && s.isPropagationStopped())
             )
               break e;
-            (ia(s, d, x), (o = m));
+            (na(s, d, x), (o = p));
           }
       }
     }
@@ -2886,25 +2886,25 @@ function um() {
     var i = n[Us];
     i === void 0 && (i = n[Us] = new Set());
     var t = e + '__bubble';
-    i.has(t) || (ra(n, e, 2, !1), i.add(t));
+    i.has(t) || (ta(n, e, 2, !1), i.add(t));
   }
   function Os(e, n, i) {
     var t = 0;
-    (n && (t |= 4), ra(i, e, t, n));
+    (n && (t |= 4), ta(i, e, t, n));
   }
   var gr = '_reactListening' + Math.random().toString(36).slice(2);
   function Tt(e) {
     if (!e[gr]) {
       ((e[gr] = !0),
-        w.forEach(function (i) {
+        N.forEach(function (i) {
           i !== 'selectionchange' && (hd.has(i) || Os(i, !1, e), Os(i, !0, e));
         }));
       var n = e.nodeType === 9 ? e : e.ownerDocument;
       n === null || n[gr] || ((n[gr] = !0), Os('selectionchange', !1, n));
     }
   }
-  function ra(e, n, i, t) {
-    switch (Pl(n)) {
+  function ta(e, n, i, t) {
+    switch (Cl(n)) {
       case 1:
         var s = Ec;
         break;
@@ -2936,18 +2936,18 @@ function um() {
           if (d === s || (d.nodeType === 8 && d.parentNode === s)) break;
           if (u === 4)
             for (u = t.return; u !== null; ) {
-              var m = u.tag;
+              var p = u.tag;
               if (
-                (m === 3 || m === 4) &&
-                ((m = u.stateNode.containerInfo),
-                m === s || (m.nodeType === 8 && m.parentNode === s))
+                (p === 3 || p === 4) &&
+                ((p = u.stateNode.containerInfo),
+                p === s || (p.nodeType === 8 && p.parentNode === s))
               )
                 return;
               u = u.return;
             }
           for (; d !== null; ) {
             if (((u = gi(d)), u === null)) return;
-            if (((m = u.tag), m === 5 || m === 6)) {
+            if (((p = u.tag), p === 5 || p === 6)) {
               t = o = u;
               continue e;
             }
@@ -2956,12 +2956,12 @@ function um() {
         }
         t = t.return;
       }
-    ul(function () {
+    al(function () {
       var x = o,
         E = bi(i),
         R = [];
       e: {
-        var T = ea.get(e);
+        var T = Jl.get(e);
         if (T !== void 0) {
           var B = Ns,
             U = e;
@@ -2992,7 +2992,7 @@ function um() {
             case 'mouseout':
             case 'mouseover':
             case 'contextmenu':
-              B = Ll;
+              B = El;
               break;
             case 'drag':
             case 'dragend':
@@ -3010,12 +3010,12 @@ function um() {
             case 'touchstart':
               B = Kc;
               break;
+            case Ql:
             case Yl:
             case Zl:
-            case Xl:
               B = Oc;
               break;
-            case Jl:
+            case Xl:
               B = Yc;
               break;
             case 'scroll':
@@ -3037,7 +3037,7 @@ function um() {
             case 'pointerout':
             case 'pointerover':
             case 'pointerup':
-              B = bl;
+              B = Rl;
           }
           var q = (n & 4) !== 0,
             Me = !q && e === 'scroll',
@@ -3085,12 +3085,12 @@ function um() {
             B !== U)
           ) {
             if (
-              ((q = Ll),
+              ((q = El),
               (M = 'onMouseLeave'),
               (v = 'onMouseEnter'),
               (g = 'mouse'),
               (e === 'pointerout' || e === 'pointerover') &&
-                ((q = bl), (M = 'onPointerLeave'), (v = 'onPointerEnter'), (g = 'pointer')),
+                ((q = Rl), (M = 'onPointerLeave'), (v = 'onPointerEnter'), (g = 'pointer')),
               (Me = B == null ? T : Bi(B)),
               (_ = U == null ? T : Bi(U)),
               (T = new q(M, g + 'leave', B, i, E)),
@@ -3117,7 +3117,7 @@ function um() {
                 q = null;
               }
             else q = null;
-            (B !== null && sa(R, T, B, q, !1), U !== null && Me !== null && sa(R, Me, U, q, !0));
+            (B !== null && ra(R, T, B, q, !1), U !== null && Me !== null && ra(R, Me, U, q, !0));
           }
         }
         e: {
@@ -3126,20 +3126,20 @@ function um() {
             (B = T.nodeName && T.nodeName.toLowerCase()),
             B === 'select' || (B === 'input' && T.type === 'file'))
           )
-            var G = sd;
-          else if (Wl(T))
-            if (Vl) G = ud;
+            var D = sd;
+          else if (Il(T))
+            if (Al) D = ud;
             else {
-              G = ld;
+              D = ld;
               var J = od;
             }
           else
             (B = T.nodeName) &&
               B.toLowerCase() === 'input' &&
               (T.type === 'checkbox' || T.type === 'radio') &&
-              (G = ad);
-          if (G && (G = G(e, x))) {
-            Al(R, G, i, E);
+              (D = ad);
+          if (D && (D = D(e, x))) {
+            Wl(R, D, i, E);
             break e;
           }
           (J && J(e, T, x),
@@ -3151,7 +3151,7 @@ function um() {
         }
         switch (((J = x ? Bi(x) : window), e)) {
           case 'focusin':
-            (Wl(J) || J.contentEditable === 'true') && ((Ii = J), (Rs = x), (Ct = null));
+            (Il(J) || J.contentEditable === 'true') && ((Ii = J), (Rs = x), (Ct = null));
             break;
           case 'focusout':
             Ct = Rs = Ii = null;
@@ -3162,13 +3162,13 @@ function um() {
           case 'contextmenu':
           case 'mouseup':
           case 'dragend':
-            ((bs = !1), Kl(R, i, E));
+            ((bs = !1), Gl(R, i, E));
             break;
           case 'selectionchange':
             if (md) break;
           case 'keydown':
           case 'keyup':
-            Kl(R, i, E);
+            Gl(R, i, E);
         }
         var ee;
         if (Ps)
@@ -3188,27 +3188,27 @@ function um() {
           }
         else
           Oi
-            ? Ol(e, i) && (te = 'onCompositionEnd')
+            ? zl(e, i) && (te = 'onCompositionEnd')
             : e === 'keydown' && i.keyCode === 229 && (te = 'onCompositionStart');
         (te &&
-          (Ml &&
+          (bl &&
             i.locale !== 'ko' &&
             (Oi || te !== 'onCompositionStart'
-              ? te === 'onCompositionEnd' && Oi && (ee = Tl())
+              ? te === 'onCompositionEnd' && Oi && (ee = Pl())
               : ((Zn = E), (ws = 'value' in Zn ? Zn.value : Zn.textContent), (Oi = !0))),
           (J = vr(x, te)),
           0 < J.length &&
-            ((te = new Rl(te, e, null, i, E)),
+            ((te = new Ll(te, e, null, i, E)),
             R.push({ event: te, listeners: J }),
-            ee ? (te.data = ee) : ((ee = Il(i)), ee !== null && (te.data = ee)))),
+            ee ? (te.data = ee) : ((ee = Ol(i)), ee !== null && (te.data = ee)))),
           (ee = ed ? nd(e, i) : id(e, i)) &&
             ((x = vr(x, 'onBeforeInput')),
             0 < x.length &&
-              ((E = new Rl('onBeforeInput', 'beforeinput', null, i, E)),
+              ((E = new Ll('onBeforeInput', 'beforeinput', null, i, E)),
               R.push({ event: E, listeners: x }),
               (E.data = ee))));
       }
-      ta(R, n);
+      ia(R, n);
     });
   }
   function Et(e, n, i) {
@@ -3235,25 +3235,25 @@ function um() {
     while (e && e.tag !== 5);
     return e || null;
   }
-  function sa(e, n, i, t, s) {
+  function ra(e, n, i, t, s) {
     for (var o = n._reactName, u = []; i !== null && i !== t; ) {
       var d = i,
-        m = d.alternate,
+        p = d.alternate,
         x = d.stateNode;
-      if (m !== null && m === t) break;
+      if (p !== null && p === t) break;
       (d.tag === 5 &&
         x !== null &&
         ((d = x),
         s
-          ? ((m = ct(i, o)), m != null && u.unshift(Et(i, m, d)))
-          : s || ((m = ct(i, o)), m != null && u.push(Et(i, m, d)))),
+          ? ((p = ct(i, o)), p != null && u.unshift(Et(i, p, d)))
+          : s || ((p = ct(i, o)), p != null && u.push(Et(i, p, d)))),
         (i = i.return));
     }
     u.length !== 0 && e.push({ event: n, listeners: u });
   }
   var gd = /\r\n?/g,
     vd = /\u0000|\uFFFD/g;
-  function oa(e) {
+  function sa(e) {
     return (typeof e == 'string' ? e : '' + e)
       .replace(
         gd,
@@ -3263,7 +3263,7 @@ function um() {
       .replace(vd, '');
   }
   function yr(e, n, i) {
-    if (((n = oa(n)), oa(e) !== n && i)) throw Error(a(425));
+    if (((n = sa(n)), sa(e) !== n && i)) throw Error(a(425));
   }
   function _r() {}
   var Ws = null,
@@ -3281,13 +3281,13 @@ function um() {
   }
   var Bs = typeof setTimeout == 'function' ? setTimeout : void 0,
     yd = typeof clearTimeout == 'function' ? clearTimeout : void 0,
-    la = typeof Promise == 'function' ? Promise : void 0,
+    oa = typeof Promise == 'function' ? Promise : void 0,
     _d =
       typeof queueMicrotask == 'function'
         ? queueMicrotask
-        : typeof la < 'u'
+        : typeof oa < 'u'
           ? function (e) {
-              return la.resolve(null).then(e).catch(xd);
+              return oa.resolve(null).then(e).catch(xd);
             }
           : Bs;
   function xd(e) {
@@ -3323,7 +3323,7 @@ function um() {
     }
     return e;
   }
-  function aa(e) {
+  function la(e) {
     e = e.previousSibling;
     for (var n = 0; e; ) {
       if (e.nodeType === 8) {
@@ -3350,9 +3350,9 @@ function um() {
     for (var i = e.parentNode; i; ) {
       if ((n = i[On] || i[bn])) {
         if (((i = n.alternate), n.child !== null || (i !== null && i.child !== null)))
-          for (e = aa(e); e !== null; ) {
+          for (e = la(e); e !== null; ) {
             if ((i = e[bn])) return i;
-            e = aa(e);
+            e = la(e);
           }
         return n;
       }
@@ -3411,11 +3411,11 @@ function um() {
   function wr() {
     (je(rn), je(Ye));
   }
-  function ua(e, n, i) {
+  function aa(e, n, i) {
     if (Ye.current !== ni) throw Error(a(168));
     (xe(Ye, n), xe(rn, i));
   }
-  function ca(e, n, i) {
+  function ua(e, n, i) {
     var t = e.stateNode;
     if (((n = n.childContextTypes), typeof t.getChildContext != 'function')) return i;
     t = t.getChildContext();
@@ -3431,11 +3431,11 @@ function um() {
       !0
     );
   }
-  function da(e, n, i) {
+  function ca(e, n, i) {
     var t = e.stateNode;
     if (!t) throw Error(a(169));
     (i
-      ? ((e = ca(e, n, vi)),
+      ? ((e = ua(e, n, vi)),
         (t.__reactInternalMemoizedMergedChildContext = e),
         je(rn),
         je(Ye),
@@ -3446,11 +3446,11 @@ function um() {
   var In = null,
     jr = !1,
     Ds = !1;
-  function ma(e) {
+  function da(e) {
     In === null ? (In = [e]) : In.push(e);
   }
   function jd(e) {
-    ((jr = !0), ma(e));
+    ((jr = !0), da(e));
   }
   function ii() {
     if (!Ds && In !== null) {
@@ -3466,7 +3466,7 @@ function um() {
         }
         ((In = null), (jr = !1));
       } catch (s) {
-        throw (In !== null && (In = In.slice(e + 1)), fl(ps, ii), s);
+        throw (In !== null && (In = In.slice(e + 1)), pl(ps, ii), s);
       } finally {
         ((he = n), (Ds = !1));
       }
@@ -3485,7 +3485,7 @@ function um() {
   function _i(e, n) {
     ((qi[Di++] = Sr), (qi[Di++] = kr), (kr = e), (Sr = n));
   }
-  function pa(e, n, i) {
+  function ma(e, n, i) {
     ((gn[vn++] = Wn), (gn[vn++] = An), (gn[vn++] = yi), (yi = e));
     var t = Wn;
     e = An;
@@ -3502,7 +3502,7 @@ function um() {
     } else ((Wn = (1 << o) | (i << s) | t), (An = e));
   }
   function Hs(e) {
-    e.return !== null && (_i(e, 1), pa(e, 1, 0));
+    e.return !== null && (_i(e, 1), ma(e, 1, 0));
   }
   function Gs(e) {
     for (; e === kr; ) ((kr = qi[--Di]), (qi[Di] = null), (Sr = qi[--Di]), (qi[Di] = null));
@@ -3518,7 +3518,7 @@ function um() {
     pn = null,
     ke = !1,
     kn = null;
-  function fa(e, n) {
+  function pa(e, n) {
     var i = wn(5, null, null, 0);
     ((i.elementType = 'DELETED'),
       (i.stateNode = n),
@@ -3526,7 +3526,7 @@ function um() {
       (n = e.deletions),
       n === null ? ((e.deletions = [i]), (e.flags |= 16)) : n.push(i));
   }
-  function ha(e, n) {
+  function fa(e, n) {
     switch (e.tag) {
       case 5:
         var i = e.type;
@@ -3566,11 +3566,11 @@ function um() {
       var n = pn;
       if (n) {
         var i = n;
-        if (!ha(e, n)) {
+        if (!fa(e, n)) {
           if (Ks(e)) throw Error(a(418));
           n = Jn(i.nextSibling);
           var t = mn;
-          n && ha(e, n) ? fa(t, i) : ((e.flags = (e.flags & -4097) | 2), (ke = !1), (mn = e));
+          n && fa(e, n) ? pa(t, i) : ((e.flags = (e.flags & -4097) | 2), (ke = !1), (mn = e));
         }
       } else {
         if (Ks(e)) throw Error(a(418));
@@ -3578,13 +3578,13 @@ function um() {
       }
     }
   }
-  function ga(e) {
+  function ha(e) {
     for (e = e.return; e !== null && e.tag !== 5 && e.tag !== 3 && e.tag !== 13; ) e = e.return;
     mn = e;
   }
   function Cr(e) {
     if (e !== mn) return !1;
-    if (!ke) return (ga(e), (ke = !0), !1);
+    if (!ke) return (ha(e), (ke = !0), !1);
     var n;
     if (
       ((n = e.tag !== 3) &&
@@ -3592,10 +3592,10 @@ function um() {
         ((n = e.type), (n = n !== 'head' && n !== 'body' && !Vs(e.type, e.memoizedProps))),
       n && (n = pn))
     ) {
-      if (Ks(e)) throw (va(), Error(a(418)));
-      for (; n; ) (fa(e, n), (n = Jn(n.nextSibling)));
+      if (Ks(e)) throw (ga(), Error(a(418)));
+      for (; n; ) (pa(e, n), (n = Jn(n.nextSibling)));
     }
-    if ((ga(e), e.tag === 13)) {
+    if ((ha(e), e.tag === 13)) {
       if (((e = e.memoizedState), (e = e !== null ? e.dehydrated : null), !e)) throw Error(a(317));
       e: {
         for (e = e.nextSibling, n = 0; e; ) {
@@ -3616,7 +3616,7 @@ function um() {
     } else pn = mn ? Jn(e.stateNode.nextSibling) : null;
     return !0;
   }
-  function va() {
+  function ga() {
     for (var e = pn; e; ) e = Jn(e.nextSibling);
   }
   function Hi() {
@@ -3658,11 +3658,11 @@ function um() {
       )
     );
   }
-  function ya(e) {
+  function va(e) {
     var n = e._init;
     return n(e._payload);
   }
-  function _a(e) {
+  function ya(e) {
     function n(v, g) {
       if (e) {
         var _ = v.deletions;
@@ -3699,13 +3699,13 @@ function um() {
         ? ((g = $o(_, v.mode, M)), (g.return = v), g)
         : ((g = s(g, _)), (g.return = v), g);
     }
-    function m(v, g, _, M) {
-      var G = _.type;
-      return G === ve
+    function p(v, g, _, M) {
+      var D = _.type;
+      return D === ve
         ? E(v, g, _.props.children, M, _.key)
         : g !== null &&
-            (g.elementType === G ||
-              (typeof G == 'object' && G !== null && G.$$typeof === Re && ya(G) === g.type))
+            (g.elementType === D ||
+              (typeof D == 'object' && D !== null && D.$$typeof === Re && va(D) === g.type))
           ? ((M = s(g, _.props)), (M.ref = bt(v, g, _)), (M.return = v), M)
           : ((M = Zr(_.type, _.key, _.props, null, v.mode, M)),
             (M.ref = bt(v, g, _)),
@@ -3720,9 +3720,9 @@ function um() {
         ? ((g = Uo(_, v.mode, M)), (g.return = v), g)
         : ((g = s(g, _.children || [])), (g.return = v), g);
     }
-    function E(v, g, _, M, G) {
+    function E(v, g, _, M, D) {
       return g === null || g.tag !== 7
-        ? ((g = Pi(_, v.mode, M, G)), (g.return = v), g)
+        ? ((g = Pi(_, v.mode, M, D)), (g.return = v), g)
         : ((g = s(g, _)), (g.return = v), g);
     }
     function R(v, g, _) {
@@ -3749,44 +3749,44 @@ function um() {
       return null;
     }
     function T(v, g, _, M) {
-      var G = g !== null ? g.key : null;
+      var D = g !== null ? g.key : null;
       if ((typeof _ == 'string' && _ !== '') || typeof _ == 'number')
-        return G !== null ? null : d(v, g, '' + _, M);
+        return D !== null ? null : d(v, g, '' + _, M);
       if (typeof _ == 'object' && _ !== null) {
         switch (_.$$typeof) {
           case ue:
-            return _.key === G ? m(v, g, _, M) : null;
+            return _.key === D ? p(v, g, _, M) : null;
           case fe:
-            return _.key === G ? x(v, g, _, M) : null;
+            return _.key === D ? x(v, g, _, M) : null;
           case Re:
-            return ((G = _._init), T(v, g, G(_._payload), M));
+            return ((D = _._init), T(v, g, D(_._payload), M));
         }
-        if (qn(_) || V(_)) return G !== null ? null : E(v, g, _, M, null);
+        if (qn(_) || V(_)) return D !== null ? null : E(v, g, _, M, null);
         Pr(v, _);
       }
       return null;
     }
-    function B(v, g, _, M, G) {
+    function B(v, g, _, M, D) {
       if ((typeof M == 'string' && M !== '') || typeof M == 'number')
-        return ((v = v.get(_) || null), d(g, v, '' + M, G));
+        return ((v = v.get(_) || null), d(g, v, '' + M, D));
       if (typeof M == 'object' && M !== null) {
         switch (M.$$typeof) {
           case ue:
-            return ((v = v.get(M.key === null ? _ : M.key) || null), m(g, v, M, G));
+            return ((v = v.get(M.key === null ? _ : M.key) || null), p(g, v, M, D));
           case fe:
-            return ((v = v.get(M.key === null ? _ : M.key) || null), x(g, v, M, G));
+            return ((v = v.get(M.key === null ? _ : M.key) || null), x(g, v, M, D));
           case Re:
             var J = M._init;
-            return B(v, g, _, J(M._payload), G);
+            return B(v, g, _, J(M._payload), D);
         }
-        if (qn(M) || V(M)) return ((v = v.get(_) || null), E(g, v, M, G, null));
+        if (qn(M) || V(M)) return ((v = v.get(_) || null), E(g, v, M, D, null));
         Pr(g, M);
       }
       return null;
     }
     function U(v, g, _, M) {
       for (
-        var G = null, J = null, ee = g, te = (g = 0), qe = null;
+        var D = null, J = null, ee = g, te = (g = 0), qe = null;
         ee !== null && te < _.length;
         te++
       ) {
@@ -3798,24 +3798,24 @@ function um() {
         }
         (e && ee && de.alternate === null && n(v, ee),
           (g = o(de, g, te)),
-          J === null ? (G = de) : (J.sibling = de),
+          J === null ? (D = de) : (J.sibling = de),
           (J = de),
           (ee = qe));
       }
-      if (te === _.length) return (i(v, ee), ke && _i(v, te), G);
+      if (te === _.length) return (i(v, ee), ke && _i(v, te), D);
       if (ee === null) {
         for (; te < _.length; te++)
           ((ee = R(v, _[te], M)),
             ee !== null &&
-              ((g = o(ee, g, te)), J === null ? (G = ee) : (J.sibling = ee), (J = ee)));
-        return (ke && _i(v, te), G);
+              ((g = o(ee, g, te)), J === null ? (D = ee) : (J.sibling = ee), (J = ee)));
+        return (ke && _i(v, te), D);
       }
       for (ee = t(v, ee); te < _.length; te++)
         ((qe = B(ee, v, te, _[te], M)),
           qe !== null &&
             (e && qe.alternate !== null && ee.delete(qe.key === null ? te : qe.key),
             (g = o(qe, g, te)),
-            J === null ? (G = qe) : (J.sibling = qe),
+            J === null ? (D = qe) : (J.sibling = qe),
             (J = qe)));
       return (
         e &&
@@ -3823,15 +3823,15 @@ function um() {
             return n(v, di);
           }),
         ke && _i(v, te),
-        G
+        D
       );
     }
     function q(v, g, _, M) {
-      var G = V(_);
-      if (typeof G != 'function') throw Error(a(150));
-      if (((_ = G.call(_)), _ == null)) throw Error(a(151));
+      var D = V(_);
+      if (typeof D != 'function') throw Error(a(150));
+      if (((_ = D.call(_)), _ == null)) throw Error(a(151));
       for (
-        var J = (G = null), ee = g, te = (g = 0), qe = null, de = _.next();
+        var J = (D = null), ee = g, te = (g = 0), qe = null, de = _.next();
         ee !== null && !de.done;
         te++, de = _.next()
       ) {
@@ -3843,24 +3843,24 @@ function um() {
         }
         (e && ee && di.alternate === null && n(v, ee),
           (g = o(di, g, te)),
-          J === null ? (G = di) : (J.sibling = di),
+          J === null ? (D = di) : (J.sibling = di),
           (J = di),
           (ee = qe));
       }
-      if (de.done) return (i(v, ee), ke && _i(v, te), G);
+      if (de.done) return (i(v, ee), ke && _i(v, te), D);
       if (ee === null) {
         for (; !de.done; te++, de = _.next())
           ((de = R(v, de.value, M)),
             de !== null &&
-              ((g = o(de, g, te)), J === null ? (G = de) : (J.sibling = de), (J = de)));
-        return (ke && _i(v, te), G);
+              ((g = o(de, g, te)), J === null ? (D = de) : (J.sibling = de), (J = de)));
+        return (ke && _i(v, te), D);
       }
       for (ee = t(v, ee); !de.done; te++, de = _.next())
         ((de = B(ee, v, te, de.value, M)),
           de !== null &&
             (e && de.alternate !== null && ee.delete(de.key === null ? te : de.key),
             (g = o(de, g, te)),
-            J === null ? (G = de) : (J.sibling = de),
+            J === null ? (D = de) : (J.sibling = de),
             (J = de)));
       return (
         e &&
@@ -3868,7 +3868,7 @@ function um() {
             return n(v, tm);
           }),
         ke && _i(v, te),
-        G
+        D
       );
     }
     function Me(v, g, _, M) {
@@ -3883,16 +3883,16 @@ function um() {
         switch (_.$$typeof) {
           case ue:
             e: {
-              for (var G = _.key, J = g; J !== null; ) {
-                if (J.key === G) {
-                  if (((G = _.type), G === ve)) {
+              for (var D = _.key, J = g; J !== null; ) {
+                if (J.key === D) {
+                  if (((D = _.type), D === ve)) {
                     if (J.tag === 7) {
                       (i(v, J.sibling), (g = s(J, _.props.children)), (g.return = v), (v = g));
                       break e;
                     }
                   } else if (
-                    J.elementType === G ||
-                    (typeof G == 'object' && G !== null && G.$$typeof === Re && ya(G) === J.type)
+                    J.elementType === D ||
+                    (typeof D == 'object' && D !== null && D.$$typeof === Re && va(D) === J.type)
                   ) {
                     (i(v, J.sibling),
                       (g = s(J, _.props)),
@@ -3952,8 +3952,8 @@ function um() {
     }
     return Me;
   }
-  var Gi = _a(!0),
-    xa = _a(!1),
+  var Gi = ya(!0),
+    _a = ya(!1),
     Tr = ei(null),
     Er = null,
     Ki = null,
@@ -3999,7 +3999,7 @@ function um() {
   function no(e) {
     xi === null ? (xi = [e]) : xi.push(e);
   }
-  function wa(e, n, i, t) {
+  function xa(e, n, i, t) {
     var s = n.interleaved;
     return (
       s === null ? ((i.next = i), no(n)) : ((i.next = s.next), (s.next = i)),
@@ -4028,7 +4028,7 @@ function um() {
       effects: null,
     };
   }
-  function Na(e, n) {
+  function wa(e, n) {
     ((e = e.updateQueue),
       n.updateQueue === e &&
         (n.updateQueue = {
@@ -4066,7 +4066,7 @@ function um() {
       ((t &= e.pendingLanes), (i |= t), (n.lanes = i), gs(e, i));
     }
   }
-  function ja(e, n) {
+  function Na(e, n) {
     var i = e.updateQueue,
       t = e.alternate;
     if (t !== null && ((t = t.updateQueue), i === t)) {
@@ -4108,18 +4108,18 @@ function um() {
       d = s.shared.pending;
     if (d !== null) {
       s.shared.pending = null;
-      var m = d,
-        x = m.next;
-      ((m.next = null), u === null ? (o = x) : (u.next = x), (u = m));
+      var p = d,
+        x = p.next;
+      ((p.next = null), u === null ? (o = x) : (u.next = x), (u = p));
       var E = e.alternate;
       E !== null &&
         ((E = E.updateQueue),
         (d = E.lastBaseUpdate),
-        d !== u && (d === null ? (E.firstBaseUpdate = x) : (d.next = x), (E.lastBaseUpdate = m)));
+        d !== u && (d === null ? (E.firstBaseUpdate = x) : (d.next = x), (E.lastBaseUpdate = p)));
     }
     if (o !== null) {
       var R = s.baseState;
-      ((u = 0), (E = x = m = null), (d = o));
+      ((u = 0), (E = x = p = null), (d = o));
       do {
         var T = d.lane,
           B = d.eventTime;
@@ -4170,7 +4170,7 @@ function um() {
             callback: d.callback,
             next: null,
           }),
-            E === null ? ((x = E = B), (m = R)) : (E = E.next = B),
+            E === null ? ((x = E = B), (p = R)) : (E = E.next = B),
             (u |= T));
         if (((d = d.next), d === null)) {
           if (((d = s.shared.pending), d === null)) break;
@@ -4182,8 +4182,8 @@ function um() {
         }
       } while (!0);
       if (
-        (E === null && (m = R),
-        (s.baseState = m),
+        (E === null && (p = R),
+        (s.baseState = p),
         (s.firstBaseUpdate = x),
         (s.lastBaseUpdate = E),
         (n = s.shared.interleaved),
@@ -4196,7 +4196,7 @@ function um() {
       ((ji |= u), (e.lanes = u), (e.memoizedState = R));
     }
   }
-  function ka(e, n, i) {
+  function ja(e, n, i) {
     if (((e = n.effects), (n.effects = null), e !== null))
       for (n = 0; n < e.length; n++) {
         var t = e[n],
@@ -4232,7 +4232,7 @@ function um() {
   function Yi() {
     (je(Mn), je(Ft), je(zt));
   }
-  function Sa(e) {
+  function ka(e) {
     wi(zt.current);
     var n = wi(Mn.current),
       i = Ee(n, e.type);
@@ -4364,13 +4364,13 @@ function um() {
     if (s !== null) {
       ((o = s.next), (t = t.baseState));
       var d = (u = null),
-        m = null,
+        p = null,
         x = o;
       do {
         var E = x.lane;
         if ((Ni & E) === E)
-          (m !== null &&
-            (m = m.next =
+          (p !== null &&
+            (p = p.next =
               {
                 lane: 0,
                 action: x.action,
@@ -4387,15 +4387,15 @@ function um() {
             eagerState: x.eagerState,
             next: null,
           };
-          (m === null ? ((d = m = R), (u = t)) : (m = m.next = R), (Ce.lanes |= E), (ji |= E));
+          (p === null ? ((d = p = R), (u = t)) : (p = p.next = R), (Ce.lanes |= E), (ji |= E));
         }
         x = x.next;
       } while (x !== null && x !== o);
-      (m === null ? (u = t) : (m.next = d),
+      (p === null ? (u = t) : (p.next = d),
         jn(t, n.memoizedState) || (on = !0),
         (n.memoizedState = t),
         (n.baseState = u),
-        (n.baseQueue = m),
+        (n.baseQueue = p),
         (i.lastRenderedState = t));
     }
     if (((e = i.interleaved), e !== null)) {
@@ -4425,8 +4425,8 @@ function um() {
     }
     return [o, t];
   }
-  function Ca() {}
-  function Pa(e, n) {
+  function Sa() {}
+  function Ca(e, n) {
     var i = Ce,
       t = _n(),
       s = n(),
@@ -4434,16 +4434,16 @@ function um() {
     if (
       (o && ((t.memoizedState = s), (on = !0)),
       (t = t.queue),
-      fo(La.bind(null, i, t, e), [e]),
+      fo(Ea.bind(null, i, t, e), [e]),
       t.getSnapshot !== n || o || ($e !== null && $e.memoizedState.tag & 1))
     ) {
-      if (((i.flags |= 2048), At(9, Ea.bind(null, i, t, s, n), void 0, null), Ue === null))
+      if (((i.flags |= 2048), At(9, Ta.bind(null, i, t, s, n), void 0, null), Ue === null))
         throw Error(a(349));
-      (Ni & 30) !== 0 || Ta(i, n, s);
+      (Ni & 30) !== 0 || Pa(i, n, s);
     }
     return s;
   }
-  function Ta(e, n, i) {
+  function Pa(e, n, i) {
     ((e.flags |= 16384),
       (e = { getSnapshot: n, value: i }),
       (n = Ce.updateQueue),
@@ -4451,15 +4451,15 @@ function um() {
         ? ((n = { lastEffect: null, stores: null }), (Ce.updateQueue = n), (n.stores = [e]))
         : ((i = n.stores), i === null ? (n.stores = [e]) : i.push(e)));
   }
-  function Ea(e, n, i, t) {
-    ((n.value = i), (n.getSnapshot = t), Ra(n) && ba(e));
+  function Ta(e, n, i, t) {
+    ((n.value = i), (n.getSnapshot = t), La(n) && Ra(e));
   }
-  function La(e, n, i) {
+  function Ea(e, n, i) {
     return i(function () {
-      Ra(n) && ba(e);
+      La(n) && Ra(e);
     });
   }
-  function Ra(e) {
+  function La(e) {
     var n = e.getSnapshot;
     e = e.value;
     try {
@@ -4469,11 +4469,11 @@ function um() {
       return !0;
     }
   }
-  function ba(e) {
+  function Ra(e) {
     var n = Vn(e, 1);
     n !== null && Tn(n, e, 1, -1);
   }
-  function Ma(e) {
+  function ba(e) {
     var n = Fn();
     return (
       typeof e == 'function' && (e = e()),
@@ -4506,7 +4506,7 @@ function um() {
       e
     );
   }
-  function Fa() {
+  function Ma() {
     return _n().memoizedState;
   }
   function zr(e, n, i, t) {
@@ -4526,19 +4526,19 @@ function um() {
     }
     ((Ce.flags |= e), (s.memoizedState = At(1 | n, i, o, t)));
   }
-  function za(e, n) {
+  function Fa(e, n) {
     return zr(8390656, 8, e, n);
   }
   function fo(e, n) {
     return Or(2048, 8, e, n);
   }
-  function Oa(e, n) {
+  function za(e, n) {
     return Or(4, 2, e, n);
   }
-  function Ia(e, n) {
+  function Oa(e, n) {
     return Or(4, 4, e, n);
   }
-  function Wa(e, n) {
+  function Ia(e, n) {
     if (typeof n == 'function')
       return (
         (e = e()),
@@ -4556,17 +4556,17 @@ function um() {
         }
       );
   }
-  function Aa(e, n, i) {
-    return ((i = i != null ? i.concat([e]) : null), Or(4, 4, Wa.bind(null, n, e), i));
+  function Wa(e, n, i) {
+    return ((i = i != null ? i.concat([e]) : null), Or(4, 4, Ia.bind(null, n, e), i));
   }
   function ho() {}
-  function Va(e, n) {
+  function Aa(e, n) {
     var i = _n();
     n = n === void 0 ? null : n;
     var t = i.memoizedState;
     return t !== null && n !== null && ao(n, t[1]) ? t[0] : ((i.memoizedState = [e, n]), e);
   }
-  function Ba(e, n) {
+  function Va(e, n) {
     var i = _n();
     n = n === void 0 ? null : n;
     var t = i.memoizedState;
@@ -4574,10 +4574,10 @@ function um() {
       ? t[0]
       : ((e = e()), (i.memoizedState = [e, n]), e);
   }
-  function $a(e, n, i) {
+  function Ba(e, n, i) {
     return (Ni & 21) === 0
       ? (e.baseState && ((e.baseState = !1), (on = !0)), (e.memoizedState = i))
-      : (jn(i, n) || ((i = yl()), (Ce.lanes |= i), (ji |= i), (e.baseState = !0)), n);
+      : (jn(i, n) || ((i = vl()), (Ce.lanes |= i), (ji |= i), (e.baseState = !0)), n);
   }
   function Cd(e, n) {
     var i = he;
@@ -4590,22 +4590,22 @@ function um() {
       ((he = i), (lo.transition = t));
     }
   }
-  function Ua() {
+  function $a() {
     return _n().memoizedState;
   }
   function Pd(e, n, i) {
     var t = ai(e);
-    if (((i = { lane: t, action: i, hasEagerState: !1, eagerState: null, next: null }), qa(e)))
-      Da(n, i);
-    else if (((i = wa(e, n, i, t)), i !== null)) {
+    if (((i = { lane: t, action: i, hasEagerState: !1, eagerState: null, next: null }), Ua(e)))
+      qa(n, i);
+    else if (((i = xa(e, n, i, t)), i !== null)) {
       var s = tn();
-      (Tn(i, e, t, s), Ha(i, n, t));
+      (Tn(i, e, t, s), Da(i, n, t));
     }
   }
   function Td(e, n, i) {
     var t = ai(e),
       s = { lane: t, action: i, hasEagerState: !1, eagerState: null, next: null };
-    if (qa(e)) Da(n, s);
+    if (Ua(e)) qa(n, s);
     else {
       var o = e.alternate;
       if (
@@ -4617,27 +4617,27 @@ function um() {
           var u = n.lastRenderedState,
             d = o(u, i);
           if (((s.hasEagerState = !0), (s.eagerState = d), jn(d, u))) {
-            var m = n.interleaved;
-            (m === null ? ((s.next = s), no(n)) : ((s.next = m.next), (m.next = s)),
+            var p = n.interleaved;
+            (p === null ? ((s.next = s), no(n)) : ((s.next = p.next), (p.next = s)),
               (n.interleaved = s));
             return;
           }
         } catch {
         } finally {
         }
-      ((i = wa(e, n, s, t)), i !== null && ((s = tn()), Tn(i, e, t, s), Ha(i, n, t)));
+      ((i = xa(e, n, s, t)), i !== null && ((s = tn()), Tn(i, e, t, s), Da(i, n, t)));
     }
   }
-  function qa(e) {
+  function Ua(e) {
     var n = e.alternate;
     return e === Ce || (n !== null && n === Ce);
   }
-  function Da(e, n) {
+  function qa(e, n) {
     Ot = Fr = !0;
     var i = e.pending;
     (i === null ? (n.next = n) : ((n.next = i.next), (i.next = n)), (e.pending = n));
   }
-  function Ha(e, n, i) {
+  function Da(e, n, i) {
     if ((i & 4194240) !== 0) {
       var t = n.lanes;
       ((t &= e.pendingLanes), (i |= t), (n.lanes = i), gs(e, i));
@@ -4669,9 +4669,9 @@ function um() {
         return ((Fn().memoizedState = [e, n === void 0 ? null : n]), e);
       },
       useContext: yn,
-      useEffect: za,
+      useEffect: Fa,
       useImperativeHandle: function (e, n, i) {
-        return ((i = i != null ? i.concat([e]) : null), zr(4194308, 4, Wa.bind(null, n, e), i));
+        return ((i = i != null ? i.concat([e]) : null), zr(4194308, 4, Ia.bind(null, n, e), i));
       },
       useLayoutEffect: function (e, n) {
         return zr(4194308, 4, e, n);
@@ -4705,13 +4705,13 @@ function um() {
         var n = Fn();
         return ((e = { current: e }), (n.memoizedState = e));
       },
-      useState: Ma,
+      useState: ba,
       useDebugValue: ho,
       useDeferredValue: function (e) {
         return (Fn().memoizedState = e);
       },
       useTransition: function () {
-        var e = Ma(!1),
+        var e = ba(!1),
           n = e[0];
         return ((e = Cd.bind(null, e[1])), (Fn().memoizedState = e), [n, e]);
       },
@@ -4724,15 +4724,15 @@ function um() {
           i = i();
         } else {
           if (((i = n()), Ue === null)) throw Error(a(349));
-          (Ni & 30) !== 0 || Ta(t, n, i);
+          (Ni & 30) !== 0 || Pa(t, n, i);
         }
         s.memoizedState = i;
         var o = { value: i, getSnapshot: n };
         return (
           (s.queue = o),
-          za(La.bind(null, t, o, e), [e]),
+          Fa(Ea.bind(null, t, o, e), [e]),
           (t.flags |= 2048),
-          At(9, Ea.bind(null, t, o, i, n), void 0, null),
+          At(9, Ta.bind(null, t, o, i, n), void 0, null),
           i
         );
       },
@@ -4754,60 +4754,60 @@ function um() {
     },
     Ld = {
       readContext: yn,
-      useCallback: Va,
+      useCallback: Aa,
       useContext: yn,
       useEffect: fo,
-      useImperativeHandle: Aa,
-      useInsertionEffect: Oa,
-      useLayoutEffect: Ia,
-      useMemo: Ba,
+      useImperativeHandle: Wa,
+      useInsertionEffect: za,
+      useLayoutEffect: Oa,
+      useMemo: Va,
       useReducer: mo,
-      useRef: Fa,
+      useRef: Ma,
       useState: function () {
         return mo(Wt);
       },
       useDebugValue: ho,
       useDeferredValue: function (e) {
         var n = _n();
-        return $a(n, ze.memoizedState, e);
+        return Ba(n, ze.memoizedState, e);
       },
       useTransition: function () {
         var e = mo(Wt)[0],
           n = _n().memoizedState;
         return [e, n];
       },
-      useMutableSource: Ca,
-      useSyncExternalStore: Pa,
-      useId: Ua,
+      useMutableSource: Sa,
+      useSyncExternalStore: Ca,
+      useId: $a,
       unstable_isNewReconciler: !1,
     },
     Rd = {
       readContext: yn,
-      useCallback: Va,
+      useCallback: Aa,
       useContext: yn,
       useEffect: fo,
-      useImperativeHandle: Aa,
-      useInsertionEffect: Oa,
-      useLayoutEffect: Ia,
-      useMemo: Ba,
+      useImperativeHandle: Wa,
+      useInsertionEffect: za,
+      useLayoutEffect: Oa,
+      useMemo: Va,
       useReducer: po,
-      useRef: Fa,
+      useRef: Ma,
       useState: function () {
         return po(Wt);
       },
       useDebugValue: ho,
       useDeferredValue: function (e) {
         var n = _n();
-        return ze === null ? (n.memoizedState = e) : $a(n, ze.memoizedState, e);
+        return ze === null ? (n.memoizedState = e) : Ba(n, ze.memoizedState, e);
       },
       useTransition: function () {
         var e = po(Wt)[0],
           n = _n().memoizedState;
         return [e, n];
       },
-      useMutableSource: Ca,
-      useSyncExternalStore: Pa,
-      useId: Ua,
+      useMutableSource: Sa,
+      useSyncExternalStore: Ca,
+      useId: $a,
       unstable_isNewReconciler: !1,
     };
   function Sn(e, n) {
@@ -4861,7 +4861,7 @@ function um() {
         n !== null && (Tn(n, e, t, i), Lr(n, e, t)));
     },
   };
-  function Ga(e, n, i, t, s, o, u) {
+  function Ha(e, n, i, t, s, o, u) {
     return (
       (e = e.stateNode),
       typeof e.shouldComponentUpdate == 'function'
@@ -4871,7 +4871,7 @@ function um() {
           : !0
     );
   }
-  function Ka(e, n, i) {
+  function Ga(e, n, i) {
     var t = !1,
       s = ni,
       o = n.contextType;
@@ -4893,7 +4893,7 @@ function um() {
       n
     );
   }
-  function Qa(e, n, i, t) {
+  function Ka(e, n, i, t) {
     ((e = n.state),
       typeof n.componentWillReceiveProps == 'function' && n.componentWillReceiveProps(i, t),
       typeof n.UNSAFE_componentWillReceiveProps == 'function' &&
@@ -4953,7 +4953,7 @@ Error generating stack: ` +
     }
   }
   var bd = typeof WeakMap == 'function' ? WeakMap : Map;
-  function Ya(e, n, i) {
+  function Qa(e, n, i) {
     ((i = Bn(-1, i)), (i.tag = 3), (i.payload = { element: null }));
     var t = n.value;
     return (
@@ -4963,7 +4963,7 @@ Error generating stack: ` +
       i
     );
   }
-  function Za(e, n, i) {
+  function Ya(e, n, i) {
     ((i = Bn(-1, i)), (i.tag = 3));
     var t = e.type.getDerivedStateFromError;
     if (typeof t == 'function') {
@@ -4988,7 +4988,7 @@ Error generating stack: ` +
       i
     );
   }
-  function Xa(e, n, i) {
+  function Za(e, n, i) {
     var t = e.pingCache;
     if (t === null) {
       t = e.pingCache = new bd();
@@ -4997,7 +4997,7 @@ Error generating stack: ` +
     } else ((s = t.get(n)), s === void 0 && ((s = new Set()), t.set(n, s)));
     s.has(i) || (s.add(i), (e = Hd.bind(null, e, n, i)), n.then(e, e));
   }
-  function Ja(e) {
+  function Xa(e) {
     do {
       var n;
       if (
@@ -5010,7 +5010,7 @@ Error generating stack: ` +
     } while (e !== null);
     return null;
   }
-  function eu(e, n, i, t, s) {
+  function Ja(e, n, i, t, s) {
     return (e.mode & 1) === 0
       ? (e === n
           ? (e.flags |= 65536)
@@ -5026,9 +5026,9 @@ Error generating stack: ` +
   var Md = re.ReactCurrentOwner,
     on = !1;
   function nn(e, n, i, t) {
-    n.child = e === null ? xa(n, null, i, t) : Gi(n, e.child, i, t);
+    n.child = e === null ? _a(n, null, i, t) : Gi(n, e.child, i, t);
   }
-  function nu(e, n, i, t, s) {
+  function eu(e, n, i, t, s) {
     i = i.render;
     var o = n.ref;
     return (
@@ -5040,7 +5040,7 @@ Error generating stack: ` +
         : (ke && i && Hs(n), (n.flags |= 1), nn(e, n, t, s), n.child)
     );
   }
-  function iu(e, n, i, t, s) {
+  function nu(e, n, i, t, s) {
     if (e === null) {
       var o = i.type;
       return typeof o == 'function' &&
@@ -5048,7 +5048,7 @@ Error generating stack: ` +
         o.defaultProps === void 0 &&
         i.compare === null &&
         i.defaultProps === void 0
-        ? ((n.tag = 15), (n.type = o), tu(e, n, o, t, s))
+        ? ((n.tag = 15), (n.type = o), iu(e, n, o, t, s))
         : ((e = Zr(i.type, null, t, n, n.mode, s)), (e.ref = n.ref), (e.return = n), (n.child = e));
     }
     if (((o = e.child), (e.lanes & s) === 0)) {
@@ -5058,7 +5058,7 @@ Error generating stack: ` +
     }
     return ((n.flags |= 1), (e = ci(o, t)), (e.ref = n.ref), (e.return = n), (n.child = e));
   }
-  function tu(e, n, i, t, s) {
+  function iu(e, n, i, t, s) {
     if (e !== null) {
       var o = e.memoizedProps;
       if (St(o, t) && e.ref === n.ref)
@@ -5068,7 +5068,7 @@ Error generating stack: ` +
     }
     return xo(e, n, i, t, s);
   }
-  function ru(e, n, i) {
+  function tu(e, n, i) {
     var t = n.pendingProps,
       s = t.children,
       o = e !== null ? e.memoizedState : null;
@@ -5099,7 +5099,7 @@ Error generating stack: ` +
         (fn |= t));
     return (nn(e, n, s, i), n.child);
   }
-  function su(e, n) {
+  function ru(e, n) {
     var i = n.ref;
     ((e === null && i !== null) || (e !== null && e.ref !== i)) &&
       ((n.flags |= 512), (n.flags |= 2097152));
@@ -5116,17 +5116,17 @@ Error generating stack: ` +
         : (ke && t && Hs(n), (n.flags |= 1), nn(e, n, i, s), n.child)
     );
   }
-  function ou(e, n, i, t, s) {
+  function su(e, n, i, t, s) {
     if (sn(i)) {
       var o = !0;
       Nr(n);
     } else o = !1;
-    if ((Qi(n, s), n.stateNode === null)) (Vr(e, n), Ka(n, i, t), vo(n, i, t, s), (t = !0));
+    if ((Qi(n, s), n.stateNode === null)) (Vr(e, n), Ga(n, i, t), vo(n, i, t, s), (t = !0));
     else if (e === null) {
       var u = n.stateNode,
         d = n.memoizedProps;
       u.props = d;
-      var m = u.context,
+      var p = u.context,
         x = i.contextType;
       typeof x == 'object' && x !== null
         ? (x = yn(x))
@@ -5136,15 +5136,15 @@ Error generating stack: ` +
       (R ||
         (typeof u.UNSAFE_componentWillReceiveProps != 'function' &&
           typeof u.componentWillReceiveProps != 'function') ||
-        ((d !== t || m !== x) && Qa(n, u, t, x)),
+        ((d !== t || p !== x) && Ka(n, u, t, x)),
         (ti = !1));
       var T = n.memoizedState;
       ((u.state = T),
         Rr(n, t, u, s),
-        (m = n.memoizedState),
-        d !== t || T !== m || rn.current || ti
-          ? (typeof E == 'function' && (go(n, i, E, t), (m = n.memoizedState)),
-            (d = ti || Ga(n, i, d, t, T, m, x))
+        (p = n.memoizedState),
+        d !== t || T !== p || rn.current || ti
+          ? (typeof E == 'function' && (go(n, i, E, t), (p = n.memoizedState)),
+            (d = ti || Ha(n, i, d, t, T, p, x))
               ? (R ||
                   (typeof u.UNSAFE_componentWillMount != 'function' &&
                     typeof u.componentWillMount != 'function') ||
@@ -5154,29 +5154,29 @@ Error generating stack: ` +
                 typeof u.componentDidMount == 'function' && (n.flags |= 4194308))
               : (typeof u.componentDidMount == 'function' && (n.flags |= 4194308),
                 (n.memoizedProps = t),
-                (n.memoizedState = m)),
+                (n.memoizedState = p)),
             (u.props = t),
-            (u.state = m),
+            (u.state = p),
             (u.context = x),
             (t = d))
           : (typeof u.componentDidMount == 'function' && (n.flags |= 4194308), (t = !1)));
     } else {
       ((u = n.stateNode),
-        Na(e, n),
+        wa(e, n),
         (d = n.memoizedProps),
         (x = n.type === n.elementType ? d : Sn(n.type, d)),
         (u.props = x),
         (R = n.pendingProps),
         (T = u.context),
-        (m = i.contextType),
-        typeof m == 'object' && m !== null
-          ? (m = yn(m))
-          : ((m = sn(i) ? vi : Ye.current), (m = Ui(n, m))));
+        (p = i.contextType),
+        typeof p == 'object' && p !== null
+          ? (p = yn(p))
+          : ((p = sn(i) ? vi : Ye.current), (p = Ui(n, p))));
       var B = i.getDerivedStateFromProps;
       ((E = typeof B == 'function' || typeof u.getSnapshotBeforeUpdate == 'function') ||
         (typeof u.UNSAFE_componentWillReceiveProps != 'function' &&
           typeof u.componentWillReceiveProps != 'function') ||
-        ((d !== R || T !== m) && Qa(n, u, t, m)),
+        ((d !== R || T !== p) && Ka(n, u, t, p)),
         (ti = !1),
         (T = n.memoizedState),
         (u.state = T),
@@ -5184,13 +5184,13 @@ Error generating stack: ` +
       var U = n.memoizedState;
       d !== R || T !== U || rn.current || ti
         ? (typeof B == 'function' && (go(n, i, B, t), (U = n.memoizedState)),
-          (x = ti || Ga(n, i, x, t, T, U, m) || !1)
+          (x = ti || Ha(n, i, x, t, T, U, p) || !1)
             ? (E ||
                 (typeof u.UNSAFE_componentWillUpdate != 'function' &&
                   typeof u.componentWillUpdate != 'function') ||
-                (typeof u.componentWillUpdate == 'function' && u.componentWillUpdate(t, U, m),
+                (typeof u.componentWillUpdate == 'function' && u.componentWillUpdate(t, U, p),
                 typeof u.UNSAFE_componentWillUpdate == 'function' &&
-                  u.UNSAFE_componentWillUpdate(t, U, m)),
+                  u.UNSAFE_componentWillUpdate(t, U, p)),
               typeof u.componentDidUpdate == 'function' && (n.flags |= 4),
               typeof u.getSnapshotBeforeUpdate == 'function' && (n.flags |= 1024))
             : (typeof u.componentDidUpdate != 'function' ||
@@ -5203,7 +5203,7 @@ Error generating stack: ` +
               (n.memoizedState = U)),
           (u.props = t),
           (u.state = U),
-          (u.context = m),
+          (u.context = p),
           (t = x))
         : (typeof u.componentDidUpdate != 'function' ||
             (d === e.memoizedProps && T === e.memoizedState) ||
@@ -5216,9 +5216,9 @@ Error generating stack: ` +
     return wo(e, n, i, t, o, s);
   }
   function wo(e, n, i, t, s, o) {
-    su(e, n);
+    ru(e, n);
     var u = (n.flags & 128) !== 0;
-    if (!t && !u) return (s && da(n, i, !1), $n(e, n, o));
+    if (!t && !u) return (s && ca(n, i, !1), $n(e, n, o));
     ((t = n.stateNode), (Md.current = n));
     var d = u && typeof i.getDerivedStateFromError != 'function' ? null : t.render();
     return (
@@ -5227,25 +5227,25 @@ Error generating stack: ` +
         ? ((n.child = Gi(n, e.child, null, o)), (n.child = Gi(n, null, d, o)))
         : nn(e, n, d, o),
       (n.memoizedState = t.state),
-      s && da(n, i, !0),
+      s && ca(n, i, !0),
       n.child
     );
   }
-  function lu(e) {
+  function ou(e) {
     var n = e.stateNode;
     (n.pendingContext
-      ? ua(e, n.pendingContext, n.pendingContext !== n.context)
-      : n.context && ua(e, n.context, !1),
+      ? aa(e, n.pendingContext, n.pendingContext !== n.context)
+      : n.context && aa(e, n.context, !1),
       to(e, n.containerInfo));
   }
-  function au(e, n, i, t, s) {
+  function lu(e, n, i, t, s) {
     return (Hi(), Ys(s), (n.flags |= 256), nn(e, n, i, t), n.child);
   }
   var No = { dehydrated: null, treeContext: null, retryLane: 0 };
   function jo(e) {
     return { baseLanes: e, cachePool: null, transitions: null };
   }
-  function uu(e, n, i) {
+  function au(e, n, i) {
     var t = n.pendingProps,
       s = Se.current,
       o = !1,
@@ -5290,11 +5290,11 @@ Error generating stack: ` +
       return Fd(e, n, u, t, d, s, i);
     if (o) {
       ((o = t.fallback), (u = n.mode), (s = e.child), (d = s.sibling));
-      var m = { mode: 'hidden', children: t.children };
+      var p = { mode: 'hidden', children: t.children };
       return (
         (u & 1) === 0 && n.child !== s
-          ? ((t = n.child), (t.childLanes = 0), (t.pendingProps = m), (n.deletions = null))
-          : ((t = ci(s, m)), (t.subtreeFlags = s.subtreeFlags & 14680064)),
+          ? ((t = n.child), (t.childLanes = 0), (t.pendingProps = p), (n.deletions = null))
+          : ((t = ci(s, p)), (t.subtreeFlags = s.subtreeFlags & 14680064)),
         d !== null ? (o = ci(d, o)) : ((o = Pi(o, u, i, null)), (o.flags |= 2)),
         (o.return = n),
         (t.return = n),
@@ -5429,7 +5429,7 @@ Error generating stack: ` +
         (n.flags |= 4096),
         n);
   }
-  function cu(e, n, i) {
+  function uu(e, n, i) {
     e.lanes |= n;
     var t = e.alternate;
     (t !== null && (t.lanes |= n), eo(e.return, n, i));
@@ -5452,7 +5452,7 @@ Error generating stack: ` +
         (o.tail = i),
         (o.tailMode = s));
   }
-  function du(e, n, i) {
+  function cu(e, n, i) {
     var t = n.pendingProps,
       s = t.revealOrder,
       o = t.tail;
@@ -5461,8 +5461,8 @@ Error generating stack: ` +
     else {
       if (e !== null && (e.flags & 128) !== 0)
         e: for (e = n.child; e !== null; ) {
-          if (e.tag === 13) e.memoizedState !== null && cu(e, i, n);
-          else if (e.tag === 19) cu(e, i, n);
+          if (e.tag === 13) e.memoizedState !== null && uu(e, i, n);
+          else if (e.tag === 19) uu(e, i, n);
           else if (e.child !== null) {
             ((e.child.return = e), (e = e.child));
             continue;
@@ -5525,10 +5525,10 @@ Error generating stack: ` +
   function zd(e, n, i) {
     switch (n.tag) {
       case 3:
-        (lu(n), Hi());
+        (ou(n), Hi());
         break;
       case 5:
-        Sa(n);
+        ka(n);
         break;
       case 1:
         sn(n.type) && Nr(n);
@@ -5546,13 +5546,13 @@ Error generating stack: ` +
           return t.dehydrated !== null
             ? (xe(Se, Se.current & 1), (n.flags |= 128), null)
             : (i & n.child.childLanes) !== 0
-              ? uu(e, n, i)
+              ? au(e, n, i)
               : (xe(Se, Se.current & 1), (e = $n(e, n, i)), e !== null ? e.sibling : null);
         xe(Se, Se.current & 1);
         break;
       case 19:
         if (((t = (i & n.childLanes) !== 0), (e.flags & 128) !== 0)) {
-          if (t) return du(e, n, i);
+          if (t) return cu(e, n, i);
           n.flags |= 128;
         }
         if (
@@ -5565,12 +5565,12 @@ Error generating stack: ` +
         return null;
       case 22:
       case 23:
-        return ((n.lanes = 0), ru(e, n, i));
+        return ((n.lanes = 0), tu(e, n, i));
     }
     return $n(e, n, i);
   }
-  var mu, Co, pu, fu;
-  ((mu = function (e, n) {
+  var du, Co, mu, pu;
+  ((du = function (e, n) {
     for (var i = n.child; i !== null; ) {
       if (i.tag === 5 || i.tag === 6) e.appendChild(i.stateNode);
       else if (i.tag !== 4 && i.child !== null) {
@@ -5586,7 +5586,7 @@ Error generating stack: ` +
     }
   }),
     (Co = function () {}),
-    (pu = function (e, n, i, t) {
+    (mu = function (e, n, i, t) {
       var s = e.memoizedProps;
       if (s !== t) {
         ((e = n.stateNode), wi(Mn.current));
@@ -5618,40 +5618,40 @@ Error generating stack: ` +
                 x !== 'suppressContentEditableWarning' &&
                 x !== 'suppressHydrationWarning' &&
                 x !== 'autoFocus' &&
-                (N.hasOwnProperty(x) ? o || (o = []) : (o = o || []).push(x, null));
+                (w.hasOwnProperty(x) ? o || (o = []) : (o = o || []).push(x, null));
         for (x in t) {
-          var m = t[x];
+          var p = t[x];
           if (
             ((d = s != null ? s[x] : void 0),
-            t.hasOwnProperty(x) && m !== d && (m != null || d != null))
+            t.hasOwnProperty(x) && p !== d && (p != null || d != null))
           )
             if (x === 'style')
               if (d) {
                 for (u in d)
                   !d.hasOwnProperty(u) ||
-                    (m && m.hasOwnProperty(u)) ||
+                    (p && p.hasOwnProperty(u)) ||
                     (i || (i = {}), (i[u] = ''));
-                for (u in m) m.hasOwnProperty(u) && d[u] !== m[u] && (i || (i = {}), (i[u] = m[u]));
-              } else (i || (o || (o = []), o.push(x, i)), (i = m));
+                for (u in p) p.hasOwnProperty(u) && d[u] !== p[u] && (i || (i = {}), (i[u] = p[u]));
+              } else (i || (o || (o = []), o.push(x, i)), (i = p));
             else
               x === 'dangerouslySetInnerHTML'
-                ? ((m = m ? m.__html : void 0),
+                ? ((p = p ? p.__html : void 0),
                   (d = d ? d.__html : void 0),
-                  m != null && d !== m && (o = o || []).push(x, m))
+                  p != null && d !== p && (o = o || []).push(x, p))
                 : x === 'children'
-                  ? (typeof m != 'string' && typeof m != 'number') || (o = o || []).push(x, '' + m)
+                  ? (typeof p != 'string' && typeof p != 'number') || (o = o || []).push(x, '' + p)
                   : x !== 'suppressContentEditableWarning' &&
                     x !== 'suppressHydrationWarning' &&
-                    (N.hasOwnProperty(x)
-                      ? (m != null && x === 'onScroll' && Ne('scroll', e), o || d === m || (o = []))
-                      : (o = o || []).push(x, m));
+                    (w.hasOwnProperty(x)
+                      ? (p != null && x === 'onScroll' && Ne('scroll', e), o || d === p || (o = []))
+                      : (o = o || []).push(x, p));
         }
         i && (o = o || []).push('style', i);
         var x = o;
         (n.updateQueue = x) && (n.flags |= 4);
       }
     }),
-    (fu = function (e, n, i, t) {
+    (pu = function (e, n, i, t) {
       i !== t && (n.flags |= 4);
     }));
   function Vt(e, n) {
@@ -5730,7 +5730,7 @@ Error generating stack: ` +
         ro(n);
         var s = wi(zt.current);
         if (((i = n.type), e !== null && n.stateNode != null))
-          (pu(e, n, i, t, s), e.ref !== n.ref && ((n.flags |= 512), (n.flags |= 2097152)));
+          (mu(e, n, i, t, s), e.ref !== n.ref && ((n.flags |= 512), (n.flags |= 2097152)));
         else {
           if (!t) {
             if (n.stateNode === null) throw Error(a(166));
@@ -5785,7 +5785,7 @@ Error generating stack: ` +
                       t.textContent !== '' + d &&
                       (o.suppressHydrationWarning !== !0 && yr(t.textContent, d, e),
                       (s = ['children', '' + d]))
-                  : N.hasOwnProperty(u) && d != null && u === 'onScroll' && Ne('scroll', t);
+                  : w.hasOwnProperty(u) && d != null && u === 'onScroll' && Ne('scroll', t);
               }
             switch (i) {
               case 'input':
@@ -5817,7 +5817,7 @@ Error generating stack: ` +
                 : (e = u.createElementNS(e, i)),
               (e[bn] = n),
               (e[Lt] = t),
-              mu(e, n, !1, !1),
+              du(e, n, !1, !1),
               (n.stateNode = e));
             e: {
               switch (((u = at(i, t)), i)) {
@@ -5865,21 +5865,21 @@ Error generating stack: ` +
               (hn(i, s), (d = s));
               for (o in d)
                 if (d.hasOwnProperty(o)) {
-                  var m = d[o];
+                  var p = d[o];
                   o === 'style'
-                    ? Zt(e, m)
+                    ? Zt(e, p)
                     : o === 'dangerouslySetInnerHTML'
-                      ? ((m = m ? m.__html : void 0), m != null && fi(e, m))
+                      ? ((p = p ? p.__html : void 0), p != null && fi(e, p))
                       : o === 'children'
-                        ? typeof m == 'string'
-                          ? (i !== 'textarea' || m !== '') && Dn(e, m)
-                          : typeof m == 'number' && Dn(e, '' + m)
+                        ? typeof p == 'string'
+                          ? (i !== 'textarea' || p !== '') && Dn(e, p)
+                          : typeof p == 'number' && Dn(e, '' + p)
                         : o !== 'suppressContentEditableWarning' &&
                           o !== 'suppressHydrationWarning' &&
                           o !== 'autoFocus' &&
-                          (N.hasOwnProperty(o)
-                            ? m != null && o === 'onScroll' && Ne('scroll', e)
-                            : m != null && me(e, o, m, u));
+                          (w.hasOwnProperty(o)
+                            ? p != null && o === 'onScroll' && Ne('scroll', e)
+                            : p != null && me(e, o, p, u));
                 }
               switch (i) {
                 case 'input':
@@ -5921,7 +5921,7 @@ Error generating stack: ` +
         }
         return (Xe(n), null);
       case 6:
-        if (e && n.stateNode != null) fu(e, n, e.memoizedProps, t);
+        if (e && n.stateNode != null) pu(e, n, e.memoizedProps, t);
         else {
           if (typeof t != 'string' && n.stateNode === null) throw Error(a(166));
           if (((i = wi(zt.current)), wi(Mn.current), Cr(n))) {
@@ -5953,7 +5953,7 @@ Error generating stack: ` +
           e === null || (e.memoizedState !== null && e.memoizedState.dehydrated !== null))
         ) {
           if (ke && pn !== null && (n.mode & 1) !== 0 && (n.flags & 128) === 0)
-            (va(), Hi(), (n.flags |= 98560), (o = !1));
+            (ga(), Hi(), (n.flags |= 98560), (o = !1));
           else if (((o = Cr(n)), t !== null && t.dehydrated !== null)) {
             if (e === null) {
               if (!o) throw Error(a(318));
@@ -6146,9 +6146,9 @@ Error generating stack: ` +
       Le(e, n, t);
     }
   }
-  var hu = !1;
+  var fu = !1;
   function Ad(e, n) {
-    if (((Ws = lr), (e = Gl()), Ls(e))) {
+    if (((Ws = lr), (e = Hl()), Ls(e))) {
       if ('selectionStart' in e) var i = { start: e.selectionStart, end: e.selectionEnd };
       else
         e: {
@@ -6167,7 +6167,7 @@ Error generating stack: ` +
             }
             var u = 0,
               d = -1,
-              m = -1,
+              p = -1,
               x = 0,
               E = 0,
               R = e,
@@ -6176,7 +6176,7 @@ Error generating stack: ` +
               for (
                 var B;
                 R !== i || (s !== 0 && R.nodeType !== 3) || (d = u + s),
-                  R !== o || (t !== 0 && R.nodeType !== 3) || (m = u + t),
+                  R !== o || (t !== 0 && R.nodeType !== 3) || (p = u + t),
                   R.nodeType === 3 && (u += R.nodeValue.length),
                   (B = R.firstChild) !== null;
 
@@ -6186,7 +6186,7 @@ Error generating stack: ` +
                 if (R === e) break n;
                 if (
                   (T === i && ++x === s && (d = u),
-                  T === o && ++E === t && (m = u),
+                  T === o && ++E === t && (p = u),
                   (B = R.nextSibling) !== null)
                 )
                   break;
@@ -6194,7 +6194,7 @@ Error generating stack: ` +
               }
               R = B;
             }
-            i = d === -1 || m === -1 ? null : { start: d, end: m };
+            i = d === -1 || p === -1 ? null : { start: d, end: p };
           } else i = null;
         }
       i = i || { start: 0, end: 0 };
@@ -6248,7 +6248,7 @@ Error generating stack: ` +
           }
           $ = n.return;
         }
-    return ((U = hu), (hu = !1), U);
+    return ((U = fu), (fu = !1), U);
   }
   function Bt(e, n, i) {
     var t = n.updateQueue;
@@ -6289,9 +6289,9 @@ Error generating stack: ` +
       typeof n == 'function' ? n(e) : (n.current = e);
     }
   }
-  function gu(e) {
+  function hu(e) {
     var n = e.alternate;
-    (n !== null && ((e.alternate = null), gu(n)),
+    (n !== null && ((e.alternate = null), hu(n)),
       (e.child = null),
       (e.deletions = null),
       (e.sibling = null),
@@ -6307,13 +6307,13 @@ Error generating stack: ` +
       (e.stateNode = null),
       (e.updateQueue = null));
   }
-  function vu(e) {
+  function gu(e) {
     return e.tag === 5 || e.tag === 3 || e.tag === 4;
   }
-  function yu(e) {
+  function vu(e) {
     e: for (;;) {
       for (; e.sibling === null; ) {
-        if (e.return === null || vu(e.return)) return null;
+        if (e.return === null || gu(e.return)) return null;
         e = e.return;
       }
       for (
@@ -6352,9 +6352,9 @@ Error generating stack: ` +
   var De = null,
     Cn = !1;
   function si(e, n, i) {
-    for (i = i.child; i !== null; ) (_u(e, n, i), (i = i.sibling));
+    for (i = i.child; i !== null; ) (yu(e, n, i), (i = i.sibling));
   }
-  function _u(e, n, i) {
+  function yu(e, n, i) {
     if (Rn && typeof Rn.onCommitFiberUnmount == 'function')
       try {
         Rn.onCommitFiberUnmount(nr, i);
@@ -6431,7 +6431,7 @@ Error generating stack: ` +
         si(e, n, i);
     }
   }
-  function xu(e) {
+  function _u(e) {
     var n = e.updateQueue;
     if (n !== null) {
       e.updateQueue = null;
@@ -6467,16 +6467,16 @@ Error generating stack: ` +
             d = d.return;
           }
           if (De === null) throw Error(a(160));
-          (_u(o, u, s), (De = null), (Cn = !1));
-          var m = s.alternate;
-          (m !== null && (m.return = null), (s.return = null));
+          (yu(o, u, s), (De = null), (Cn = !1));
+          var p = s.alternate;
+          (p !== null && (p.return = null), (s.return = null));
         } catch (x) {
           Le(s, n, x);
         }
       }
-    if (n.subtreeFlags & 12854) for (n = n.child; n !== null; ) (wu(n, e), (n = n.sibling));
+    if (n.subtreeFlags & 12854) for (n = n.child; n !== null; ) (xu(n, e), (n = n.sibling));
   }
-  function wu(e, n) {
+  function xu(e, n) {
     var i = e.alternate,
       t = e.flags;
     switch (e.tag) {
@@ -6513,14 +6513,14 @@ Error generating stack: ` +
           var o = e.memoizedProps,
             u = i !== null ? i.memoizedProps : o,
             d = e.type,
-            m = e.updateQueue;
-          if (((e.updateQueue = null), m !== null))
+            p = e.updateQueue;
+          if (((e.updateQueue = null), p !== null))
             try {
               (d === 'input' && o.type === 'radio' && o.name != null && st(s, o), at(d, u));
               var x = at(d, o);
-              for (u = 0; u < m.length; u += 2) {
-                var E = m[u],
-                  R = m[u + 1];
+              for (u = 0; u < p.length; u += 2) {
+                var E = p[u],
+                  R = p[u + 1];
                 E === 'style'
                   ? Zt(s, R)
                   : E === 'dangerouslySetInnerHTML'
@@ -6583,7 +6583,7 @@ Error generating stack: ` +
             ((o = s.memoizedState !== null),
             (s.stateNode.isHidden = o),
             !o || (s.alternate !== null && s.alternate.memoizedState !== null) || (Mo = be())),
-          t & 4 && xu(e));
+          t & 4 && _u(e));
         break;
       case 22:
         if (
@@ -6624,11 +6624,11 @@ Error generating stack: ` +
                     break;
                   case 22:
                     if (T.memoizedState !== null) {
-                      ku(R);
+                      ju(R);
                       continue;
                     }
                 }
-                B !== null ? ((B.return = T), ($ = B)) : ku(R);
+                B !== null ? ((B.return = T), ($ = B)) : ju(R);
               }
               E = E.sibling;
             }
@@ -6644,8 +6644,8 @@ Error generating stack: ` +
                           ? o.setProperty('display', 'none', 'important')
                           : (o.display = 'none'))
                       : ((d = R.stateNode),
-                        (m = R.memoizedProps.style),
-                        (u = m != null && m.hasOwnProperty('display') ? m.display : null),
+                        (p = R.memoizedProps.style),
+                        (u = p != null && p.hasOwnProperty('display') ? p.display : null),
                         (d.style.display = Yt('display', u))));
                 } catch (q) {
                   Le(e, e.return, q);
@@ -6675,7 +6675,7 @@ Error generating stack: ` +
         }
         break;
       case 19:
-        (Pn(n, e), zn(e), t & 4 && xu(e));
+        (Pn(n, e), zn(e), t & 4 && _u(e));
         break;
       case 21:
         break;
@@ -6689,7 +6689,7 @@ Error generating stack: ` +
       try {
         e: {
           for (var i = e.return; i !== null; ) {
-            if (vu(i)) {
+            if (gu(i)) {
               var t = i;
               break e;
             }
@@ -6701,29 +6701,29 @@ Error generating stack: ` +
           case 5:
             var s = t.stateNode;
             t.flags & 32 && (Dn(s, ''), (t.flags &= -33));
-            var o = yu(e);
+            var o = vu(e);
             Lo(e, o, s);
             break;
           case 3:
           case 4:
             var u = t.stateNode.containerInfo,
-              d = yu(e);
+              d = vu(e);
             Eo(e, d, u);
             break;
           default:
             throw Error(a(161));
         }
-      } catch (m) {
-        Le(e, e.return, m);
+      } catch (p) {
+        Le(e, e.return, p);
       }
       e.flags &= -3;
     }
     n & 4096 && (e.flags &= -4097);
   }
   function Vd(e, n, i) {
-    (($ = e), Nu(e));
+    (($ = e), wu(e));
   }
-  function Nu(e, n, i) {
+  function wu(e, n, i) {
     for (var t = (e.mode & 1) !== 0; $ !== null; ) {
       var s = $,
         o = s.child;
@@ -6731,26 +6731,26 @@ Error generating stack: ` +
         var u = s.memoizedState !== null || Br;
         if (!u) {
           var d = s.alternate,
-            m = (d !== null && d.memoizedState !== null) || Je;
+            p = (d !== null && d.memoizedState !== null) || Je;
           d = Br;
           var x = Je;
-          if (((Br = u), (Je = m) && !x))
+          if (((Br = u), (Je = p) && !x))
             for ($ = s; $ !== null; )
               ((u = $),
-                (m = u.child),
+                (p = u.child),
                 u.tag === 22 && u.memoizedState !== null
-                  ? Su(s)
-                  : m !== null
-                    ? ((m.return = u), ($ = m))
-                    : Su(s));
-          for (; o !== null; ) (($ = o), Nu(o), (o = o.sibling));
+                  ? ku(s)
+                  : p !== null
+                    ? ((p.return = u), ($ = p))
+                    : ku(s));
+          for (; o !== null; ) (($ = o), wu(o), (o = o.sibling));
           (($ = s), (Br = d), (Je = x));
         }
-        ju(e);
-      } else (s.subtreeFlags & 8772) !== 0 && o !== null ? ((o.return = s), ($ = o)) : ju(e);
+        Nu(e);
+      } else (s.subtreeFlags & 8772) !== 0 && o !== null ? ((o.return = s), ($ = o)) : Nu(e);
     }
   }
-  function ju(e) {
+  function Nu(e) {
     for (; $ !== null; ) {
       var n = $;
       if ((n.flags & 8772) !== 0) {
@@ -6773,7 +6773,7 @@ Error generating stack: ` +
                     t.componentDidUpdate(s, i.memoizedState, t.__reactInternalSnapshotBeforeUpdate);
                   }
                 var o = n.updateQueue;
-                o !== null && ka(n, o, t);
+                o !== null && ja(n, o, t);
                 break;
               case 3:
                 var u = n.updateQueue;
@@ -6786,23 +6786,23 @@ Error generating stack: ` +
                       case 1:
                         i = n.child.stateNode;
                     }
-                  ka(n, u, i);
+                  ja(n, u, i);
                 }
                 break;
               case 5:
                 var d = n.stateNode;
                 if (i === null && n.flags & 4) {
                   i = d;
-                  var m = n.memoizedProps;
+                  var p = n.memoizedProps;
                   switch (n.type) {
                     case 'button':
                     case 'input':
                     case 'select':
                     case 'textarea':
-                      m.autoFocus && i.focus();
+                      p.autoFocus && i.focus();
                       break;
                     case 'img':
-                      m.src && (i.src = m.src);
+                      p.src && (i.src = p.src);
                   }
                 }
                 break;
@@ -6850,7 +6850,7 @@ Error generating stack: ` +
       $ = n.return;
     }
   }
-  function ku(e) {
+  function ju(e) {
     for (; $ !== null; ) {
       var n = $;
       if (n === e) {
@@ -6865,7 +6865,7 @@ Error generating stack: ` +
       $ = n.return;
     }
   }
-  function Su(e) {
+  function ku(e) {
     for (; $ !== null; ) {
       var n = $;
       try {
@@ -6876,8 +6876,8 @@ Error generating stack: ` +
             var i = n.return;
             try {
               $r(4, n);
-            } catch (m) {
-              Le(n, i, m);
+            } catch (p) {
+              Le(n, i, p);
             }
             break;
           case 1:
@@ -6886,27 +6886,27 @@ Error generating stack: ` +
               var s = n.return;
               try {
                 t.componentDidMount();
-              } catch (m) {
-                Le(n, s, m);
+              } catch (p) {
+                Le(n, s, p);
               }
             }
             var o = n.return;
             try {
               To(n);
-            } catch (m) {
-              Le(n, o, m);
+            } catch (p) {
+              Le(n, o, p);
             }
             break;
           case 5:
             var u = n.return;
             try {
               To(n);
-            } catch (m) {
-              Le(n, u, m);
+            } catch (p) {
+              Le(n, u, p);
             }
         }
-      } catch (m) {
-        Le(n, n.return, m);
+      } catch (p) {
+        Le(n, n.return, p);
       }
       if (n === e) {
         $ = null;
@@ -6959,8 +6959,8 @@ Error generating stack: ` +
       : (ae & 2) !== 0 && He !== 0
         ? He & -He
         : kd.transition !== null
-          ? (Qr === 0 && (Qr = yl()), Qr)
-          : ((e = he), e !== 0 || ((e = window.event), (e = e === void 0 ? 16 : Pl(e.type))), e);
+          ? (Qr === 0 && (Qr = vl()), Qr)
+          : ((e = he), e !== 0 || ((e = window.event), (e = e === void 0 ? 16 : Cl(e.type))), e);
   }
   function Tn(e, n, i, t) {
     if (50 < qt) throw ((qt = 0), (zo = null), Error(a(185)));
@@ -6974,37 +6974,37 @@ Error generating stack: ` +
     var i = e.callbackNode;
     kc(e, n);
     var t = rr(e, e === Ue ? He : 0);
-    if (t === 0) (i !== null && hl(i), (e.callbackNode = null), (e.callbackPriority = 0));
+    if (t === 0) (i !== null && fl(i), (e.callbackNode = null), (e.callbackPriority = 0));
     else if (((n = t & -t), e.callbackPriority !== n)) {
-      if ((i != null && hl(i), n === 1))
-        (e.tag === 0 ? jd(Pu.bind(null, e)) : ma(Pu.bind(null, e)),
+      if ((i != null && fl(i), n === 1))
+        (e.tag === 0 ? jd(Cu.bind(null, e)) : da(Cu.bind(null, e)),
           _d(function () {
             (ae & 6) === 0 && ii();
           }),
           (i = null));
       else {
-        switch (_l(t)) {
+        switch (yl(t)) {
           case 1:
             i = ps;
             break;
           case 4:
-            i = gl;
+            i = hl;
             break;
           case 16:
             i = er;
             break;
           case 536870912:
-            i = vl;
+            i = gl;
             break;
           default:
             i = er;
         }
-        i = zu(i, Cu.bind(null, e));
+        i = Fu(i, Su.bind(null, e));
       }
       ((e.callbackPriority = n), (e.callbackNode = i));
     }
   }
-  function Cu(e, n) {
+  function Su(e, n) {
     if (((Kr = -1), (Qr = 0), (ae & 6) !== 0)) throw Error(a(327));
     var i = e.callbackNode;
     if (nt() && e.callbackNode !== i) return null;
@@ -7015,14 +7015,14 @@ Error generating stack: ` +
       n = t;
       var s = ae;
       ae |= 2;
-      var o = Eu();
+      var o = Tu();
       (Ue !== e || He !== n) && ((Un = null), (et = be() + 500), Si(e, n));
       do
         try {
           qd();
           break;
         } catch (d) {
-          Tu(e, d);
+          Pu(e, d);
         }
       while (!0);
       (Xs(), (Ur.current = o), (ae = s), Fe !== null ? (n = 0) : ((Ue = null), (He = 0), (n = Oe)));
@@ -7098,7 +7098,7 @@ Error generating stack: ` +
         }
       }
     }
-    return (an(e, be()), e.callbackNode === i ? Cu.bind(null, e) : null);
+    return (an(e, be()), e.callbackNode === i ? Su.bind(null, e) : null);
   }
   function Oo(e, n) {
     var i = Ut;
@@ -7151,7 +7151,7 @@ Error generating stack: ` +
       ((e[i] = -1), (n &= ~t));
     }
   }
-  function Pu(e) {
+  function Cu(e) {
     if ((ae & 6) !== 0) throw Error(a(327));
     nt();
     var n = rr(e, 0);
@@ -7254,7 +7254,7 @@ Error generating stack: ` +
     }
     return e;
   }
-  function Tu(e, n) {
+  function Pu(e, n) {
     do {
       var i = Fe;
       try {
@@ -7280,13 +7280,13 @@ Error generating stack: ` +
           var o = e,
             u = i.return,
             d = i,
-            m = n;
+            p = n;
           if (
             ((n = He),
             (d.flags |= 32768),
-            m !== null && typeof m == 'object' && typeof m.then == 'function')
+            p !== null && typeof p == 'object' && typeof p.then == 'function')
           ) {
-            var x = m,
+            var x = p,
               E = d,
               R = E.tag;
             if ((E.mode & 1) === 0 && (R === 0 || R === 11 || R === 15)) {
@@ -7297,30 +7297,30 @@ Error generating stack: ` +
                   (E.lanes = T.lanes))
                 : ((E.updateQueue = null), (E.memoizedState = null));
             }
-            var B = Ja(u);
+            var B = Xa(u);
             if (B !== null) {
-              ((B.flags &= -257), eu(B, u, d, o, n), B.mode & 1 && Xa(o, x, n), (n = B), (m = x));
+              ((B.flags &= -257), Ja(B, u, d, o, n), B.mode & 1 && Za(o, x, n), (n = B), (p = x));
               var U = n.updateQueue;
               if (U === null) {
                 var q = new Set();
-                (q.add(m), (n.updateQueue = q));
-              } else U.add(m);
+                (q.add(p), (n.updateQueue = q));
+              } else U.add(p);
               break e;
             } else {
               if ((n & 1) === 0) {
-                (Xa(o, x, n), Vo());
+                (Za(o, x, n), Vo());
                 break e;
               }
-              m = Error(a(426));
+              p = Error(a(426));
             }
           } else if (ke && d.mode & 1) {
-            var Me = Ja(u);
+            var Me = Xa(u);
             if (Me !== null) {
-              ((Me.flags & 65536) === 0 && (Me.flags |= 256), eu(Me, u, d, o, n), Ys(Zi(m, d)));
+              ((Me.flags & 65536) === 0 && (Me.flags |= 256), Ja(Me, u, d, o, n), Ys(Zi(p, d)));
               break e;
             }
           }
-          ((o = m = Zi(m, d)),
+          ((o = p = Zi(p, d)),
             Oe !== 4 && (Oe = 2),
             Ut === null ? (Ut = [o]) : Ut.push(o),
             (o = u));
@@ -7328,11 +7328,11 @@ Error generating stack: ` +
             switch (o.tag) {
               case 3:
                 ((o.flags |= 65536), (n &= -n), (o.lanes |= n));
-                var v = Ya(o, m, n);
-                ja(o, v);
+                var v = Qa(o, p, n);
+                Na(o, v);
                 break e;
               case 1:
-                d = m;
+                d = p;
                 var g = o.type,
                   _ = o.stateNode;
                 if (
@@ -7343,23 +7343,23 @@ Error generating stack: ` +
                       (oi === null || !oi.has(_))))
                 ) {
                   ((o.flags |= 65536), (n &= -n), (o.lanes |= n));
-                  var M = Za(o, d, n);
-                  ja(o, M);
+                  var M = Ya(o, d, n);
+                  Na(o, M);
                   break e;
                 }
             }
             o = o.return;
           } while (o !== null);
         }
-        Ru(i);
-      } catch (G) {
-        ((n = G), Fe === i && i !== null && (Fe = i = i.return));
+        Lu(i);
+      } catch (D) {
+        ((n = D), Fe === i && i !== null && (Fe = i = i.return));
         continue;
       }
       break;
     } while (!0);
   }
-  function Eu() {
+  function Tu() {
     var e = Ur.current;
     return ((Ur.current = Ir), e === null ? Ir : e);
   }
@@ -7370,30 +7370,30 @@ Error generating stack: ` +
   function Yr(e, n) {
     var i = ae;
     ae |= 2;
-    var t = Eu();
+    var t = Tu();
     (Ue !== e || He !== n) && ((Un = null), Si(e, n));
     do
       try {
         Ud();
         break;
       } catch (s) {
-        Tu(e, s);
+        Pu(e, s);
       }
     while (!0);
     if ((Xs(), (ae = i), (Ur.current = t), Fe !== null)) throw Error(a(261));
     return ((Ue = null), (He = 0), Oe);
   }
   function Ud() {
-    for (; Fe !== null; ) Lu(Fe);
+    for (; Fe !== null; ) Eu(Fe);
   }
   function qd() {
-    for (; Fe !== null && !hc(); ) Lu(Fe);
+    for (; Fe !== null && !hc(); ) Eu(Fe);
+  }
+  function Eu(e) {
+    var n = Mu(e.alternate, e, fn);
+    ((e.memoizedProps = e.pendingProps), n === null ? Lu(e) : (Fe = n), (Ro.current = null));
   }
   function Lu(e) {
-    var n = Fu(e.alternate, e, fn);
-    ((e.memoizedProps = e.pendingProps), n === null ? Ru(e) : (Fe = n), (Ro.current = null));
-  }
-  function Ru(e) {
     var n = e;
     do {
       var i = n.alternate;
@@ -7447,7 +7447,7 @@ Error generating stack: ` +
       ((i.subtreeFlags & 2064) === 0 && (i.flags & 2064) === 0) ||
         Hr ||
         ((Hr = !0),
-        zu(er, function () {
+        Fu(er, function () {
           return (nt(), null);
         })),
       (o = (i.flags & 15990) !== 0),
@@ -7460,7 +7460,7 @@ Error generating stack: ` +
       ((ae |= 4),
         (Ro.current = null),
         Ad(e, i),
-        wu(i, e),
+        xu(i, e),
         dd(As),
         (lr = !!Ws),
         (As = Ws = null),
@@ -7492,7 +7492,7 @@ Error generating stack: ` +
   }
   function nt() {
     if (li !== null) {
-      var e = _l(Gr),
+      var e = yl(Gr),
         n = xn.transition,
         i = he;
       try {
@@ -7506,8 +7506,8 @@ Error generating stack: ` +
             if (($.flags & 16) !== 0) {
               var d = o.deletions;
               if (d !== null) {
-                for (var m = 0; m < d.length; m++) {
-                  var x = d[m];
+                for (var p = 0; p < d.length; p++) {
+                  var x = d[p];
                   for ($ = x; $ !== null; ) {
                     var E = $;
                     switch (E.tag) {
@@ -7523,7 +7523,7 @@ Error generating stack: ` +
                         E = $;
                         var T = E.sibling,
                           B = E.return;
-                        if ((gu(E), E === x)) {
+                        if ((hu(E), E === x)) {
                           $ = null;
                           break;
                         }
@@ -7582,8 +7582,8 @@ Error generating stack: ` +
                       case 15:
                         $r(9, d);
                     }
-                  } catch (G) {
-                    Le(d, d.return, G);
+                  } catch (D) {
+                    Le(d, d.return, D);
                   }
                 if (d === u) {
                   $ = null;
@@ -7610,19 +7610,19 @@ Error generating stack: ` +
     }
     return !1;
   }
-  function bu(e, n, i) {
+  function Ru(e, n, i) {
     ((n = Zi(i, n)),
-      (n = Ya(e, n, 1)),
+      (n = Qa(e, n, 1)),
       (e = ri(e, n, 1)),
       (n = tn()),
       e !== null && (ft(e, 1, n), an(e, n)));
   }
   function Le(e, n, i) {
-    if (e.tag === 3) bu(e, e, i);
+    if (e.tag === 3) Ru(e, e, i);
     else
       for (; n !== null; ) {
         if (n.tag === 3) {
-          bu(n, e, i);
+          Ru(n, e, i);
           break;
         } else if (n.tag === 1) {
           var t = n.stateNode;
@@ -7631,7 +7631,7 @@ Error generating stack: ` +
             (typeof t.componentDidCatch == 'function' && (oi === null || !oi.has(t)))
           ) {
             ((e = Zi(i, e)),
-              (e = Za(n, e, 1)),
+              (e = Ya(n, e, 1)),
               (n = ri(n, e, 1)),
               (e = tn()),
               n !== null && (ft(n, 1, e), an(n, e)));
@@ -7653,7 +7653,7 @@ Error generating stack: ` +
           : (bo |= i)),
       an(e, n));
   }
-  function Mu(e, n) {
+  function bu(e, n) {
     n === 0 &&
       ((e.mode & 1) === 0
         ? (n = 1)
@@ -7664,7 +7664,7 @@ Error generating stack: ` +
   function Gd(e) {
     var n = e.memoizedState,
       i = 0;
-    (n !== null && (i = n.retryLane), Mu(e, i));
+    (n !== null && (i = n.retryLane), bu(e, i));
   }
   function Kd(e, n) {
     var i = 0;
@@ -7680,17 +7680,17 @@ Error generating stack: ` +
       default:
         throw Error(a(314));
     }
-    (t !== null && t.delete(n), Mu(e, i));
+    (t !== null && t.delete(n), bu(e, i));
   }
-  var Fu;
-  Fu = function (e, n, i) {
+  var Mu;
+  Mu = function (e, n, i) {
     if (e !== null)
       if (e.memoizedProps !== n.pendingProps || rn.current) on = !0;
       else {
         if ((e.lanes & i) === 0 && (n.flags & 128) === 0) return ((on = !1), zd(e, n, i));
         on = (e.flags & 131072) !== 0;
       }
-    else ((on = !1), ke && (n.flags & 1048576) !== 0 && pa(n, Sr, n.index));
+    else ((on = !1), ke && (n.flags & 1048576) !== 0 && ma(n, Sr, n.index));
     switch (((n.lanes = 0), n.tag)) {
       case 2:
         var t = n.type;
@@ -7735,13 +7735,13 @@ Error generating stack: ` +
               n = xo(null, n, t, e, i);
               break e;
             case 1:
-              n = ou(null, n, t, e, i);
+              n = su(null, n, t, e, i);
               break e;
             case 11:
-              n = nu(null, n, t, e, i);
+              n = eu(null, n, t, e, i);
               break e;
             case 14:
-              n = iu(null, n, t, Sn(t.type, e), i);
+              n = nu(null, n, t, Sn(t.type, e), i);
               break e;
           }
           throw Error(a(306, t, ''));
@@ -7759,15 +7759,15 @@ Error generating stack: ` +
           (t = n.type),
           (s = n.pendingProps),
           (s = n.elementType === t ? s : Sn(t, s)),
-          ou(e, n, t, s, i)
+          su(e, n, t, s, i)
         );
       case 3:
         e: {
-          if ((lu(n), e === null)) throw Error(a(387));
+          if ((ou(n), e === null)) throw Error(a(387));
           ((t = n.pendingProps),
             (o = n.memoizedState),
             (s = o.element),
-            Na(e, n),
+            wa(e, n),
             Rr(n, t, null, i));
           var u = n.memoizedState;
           if (((t = u.element), o.isDehydrated))
@@ -7783,10 +7783,10 @@ Error generating stack: ` +
               (n.memoizedState = o),
               n.flags & 256)
             ) {
-              ((s = Zi(Error(a(423)), n)), (n = au(e, n, t, i, s)));
+              ((s = Zi(Error(a(423)), n)), (n = lu(e, n, t, i, s)));
               break e;
             } else if (t !== s) {
-              ((s = Zi(Error(a(424)), n)), (n = au(e, n, t, i, s)));
+              ((s = Zi(Error(a(424)), n)), (n = lu(e, n, t, i, s)));
               break e;
             } else
               for (
@@ -7794,7 +7794,7 @@ Error generating stack: ` +
                   mn = n,
                   ke = !0,
                   kn = null,
-                  i = xa(n, null, t, i),
+                  i = _a(n, null, t, i),
                   n.child = i;
                 i;
 
@@ -7812,21 +7812,21 @@ Error generating stack: ` +
         return n;
       case 5:
         return (
-          Sa(n),
+          ka(n),
           e === null && Qs(n),
           (t = n.type),
           (s = n.pendingProps),
           (o = e !== null ? e.memoizedProps : null),
           (u = s.children),
           Vs(t, s) ? (u = null) : o !== null && Vs(t, o) && (n.flags |= 32),
-          su(e, n),
+          ru(e, n),
           nn(e, n, u, i),
           n.child
         );
       case 6:
         return (e === null && Qs(n), null);
       case 13:
-        return uu(e, n, i);
+        return au(e, n, i);
       case 4:
         return (
           to(n, n.stateNode.containerInfo),
@@ -7839,7 +7839,7 @@ Error generating stack: ` +
           (t = n.type),
           (s = n.pendingProps),
           (s = n.elementType === t ? s : Sn(t, s)),
-          nu(e, n, t, s, i)
+          eu(e, n, t, s, i)
         );
       case 7:
         return (nn(e, n, n.pendingProps, i), n.child);
@@ -7868,26 +7868,26 @@ Error generating stack: ` +
                 var d = o.dependencies;
                 if (d !== null) {
                   u = o.child;
-                  for (var m = d.firstContext; m !== null; ) {
-                    if (m.context === t) {
+                  for (var p = d.firstContext; p !== null; ) {
+                    if (p.context === t) {
                       if (o.tag === 1) {
-                        ((m = Bn(-1, i & -i)), (m.tag = 2));
+                        ((p = Bn(-1, i & -i)), (p.tag = 2));
                         var x = o.updateQueue;
                         if (x !== null) {
                           x = x.shared;
                           var E = x.pending;
-                          (E === null ? (m.next = m) : ((m.next = E.next), (E.next = m)),
-                            (x.pending = m));
+                          (E === null ? (p.next = p) : ((p.next = E.next), (E.next = p)),
+                            (x.pending = p));
                         }
                       }
                       ((o.lanes |= i),
-                        (m = o.alternate),
-                        m !== null && (m.lanes |= i),
+                        (p = o.alternate),
+                        p !== null && (p.lanes |= i),
                         eo(o.return, i, n),
                         (d.lanes |= i));
                       break;
                     }
-                    m = m.next;
+                    p = p.next;
                   }
                 } else if (o.tag === 10) u = o.type === n.type ? null : o.child;
                 else if (o.tag === 18) {
@@ -7928,9 +7928,9 @@ Error generating stack: ` +
           n.child
         );
       case 14:
-        return ((t = n.type), (s = Sn(t, n.pendingProps)), (s = Sn(t.type, s)), iu(e, n, t, s, i));
+        return ((t = n.type), (s = Sn(t, n.pendingProps)), (s = Sn(t.type, s)), nu(e, n, t, s, i));
       case 15:
-        return tu(e, n, n.type, n.pendingProps, i);
+        return iu(e, n, n.type, n.pendingProps, i);
       case 17:
         return (
           (t = n.type),
@@ -7940,19 +7940,19 @@ Error generating stack: ` +
           (n.tag = 1),
           sn(t) ? ((e = !0), Nr(n)) : (e = !1),
           Qi(n, i),
-          Ka(n, t, s),
+          Ga(n, t, s),
           vo(n, t, s, i),
           wo(null, n, t, !0, e, i)
         );
       case 19:
-        return du(e, n, i);
+        return cu(e, n, i);
       case 22:
-        return ru(e, n, i);
+        return tu(e, n, i);
     }
     throw Error(a(156, n.tag));
   };
-  function zu(e, n) {
-    return fl(e, n);
+  function Fu(e, n) {
+    return pl(e, n);
   }
   function Qd(e, n, i, t) {
     ((this.tag = e),
@@ -8035,7 +8035,7 @@ Error generating stack: ` +
           return ((e = wn(13, i, n, s)), (e.elementType = X), (e.lanes = o), e);
         case Te:
           return ((e = wn(19, i, n, s)), (e.elementType = Te), (e.lanes = o), e);
-        case K:
+        case H:
           return Xr(i, s, o, n);
         default:
           if (typeof e == 'object' && e !== null)
@@ -8066,7 +8066,7 @@ Error generating stack: ` +
   function Xr(e, n, i, t) {
     return (
       (e = wn(22, e, t, n)),
-      (e.elementType = K),
+      (e.elementType = H),
       (e.lanes = i),
       (e.stateNode = { isHidden: !1 }),
       e
@@ -8109,9 +8109,9 @@ Error generating stack: ` +
       (this.onRecoverableError = s),
       (this.mutableSourceEagerHydrationData = null));
   }
-  function qo(e, n, i, t, s, o, u, d, m) {
+  function qo(e, n, i, t, s, o, u, d, p) {
     return (
-      (e = new Zd(e, n, i, d, m)),
+      (e = new Zd(e, n, i, d, p)),
       n === 1 ? ((n = 1), o === !0 && (n |= 8)) : (n = 0),
       (o = wn(3, null, null, n)),
       (e.current = o),
@@ -8137,7 +8137,7 @@ Error generating stack: ` +
       implementation: i,
     };
   }
-  function Ou(e) {
+  function zu(e) {
     if (!e) return ni;
     e = e._reactInternals;
     e: {
@@ -8160,14 +8160,14 @@ Error generating stack: ` +
     }
     if (e.tag === 1) {
       var i = e.type;
-      if (sn(i)) return ca(e, i, n);
+      if (sn(i)) return ua(e, i, n);
     }
     return n;
   }
-  function Iu(e, n, i, t, s, o, u, d, m) {
+  function Ou(e, n, i, t, s, o, u, d, p) {
     return (
-      (e = qo(i, t, !0, e, s, o, u, d, m)),
-      (e.context = Ou(null)),
+      (e = qo(i, t, !0, e, s, o, u, d, p)),
+      (e.context = zu(null)),
       (i = e.current),
       (t = tn()),
       (s = ai(i)),
@@ -8185,7 +8185,7 @@ Error generating stack: ` +
       o = tn(),
       u = ai(s);
     return (
-      (i = Ou(i)),
+      (i = zu(i)),
       n.context === null ? (n.context = i) : (n.pendingContext = i),
       (n = Bn(o, u)),
       (n.payload = { element: e }),
@@ -8205,19 +8205,19 @@ Error generating stack: ` +
         return e.child.stateNode;
     }
   }
-  function Wu(e, n) {
+  function Iu(e, n) {
     if (((e = e.memoizedState), e !== null && e.dehydrated !== null)) {
       var i = e.retryLane;
       e.retryLane = i !== 0 && i < n ? i : n;
     }
   }
   function Do(e, n) {
-    (Wu(e, n), (e = e.alternate) && Wu(e, n));
+    (Iu(e, n), (e = e.alternate) && Iu(e, n));
   }
   function Jd() {
     return null;
   }
-  var Au =
+  var Wu =
     typeof reportError == 'function'
       ? reportError
       : function (e) {
@@ -8249,10 +8249,10 @@ Error generating stack: ` +
   }
   ns.prototype.unstable_scheduleHydration = function (e) {
     if (e) {
-      var n = Nl();
+      var n = wl();
       e = { blockedOn: null, target: e, priority: n };
       for (var i = 0; i < Yn.length && n !== 0 && n < Yn[i].priority; i++);
-      (Yn.splice(i, 0, e), i === 0 && Sl(e));
+      (Yn.splice(i, 0, e), i === 0 && kl(e));
     }
   };
   function Go(e) {
@@ -8267,7 +8267,7 @@ Error generating stack: ` +
         (e.nodeType !== 8 || e.nodeValue !== ' react-mount-point-unstable '))
     );
   }
-  function Vu() {}
+  function Au() {}
   function em(e, n, i, t, s) {
     if (s) {
       if (typeof t == 'function') {
@@ -8277,7 +8277,7 @@ Error generating stack: ` +
           o.call(x);
         };
       }
-      var u = Iu(n, t, e, 0, null, !1, !1, '', Vu);
+      var u = Ou(n, t, e, 0, null, !1, !1, '', Au);
       return (
         (e._reactRootContainer = u),
         (e[On] = u.current),
@@ -8290,19 +8290,19 @@ Error generating stack: ` +
     if (typeof t == 'function') {
       var d = t;
       t = function () {
-        var x = es(m);
+        var x = es(p);
         d.call(x);
       };
     }
-    var m = qo(e, 0, !1, null, null, !1, !1, '', Vu);
+    var p = qo(e, 0, !1, null, null, !1, !1, '', Au);
     return (
-      (e._reactRootContainer = m),
-      (e[On] = m.current),
+      (e._reactRootContainer = p),
+      (e[On] = p.current),
       Tt(e.nodeType === 8 ? e.parentNode : e),
       ki(function () {
-        Jr(n, m, i, t);
+        Jr(n, p, i, t);
       }),
-      m
+      p
     );
   }
   function ts(e, n, i, t, s) {
@@ -8312,15 +8312,15 @@ Error generating stack: ` +
       if (typeof s == 'function') {
         var d = s;
         s = function () {
-          var m = es(u);
-          d.call(m);
+          var p = es(u);
+          d.call(p);
         };
       }
       Jr(n, u, e, s);
     } else u = em(i, n, e, s, t);
     return es(u);
   }
-  ((xl = function (e) {
+  ((_l = function (e) {
     switch (e.tag) {
       case 3:
         var n = e.stateNode;
@@ -8350,7 +8350,7 @@ Error generating stack: ` +
         Do(e, 134217728);
       }
     }),
-    (wl = function (e) {
+    (xl = function (e) {
       if (e.tag === 13) {
         var n = ai(e),
           i = Vn(e, n);
@@ -8361,10 +8361,10 @@ Error generating stack: ` +
         Do(e, n);
       }
     }),
-    (Nl = function () {
+    (wl = function () {
       return he;
     }),
-    (jl = function (e, n) {
+    (Nl = function (e, n) {
       var i = he;
       try {
         return ((he = e), n());
@@ -8399,8 +8399,8 @@ Error generating stack: ` +
           ((n = i.value), n != null && En(e, !!i.multiple, n, !1));
       }
     }),
-    (ll = Wo),
-    (al = ki));
+    (ol = Wo),
+    (ll = ki));
   var nm = { usingClientEntryPoint: !1, Events: [Rt, Bi, xr, we, Ln, Wo] },
     Dt = {
       findFiberByHostInstance: gi,
@@ -8424,7 +8424,7 @@ Error generating stack: ` +
       scheduleUpdate: null,
       currentDispatcherRef: re.ReactCurrentDispatcher,
       findHostInstanceByFiber: function (e) {
-        return ((e = ml(e)), e === null ? null : e.stateNode);
+        return ((e = dl(e)), e === null ? null : e.stateNode);
       },
       findFiberByHostInstance: Dt.findFiberByHostInstance || Jd,
       findHostInstancesForRefresh: null,
@@ -8452,7 +8452,7 @@ Error generating stack: ` +
       if (!Go(e)) throw Error(a(299));
       var i = !1,
         t = '',
-        s = Au;
+        s = Wu;
       return (
         n != null &&
           (n.unstable_strictMode === !0 && (i = !0),
@@ -8472,7 +8472,7 @@ Error generating stack: ` +
         throw typeof e.render == 'function'
           ? Error(a(188))
           : ((e = Object.keys(e).join(',')), Error(a(268, e)));
-      return ((e = ml(n)), (e = e === null ? null : e.stateNode), e);
+      return ((e = dl(n)), (e = e === null ? null : e.stateNode), e);
     }),
     (un.flushSync = function (e) {
       return ki(e);
@@ -8486,13 +8486,13 @@ Error generating stack: ` +
       var t = (i != null && i.hydratedSources) || null,
         s = !1,
         o = '',
-        u = Au;
+        u = Wu;
       if (
         (i != null &&
           (i.unstable_strictMode === !0 && (s = !0),
           i.identifierPrefix !== void 0 && (o = i.identifierPrefix),
           i.onRecoverableError !== void 0 && (u = i.onRecoverableError)),
-        (n = Iu(n, null, e, 1, i ?? null, s, !1, o, u)),
+        (n = Ou(n, null, e, 1, i ?? null, s, !1, o, u)),
         (e[On] = n.current),
         Tt(e),
         t)
@@ -8531,10 +8531,10 @@ Error generating stack: ` +
     un
   );
 }
-var Ku;
+var Gu;
 function cm() {
-  if (Ku) return Yo.exports;
-  Ku = 1;
+  if (Gu) return Yo.exports;
+  Gu = 1;
   function l() {
     if (
       !(
@@ -8550,10 +8550,10 @@ function cm() {
   }
   return (l(), (Yo.exports = um()), Yo.exports);
 }
-var Qu;
+var Ku;
 function dm() {
-  if (Qu) return ss;
-  Qu = 1;
+  if (Ku) return ss;
+  Ku = 1;
   var l = cm();
   return ((ss.createRoot = l.createRoot), (ss.hydrateRoot = l.hydrateRoot), ss);
 }
@@ -8647,19 +8647,19 @@ const pm = {
     },
     otherProject: { projectType: '', description: '', budget: '', timeline: '' },
   },
-  ic = W.createContext(void 0),
+  nc = W.createContext(void 0),
   fm = ({ children: l }) => {
     const [c, a] = W.useState(pm),
-      w = W.useCallback((C) => {
-        const { name: j, value: f, type: h } = C.target,
+      N = W.useCallback((C) => {
+        const { name: j, value: m, type: h } = C.target,
           O = C.target.checked;
-        a((D) => ({ ...D, [j]: h === 'checkbox' ? O : f }));
+        a((K) => ({ ...K, [j]: h === 'checkbox' ? O : m }));
       }, []),
-      N = { formData: c, setFormData: a, handleInputChange: w };
-    return r.jsx(ic.Provider, { value: N, children: l });
+      w = { formData: c, setFormData: a, handleInputChange: N };
+    return r.jsx(nc.Provider, { value: w, children: l });
   };
 function hm() {
-  const l = W.useContext(ic);
+  const l = W.useContext(nc);
   if (!l) throw new Error('useSimpleForm must be used inside <SimpleFormProvider>');
   return l;
 }
@@ -8667,12 +8667,12 @@ const gm = ({
   formData: l,
   setFormData: c,
   t: a,
-  stepLabel: w,
-  shippingOnly: N = !1,
+  stepLabel: N,
+  shippingOnly: w = !1,
   isQuickQuote: C = !1,
   setIsQuickQuote: j,
 }) => {
-  const f = (h) => {
+  const m = (h) => {
     c((O) => ({
       ...O,
       servicesRequested: { ...O.servicesRequested, [h]: !O.servicesRequested[h] },
@@ -8689,7 +8689,7 @@ const gm = ({
             children: [
               r.jsx('p', {
                 className: 'sino-simple-form__eyebrow',
-                children: N
+                children: w
                   ? a('simpleEyebrowShippingOnly', 'Shipping from China')
                   : a('simpleEyebrowMulti', 'Projects with China'),
               }),
@@ -8706,7 +8706,7 @@ const gm = ({
           }),
           r.jsx('p', {
             className: 'sino-simple-form__subtitle',
-            children: N
+            children: w
               ? a(
                   'simpleSubtitleShippingOnly',
                   'Answer a few key questions about your route, cargo and timing to get a tailored shipping plan.'
@@ -8748,7 +8748,7 @@ const gm = ({
       r.jsxs('h2', {
         className: 'sino-simple-form__section-title',
         children: [
-          r.jsx('span', { className: 'sino-simple-form__section-step', children: w ?? 'Step 0' }),
+          r.jsx('span', { className: 'sino-simple-form__section-step', children: N ?? 'Step 0' }),
           r.jsx('span', {
             children: a('simpleServicesStepTitle', 'What do you need help with from China?'),
           }),
@@ -9034,11 +9034,11 @@ const gm = ({
                 {
                   type: 'button',
                   className: `sino-simple-chip sino-simple-chip--service-${h.key}${l.servicesRequested[h.key] ? ' sino-simple-chip--active' : ''}`,
-                  onClick: () => f(h.key),
+                  onClick: () => m(h.key),
                   'aria-pressed': l.servicesRequested[h.key] ? 'true' : 'false',
                   'aria-label': `${h.label}${l.servicesRequested[h.key] ? ', selected' : ', not selected'}`,
                   onKeyDown: (O) => {
-                    (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), f(h.key));
+                    (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), m(h.key));
                   },
                   children: [
                     r.jsx('span', {
@@ -9123,14 +9123,14 @@ function vm(l) {
       return [];
   }
 }
-function nl(l, c) {
+function ic(l, c) {
   const a = vm(l);
   if (a.length === 0)
     return l === 'services'
       ? { filled: 1, total: 1, percentage: 100 }
       : { filled: 0, total: 0, percentage: 0 };
-  let w = 0,
-    N = 0;
+  let N = 0,
+    w = 0;
   for (const j of a)
     if (
       j === 'sourcing' ||
@@ -9139,20 +9139,20 @@ function nl(l, c) {
       j === 'qc' ||
       j === 'chinaVisit'
     ) {
-      const f = c[j];
-      if (f && typeof f == 'object' && !Array.isArray(f)) {
-        const h = Object.entries(f);
-        for (const [, O] of h) (N++, os(O) && w++);
+      const m = c[j];
+      if (m && typeof m == 'object' && !Array.isArray(m)) {
+        const h = Object.entries(m);
+        for (const [, O] of h) (w++, os(O) && N++);
         h.length;
       }
-    } else if (j === 'totalWeight') (N++, os(c.totalWeight) && w++);
+    } else if (j === 'totalWeight') (w++, os(c.totalWeight) && N++);
     else {
-      N++;
-      const f = c[j];
-      os(f) && w++;
+      w++;
+      const m = c[j];
+      os(m) && N++;
     }
-  const C = N > 0 ? Math.round((w / N) * 100) : 0;
-  return { filled: w, total: N, percentage: C };
+  const C = w > 0 ? Math.round((N / w) * 100) : 0;
+  return { filled: N, total: w, percentage: C };
 }
 function ym(l, c) {
   switch (l) {
@@ -9178,9 +9178,9 @@ function ym(l, c) {
       return l;
   }
 }
-const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }) => {
-    const C = nl(l, c),
-      j = ym(l, N);
+const nl = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: N, t: w }) => {
+    const C = ic(l, c),
+      j = ym(l, w);
     return l === 'services' || C.total === 0
       ? null
       : r.jsxs('div', {
@@ -9192,7 +9192,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                 r.jsx('span', { className: 'sino-simple-form__step-progress-label', children: j }),
                 r.jsxs('span', {
                   className: 'sino-simple-form__step-progress-count',
-                  children: [C.filled, '/', C.total, ' ', N('stepProgressFields', 'fields')],
+                  children: [C.filled, '/', C.total, ' ', w('stepProgressFields', 'fields')],
                 }),
               ],
             }),
@@ -9211,7 +9211,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
           ],
         });
   },
-  Yu = [
+  Qu = [
     { name: 'John D.', location: 'France', text: 'Got my quote in 18h, very professional' },
     { name: 'Sarah M.', location: 'Germany', text: 'Clear communication and fast response time' },
     {
@@ -9222,7 +9222,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
   ],
   _m = ({ t: l, count: c = 2 }) => {
     const a = W.useMemo(
-      () => [...Yu].sort(() => Math.random() - 0.5).slice(0, Math.min(c, Yu.length)),
+      () => [...Qu].sort(() => Math.random() - 0.5).slice(0, Math.min(c, Qu.length)),
       [c]
     );
     return a.length === 0
@@ -9231,7 +9231,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
           className: 'sino-simple-form__testimonials',
           role: 'complementary',
           'aria-label': l('testimonialsAriaLabel', 'Customer testimonials'),
-          children: a.map((w, N) =>
+          children: a.map((N, w) =>
             r.jsx(
               'div',
               {
@@ -9241,16 +9241,16 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                   children: [
                     r.jsxs('p', {
                       className: 'sino-simple-form__testimonial-text',
-                      children: ['"', w.text, '"'],
+                      children: ['"', N.text, '"'],
                     }),
                     r.jsxs('p', {
                       className: 'sino-simple-form__testimonial-author',
-                      children: [w.name, ' — ', w.location],
+                      children: [N.name, ' — ', N.location],
                     }),
                   ],
                 }),
               },
-              `${w.name}-${N}`
+              `${N.name}-${w}`
             )
           ),
         });
@@ -9259,14 +9259,14 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
     formData: l,
     setFormData: c,
     t: a,
-    isFilled: w,
-    onChange: N,
+    isFilled: N,
+    onChange: w,
     onBlur: C,
     fieldErrors: j,
-    fieldTouched: f,
+    fieldTouched: m,
     firstNameRef: h,
     emailRef: O,
-    phoneRef: D,
+    phoneRef: K,
     stepLabel: z,
     currentStepIndex: b,
     totalSteps: Z,
@@ -9281,7 +9281,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
             r.jsx('span', { children: a('simpleStep5Title', 'Your details') }),
           ],
         }),
-        r.jsx(il, { stepId: 'contact', formData: l, currentStepIndex: b, totalSteps: Z, t: a }),
+        r.jsx(nl, { stepId: 'contact', formData: l, currentStepIndex: b, totalSteps: Z, t: a }),
         r.jsx('p', {
           className: 'sino-simple-form__hint',
           children: a(
@@ -9312,20 +9312,20 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                       children: [
                         { value: 'company', label: a('customerTypeCompany', 'Company') },
                         { value: 'individual', label: a('customerTypeIndividual', 'Individual') },
-                      ].map((H) =>
+                      ].map((Q) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.customerType === H.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.customerType === Q.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((Y) => ({
                                 ...Y,
-                                customerType: Y.customerType === H.value ? '' : H.value,
+                                customerType: Y.customerType === Q.value ? '' : Q.value,
                               })),
-                            children: H.label,
+                            children: Q.label,
                           },
-                          H.value
+                          Q.value
                         )
                       ),
                     }),
@@ -9351,30 +9351,30 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                           label: a('shipperMoreThan10', 'More than 10 shipments per year'),
                         },
                         { value: 'regular', label: a('shipperRegular', 'Regular shipper') },
-                      ].map((H) =>
+                      ].map((Q) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.shipperType === H.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.shipperType === Q.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((Y) => ({
                                 ...Y,
-                                shipperType: Y.shipperType === H.value ? '' : H.value,
+                                shipperType: Y.shipperType === Q.value ? '' : Q.value,
                               })),
-                            'aria-pressed': l.shipperType === H.value ? 'true' : 'false',
-                            'aria-label': `${H.label}${l.shipperType === H.value ? ', selected' : ', not selected'}`,
+                            'aria-pressed': l.shipperType === Q.value ? 'true' : 'false',
+                            'aria-label': `${Q.label}${l.shipperType === Q.value ? ', selected' : ', not selected'}`,
                             onKeyDown: (Y) => {
                               (Y.key === 'Enter' || Y.key === ' ') &&
                                 (Y.preventDefault(),
                                 c((P) => ({
                                   ...P,
-                                  shipperType: P.shipperType === H.value ? '' : H.value,
+                                  shipperType: P.shipperType === Q.value ? '' : Q.value,
                                 })));
                             },
-                            children: H.label,
+                            children: Q.label,
                           },
-                          H.value
+                          Q.value
                         )
                       ),
                     }),
@@ -9392,7 +9392,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
           className: 'sino-simple-form__fields sino-simple-form__fields--rows',
           children: [
             r.jsxs('div', {
-              className: `sino-simple-form__field${f.firstName && j.firstName ? ' sino-simple-form__field--error' : ''}${f.firstName && !j.firstName && w(l.firstName) ? ' sino-simple-form__field--success' : ''}`,
+              className: `sino-simple-form__field${m.firstName && j.firstName ? ' sino-simple-form__field--error' : ''}${m.firstName && !j.firstName && N(l.firstName) ? ' sino-simple-form__field--success' : ''}`,
               children: [
                 r.jsxs('label', {
                   className: 'sino-simple-form__label',
@@ -9410,25 +9410,25 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                   className: 'sino-simple-form__field-wrapper',
                   children: [
                     r.jsx('input', {
-                      className: `sino-simple-form__input${j.firstName ? ' sino-simple-form__input--error' : ''}${f.firstName && !j.firstName && w(l.firstName) ? ' sino-simple-form__input--success' : ''}`,
+                      className: `sino-simple-form__input${j.firstName ? ' sino-simple-form__input--error' : ''}${m.firstName && !j.firstName && N(l.firstName) ? ' sino-simple-form__input--success' : ''}`,
                       type: 'text',
                       name: 'firstName',
                       id: 'firstName',
                       ref: h,
                       value: l.firstName,
-                      onChange: N,
+                      onChange: w,
                       onBlur: () => C('firstName', l.firstName),
                       placeholder: a('firstNamePlaceholder', 'John'),
                       'aria-label': a('firstName', 'First name'),
                       'aria-describedby': j.firstName
                         ? 'firstName-error'
-                        : f.firstName && !j.firstName && w(l.firstName)
+                        : m.firstName && !j.firstName && N(l.firstName)
                           ? 'firstName-success'
                           : void 0,
                       'aria-invalid': j.firstName ? 'true' : 'false',
                       'aria-required': 'true',
                     }),
-                    f.firstName &&
+                    m.firstName &&
                       r.jsxs(r.Fragment, {
                         children: [
                           j.firstName &&
@@ -9472,7 +9472,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                               }),
                             }),
                           !j.firstName &&
-                            w(l.firstName) &&
+                            N(l.firstName) &&
                             r.jsx('span', {
                               className:
                                 'sino-simple-form__field-icon sino-simple-form__field-icon--success',
@@ -9513,9 +9513,9 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                     'aria-live': 'polite',
                     children: j.firstName,
                   }),
-                f.firstName &&
+                m.firstName &&
                   !j.firstName &&
-                  w(l.firstName) &&
+                  N(l.firstName) &&
                   r.jsx('p', {
                     id: 'firstName-success',
                     className: 'sino-simple-form__sr-only',
@@ -9538,7 +9538,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                   name: 'lastName',
                   id: 'lastName',
                   value: l.lastName,
-                  onChange: N,
+                  onChange: w,
                   placeholder: a('lastNamePlaceholder', 'Doe'),
                 }),
               ],
@@ -9563,13 +9563,13 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                   name: 'companyName',
                   id: 'companyName',
                   value: l.companyName,
-                  onChange: N,
+                  onChange: w,
                   placeholder: a('companyNamePlaceholder', 'Your company'),
                 }),
               ],
             }),
             r.jsxs('div', {
-              className: `sino-simple-form__field${f.email && j.email ? ' sino-simple-form__field--error' : ''}${f.email && !j.email && w(l.email) ? ' sino-simple-form__field--success' : ''}`,
+              className: `sino-simple-form__field${m.email && j.email ? ' sino-simple-form__field--error' : ''}${m.email && !j.email && N(l.email) ? ' sino-simple-form__field--success' : ''}`,
               children: [
                 r.jsxs('label', {
                   className: 'sino-simple-form__label',
@@ -9587,25 +9587,25 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                   className: 'sino-simple-form__field-wrapper',
                   children: [
                     r.jsx('input', {
-                      className: `sino-simple-form__input${j.email ? ' sino-simple-form__input--error' : ''}${f.email && !j.email && w(l.email) ? ' sino-simple-form__input--success' : ''}`,
+                      className: `sino-simple-form__input${j.email ? ' sino-simple-form__input--error' : ''}${m.email && !j.email && N(l.email) ? ' sino-simple-form__input--success' : ''}`,
                       type: 'email',
                       name: 'email',
                       id: 'email',
                       ref: O,
                       value: l.email,
-                      onChange: N,
+                      onChange: w,
                       onBlur: () => C('email', l.email),
                       placeholder: a('emailPlaceholder', 'you@example.com'),
                       'aria-label': a('email', 'Work email'),
                       'aria-describedby': j.email
                         ? 'email-error'
-                        : f.email && !j.email && w(l.email)
+                        : m.email && !j.email && N(l.email)
                           ? 'email-success'
                           : void 0,
                       'aria-invalid': j.email ? 'true' : 'false',
                       'aria-required': 'true',
                     }),
-                    f.email &&
+                    m.email &&
                       r.jsxs(r.Fragment, {
                         children: [
                           j.email &&
@@ -9649,7 +9649,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                               }),
                             }),
                           !j.email &&
-                            w(l.email) &&
+                            N(l.email) &&
                             r.jsx('span', {
                               className:
                                 'sino-simple-form__field-icon sino-simple-form__field-icon--success',
@@ -9690,9 +9690,9 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                     'aria-live': 'polite',
                     children: j.email,
                   }),
-                f.email &&
+                m.email &&
                   !j.email &&
-                  w(l.email) &&
+                  N(l.email) &&
                   r.jsx('p', {
                     id: 'email-success',
                     className: 'sino-simple-form__sr-only',
@@ -9702,7 +9702,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
               ],
             }),
             r.jsxs('div', {
-              className: `sino-simple-form__field${f.phone && j.phone ? ' sino-simple-form__field--error' : ''}${f.phone && !j.phone && w(l.phone) ? ' sino-simple-form__field--success' : ''}`,
+              className: `sino-simple-form__field${m.phone && j.phone ? ' sino-simple-form__field--error' : ''}${m.phone && !j.phone && N(l.phone) ? ' sino-simple-form__field--success' : ''}`,
               children: [
                 r.jsxs('label', {
                   className: 'sino-simple-form__label',
@@ -9720,25 +9720,25 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                   className: 'sino-simple-form__field-wrapper',
                   children: [
                     r.jsx('input', {
-                      className: `sino-simple-form__input${j.phone ? ' sino-simple-form__input--error' : ''}${f.phone && !j.phone && w(l.phone) ? ' sino-simple-form__input--success' : ''}`,
+                      className: `sino-simple-form__input${j.phone ? ' sino-simple-form__input--error' : ''}${m.phone && !j.phone && N(l.phone) ? ' sino-simple-form__input--success' : ''}`,
                       type: 'tel',
                       name: 'phone',
                       id: 'phone',
-                      ref: D,
+                      ref: K,
                       value: l.phone,
-                      onChange: N,
+                      onChange: w,
                       onBlur: () => C('phone', l.phone),
                       placeholder: a('phonePlaceholder', '+33…'),
                       'aria-label': a('phone', 'Phone number (with country code)'),
                       'aria-describedby': j.phone
                         ? 'phone-error'
-                        : f.phone && !j.phone && w(l.phone)
+                        : m.phone && !j.phone && N(l.phone)
                           ? 'phone-success'
                           : void 0,
                       'aria-invalid': j.phone ? 'true' : 'false',
                       'aria-required': 'true',
                     }),
-                    f.phone &&
+                    m.phone &&
                       r.jsxs(r.Fragment, {
                         children: [
                           j.phone &&
@@ -9782,7 +9782,7 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                               }),
                             }),
                           !j.phone &&
-                            w(l.phone) &&
+                            N(l.phone) &&
                             r.jsx('span', {
                               className:
                                 'sino-simple-form__field-icon sino-simple-form__field-icon--success',
@@ -9823,9 +9823,9 @@ const il = ({ stepId: l, formData: c, currentStepIndex: a, totalSteps: w, t: N }
                     'aria-live': 'polite',
                     children: j.phone,
                   }),
-                f.phone &&
+                m.phone &&
                   !j.phone &&
-                  w(l.phone) &&
+                  N(l.phone) &&
                   r.jsx('p', {
                     id: 'phone-success',
                     className: 'sino-simple-form__sr-only',
@@ -10126,13 +10126,13 @@ function km(l) {
   const c = { ...l },
     a = Qt.find((Z) => Z.code === l.country);
   a && (c.country = a.name);
-  const N = [...wm, ...Nm, ...jm].find((Z) => Z.code === l.origin);
-  N && (c.origin = N.name);
+  const w = [...wm, ...Nm, ...jm].find((Z) => Z.code === l.origin);
+  w && (c.origin = w.name);
   const C = new Date(),
     j = C.toLocaleDateString('en-CA', { timeZone: 'Asia/Hong_Kong' }),
-    f = C.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hourCycle: 'h23' }),
-    h = `${j}T${f}+08:00`,
-    D = `form-${l.country || 'N/A'}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    m = C.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hourCycle: 'h23' }),
+    h = `${j}T${m}+08:00`,
+    K = `form-${l.country || 'N/A'}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     z = [];
   (l.servicesRequested.shipping && z.push('Shipping from China'),
     l.servicesRequested.sourcing && z.push('Product Sourcing'),
@@ -10142,7 +10142,7 @@ function km(l) {
     l.servicesRequested.chinaVisits && z.push('China Business Visit'),
     l.servicesRequested.other && z.push('Other Project'));
   const b = {
-    submissionId: D,
+    submissionId: K,
     timestamp: h,
     servicesList: z,
     contact: {
@@ -10163,7 +10163,7 @@ function km(l) {
       originCity: c.city,
       originZipCode: c.zipCode,
       originLocationType: c.locationType,
-      originPortOfLoading: N ? N.name : c.origin,
+      originPortOfLoading: w ? w.name : c.origin,
       shippingMode: c.mode,
       incoterm: c.incoterm,
     },
@@ -10188,10 +10188,10 @@ function km(l) {
     chinaVisit: c.chinaVisit,
     otherProject: c.otherProject,
   };
-  return { submissionId: D, timestamp: h, payload: b };
+  return { submissionId: K, timestamp: h, payload: b };
 }
 async function Sm(l, c) {
-  const w =
+  const N =
     typeof window < 'u' && window.location.hostname === 'localhost'
       ? '/api/n8n'
       : 'https://n8n.srv783609.hstgr.cloud/webhook/5e52c71e-b113-4b3c-8c7d-91c78496ea91';
@@ -10201,38 +10201,38 @@ async function Sm(l, c) {
     hasPhone: !!l.phone,
   });
   try {
-    const N = await fetch(w, {
+    const w = await fetch(N, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(l),
     });
-    if (!N.ok) {
+    if (!w.ok) {
       let C = '';
       try {
-        C = await N.text();
+        C = await w.text();
       } catch {
         C = 'Unknown error';
       }
-      const j = N.status;
+      const j = w.status;
       console.error('[submitFormData] Webhook failed:', j, C);
-      const f = `We could not send your quote request (status ${j}). Please try again in a few minutes or contact us directly.`;
-      throw (c && c(f), new Error(f));
+      const m = `We could not send your quote request (status ${j}). Please try again in a few minutes or contact us directly.`;
+      throw (c && c(m), new Error(m));
     }
     return (
-      console.log('[submitFormData] Webhook succeeded:', N.status),
+      console.log('[submitFormData] Webhook succeeded:', w.status),
       console.log('[submitFormData] Submission successful, submissionId:', l.submissionId),
       l.submissionId
     );
-  } catch (N) {
+  } catch (w) {
     if (
-      (console.error('[submitFormData] Unexpected error during submission:', N),
-      N instanceof Error && N.message.includes('status'))
+      (console.error('[submitFormData] Unexpected error during submission:', w),
+      w instanceof Error && w.message.includes('status'))
     )
-      throw N;
-    if (N instanceof Error && N.name === 'TypeError' && N.message.includes('fetch')) {
+      throw w;
+    if (w instanceof Error && w.name === 'TypeError' && w.message.includes('fetch')) {
       const j =
         'Network error: Could not reach our servers. Please check your internet connection and try again.';
-      throw (console.error('[submitFormData] Network error:', N), c && c(j), new Error(j));
+      throw (console.error('[submitFormData] Network error:', w), c && c(j), new Error(j));
     }
     const C =
       'Something went wrong while sending your request. Please try again in a moment or contact us directly.';
@@ -10240,14 +10240,14 @@ async function Sm(l, c) {
   }
 }
 function tc(l) {
-  var N;
+  var w;
   if (!l || typeof l != 'string') return { valid: !1, error: 'Email is required' };
   const c = l.trim();
   if (c.length === 0) return { valid: !1, error: 'Email is required' };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c))
     return { valid: !1, error: 'Please enter a valid email address' };
-  const w = (N = c.split('@')[1]) == null ? void 0 : N.toLowerCase();
-  if (w) {
+  const N = (w = c.split('@')[1]) == null ? void 0 : w.toLowerCase();
+  if (N) {
     const C = {
       'gmial.com': 'gmail.com',
       'gmai.com': 'gmail.com',
@@ -10255,7 +10255,7 @@ function tc(l) {
       'yaho.com': 'yahoo.com',
       'hotmial.com': 'hotmail.com',
     };
-    if (C[w]) return { valid: !1, error: `Did you mean ${c.split('@')[0]}@${C[w]}?` };
+    if (C[N]) return { valid: !1, error: `Did you mean ${c.split('@')[0]}@${C[N]}?` };
   }
   return { valid: !0 };
 }
@@ -10263,7 +10263,7 @@ function rc(l) {
   if (!l || typeof l != 'string') return { valid: !1, error: 'Phone number is required' };
   const c = l.trim();
   if (c.length === 0) return { valid: !1, error: 'Phone number is required' };
-  const a = c.replace(/[\s\-\(\)]/g, '');
+  const a = c.replace(/[\s\-()]/g, '');
   if (!a.startsWith('+'))
     return { valid: !1, error: 'Please include country code (e.g., +33 for France, +1 for USA)' };
   if (a.length < 8)
@@ -10273,8 +10273,8 @@ function rc(l) {
     };
   if (a.length > 20)
     return { valid: !1, error: 'Phone number seems too long. Please check and try again' };
-  const w = a.substring(1);
-  return /^\d+$/.test(w)
+  const N = a.substring(1);
+  return /^\d+$/.test(N)
     ? { valid: !0 }
     : { valid: !1, error: 'Phone number should contain only numbers after the country code' };
 }
@@ -10287,20 +10287,20 @@ function sc(l, c) {
         ? { valid: !1, error: c ? `${c} is required` : 'This field is required' }
         : { valid: !0 };
 }
-function tl(l) {
+function il(l) {
   if (!l || typeof l != 'string') return { valid: !1, error: 'Destination country is required' };
   const c = l.trim();
   return c.length === 0
     ? { valid: !1, error: 'Destination country is required' }
     : /^[A-Z]{2,3}$/i.test(c)
-      ? Qt.find((N) => N.code.toUpperCase() === c.toUpperCase())
+      ? Qt.find((w) => w.code.toUpperCase() === c.toUpperCase())
         ? { valid: !0 }
         : { valid: !1, error: 'Please enter a valid country code' }
       : c.length <= 2
         ? { valid: !1, error: 'Country name is too short' }
         : { valid: !0 };
 }
-function rl(l) {
+function tl(l) {
   if (!l || typeof l != 'string') return { valid: !1, error: 'City or port is required' };
   const c = l.trim();
   return c.length === 0
@@ -10314,22 +10314,22 @@ function oc(l) {
   const c = typeof l == 'number' ? l.toString() : String(l).trim();
   if (c.length === 0) return { valid: !1, error: 'Total weight is required' };
   const a = c.replace(/[\s,]/g, ''),
-    w = parseFloat(a);
-  return isNaN(w)
+    N = parseFloat(a);
+  return isNaN(N)
     ? { valid: !1, error: 'Please enter a valid weight (numbers only)' }
-    : w <= 0
+    : N <= 0
       ? { valid: !1, error: 'Weight must be greater than 0' }
-      : w > 1e6
+      : N > 1e6
         ? { valid: !1, error: 'Weight seems too high. Please check and try again' }
         : { valid: !0 };
 }
-function ol(l, c) {
+function sl(l, c) {
   const a = {};
   switch (l) {
     case 'services':
       break;
     case 'shippingRoute':
-      ((a.country = tl(c.country)), (a.destCity = rl(c.destCity)));
+      ((a.country = il(c.country)), (a.destCity = tl(c.destCity)));
       break;
     case 'shippingCargo':
       a.totalWeight = oc(c.totalWeight);
@@ -10343,8 +10343,8 @@ function ol(l, c) {
   return a;
 }
 function Cm(l, c) {
-  const a = ol(l, c);
-  return Object.values(a).every((w) => w.valid);
+  const a = sl(l, c);
+  return Object.values(a).every((N) => N.valid);
 }
 const Pm = [
     { code: 'SHA', name: 'Shanghai', type: 'sea' },
@@ -10377,19 +10377,19 @@ const Pm = [
     { code: 'WUH', name: 'Wuhan Rail Terminal', type: 'rail' },
     { code: 'CDU', name: 'Chengdu Rail Terminal', type: 'rail' },
   ],
-  Lm = ({ formData: l, t: c, selectedServiceLabels: a, orderedSteps: w, onEditStep: N }) => {
+  Lm = ({ formData: l, t: c, selectedServiceLabels: a, orderedSteps: N, onEditStep: w }) => {
     var z;
     const C = (b) => {
         if (!b) return '';
-        const Z = Qt.find((H) => H.code === b || H.name === b);
+        const Z = Qt.find((Q) => Q.code === b || Q.name === b);
         return Z ? Z.name : b;
       },
       j = (b) => {
         if (!b) return '';
-        const H = [...Pm, ...Tm, ...Em].find((Y) => Y.code === b);
-        return H ? H.name : b;
+        const Q = [...Pm, ...Tm, ...Em].find((Y) => Y.code === b);
+        return Q ? Q.name : b;
       },
-      f = (b) =>
+      m = (b) =>
         b
           ? {
               Sea: c('modeSea', 'Sea'),
@@ -10404,8 +10404,8 @@ const Pm = [
         const Z = String(b).trim();
         return Z ? `${Z} kg` : '';
       },
-      O = (b) => w.indexOf(b),
-      D =
+      O = (b) => N.indexOf(b),
+      K =
         ((z = l.servicesRequested) == null ? void 0 : z.shipping) === void 0
           ? !0
           : l.servicesRequested.shipping;
@@ -10437,7 +10437,7 @@ const Pm = [
                       r.jsx('button', {
                         type: 'button',
                         className: 'sino-simple-form__review-edit-button',
-                        onClick: () => N(O('services')),
+                        onClick: () => w(O('services')),
                         'aria-label': c('reviewEditServices', 'Edit services'),
                         children: c('reviewEdit', 'Edit'),
                       }),
@@ -10449,7 +10449,7 @@ const Pm = [
                   }),
                 ],
               }),
-            D &&
+            K &&
               (l.country || l.destCity || l.mode || l.origin) &&
               r.jsxs('div', {
                 className: 'sino-simple-form__review-item',
@@ -10464,7 +10464,7 @@ const Pm = [
                       r.jsx('button', {
                         type: 'button',
                         className: 'sino-simple-form__review-edit-button',
-                        onClick: () => N(O('shippingRoute')),
+                        onClick: () => w(O('shippingRoute')),
                         'aria-label': c('reviewEditRoute', 'Edit route'),
                         children: c('reviewEdit', 'Edit'),
                       }),
@@ -10494,7 +10494,7 @@ const Pm = [
                           children: [
                             r.jsxs('strong', { children: [c('reviewMode', 'Mode'), ':'] }),
                             ' ',
-                            f(l.mode),
+                            m(l.mode),
                           ],
                         }),
                       l.origin &&
@@ -10511,7 +10511,7 @@ const Pm = [
                   }),
                 ],
               }),
-            D &&
+            K &&
               (l.totalWeight || l.goodsDescription || l.numberOfUnits) &&
               r.jsxs('div', {
                 className: 'sino-simple-form__review-item',
@@ -10526,7 +10526,7 @@ const Pm = [
                       r.jsx('button', {
                         type: 'button',
                         className: 'sino-simple-form__review-edit-button',
-                        onClick: () => N(O('shippingCargo')),
+                        onClick: () => w(O('shippingCargo')),
                         'aria-label': c('reviewEditCargo', 'Edit cargo'),
                         children: c('reviewEdit', 'Edit'),
                       }),
@@ -10591,7 +10591,7 @@ const Pm = [
                       r.jsx('button', {
                         type: 'button',
                         className: 'sino-simple-form__review-edit-button',
-                        onClick: () => N(O('contact')),
+                        onClick: () => w(O('contact')),
                         'aria-label': c('reviewEditContact', 'Edit contact'),
                         children: c('reviewEdit', 'Edit'),
                       }),
@@ -10650,14 +10650,14 @@ const Pm = [
     formData: l,
     t: c,
     selectedServiceLabels: a,
-    submitError: w,
-    setSubmitError: N,
+    submitError: N,
+    setSubmitError: w,
     isSubmitting: C,
     setIsSubmitting: j,
-    scrollToFirstError: f,
+    scrollToFirstError: m,
     onSubmissionSuccess: h,
     setFieldErrors: O,
-    setFieldTouched: D,
+    setFieldTouched: K,
     orderedSteps: z,
     onEditStep: b,
   }) =>
@@ -10700,7 +10700,7 @@ const Pm = [
           r.jsxs('div', {
             className: 'sino-simple-form__footer-actions',
             children: [
-              w && r.jsx('p', { className: 'sino-simple-form__footer-error', children: w }),
+              N && r.jsx('p', { className: 'sino-simple-form__footer-error', children: N }),
               r.jsx('button', {
                 type: 'button',
                 className: 'sino-simple-form__cta-button',
@@ -10716,17 +10716,17 @@ const Pm = [
                       ((me = l.servicesRequested) == null ? void 0 : me.shipping) === void 0
                         ? !0
                         : l.servicesRequested.shipping,
-                    H = [];
-                  (Z && H.push('shippingRoute', 'shippingCargo'), H.push('contact'));
+                    Q = [];
+                  (Z && Q.push('shippingRoute', 'shippingCargo'), Q.push('contact'));
                   const Y = {},
                     P = {};
-                  for (const re of H) {
-                    const ue = ol(re, l);
+                  for (const re of Q) {
+                    const ue = sl(re, l);
                     Object.entries(ue).forEach(([fe, ve]) => {
                       !ve.valid && ve.error && ((Y[fe] = ve.error), (P[fe] = !0));
                     });
                   }
-                  if ((O(Y), D((re) => ({ ...re, ...P })), Object.keys(Y).length > 0)) {
+                  if ((O(Y), K((re) => ({ ...re, ...P })), Object.keys(Y).length > 0)) {
                     const re = Object.keys(Y);
                     console.error('[SimpleFooterSection] Validation failed for fields:', re);
                     const ue = re.length,
@@ -10740,16 +10740,16 @@ const Pm = [
                               'simpleSubmitErrorMultiple',
                               `Please complete ${ue} required fields before submitting.`
                             );
-                    (N(fe),
+                    (w(fe),
                       setTimeout(() => {
-                        f();
+                        m();
                       }, 100));
                     return;
                   }
                   (console.log(
                     '[SimpleFooterSection] All validations passed, starting submission...'
                   ),
-                    N(null),
+                    w(null),
                     j(!0));
                   let pe = !1;
                   try {
@@ -10760,7 +10760,7 @@ const Pm = [
                     const fe = await Sm(ue, (ve) => {
                       (console.error('[SimpleFooterSection] Error callback triggered:', ve),
                         (pe = !0),
-                        N(ve));
+                        w(ve));
                     });
                     (console.log(
                       '[SimpleFooterSection] Submission successful, calling onSubmissionSuccess with:',
@@ -10773,7 +10773,7 @@ const Pm = [
                       !pe && re instanceof Error)
                     ) {
                       const ue = re.message || 'An error occurred. Please try again.';
-                      (console.error('[SimpleFooterSection] Setting error message:', ue), N(ue));
+                      (console.error('[SimpleFooterSection] Setting error message:', ue), w(ue));
                     }
                   } finally {
                     j(!1);
@@ -10913,15 +10913,9 @@ const Pm = [
         ],
       }),
     });
-function bm(l, c, a, w) {
+function bm(l, c, a, N) {
   if (c - (l + 1) <= 0) return { minutes: 0, message: 'Almost done!', isAlmostDone: !0 };
-  let C = 0,
-    j = 0;
-  for (const z of a) {
-    const b = nl(z, w);
-    ((C += b.total), (j += b.filled));
-  }
-  const f = {
+  const C = {
     services: 15,
     shippingRoute: 45,
     shippingCargo: 60,
@@ -10932,28 +10926,28 @@ function bm(l, c, a, w) {
     qc: 45,
     chinaVisit: 60,
   };
-  let h = 0;
-  for (let z = l + 1; z < a.length; z++) {
-    const b = a[z],
-      Z = f[b] || 90,
-      H = nl(b, w),
-      Y = H.total > 0 ? H.filled / H.total : 0,
-      P = Z * (1 - Y * 0.5);
-    h += P;
+  let j = 0;
+  for (let O = l + 1; O < a.length; O++) {
+    const K = a[O],
+      z = C[K] || 90,
+      b = ic(K, N),
+      Z = b.total > 0 ? b.filled / b.total : 0,
+      Q = z * (1 - Z * 0.5);
+    j += Q;
   }
-  const O = Math.ceil(h / 60);
-  let D;
+  const m = Math.ceil(j / 60);
+  let h;
   return (
-    O <= 1
-      ? (D = 'Almost done!')
-      : O <= 2
-        ? (D = `~${O} minute${O > 1 ? 's' : ''} remaining`)
-        : (D = `~${O} minutes remaining`),
-    { minutes: O, message: D, isAlmostDone: O <= 1 }
+    m <= 1
+      ? (h = 'Almost done!')
+      : m <= 2
+        ? (h = `~${m} minute${m > 1 ? 's' : ''} remaining`)
+        : (h = `~${m} minutes remaining`),
+    { minutes: m, message: h, isAlmostDone: m <= 1 }
   );
 }
-const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, t: N }) => {
-    const C = W.useMemo(() => bm(l, c, a, w), [l, c, a, w]);
+const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: N, t: w }) => {
+    const C = W.useMemo(() => bm(l, c, a, N), [l, c, a, N]);
     return r.jsxs('div', {
       className: `sino-simple-form__time-estimate${C.isAlmostDone ? ' sino-simple-form__time-estimate--almost-done' : ''}`,
       role: 'status',
@@ -10990,8 +10984,8 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
         r.jsx('span', {
           className: 'sino-simple-form__time-estimate-text',
           children: C.isAlmostDone
-            ? N('timeEstimateAlmostDone', C.message)
-            : N('timeEstimateRemaining', C.message),
+            ? w('timeEstimateAlmostDone', C.message)
+            : w('timeEstimateRemaining', C.message),
         }),
       ],
     });
@@ -11000,11 +10994,11 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
     currentStep: l,
     totalSteps: c,
     onNext: a,
-    onPrevious: w,
-    isFirstStep: N,
+    onPrevious: N,
+    isFirstStep: w,
     isLastStep: C,
     orderedSteps: j,
-    formData: f,
+    formData: m,
     t: h,
   }) =>
     r.jsxs('div', {
@@ -11020,18 +11014,18 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
             }),
           }),
         }),
-        r.jsx(Mm, { currentStepIndex: l, totalSteps: c, orderedSteps: j, formData: f, t: h }),
+        r.jsx(Mm, { currentStepIndex: l, totalSteps: c, orderedSteps: j, formData: m, t: h }),
         r.jsxs('div', {
           className: 'sino-simple-form__step-buttons',
           children: [
-            !N &&
+            !w &&
               r.jsxs('button', {
                 type: 'button',
                 className: 'sino-simple-form__step-button sino-simple-form__step-button--previous',
-                onClick: w,
+                onClick: N,
                 'aria-label': h('previousStepAria', `Go to previous step, step ${l} of ${c}`),
                 onKeyDown: (O) => {
-                  (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), w());
+                  (O.key === 'Enter' || O.key === ' ') && (O.preventDefault(), N());
                 },
                 children: [
                   r.jsx('span', {
@@ -11511,22 +11505,22 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
       'South Tangerang',
     ],
   },
-  Zu = ({
+  Yu = ({
     id: l,
     name: c,
     value: a,
-    onChange: w,
-    onBlur: N,
+    onChange: N,
+    onBlur: w,
     onSelect: C,
     onSelectWithValidation: j,
-    placeholder: f,
+    placeholder: m,
     options: h,
     isLoading: O = !1,
-    className: D = '',
+    className: K = '',
     inputRef: z,
     error: b,
     touched: Z,
-    isValid: H,
+    isValid: Q,
     maxResults: Y = 10,
   }) => {
     const [P, I] = W.useState(!1),
@@ -11544,18 +11538,18 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
         return;
       }
       if (Ae) {
-        const p = h.find((k) => k.value === a);
-        ue(p ? p.label : a);
+        const f = h.find((k) => k.value === a);
+        ue(f ? f.label : a);
       } else ue(a);
     }, [a, h, Ae]);
     const X = h
-      .filter((p) => {
+      .filter((f) => {
         if (!re.trim()) return !1;
         const k = re.toLowerCase();
         return (
-          p.label.toLowerCase().includes(k) ||
-          p.value.toLowerCase().includes(k) ||
-          (Ae && p.value.toLowerCase() === k)
+          f.label.toLowerCase().includes(k) ||
+          f.value.toLowerCase().includes(k) ||
+          (Ae && f.value.toLowerCase() === k)
         );
       })
       .slice(0, Y);
@@ -11575,42 +11569,42 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
       [re, P]
     ),
       W.useEffect(() => {
-        const p = (k) => {
+        const f = (k) => {
           Ie.current && !Ie.current.contains(k.target) && (I(!1), me(-1));
         };
         if (P)
           return (
-            document.addEventListener('mousedown', p),
-            () => document.removeEventListener('mousedown', p)
+            document.addEventListener('mousedown', f),
+            () => document.removeEventListener('mousedown', f)
           );
       }, [P]));
-    const Te = (p) => {
-        const k = p.target.value;
-        (ue(k), w(p), I(!0), me(-1));
+    const Te = (f) => {
+        const k = f.target.value;
+        (ue(k), N(f), I(!0), me(-1));
       },
       Ve = () => {
         X.length > 0 && I(!0);
       },
-      Re = (p) => {
-        ((cn.current = !0), ue(p.label), I(!1), me(-1), j && j(p.value));
-        const k = { target: { name: c, value: p.value } };
-        (w(k),
-          C && C(p.value),
+      Re = (f) => {
+        ((cn.current = !0), ue(f.label), I(!1), me(-1), j && j(f.value));
+        const k = { target: { name: c, value: f.value } };
+        (N(k),
+          C && C(f.value),
           setTimeout(() => {
             cn.current = !1;
           }, 300));
       },
-      K = (p) => {
+      H = (f) => {
         var k;
         if (!P || X.length === 0) {
-          p.key === 'ArrowDown' && X.length > 0 && (I(!0), me(0));
+          f.key === 'ArrowDown' && X.length > 0 && (I(!0), me(0));
           return;
         }
-        switch (p.key) {
+        switch (f.key) {
           case 'ArrowDown':
-            (p.preventDefault(),
-              me((Q) => {
-                const ie = Q < X.length - 1 ? Q + 1 : Q;
+            (f.preventDefault(),
+              me((G) => {
+                const ie = G < X.length - 1 ? G + 1 : G;
                 if (Ge.current && ie >= 0) {
                   const se = Ge.current.children[ie];
                   se && se.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -11619,9 +11613,9 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
               }));
             break;
           case 'ArrowUp':
-            (p.preventDefault(),
-              me((Q) => {
-                const ie = Q > 0 ? Q - 1 : -1;
+            (f.preventDefault(),
+              me((G) => {
+                const ie = G > 0 ? G - 1 : -1;
                 if (Ge.current && ie >= 0) {
                   const se = Ge.current.children[ie];
                   se && se.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -11630,10 +11624,10 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
               }));
             break;
           case 'Enter':
-            (p.preventDefault(), pe >= 0 && pe < X.length && Re(X[pe]));
+            (f.preventDefault(), pe >= 0 && pe < X.length && Re(X[pe]));
             break;
           case 'Escape':
-            (p.preventDefault(), I(!1), me(-1), (k = z.current) == null || k.focus());
+            (f.preventDefault(), I(!1), me(-1), (k = z.current) == null || k.focus());
             break;
           case 'Tab':
             (I(!1), me(-1));
@@ -11642,7 +11636,7 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
       },
       F = O || fe,
       V = F && re.trim() && P,
-      A = F && !(Z && !b && H);
+      A = F && !(Z && !b && Q);
     return r.jsxs('div', {
       ref: Ie,
       className: 'sino-simple-form__autocomplete-wrapper',
@@ -11660,19 +11654,19 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
               onFocus: Ve,
               onBlur: () => {
                 setTimeout(() => {
-                  (cn.current || N(), I(!1), me(-1));
+                  (cn.current || w(), I(!1), me(-1));
                 }, 200);
               },
-              onKeyDown: K,
-              placeholder: f,
-              className: `sino-simple-form__input${b ? ' sino-simple-form__input--error' : ''}${Z && !b && H ? ' sino-simple-form__input--success' : ''}${F && !(Z && !b && H) ? ' sino-simple-form__input--loading' : ''}${D ? ` ${D}` : ''}`,
+              onKeyDown: H,
+              placeholder: m,
+              className: `sino-simple-form__input${b ? ' sino-simple-form__input--error' : ''}${Z && !b && Q ? ' sino-simple-form__input--success' : ''}${F && !(Z && !b && Q) ? ' sino-simple-form__input--loading' : ''}${K ? ` ${K}` : ''}`,
               autoComplete: 'off',
               'aria-autocomplete': 'list',
               'aria-expanded': P,
               'aria-haspopup': 'listbox',
               'aria-controls': `${l}-listbox`,
-              'aria-label': f,
-              'aria-describedby': b ? `${l}-error` : Z && !b && H ? `${l}-success` : void 0,
+              'aria-label': m,
+              'aria-describedby': b ? `${l}-error` : Z && !b && Q ? `${l}-success` : void 0,
               'aria-invalid': b ? 'true' : 'false',
               'aria-activedescendant': pe >= 0 ? `${l}-option-${pe}` : void 0,
             }),
@@ -11731,7 +11725,7 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
             children: V
               ? r.jsxs(r.Fragment, {
                   children: [
-                    Array.from({ length: 3 }).map((p, k) =>
+                    Array.from({ length: 3 }).map((f, k) =>
                       r.jsxs(
                         'li',
                         {
@@ -11759,7 +11753,7 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
                     }),
                   ],
                 })
-              : X.map((p, k) =>
+              : X.map((f, k) =>
                   r.jsxs(
                     'li',
                     {
@@ -11767,26 +11761,26 @@ const Mm = ({ currentStepIndex: l, totalSteps: c, orderedSteps: a, formData: w, 
                       className: `sino-simple-form__autocomplete-option${pe === k ? ' sino-simple-form__autocomplete-option--highlighted' : ''}`,
                       role: 'option',
                       'aria-selected': pe === k,
-                      onClick: () => Re(p),
+                      onClick: () => Re(f),
                       onMouseEnter: () => me(k),
-                      onKeyDown: (Q) => {
-                        (Q.key === 'Enter' || Q.key === ' ') && (Q.preventDefault(), Re(p));
+                      onKeyDown: (G) => {
+                        (G.key === 'Enter' || G.key === ' ') && (G.preventDefault(), Re(f));
                       },
                       tabIndex: -1,
                       children: [
-                        p.flag &&
+                        f.flag &&
                           r.jsx('span', {
                             className: 'sino-simple-form__autocomplete-flag',
                             'aria-hidden': 'true',
-                            children: p.flag,
+                            children: f.flag,
                           }),
                         r.jsx('span', {
                           className: 'sino-simple-form__autocomplete-label',
-                          children: p.label,
+                          children: f.label,
                         }),
                       ],
                     },
-                    p.value
+                    f.value
                   )
                 ),
           }),
@@ -11808,25 +11802,25 @@ function Jo(l, c) {
 }
 function Wm(l, c, a) {
   if (!l || !a || a <= 0) return { value: null, formatted: '' };
-  const w = ls(l.length),
-    N = ls(l.width),
+  const N = ls(l.length),
+    w = ls(l.width),
     C = ls(l.height);
-  if (!w || !N || !C) return { value: null, formatted: '' };
-  const j = Jo(w),
-    f = Jo(N),
+  if (!N || !w || !C) return { value: null, formatted: '' };
+  const j = Jo(N),
+    m = Jo(w),
     h = Jo(C),
-    D = j * f * h * a,
-    z = D.toFixed(3).replace(/\.?0+$/, '');
-  return { value: D, formatted: `${z} CBM` };
+    K = j * m * h * a,
+    z = K.toFixed(3).replace(/\.?0+$/, '');
+  return { value: K, formatted: `${z} CBM` };
 }
 function Am(l, c, a) {
   if (!l || !a || a <= 0) return { value: null, formatted: '' };
-  const w = ls(l);
-  if (!w) return { value: null, formatted: '' };
-  const N = w * a,
+  const N = ls(l);
+  if (!N) return { value: null, formatted: '' };
+  const w = N * a,
     C = c,
-    j = N.toLocaleString('en-US', { maximumFractionDigits: 2, useGrouping: !0 });
-  return { value: N, formatted: `${j} ${C}` };
+    j = w.toLocaleString('en-US', { maximumFractionDigits: 2, useGrouping: !0 });
+  return { value: w, formatted: `${j} ${C}` };
 }
 function Vm(l) {
   const c = Wm(l.dimensions, 'CM', l.numberOfUnits),
@@ -11834,19 +11828,19 @@ function Vm(l) {
   return { totalVolume: c, totalWeightFromUnits: a };
 }
 const Bm = ({ formData: l, setFormData: c, t: a }) => {
-    const w = W.useMemo(() => Vm(l), [l.dimensions, l.numberOfUnits, l.weightPerUnit]),
-      N = w.totalVolume.value !== null || w.totalWeightFromUnits.value !== null,
+    const N = W.useMemo(() => Vm(l), [l.dimensions, l.numberOfUnits, l.weightPerUnit]),
+      w = N.totalVolume.value !== null || N.totalWeightFromUnits.value !== null,
       C = W.useRef(!1);
     return (
       W.useEffect(() => {
-        if (w.totalWeightFromUnits.value !== null && !C.current) {
+        if (N.totalWeightFromUnits.value !== null && !C.current) {
           const j = l.totalWeight,
-            f = Math.round(w.totalWeightFromUnits.value).toString();
+            m = Math.round(N.totalWeightFromUnits.value).toString();
           if (!j || j.trim() === '') {
             C.current = !0;
             const h = setTimeout(() => {
               (c((O) =>
-                !O.totalWeight || O.totalWeight.trim() === '' ? { ...O, totalWeight: f } : O
+                !O.totalWeight || O.totalWeight.trim() === '' ? { ...O, totalWeight: m } : O
               ),
                 (C.current = !1));
             }, 1e3);
@@ -11855,8 +11849,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
             };
           }
         }
-      }, [w.totalWeightFromUnits.value, l.totalWeight, c]),
-      N
+      }, [N.totalWeightFromUnits.value, l.totalWeight, c]),
+      w
         ? r.jsxs('div', {
             className: 'sino-simple-form__cargo-calculations',
             children: [
@@ -11870,7 +11864,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
               r.jsxs('div', {
                 className: 'sino-simple-form__cargo-calculations-items',
                 children: [
-                  w.totalVolume.value !== null &&
+                  N.totalVolume.value !== null &&
                     r.jsxs('div', {
                       className: 'sino-simple-form__cargo-calculation-item',
                       children: [
@@ -11880,11 +11874,11 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                         }),
                         r.jsx('span', {
                           className: 'sino-simple-form__cargo-calculation-value',
-                          children: w.totalVolume.formatted,
+                          children: N.totalVolume.formatted,
                         }),
                       ],
                     }),
-                  w.totalWeightFromUnits.value !== null &&
+                  N.totalWeightFromUnits.value !== null &&
                     r.jsxs('div', {
                       className: 'sino-simple-form__cargo-calculation-item',
                       children: [
@@ -11894,7 +11888,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                         }),
                         r.jsx('span', {
                           className: 'sino-simple-form__cargo-calculation-value',
-                          children: w.totalWeightFromUnits.formatted,
+                          children: N.totalWeightFromUnits.formatted,
                         }),
                       ],
                     }),
@@ -11912,14 +11906,14 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
         : null
     );
   },
-  Xu = 'sinoSimpleFormSocialProofWidgetCollapsed',
+  Zu = 'sinoSimpleFormSocialProofWidgetCollapsed',
   $m = ({ t: l }) => {
     const [c, a] = W.useState(!1),
-      [w, N] = W.useState(!1);
+      [N, w] = W.useState(!1);
     W.useEffect(() => {
       if (typeof window > 'u') return;
       try {
-        window.localStorage.getItem(Xu) === 'true' && N(!0);
+        window.localStorage.getItem(Zu) === 'true' && w(!0);
       } catch {}
       const j = setTimeout(() => {
         a(!0);
@@ -11927,14 +11921,14 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
       return () => clearTimeout(j);
     }, []);
     const C = () => {
-      const j = !w;
-      if ((N(j), typeof window < 'u'))
+      const j = !N;
+      if ((w(j), typeof window < 'u'))
         try {
-          window.localStorage.setItem(Xu, String(j));
+          window.localStorage.setItem(Zu, String(j));
         } catch {}
     };
     return r.jsx('div', {
-      className: `sino-simple-form__social-proof-widget${c ? ' sino-simple-form__social-proof-widget--visible' : ''}${w ? ' sino-simple-form__social-proof-widget--collapsed' : ''}`,
+      className: `sino-simple-form__social-proof-widget${c ? ' sino-simple-form__social-proof-widget--visible' : ''}${N ? ' sino-simple-form__social-proof-widget--collapsed' : ''}`,
       role: 'complementary',
       'aria-label': l('socialProofAriaLabel', 'Social proof and trust indicators'),
       children: r.jsxs('div', {
@@ -11951,20 +11945,20 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                 type: 'button',
                 className: 'sino-simple-form__social-proof-widget-toggle',
                 onClick: C,
-                'aria-label': w
+                'aria-label': N
                   ? l('expandWidget', 'Expand widget')
                   : l('collapseWidget', 'Collapse widget'),
-                title: w
+                title: N
                   ? l('expandWidget', 'Expand widget')
                   : l('collapseWidget', 'Collapse widget'),
-                'aria-expanded': !w,
+                'aria-expanded': !N,
                 children: r.jsx('svg', {
                   width: '16',
                   height: '16',
                   viewBox: '0 0 24 24',
                   fill: 'none',
                   xmlns: 'http://www.w3.org/2000/svg',
-                  className: `sino-simple-form__social-proof-widget-toggle-icon${w ? ' sino-simple-form__social-proof-widget-toggle-icon--collapsed' : ''}`,
+                  className: `sino-simple-form__social-proof-widget-toggle-icon${N ? ' sino-simple-form__social-proof-widget-toggle-icon--collapsed' : ''}`,
                   children: r.jsx('polyline', {
                     points: '18 15 12 9 6 15',
                     stroke: 'currentColor',
@@ -11976,7 +11970,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
               }),
             ],
           }),
-          !w &&
+          !N &&
             r.jsxs('div', {
               className: 'sino-simple-form__social-proof-widget-items',
               children: [
@@ -12133,8 +12127,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
     formData: l,
     setFormData: c,
     t: a,
-    stepLabel: w,
-    showSourcingAdvanced: N,
+    stepLabel: N,
+    showSourcingAdvanced: w,
     setShowSourcingAdvanced: C,
     isQuickQuote: j = !1,
   }) =>
@@ -12149,7 +12143,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
               children: [
                 r.jsx('span', {
                   className: 'sino-simple-form__section-step',
-                  children: w ?? 'Step 1',
+                  children: N ?? 'Step 1',
                 }),
                 r.jsx('span', { children: a('simpleSourcingTitle', 'Product sourcing') }),
               ],
@@ -12177,10 +12171,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input sino-simple-form__input--textarea',
                       name: 'sourcingProductDescription',
                       value: l.sourcing.productDescription,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          sourcing: { ...h.sourcing, productDescription: f.target.value },
+                          sourcing: { ...h.sourcing, productDescription: m.target.value },
                         })),
                       placeholder: a(
                         'sourcingProductDescriptionPlaceholder',
@@ -12208,10 +12202,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'url',
                       value: l.sourcing.referenceLink,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          sourcing: { ...h.sourcing, referenceLink: f.target.value },
+                          sourcing: { ...h.sourcing, referenceLink: m.target.value },
                         })),
                       placeholder: a(
                         'sourcingReferenceLinkPlaceholder',
@@ -12237,12 +12231,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           type: 'number',
                           min: 0,
                           value: l.sourcing.targetPrice ?? '',
-                          onChange: (f) =>
+                          onChange: (m) =>
                             c((h) => ({
                               ...h,
                               sourcing: {
                                 ...h.sourcing,
-                                targetPrice: f.target.value ? Number(f.target.value) : null,
+                                targetPrice: m.target.value ? Number(m.target.value) : null,
                               },
                             })),
                           placeholder: a('sourcingTargetPricePlaceholder', 'e.g. 5.50'),
@@ -12251,10 +12245,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           className: 'sino-simple-form__input',
                           type: 'text',
                           value: l.sourcing.targetCurrency,
-                          onChange: (f) =>
+                          onChange: (m) =>
                             c((h) => ({
                               ...h,
-                              sourcing: { ...h.sourcing, targetCurrency: f.target.value },
+                              sourcing: { ...h.sourcing, targetCurrency: m.target.value },
                             })),
                           placeholder: a('sourcingTargetCurrencyPlaceholder', 'USD, EUR…'),
                         }),
@@ -12276,12 +12270,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       type: 'number',
                       min: 0,
                       value: l.sourcing.moq ?? '',
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
                           sourcing: {
                             ...h.sourcing,
-                            moq: f.target.value ? Number(f.target.value) : null,
+                            moq: m.target.value ? Number(m.target.value) : null,
                           },
                         })),
                       placeholder: a('sourcingMoqPlaceholder', 'Approximate number of units'),
@@ -12301,8 +12295,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: l.sourcing.platform,
-                      onChange: (f) =>
-                        c((h) => ({ ...h, sourcing: { ...h.sourcing, platform: f.target.value } })),
+                      onChange: (m) =>
+                        c((h) => ({ ...h, sourcing: { ...h.sourcing, platform: m.target.value } })),
                       placeholder: a(
                         'sourcingPlatformPlaceholder',
                         'Amazon FBA, Shopify store, wholesale, etc.'
@@ -12322,23 +12316,23 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       children: [
                         { value: !0, label: a('sourcingHasSupplierYes', 'Yes') },
                         { value: !1, label: a('sourcingHasSupplierNo', 'No') },
-                      ].map((f) =>
+                      ].map((m) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.sourcing.hasSupplier === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.sourcing.hasSupplier === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((h) => ({
                                 ...h,
                                 sourcing: {
                                   ...h.sourcing,
-                                  hasSupplier: h.sourcing.hasSupplier === f.value ? null : f.value,
+                                  hasSupplier: h.sourcing.hasSupplier === m.value ? null : m.value,
                                 },
                               })),
-                            children: f.label,
+                            children: m.label,
                           },
-                          String(f.value)
+                          String(m.value)
                         )
                       ),
                     }),
@@ -12357,10 +12351,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: l.sourcing.targetMarkets,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          sourcing: { ...h.sourcing, targetMarkets: f.target.value },
+                          sourcing: { ...h.sourcing, targetMarkets: m.target.value },
                         })),
                       placeholder: a(
                         'sourcingTargetMarketsPlaceholder',
@@ -12388,10 +12382,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: l.sourcing.requiredCertifications,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          sourcing: { ...h.sourcing, requiredCertifications: f.target.value },
+                          sourcing: { ...h.sourcing, requiredCertifications: m.target.value },
                         })),
                       placeholder: a(
                         'sourcingRequiredCertificationsPlaceholder',
@@ -12401,12 +12395,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                   ],
                 }),
                 r.jsxs('div', {
-                  className: `sino-simple-form__subsection${N ? ' sino-simple-form__subsection--open' : ''}`,
+                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
                   children: [
                     r.jsxs('button', {
                       type: 'button',
                       className: 'sino-simple-form__subsection-toggle',
-                      onClick: () => C((f) => !f),
+                      onClick: () => C((m) => !m),
                       children: [
                         r.jsxs('span', {
                           className: 'sino-simple-form__subsection-label',
@@ -12421,12 +12415,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           ],
                         }),
                         r.jsx('span', {
-                          className: `sino-simple-form__subsection-chevron${N ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
                           children: '▾',
                         }),
                       ],
                     }),
-                    N &&
+                    w &&
                       r.jsxs('div', {
                         className: 'sino-simple-form__fields sino-simple-form__fields--rows',
                         children: [
@@ -12443,10 +12437,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 className: 'sino-simple-form__input',
                                 type: 'text',
                                 value: l.sourcing.timeline || '',
-                                onChange: (f) =>
+                                onChange: (m) =>
                                   c((h) => ({
                                     ...h,
-                                    sourcing: { ...h.sourcing, timeline: f.target.value },
+                                    sourcing: { ...h.sourcing, timeline: m.target.value },
                                   })),
                                 placeholder: a(
                                   'sourcingTimelinePlaceholder',
@@ -12474,10 +12468,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 className: 'sino-simple-form__input',
                                 type: 'text',
                                 value: l.sourcing.qualityStandards || '',
-                                onChange: (f) =>
+                                onChange: (m) =>
                                   c((h) => ({
                                     ...h,
-                                    sourcing: { ...h.sourcing, qualityStandards: f.target.value },
+                                    sourcing: { ...h.sourcing, qualityStandards: m.target.value },
                                   })),
                                 placeholder: a(
                                   'sourcingQualityStandardsPlaceholder',
@@ -12505,12 +12499,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 className: 'sino-simple-form__input',
                                 type: 'text',
                                 value: l.sourcing.packagingRequirements || '',
-                                onChange: (f) =>
+                                onChange: (m) =>
                                   c((h) => ({
                                     ...h,
                                     sourcing: {
                                       ...h.sourcing,
-                                      packagingRequirements: f.target.value,
+                                      packagingRequirements: m.target.value,
                                     },
                                   })),
                                 placeholder: a(
@@ -12533,10 +12527,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 className:
                                   'sino-simple-form__input sino-simple-form__input--textarea',
                                 value: l.sourcing.notes || '',
-                                onChange: (f) =>
+                                onChange: (m) =>
                                   c((h) => ({
                                     ...h,
-                                    sourcing: { ...h.sourcing, notes: f.target.value },
+                                    sourcing: { ...h.sourcing, notes: m.target.value },
                                   })),
                                 placeholder: a(
                                   'sourcingAdvancedNotesPlaceholder',
@@ -12558,8 +12552,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
     formData: l,
     setFormData: c,
     t: a,
-    showWarehousingAdvanced: w,
-    setShowWarehousingAdvanced: N,
+    showWarehousingAdvanced: N,
+    setShowWarehousingAdvanced: w,
     stepLabel: C,
     isQuickQuote: j = !1,
   }) =>
@@ -12611,23 +12605,23 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           value: 'gt_3_months',
                           label: a('warehousingDurationGt3', 'More than 3 months'),
                         },
-                      ].map((f) =>
+                      ].map((m) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.warehousing.duration === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.warehousing.duration === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((h) => ({
                                 ...h,
                                 warehousing: {
                                   ...h.warehousing,
-                                  duration: h.warehousing.duration === f.value ? '' : f.value,
+                                  duration: h.warehousing.duration === m.value ? '' : m.value,
                                 },
                               })),
-                            children: f.label,
+                            children: m.label,
                           },
-                          f.value
+                          m.value
                         )
                       ),
                     }),
@@ -12647,12 +12641,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       type: 'number',
                       min: 0,
                       value: l.warehousing.skuCount ?? '',
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
                           warehousing: {
                             ...h.warehousing,
-                            skuCount: f.target.value ? Number(f.target.value) : null,
+                            skuCount: m.target.value ? Number(m.target.value) : null,
                           },
                         })),
                       placeholder: a('warehousingSkuCountPlaceholder', 'e.g. 10–50'),
@@ -12674,36 +12668,36 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       children: [
                         { value: !0, label: a('warehousingConsolidationYes', 'Yes') },
                         { value: !1, label: a('warehousingConsolidationNo', 'No') },
-                      ].map((f) =>
+                      ].map((m) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.warehousing.consolidation === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.warehousing.consolidation === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((h) => ({
                                 ...h,
                                 warehousing: {
                                   ...h.warehousing,
                                   consolidation:
-                                    h.warehousing.consolidation === f.value ? null : f.value,
+                                    h.warehousing.consolidation === m.value ? null : m.value,
                                 },
                               })),
-                            children: f.label,
+                            children: m.label,
                           },
-                          String(f.value)
+                          String(m.value)
                         )
                       ),
                     }),
                   ],
                 }),
                 r.jsxs('div', {
-                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+                  className: `sino-simple-form__subsection${N ? ' sino-simple-form__subsection--open' : ''}`,
                   children: [
                     r.jsxs('button', {
                       type: 'button',
                       className: 'sino-simple-form__subsection-toggle',
-                      onClick: () => N((f) => !f),
+                      onClick: () => w((m) => !m),
                       children: [
                         r.jsxs('span', {
                           className: 'sino-simple-form__subsection-label',
@@ -12721,12 +12715,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           ],
                         }),
                         r.jsx('span', {
-                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          className: `sino-simple-form__subsection-chevron${N ? ' sino-simple-form__subsection-chevron--open' : ''}`,
                           children: '▾',
                         }),
                       ],
                     }),
-                    w &&
+                    N &&
                       r.jsxs('div', {
                         className: 'sino-simple-form__fields sino-simple-form__fields--rows',
                         children: [
@@ -12761,8 +12755,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                     label: 'FBA Preparation',
                                   },
                                   { value: 'Other', label: 'Other' },
-                                ].map((f) => {
-                                  const h = l.warehousing.extraServices.includes(f.value);
+                                ].map((m) => {
+                                  const h = l.warehousing.extraServices.includes(m.value);
                                   return r.jsx(
                                     'button',
                                     {
@@ -12770,18 +12764,18 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                       className: `sino-simple-chip${h ? ' sino-simple-chip--active' : ''}`,
                                       onClick: () =>
                                         c((O) => {
-                                          const D = O.warehousing.extraServices,
+                                          const K = O.warehousing.extraServices,
                                             z = h
-                                              ? D.filter((b) => b !== f.value)
-                                              : [...D, f.value];
+                                              ? K.filter((b) => b !== m.value)
+                                              : [...K, m.value];
                                           return {
                                             ...O,
                                             warehousing: { ...O.warehousing, extraServices: z },
                                           };
                                         }),
-                                      children: f.label,
+                                      children: m.label,
                                     },
-                                    f.value
+                                    m.value
                                   );
                                 }),
                               }),
@@ -12800,10 +12794,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 className:
                                   'sino-simple-form__input sino-simple-form__input--textarea',
                                 value: l.warehousing.notes,
-                                onChange: (f) =>
+                                onChange: (m) =>
                                   c((h) => ({
                                     ...h,
-                                    warehousing: { ...h.warehousing, notes: f.target.value },
+                                    warehousing: { ...h.warehousing, notes: m.target.value },
                                   })),
                                 placeholder: a(
                                   'warehousingNotesPlaceholder',
@@ -12825,8 +12819,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
     formData: l,
     setFormData: c,
     t: a,
-    showDropshippingAdvanced: w,
-    setShowDropshippingAdvanced: N,
+    showDropshippingAdvanced: N,
+    setShowDropshippingAdvanced: w,
     stepLabel: C,
     isQuickQuote: j = !1,
   }) =>
@@ -12868,10 +12862,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       id: 'dropshippingProducts',
                       className: 'sino-simple-form__input sino-simple-form__input--textarea',
                       value: l.dropshipping.products,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          dropshipping: { ...h.dropshipping, products: f.target.value },
+                          dropshipping: { ...h.dropshipping, products: m.target.value },
                         })),
                       placeholder: a(
                         'dropshippingProductsPlaceholder',
@@ -12893,10 +12887,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: l.dropshipping.model,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          dropshipping: { ...h.dropshipping, model: f.target.value },
+                          dropshipping: { ...h.dropshipping, model: m.target.value },
                         })),
                       placeholder: a(
                         'dropshippingModelPlaceholder',
@@ -12928,10 +12922,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: l.dropshipping.customerCountries,
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          dropshipping: { ...h.dropshipping, customerCountries: f.target.value },
+                          dropshipping: { ...h.dropshipping, customerCountries: m.target.value },
                         })),
                       placeholder: a(
                         'dropshippingCustomerCountriesPlaceholder',
@@ -12954,12 +12948,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       type: 'number',
                       min: 0,
                       value: l.dropshipping.dailyOrders ?? '',
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
                           dropshipping: {
                             ...h.dropshipping,
-                            dailyOrders: f.target.value ? Number(f.target.value) : null,
+                            dailyOrders: m.target.value ? Number(m.target.value) : null,
                           },
                         })),
                       placeholder: a('dropshippingDailyOrdersPlaceholder', 'e.g. 20'),
@@ -12981,36 +12975,36 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       children: [
                         { value: !0, label: a('dropshippingHasCatalogYes', 'Yes') },
                         { value: !1, label: a('dropshippingHasCatalogNo', 'No') },
-                      ].map((f) =>
+                      ].map((m) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.dropshipping.hasCatalog === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.dropshipping.hasCatalog === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((h) => ({
                                 ...h,
                                 dropshipping: {
                                   ...h.dropshipping,
                                   hasCatalog:
-                                    h.dropshipping.hasCatalog === f.value ? null : f.value,
+                                    h.dropshipping.hasCatalog === m.value ? null : m.value,
                                 },
                               })),
-                            children: f.label,
+                            children: m.label,
                           },
-                          String(f.value)
+                          String(m.value)
                         )
                       ),
                     }),
                   ],
                 }),
                 r.jsxs('div', {
-                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+                  className: `sino-simple-form__subsection${N ? ' sino-simple-form__subsection--open' : ''}`,
                   children: [
                     r.jsxs('button', {
                       type: 'button',
                       className: 'sino-simple-form__subsection-toggle',
-                      onClick: () => N((f) => !f),
+                      onClick: () => w((m) => !m),
                       children: [
                         r.jsxs('span', {
                           className: 'sino-simple-form__subsection-label',
@@ -13028,12 +13022,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           ],
                         }),
                         r.jsx('span', {
-                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          className: `sino-simple-form__subsection-chevron${N ? ' sino-simple-form__subsection-chevron--open' : ''}`,
                           children: '▾',
                         }),
                       ],
                     }),
-                    w &&
+                    N &&
                       r.jsxs('div', {
                         className: 'sino-simple-form__fields sino-simple-form__fields--rows',
                         children: [
@@ -13052,26 +13046,26 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 children: [
                                   { value: !0, label: a('dropshippingBrandingNeededYes', 'Yes') },
                                   { value: !1, label: a('dropshippingBrandingNeededNo', 'No') },
-                                ].map((f) =>
+                                ].map((m) =>
                                   r.jsx(
                                     'button',
                                     {
                                       type: 'button',
-                                      className: `sino-simple-chip${l.dropshipping.brandingNeeded === f.value ? ' sino-simple-chip--active' : ''}`,
+                                      className: `sino-simple-chip${l.dropshipping.brandingNeeded === m.value ? ' sino-simple-chip--active' : ''}`,
                                       onClick: () =>
                                         c((h) => ({
                                           ...h,
                                           dropshipping: {
                                             ...h.dropshipping,
                                             brandingNeeded:
-                                              h.dropshipping.brandingNeeded === f.value
+                                              h.dropshipping.brandingNeeded === m.value
                                                 ? null
-                                                : f.value,
+                                                : m.value,
                                           },
                                         })),
-                                      children: f.label,
+                                      children: m.label,
                                     },
-                                    String(f.value)
+                                    String(m.value)
                                   )
                                 ),
                               }),
@@ -13090,10 +13084,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                 className:
                                   'sino-simple-form__input sino-simple-form__input--textarea',
                                 value: l.dropshipping.notes,
-                                onChange: (f) =>
+                                onChange: (m) =>
                                   c((h) => ({
                                     ...h,
-                                    dropshipping: { ...h.dropshipping, notes: f.target.value },
+                                    dropshipping: { ...h.dropshipping, notes: m.target.value },
                                   })),
                                 placeholder: a(
                                   'dropshippingNotesPlaceholder',
@@ -13115,8 +13109,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
     formData: l,
     setFormData: c,
     t: a,
-    showQcAdvanced: w,
-    setShowQcAdvanced: N,
+    showQcAdvanced: N,
+    setShowQcAdvanced: w,
     stepLabel: C,
     isQuickQuote: j = !1,
   }) =>
@@ -13164,20 +13158,20 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                         },
                         { value: 'pre_shipment', label: a('qcTypePreShipment', 'Pre-shipment') },
                         { value: 'factory_audit', label: a('qcTypeFactoryAudit', 'Factory audit') },
-                      ].map((f) =>
+                      ].map((m) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.qc.type === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.qc.type === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((h) => ({
                                 ...h,
-                                qc: { ...h.qc, type: h.qc.type === f.value ? '' : f.value },
+                                qc: { ...h.qc, type: h.qc.type === m.value ? '' : m.value },
                               })),
-                            children: f.label,
+                            children: m.label,
                           },
-                          f.value
+                          m.value
                         )
                       ),
                     }),
@@ -13196,23 +13190,23 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                         { value: 'not_started', label: a('qcStageNotStarted', 'Not started') },
                         { value: 'in_progress', label: a('qcStageInProgress', 'In progress') },
                         { value: 'finished', label: a('qcStageFinished', 'Finished') },
-                      ].map((f) =>
+                      ].map((m) =>
                         r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${l.qc.productionStage === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${l.qc.productionStage === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((h) => ({
                                 ...h,
                                 qc: {
                                   ...h.qc,
-                                  productionStage: h.qc.productionStage === f.value ? '' : f.value,
+                                  productionStage: h.qc.productionStage === m.value ? '' : m.value,
                                 },
                               })),
-                            children: f.label,
+                            children: m.label,
                           },
-                          f.value
+                          m.value
                         )
                       ),
                     }),
@@ -13238,8 +13232,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: l.qc.factoryCity,
-                      onChange: (f) =>
-                        c((h) => ({ ...h, qc: { ...h.qc, factoryCity: f.target.value } })),
+                      onChange: (m) =>
+                        c((h) => ({ ...h, qc: { ...h.qc, factoryCity: m.target.value } })),
                       placeholder: a('qcFactoryCityPlaceholder', 'e.g. Shenzhen, Ningbo, Yiwu…'),
                     }),
                   ],
@@ -13263,18 +13257,18 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'date',
                       value: l.qc.preferredDate,
-                      onChange: (f) =>
-                        c((h) => ({ ...h, qc: { ...h.qc, preferredDate: f.target.value } })),
+                      onChange: (m) =>
+                        c((h) => ({ ...h, qc: { ...h.qc, preferredDate: m.target.value } })),
                     }),
                   ],
                 }),
                 r.jsxs('div', {
-                  className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+                  className: `sino-simple-form__subsection${N ? ' sino-simple-form__subsection--open' : ''}`,
                   children: [
                     r.jsxs('button', {
                       type: 'button',
                       className: 'sino-simple-form__subsection-toggle',
-                      onClick: () => N((f) => !f),
+                      onClick: () => w((m) => !m),
                       children: [
                         r.jsxs('span', {
                           className: 'sino-simple-form__subsection-label',
@@ -13289,12 +13283,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           ],
                         }),
                         r.jsx('span', {
-                          className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                          className: `sino-simple-form__subsection-chevron${N ? ' sino-simple-form__subsection-chevron--open' : ''}`,
                           children: '▾',
                         }),
                       ],
                     }),
-                    w &&
+                    N &&
                       r.jsx('div', {
                         className: 'sino-simple-form__fields sino-simple-form__fields--rows',
                         children: r.jsxs('div', {
@@ -13310,8 +13304,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                               className:
                                 'sino-simple-form__input sino-simple-form__input--textarea',
                               value: l.qc.notes,
-                              onChange: (f) =>
-                                c((h) => ({ ...h, qc: { ...h.qc, notes: f.target.value } })),
+                              onChange: (m) =>
+                                c((h) => ({ ...h, qc: { ...h.qc, notes: m.target.value } })),
                               placeholder: a(
                                 'qcNotesPlaceholder',
                                 'Product type, quantities, deadlines, specific checkpoints…'
@@ -13331,13 +13325,13 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
     formData: l,
     setFormData: c,
     t: a,
-    showChinaVisitLogistics: w,
-    setShowChinaVisitLogistics: N,
+    showChinaVisitLogistics: N,
+    setShowChinaVisitLogistics: w,
     stepLabel: C,
   }) => {
     if (!l.servicesRequested.chinaVisits) return null;
     const j = l.chinaVisit.visitType,
-      f = (P) => {
+      m = (P) => {
         c((I) => {
           const pe = I.chinaVisit.visitType,
             re = pe.includes(P) ? pe.filter((ue) => ue !== P) : [...pe, P];
@@ -13346,16 +13340,16 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
       },
       h = j.includes('Canton Fair'),
       O = j.includes('Yiwu Market'),
-      D = j.includes('Factory Visits'),
+      K = j.includes('Factory Visits'),
       z = j.includes('Other Trade Fair'),
-      b = D || z,
+      b = K || z,
       Z = j.length > 0,
       Y =
-        h && !O && !D && !z
+        h && !O && !K && !z
           ? 'Guangzhou'
-          : O && !h && !D && !z
+          : O && !h && !K && !z
             ? 'Yiwu'
-            : h && O && !D && !z
+            : h && O && !K && !z
               ? 'Guangzhou, Yiwu'
               : '';
     return r.jsxs('section', {
@@ -13409,7 +13403,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       {
                         type: 'button',
                         className: `sino-simple-chip${I ? ' sino-simple-chip--active' : ''}`,
-                        onClick: () => f(P.value),
+                        onClick: () => m(P.value),
                         'aria-pressed': I ? 'true' : 'false',
                         children: P.label,
                       },
@@ -13502,7 +13496,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                   }),
                 ],
               }),
-            D &&
+            K &&
               r.jsxs('div', {
                 className: 'sino-simple-form__field',
                 children: [
@@ -13576,11 +13570,11 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                     className: 'sino-simple-form__label',
                     htmlFor: 'chinaVisitOtherCities',
                     children: [
-                      D && !h && !O
+                      K && !h && !O
                         ? a('chinaVisitFactoryCities', 'Cities/regions to visit')
                         : a('chinaVisitOtherCities', 'Other cities to visit'),
                       ' ',
-                      !(D && !h && !O) &&
+                      !(K && !h && !O) &&
                         r.jsx('span', {
                           className: 'sino-simple-form__label-hint',
                           children: a('ifApplicable', 'if applicable'),
@@ -13718,13 +13712,13 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
               ],
             }),
             r.jsxs('div', {
-              className: `sino-simple-form__subsection${w ? ' sino-simple-form__subsection--open' : ''}`,
+              className: `sino-simple-form__subsection${N ? ' sino-simple-form__subsection--open' : ''}`,
               children: [
                 r.jsxs('button', {
                   type: 'button',
                   className: 'sino-simple-form__subsection-toggle',
-                  onClick: () => N((P) => !P),
-                  'aria-expanded': w,
+                  onClick: () => w((P) => !P),
+                  'aria-expanded': N,
                   children: [
                     r.jsxs('span', {
                       className: 'sino-simple-form__subsection-label',
@@ -13739,12 +13733,12 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       ],
                     }),
                     r.jsx('span', {
-                      className: `sino-simple-form__subsection-chevron${w ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                      className: `sino-simple-form__subsection-chevron${N ? ' sino-simple-form__subsection-chevron--open' : ''}`,
                       children: '▾',
                     }),
                   ],
                 }),
-                w &&
+                N &&
                   r.jsxs('div', {
                     className: 'sino-simple-form__fields sino-simple-form__fields--rows',
                     children: [
@@ -13871,8 +13865,8 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
       ],
     });
   },
-  Km = ({ formData: l, setFormData: c, t: a, stepLabel: w }) => {
-    var N, C, j;
+  Km = ({ formData: l, setFormData: c, t: a, stepLabel: N }) => {
+    var w, C, j;
     return r.jsx(r.Fragment, {
       children:
         l.servicesRequested.other &&
@@ -13884,7 +13878,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
               children: [
                 r.jsx('span', {
                   className: 'sino-simple-form__section-step',
-                  children: w ?? 'Step',
+                  children: N ?? 'Step',
                 }),
                 r.jsx('span', { children: a('simpleOtherTitle', 'Tell us about your project') }),
               ],
@@ -13923,13 +13917,13 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                         },
                         { value: 'partnership', label: a('otherTypePartnership', 'Partnership') },
                         { value: 'other', label: a('otherTypeOther', 'Other') },
-                      ].map((f) => {
-                        var h, O, D;
+                      ].map((m) => {
+                        var h, O, K;
                         return r.jsx(
                           'button',
                           {
                             type: 'button',
-                            className: `sino-simple-chip${((h = l.otherProject) == null ? void 0 : h.projectType) === f.value ? ' sino-simple-chip--active' : ''}`,
+                            className: `sino-simple-chip${((h = l.otherProject) == null ? void 0 : h.projectType) === m.value ? ' sino-simple-chip--active' : ''}`,
                             onClick: () =>
                               c((z) => {
                                 var b;
@@ -13939,17 +13933,17 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                     ...z.otherProject,
                                     projectType:
                                       ((b = z.otherProject) == null ? void 0 : b.projectType) ===
-                                      f.value
+                                      m.value
                                         ? ''
-                                        : f.value,
+                                        : m.value,
                                   },
                                 };
                               }),
                             'aria-pressed':
-                              ((O = l.otherProject) == null ? void 0 : O.projectType) === f.value
+                              ((O = l.otherProject) == null ? void 0 : O.projectType) === m.value
                                 ? 'true'
                                 : 'false',
-                            'aria-label': `${f.label}${((D = l.otherProject) == null ? void 0 : D.projectType) === f.value ? ', selected' : ', not selected'}`,
+                            'aria-label': `${m.label}${((K = l.otherProject) == null ? void 0 : K.projectType) === m.value ? ', selected' : ', not selected'}`,
                             onKeyDown: (z) => {
                               (z.key === 'Enter' || z.key === ' ') &&
                                 (z.preventDefault(),
@@ -13961,16 +13955,16 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                                       ...b.otherProject,
                                       projectType:
                                         ((Z = b.otherProject) == null ? void 0 : Z.projectType) ===
-                                        f.value
+                                        m.value
                                           ? ''
-                                          : f.value,
+                                          : m.value,
                                     },
                                   };
                                 }));
                             },
-                            children: f.label,
+                            children: m.label,
                           },
-                          f.value
+                          m.value
                         );
                       }),
                     }),
@@ -13995,11 +13989,11 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       id: 'otherProjectDescription',
                       className: 'sino-simple-form__input sino-simple-form__input--textarea',
                       rows: 5,
-                      value: ((N = l.otherProject) == null ? void 0 : N.description) || '',
-                      onChange: (f) =>
+                      value: ((w = l.otherProject) == null ? void 0 : w.description) || '',
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          otherProject: { ...h.otherProject, description: f.target.value },
+                          otherProject: { ...h.otherProject, description: m.target.value },
                         })),
                       placeholder: a(
                         'otherProjectDescriptionPlaceholder',
@@ -14034,10 +14028,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: ((C = l.otherProject) == null ? void 0 : C.budget) || '',
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          otherProject: { ...h.otherProject, budget: f.target.value },
+                          otherProject: { ...h.otherProject, budget: m.target.value },
                         })),
                       placeholder: a('otherProjectBudgetPlaceholder', 'e.g. $5,000 - $10,000'),
                     }),
@@ -14062,10 +14056,10 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       className: 'sino-simple-form__input',
                       type: 'text',
                       value: ((j = l.otherProject) == null ? void 0 : j.timeline) || '',
-                      onChange: (f) =>
+                      onChange: (m) =>
                         c((h) => ({
                           ...h,
-                          otherProject: { ...h.otherProject, timeline: f.target.value },
+                          otherProject: { ...h.otherProject, timeline: m.target.value },
                         })),
                       placeholder: a('otherProjectTimelinePlaceholder', 'e.g. Within 3 months'),
                     }),
@@ -14077,16 +14071,16 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
         }),
     });
   },
-  Qm = ({ submissionId: l, t: c, onStartNew: a, selectedServiceLabels: w, formData: N }) => {
+  Qm = ({ submissionId: l, t: c, onStartNew: a, selectedServiceLabels: N, formData: w }) => {
     const [C, j] = W.useState(!1),
-      [f, h] = W.useState(new Date());
+      [m, h] = W.useState(new Date());
     (W.useEffect(() => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const b = document.createElement('div');
       ((b.className = 'sino-simple-form__confetti-container'), document.body.appendChild(b));
       const Z = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'],
-        H = 50;
-      for (let P = 0; P < H; P++) {
+        Q = 50;
+      for (let P = 0; P < Q; P++) {
         const I = document.createElement('div');
         ((I.className = 'sino-simple-form__confetti'),
           (I.style.left = `${Math.random() * 100}%`),
@@ -14109,27 +14103,27 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
         return () => clearInterval(z);
       }, []));
     const O = W.useMemo(() => {
-        const z = f,
+        const z = m,
           b = z.getDay(),
           Z = z.getHours(),
-          H = b >= 1 && b <= 5,
+          Q = b >= 1 && b <= 5,
           Y = Z >= 9 && Z < 18;
         let P = 0,
           I = 0;
-        if (H && Y) {
+        if (Q && Y) {
           const me = new Date(z.getTime() + 864e5).getTime() - z.getTime();
           ((P = Math.max(0, Math.floor(me / (1e3 * 60 * 60)))),
             (I = Math.max(0, Math.floor((me % (1e3 * 60 * 60)) / (1e3 * 60)))));
         }
         return {
-          isBusinessDay: H,
+          isBusinessDay: Q,
           isBusinessHours: Y,
           hoursRemaining: P,
           minutesRemaining: I,
-          status: H && Y ? 'active' : 'waiting',
+          status: Q && Y ? 'active' : 'waiting',
         };
-      }, [f]),
-      D = async () => {
+      }, [m]),
+      K = async () => {
         try {
           (await navigator.clipboard.writeText(l), j(!0), setTimeout(() => j(!1), 2e3));
         } catch (z) {
@@ -14187,7 +14181,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
           r.jsxs('div', {
             className: 'sino-simple-form__confirmation-info-block',
             children: [
-              N.email &&
+              w.email &&
                 r.jsxs('div', {
                   className: 'sino-simple-form__confirmation-email',
                   children: [
@@ -14227,7 +14221,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                           children: [
                             c('confirmationEmailText', 'Confirmation email sent to'),
                             ' ',
-                            r.jsx('strong', { children: N.email }),
+                            r.jsx('strong', { children: w.email }),
                           ],
                         }),
                       ],
@@ -14384,7 +14378,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
           r.jsxs('div', {
             className: 'sino-simple-form__confirmation-details-card',
             children: [
-              (w.length > 0 || N.country) &&
+              (N.length > 0 || w.country) &&
                 r.jsxs('div', {
                   className: 'sino-simple-form__confirmation-summary',
                   children: [
@@ -14395,17 +14389,17 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                     r.jsxs('div', {
                       className: 'sino-simple-form__confirmation-summary-content',
                       children: [
-                        w.length > 0 &&
+                        N.length > 0 &&
                           r.jsxs('div', {
                             className: 'sino-simple-form__confirmation-summary-item',
                             children: [
                               r.jsx('strong', {
                                 children: c('confirmationSummaryServices', 'Services:'),
                               }),
-                              r.jsx('span', { children: w.join(', ') }),
+                              r.jsx('span', { children: N.join(', ') }),
                             ],
                           }),
-                        N.country &&
+                        w.country &&
                           r.jsxs('div', {
                             className: 'sino-simple-form__confirmation-summary-item',
                             children: [
@@ -14415,21 +14409,21 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                               r.jsxs('span', {
                                 children: [
                                   (() => {
-                                    const z = Qt.find((b) => b.code === N.country);
-                                    return z ? z.name : N.country;
+                                    const z = Qt.find((b) => b.code === w.country);
+                                    return z ? z.name : w.country;
                                   })(),
-                                  N.destCity && `, ${N.destCity}`,
+                                  w.destCity && `, ${w.destCity}`,
                                 ],
                               }),
                             ],
                           }),
-                        N.mode &&
-                          N.mode !== 'not_sure' &&
+                        w.mode &&
+                          w.mode !== 'not_sure' &&
                           r.jsxs('div', {
                             className: 'sino-simple-form__confirmation-summary-item',
                             children: [
                               r.jsx('strong', { children: c('confirmationSummaryMode', 'Mode:') }),
-                              r.jsx('span', { children: N.mode }),
+                              r.jsx('span', { children: w.mode }),
                             ],
                           }),
                       ],
@@ -14457,7 +14451,7 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
                       r.jsx('button', {
                         type: 'button',
                         className: `sino-simple-form__confirmation-copy ${C ? 'sino-simple-form__confirmation-copy--copied' : ''}`,
-                        onClick: D,
+                        onClick: K,
                         title: C
                           ? c('confirmationCopied', 'Copied!')
                           : c('confirmationCopy', 'Copy reference'),
@@ -14723,17 +14717,17 @@ const Bm = ({ formData: l, setFormData: c, t: a }) => {
     });
   },
   lc = 'sinoSimpleFormDraft',
-  Ju = 'sinoSimpleFormSessionId';
+  Xu = 'sinoSimpleFormSessionId';
 function el() {
   return `session-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 }
 function Ym() {
   if (typeof window > 'u') return el();
   try {
-    const l = window.localStorage.getItem(Ju);
+    const l = window.localStorage.getItem(Xu);
     if (l) return l;
     const c = el();
-    return (window.localStorage.setItem(Ju, c), c);
+    return (window.localStorage.setItem(Xu, c), c);
   } catch {
     return el();
   }
@@ -14742,8 +14736,8 @@ function Zm(l, c) {
   if (!(typeof window > 'u'))
     try {
       const a = `${lc}-${l}`,
-        w = { sessionId: l, formData: c, savedAt: new Date().toISOString() };
-      window.localStorage.setItem(a, JSON.stringify(w));
+        N = { sessionId: l, formData: c, savedAt: new Date().toISOString() };
+      window.localStorage.setItem(a, JSON.stringify(N));
     } catch (a) {
       console.warn('[saveFormDraft] Failed to save draft:', a);
     }
@@ -14775,21 +14769,21 @@ function Jm(l) {
     (Gt = 'services'),
     mi('form_started', { session_id: l }));
 }
-function ec(l, c, a, w) {
+function Ju(l, c, a, N) {
   if (Pe) {
     if (it && Gt) {
-      const N = Math.round((Date.now() - it) / 1e3);
-      (mi('step_completed', { step_id: l, step_index: a - 1, time_spent: N, total_steps: w }),
+      const w = Math.round((Date.now() - it) / 1e3);
+      (mi('step_completed', { step_id: l, step_index: a - 1, time_spent: w, total_steps: N }),
         Pe.stepsCompleted.push(l),
-        (Pe.totalTime += N));
+        (Pe.totalTime += w));
     }
     ((it = Date.now()),
       (Gt = c),
       (Pe.currentStep = c),
-      mi('step_changed', { from_step: l, to_step: c, step_index: a, total_steps: w }));
+      mi('step_changed', { from_step: l, to_step: c, step_index: a, total_steps: N }));
   }
 }
-function nc(l, c) {
+function ec(l, c) {
   Pe &&
     ((Pe.problematicFields[l] = (Pe.problematicFields[l] || 0) + 1),
     mi('field_error', { field_name: l, error_message: c, error_count: Pe.problematicFields[l] }));
@@ -14800,19 +14794,19 @@ function ep(l, c) {
 function np(l, c) {
   if (!Pe) return;
   const a = Math.round((Date.now() - Pe.startTime) / 1e3),
-    w = ['services', 'shippingRoute', 'shippingCargo', 'contact'],
-    N = (Pe.stepsCompleted.length / w.length) * 100;
+    N = ['services', 'shippingRoute', 'shippingCargo', 'contact'],
+    w = (Pe.stepsCompleted.length / N.length) * 100;
   mi('form_submitted', {
     submission_id: l,
     session_id: Pe.sessionId,
     total_time: a,
-    completion_rate: N,
+    completion_rate: w,
     steps_completed: Pe.stepsCompleted.length,
     problematic_fields: Object.keys(Pe.problematicFields),
-    error_count: Object.values(Pe.problematicFields).reduce((j, f) => j + f, 0),
+    error_count: Object.values(Pe.problematicFields).reduce((j, m) => j + m, 0),
   });
   const C = Object.entries(Pe.problematicFields)
-    .sort(([, j], [, f]) => f - j)
+    .sort(([, j], [, m]) => m - j)
     .slice(0, 5);
   C.length > 0 &&
     mi('form_problematic_fields', {
@@ -14844,12 +14838,12 @@ function mi(l, c) {
 const tp = () => {
     var bi, Mi;
     const { formData: l, setFormData: c, handleInputChange: a } = hm(),
-      [w, N] = W.useState(!1),
+      [N, w] = W.useState(!1),
       [C, j] = W.useState(!1),
-      [f, h] = W.useState(!1),
-      [O, D] = W.useState(!0),
+      [m, h] = W.useState(!1),
+      [O, K] = W.useState(!0),
       [z, b] = W.useState(!0),
-      [Z, H] = W.useState(!0),
+      [Z, Q] = W.useState(!0),
       [Y, P] = W.useState(!0),
       [I, pe] = W.useState(!0),
       [me, re] = W.useState(!0),
@@ -14859,10 +14853,10 @@ const tp = () => {
       [cn, Ae] = W.useState(!1),
       [X, Te] = W.useState(0),
       [Ve, Re] = W.useState(null),
-      [K, F] = W.useState({}),
+      [H, F] = W.useState({}),
       [V, A] = W.useState({}),
-      [p, k] = W.useState(!1),
-      [Q, ie] = W.useState(null),
+      [f, k] = W.useState(!1),
+      [G, ie] = W.useState(null),
       [se, le] = W.useState(!1),
       [ge, ce] = W.useState(''),
       [ye, Ke] = W.useState(''),
@@ -14887,7 +14881,7 @@ const tp = () => {
         (y) => {
           a(y);
           const L = y.target.name;
-          (K[L] &&
+          (H[L] &&
             !V[L] &&
             F((ne) => {
               const we = { ...ne };
@@ -14895,7 +14889,7 @@ const tp = () => {
             }),
             L === 'country' ? ce(y.target.value) : L === 'destCity' && Ke(y.target.value));
         },
-        [a, K, V]
+        [a, H, V]
       ),
       lt =
         ((bi = l.servicesRequested) == null ? void 0 : bi.shipping) === void 0
@@ -14937,17 +14931,17 @@ const tp = () => {
               ne = sc(L, 'First name');
               break;
             case 'country':
-              ne = tl(L);
+              ne = il(L);
               break;
             case 'destCity':
-              ne = rl(L);
+              ne = tl(L);
               break;
             case 'totalWeight':
               ne = oc(L);
               break;
           }
           !ne.valid && ne.error
-            ? (F((we) => ({ ...we, [y]: ne.error })), nc(y, ne.error))
+            ? (F((we) => ({ ...we, [y]: ne.error })), ec(y, ne.error))
             : (F((we) => {
                 const Ln = { ...we };
                 return (delete Ln[y], Ln);
@@ -14994,12 +14988,12 @@ const tp = () => {
       Yt = X === 0,
       Zt = W.useCallback(() => {
         if (!Cm(_e, l)) {
-          const y = ol(_e, l);
+          const y = sl(_e, l);
           (F((L) => {
             const ne = { ...L };
             return (
               Object.entries(y).forEach(([we, Ln]) => {
-                !Ln.valid && Ln.error ? ((ne[we] = Ln.error), nc(we, Ln.error)) : delete ne[we];
+                !Ln.valid && Ln.error ? ((ne[we] = Ln.error), ec(we, Ln.error)) : delete ne[we];
               }),
               ne
             );
@@ -15021,7 +15015,7 @@ const tp = () => {
         if (X < Ee - 1) {
           const y = X + 1,
             L = en[y];
-          (ec(_e, L, y, Ee),
+          (Ju(_e, L, y, Ee),
             pi(!0),
             setTimeout(() => {
               (Te(y),
@@ -15034,7 +15028,7 @@ const tp = () => {
         if (X > 0) {
           const y = X - 1,
             L = en[y];
-          (ec(_e, L, y, Ee),
+          (Ju(_e, L, y, Ee),
             pi(!0),
             setTimeout(() => {
               (Te(y),
@@ -15055,10 +15049,10 @@ const tp = () => {
       }
     }, [Ee, en, _e, X]),
       W.useEffect(() => {
-        p
-          ? (D(!1), b(!1), H(!1), P(!1), pe(!1), re(!1), fe(!1))
-          : (D(!0), b(!0), H(!0), P(!0), pe(!0), re(!0), fe(!0));
-      }, [p]),
+        f
+          ? (K(!1), b(!1), Q(!1), P(!1), pe(!1), re(!1), fe(!1))
+          : (K(!0), b(!0), Q(!0), P(!0), pe(!0), re(!0), fe(!0));
+      }, [f]),
       W.useEffect(() => {
         if (typeof window > 'u') return;
         const y = Ym();
@@ -15081,7 +15075,7 @@ const tp = () => {
         );
       }, [Ve]),
       W.useEffect(() => {
-        if (typeof window > 'u' || !Q) return;
+        if (typeof window > 'u' || !G) return;
         const y = setTimeout(() => {
           try {
             const L = {
@@ -15124,13 +15118,13 @@ const tp = () => {
               chinaVisit: l.chinaVisit,
               otherProject: l.otherProject,
             };
-            Zm(Q, L);
+            Zm(G, L);
           } catch {}
         }, 2e3);
         return () => clearTimeout(y);
-      }, [l, Q]),
+      }, [l, G]),
       W.useEffect(() => {
-        if (typeof window > 'u' || !Q) return;
+        if (typeof window > 'u' || !G) return;
         const y = setTimeout(() => {
           (le(!0),
             setTimeout(() => {
@@ -15138,7 +15132,7 @@ const tp = () => {
             }, 2e3));
         }, 5e3);
         return () => clearTimeout(y);
-      }, [l, Q]));
+      }, [l, G]));
     const hn = W.useCallback(
         (y, L) => {
           c((ne) => ({ ...ne, [y]: L }));
@@ -15147,14 +15141,14 @@ const tp = () => {
       ),
       at = W.useCallback(
         (y) => {
-          if ((Re(y), np(y), typeof window < 'u' && Q))
+          if ((Re(y), np(y), typeof window < 'u' && G))
             try {
-              const L = `sinoSimpleFormDraft-${Q}`;
+              const L = `sinoSimpleFormDraft-${G}`;
               (window.localStorage.removeItem(L),
                 window.localStorage.removeItem('sinoSimpleFormSessionId'));
             } catch {}
         },
-        [Q]
+        [G]
       ),
       ut = W.useCallback(() => {
         (Re(null), Te(0), We(null));
@@ -15170,891 +15164,108 @@ const tp = () => {
             formData: l,
           }),
         })
-      : r.jsxs('div', {
+      : r.jsx('div', {
           className: 'sino-simple-form',
-          children: [
-            r.jsx('a', {
-              href: '#sino-simple-form-main',
-              className: 'sino-simple-form__skip-link',
-              children: S('skipToMainContent', 'Skip to main content'),
-            }),
-            r.jsxs('main', {
-              id: 'sino-simple-form-main',
-              role: 'main',
-              'aria-label': S('formAriaLabel', 'Quote request form'),
-              children: [
-                se &&
-                  r.jsxs('div', {
-                    className: 'sino-simple-form__save-notification',
-                    role: 'status',
-                    'aria-live': 'polite',
-                    children: [
-                      r.jsx('span', {
-                        className: 'sino-simple-form__save-notification-icon',
-                        'aria-hidden': 'true',
-                        children: r.jsx('svg', {
-                          width: '16',
-                          height: '16',
-                          viewBox: '0 0 24 24',
-                          fill: 'none',
-                          xmlns: 'http://www.w3.org/2000/svg',
-                          children: r.jsx('path', {
-                            d: 'M20 6L9 17l-5-5',
-                            stroke: 'currentColor',
-                            strokeWidth: '2',
-                            strokeLinecap: 'round',
-                            strokeLinejoin: 'round',
-                          }),
-                        }),
-                      }),
-                      r.jsx('span', {
-                        className: 'sino-simple-form__save-notification-text',
-                        children: S('saveNotification', 'Your progress is saved'),
-                      }),
-                    ],
-                  }),
-                !Ve && r.jsx($m, { t: S }),
+          children: r.jsxs('main', {
+            role: 'main',
+            'aria-label': S('formAriaLabel', 'Quote request form'),
+            children: [
+              se &&
                 r.jsxs('div', {
-                  className: `sino-simple-form__step-content${Ti ? ' sino-simple-form__step-content--transitioning' : ''}`,
+                  className: 'sino-simple-form__save-notification',
+                  role: 'status',
+                  'aria-live': 'polite',
                   children: [
-                    _e === 'services' &&
-                      r.jsx(gm, {
-                        formData: l,
-                        setFormData: c,
-                        t: S,
-                        stepLabel: `Step ${X + 1}`,
-                        shippingOnly: !1,
-                        isQuickQuote: p,
-                        setIsQuickQuote: k,
-                      }),
-                    _e === 'sourcing' &&
-                      r.jsx(Um, {
-                        formData: l,
-                        setFormData: c,
-                        t: S,
-                        stepLabel: `Step ${X + 1}`,
-                        showSourcingAdvanced: Y,
-                        setShowSourcingAdvanced: P,
-                        isQuickQuote: p,
-                      }),
-                    _e === 'warehousing' &&
-                      r.jsx(qm, {
-                        formData: l,
-                        setFormData: c,
-                        t: S,
-                        showWarehousingAdvanced: I,
-                        setShowWarehousingAdvanced: pe,
-                        stepLabel: `Step ${X + 1}`,
-                      }),
-                    _e === 'dropshipping' &&
-                      r.jsx(Dm, {
-                        formData: l,
-                        setFormData: c,
-                        t: S,
-                        showDropshippingAdvanced: me,
-                        setShowDropshippingAdvanced: re,
-                        stepLabel: `Step ${X + 1}`,
-                      }),
-                    _e === 'qc' &&
-                      r.jsx(Hm, {
-                        formData: l,
-                        setFormData: c,
-                        t: S,
-                        showQcAdvanced: ue,
-                        setShowQcAdvanced: fe,
-                        stepLabel: `Step ${X + 1}`,
-                      }),
-                    _e === 'chinaVisit' &&
-                      r.jsx(Gm, {
-                        formData: l,
-                        setFormData: c,
-                        t: S,
-                        showChinaVisitLogistics: ve,
-                        setShowChinaVisitLogistics: Ie,
-                        stepLabel: `Step ${X + 1}`,
-                      }),
-                    _e === 'other' &&
-                      r.jsx(Km, { formData: l, setFormData: c, t: S, stepLabel: `Step ${X + 1}` }),
-                    _e === 'shippingRoute' &&
-                      Hn &&
-                      r.jsx(r.Fragment, {
-                        children: r.jsxs('section', {
-                          className:
-                            'sino-simple-form__section sino-simple-form__section--service-shipping',
-                          children: [
-                            r.jsxs('h2', {
-                              className: 'sino-simple-form__section-title',
-                              children: [
-                                r.jsx('span', {
-                                  className: 'sino-simple-form__section-step',
-                                  children: `Step ${X + 1}`,
-                                }),
-                                r.jsx('span', {
-                                  children: S('shippingFromChinaTitle', 'Shipping from China'),
-                                }),
-                              ],
-                            }),
-                            r.jsx(il, {
-                              stepId: 'shippingRoute',
-                              formData: l,
-                              currentStepIndex: X,
-                              totalSteps: Ee,
-                              t: S,
-                            }),
-                            r.jsx('h3', {
-                              className: 'sino-simple-form__subsection-title',
-                              children: S('simpleStep1Title', 'Destination & mode'),
-                            }),
-                            r.jsxs('div', {
-                              className: 'sino-simple-form__fields',
-                              children: [
-                                r.jsxs('div', {
-                                  className: `sino-simple-form__field sino-simple-form__field--primary${V.country && K.country ? ' sino-simple-form__field--error' : ''}${V.country && !K.country && Be(l.country) ? ' sino-simple-form__field--success' : ''}`,
-                                  children: [
-                                    r.jsxs('label', {
-                                      className: 'sino-simple-form__label',
-                                      htmlFor: 'country',
-                                      children: [
-                                        S('destinationCountry', 'Destination country'),
-                                        r.jsx('span', {
-                                          className: 'sino-simple-form__required',
-                                          'aria-label': 'required',
-                                          children: '*',
-                                        }),
-                                      ],
-                                    }),
-                                    r.jsxs('div', {
-                                      className: 'sino-simple-form__field-wrapper',
-                                      children: [
-                                        r.jsx(Zu, {
-                                          id: 'country',
-                                          name: 'country',
-                                          value: l.country,
-                                          onChange: Qe,
-                                          onBlur: () => {
-                                            l.country &&
-                                              l.country.trim().length > 0 &&
-                                              fi('country', l.country);
-                                          },
-                                          onSelect: (y) => {
-                                            c((L) => ({ ...L, country: y }));
-                                          },
-                                          onSelectWithValidation: (y) => {
-                                            (c((ne) => ({ ...ne, country: y })),
-                                              ce(y),
-                                              A((ne) => ({ ...ne, country: !0 })));
-                                            const L = tl(y);
-                                            !L.valid && L.error
-                                              ? F((ne) => ({ ...ne, country: L.error }))
-                                              : F((ne) => {
-                                                  const we = { ...ne };
-                                                  return (delete we.country, we);
-                                                });
-                                          },
-                                          placeholder: S(
-                                            'destinationCountryPlaceholder',
-                                            'France, USA, Canada…'
-                                          ),
-                                          options: Ei,
-                                          inputRef: rt,
-                                          error: K.country,
-                                          touched: V.country,
-                                          isValid: !K.country && Be(ge || l.country),
-                                          maxResults: 10,
-                                        }),
-                                        V.country &&
-                                          r.jsxs(r.Fragment, {
-                                            children: [
-                                              K.country &&
-                                                r.jsx('span', {
-                                                  className:
-                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--error',
-                                                  'aria-hidden': 'true',
-                                                  children: r.jsxs('svg', {
-                                                    width: '20',
-                                                    height: '20',
-                                                    viewBox: '0 0 24 24',
-                                                    fill: 'none',
-                                                    xmlns: 'http://www.w3.org/2000/svg',
-                                                    children: [
-                                                      r.jsx('circle', {
-                                                        cx: '12',
-                                                        cy: '12',
-                                                        r: '10',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                      }),
-                                                      r.jsx('line', {
-                                                        x1: '12',
-                                                        y1: '8',
-                                                        x2: '12',
-                                                        y2: '12',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                        strokeLinecap: 'round',
-                                                      }),
-                                                      r.jsx('line', {
-                                                        x1: '12',
-                                                        y1: '16',
-                                                        x2: '12.01',
-                                                        y2: '16',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                        strokeLinecap: 'round',
-                                                      }),
-                                                    ],
-                                                  }),
-                                                }),
-                                              !K.country &&
-                                                Be(l.country) &&
-                                                r.jsx('span', {
-                                                  className:
-                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--success',
-                                                  'aria-hidden': 'true',
-                                                  children: r.jsxs('svg', {
-                                                    width: '20',
-                                                    height: '20',
-                                                    viewBox: '0 0 24 24',
-                                                    fill: 'none',
-                                                    xmlns: 'http://www.w3.org/2000/svg',
-                                                    children: [
-                                                      r.jsx('circle', {
-                                                        cx: '12',
-                                                        cy: '12',
-                                                        r: '10',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                      }),
-                                                      r.jsx('path', {
-                                                        d: 'M8 12l2 2 4-4',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                        strokeLinecap: 'round',
-                                                        strokeLinejoin: 'round',
-                                                      }),
-                                                    ],
-                                                  }),
-                                                }),
-                                            ],
-                                          }),
-                                      ],
-                                    }),
-                                    K.country &&
-                                      r.jsx('p', {
-                                        id: 'country-error',
-                                        className: 'sino-simple-form__field-error',
-                                        role: 'alert',
-                                        'aria-live': 'polite',
-                                        children: K.country,
-                                      }),
-                                    V.country &&
-                                      !K.country &&
-                                      Be(l.country) &&
-                                      r.jsx('p', {
-                                        id: 'country-success',
-                                        className: 'sino-simple-form__sr-only',
-                                        'aria-live': 'polite',
-                                        children: S('fieldValid', 'Field is valid'),
-                                      }),
-                                  ],
-                                }),
-                                r.jsxs('div', {
-                                  className: `sino-simple-form__field sino-simple-form__field--primary${V.destCity && K.destCity ? ' sino-simple-form__field--error' : ''}${V.destCity && !K.destCity && Be(l.destCity) ? ' sino-simple-form__field--success' : ''}`,
-                                  children: [
-                                    r.jsxs('label', {
-                                      className: 'sino-simple-form__label',
-                                      htmlFor: 'destCity',
-                                      children: [
-                                        S('destinationCityOrPort', 'City or port'),
-                                        r.jsx('span', {
-                                          className: 'sino-simple-form__required',
-                                          'aria-label': 'required',
-                                          children: '*',
-                                        }),
-                                      ],
-                                    }),
-                                    r.jsxs('div', {
-                                      className: 'sino-simple-form__field-wrapper',
-                                      children: [
-                                        r.jsx(Zu, {
-                                          id: 'destCity',
-                                          name: 'destCity',
-                                          value: l.destCity,
-                                          onChange: Qe,
-                                          onBlur: () => {
-                                            l.destCity &&
-                                              l.destCity.trim().length > 0 &&
-                                              fi('destCity', l.destCity);
-                                          },
-                                          onSelectWithValidation: (y) => {
-                                            (c((ne) => ({ ...ne, destCity: y })),
-                                              Ke(y),
-                                              A((ne) => ({ ...ne, destCity: !0 })));
-                                            const L = rl(y);
-                                            !L.valid && L.error
-                                              ? F((ne) => ({ ...ne, destCity: L.error }))
-                                              : F((ne) => {
-                                                  const we = { ...ne };
-                                                  return (delete we.destCity, we);
-                                                });
-                                          },
-                                          placeholder: S(
-                                            'destinationCityPlaceholder',
-                                            'e.g. Paris, Le Havre…'
-                                          ),
-                                          options: tt,
-                                          inputRef: st,
-                                          error: K.destCity,
-                                          touched: V.destCity,
-                                          isValid: !K.destCity && Be(ye || l.destCity),
-                                          maxResults: 8,
-                                        }),
-                                        V.destCity &&
-                                          r.jsxs(r.Fragment, {
-                                            children: [
-                                              K.destCity &&
-                                                r.jsx('span', {
-                                                  className:
-                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--error',
-                                                  'aria-hidden': 'true',
-                                                  'aria-label': S('fieldError', 'Error'),
-                                                  children: r.jsxs('svg', {
-                                                    width: '20',
-                                                    height: '20',
-                                                    viewBox: '0 0 24 24',
-                                                    fill: 'none',
-                                                    xmlns: 'http://www.w3.org/2000/svg',
-                                                    children: [
-                                                      r.jsx('circle', {
-                                                        cx: '12',
-                                                        cy: '12',
-                                                        r: '10',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                      }),
-                                                      r.jsx('line', {
-                                                        x1: '12',
-                                                        y1: '8',
-                                                        x2: '12',
-                                                        y2: '12',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                        strokeLinecap: 'round',
-                                                      }),
-                                                      r.jsx('line', {
-                                                        x1: '12',
-                                                        y1: '16',
-                                                        x2: '12.01',
-                                                        y2: '16',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                        strokeLinecap: 'round',
-                                                      }),
-                                                    ],
-                                                  }),
-                                                }),
-                                              !K.destCity &&
-                                                Be(l.destCity) &&
-                                                r.jsx('span', {
-                                                  className:
-                                                    'sino-simple-form__field-icon sino-simple-form__field-icon--success',
-                                                  'aria-hidden': 'true',
-                                                  'aria-label': S('fieldValid', 'Field is valid'),
-                                                  children: r.jsxs('svg', {
-                                                    width: '20',
-                                                    height: '20',
-                                                    viewBox: '0 0 24 24',
-                                                    fill: 'none',
-                                                    xmlns: 'http://www.w3.org/2000/svg',
-                                                    children: [
-                                                      r.jsx('circle', {
-                                                        cx: '12',
-                                                        cy: '12',
-                                                        r: '10',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                      }),
-                                                      r.jsx('path', {
-                                                        d: 'M8 12l2 2 4-4',
-                                                        stroke: 'currentColor',
-                                                        strokeWidth: '2',
-                                                        strokeLinecap: 'round',
-                                                        strokeLinejoin: 'round',
-                                                      }),
-                                                    ],
-                                                  }),
-                                                }),
-                                            ],
-                                          }),
-                                      ],
-                                    }),
-                                    K.destCity &&
-                                      r.jsx('p', {
-                                        id: 'destCity-error',
-                                        className: 'sino-simple-form__field-error',
-                                        role: 'alert',
-                                        'aria-live': 'polite',
-                                        children: K.destCity,
-                                      }),
-                                    V.destCity &&
-                                      !K.destCity &&
-                                      Be(l.destCity) &&
-                                      r.jsx('p', {
-                                        id: 'destCity-success',
-                                        className: 'sino-simple-form__sr-only',
-                                        'aria-live': 'polite',
-                                        children: S('fieldValid', 'Field is valid'),
-                                      }),
-                                  ],
-                                }),
-                              ],
-                            }),
-                            r.jsxs('div', {
-                              className: `sino-simple-form__subsection${O ? ' sino-simple-form__subsection--open' : ''}`,
-                              children: [
-                                r.jsxs('button', {
-                                  type: 'button',
-                                  className: 'sino-simple-form__subsection-toggle',
-                                  onClick: () => D((y) => !y),
-                                  'aria-expanded': O,
-                                  'aria-controls': 'destination-details-content',
-                                  'aria-label': O
-                                    ? S('collapseSection', 'Collapse destination details')
-                                    : S('expandSection', 'Expand destination details'),
-                                  onKeyDown: (y) => {
-                                    (y.key === 'Enter' || y.key === ' ') &&
-                                      (y.preventDefault(), D((L) => !L));
-                                  },
-                                  children: [
-                                    r.jsxs('span', {
-                                      className: 'sino-simple-form__subsection-label',
-                                      children: [
-                                        S(
-                                          'destinationDetailsTitle',
-                                          'Advanced delivery details (optional)'
-                                        ),
-                                        r.jsx('small', {
-                                          children: S(
-                                            'destinationDetailsSubtitle',
-                                            'Helps us refine delivery but you can skip this for now.'
-                                          ),
-                                        }),
-                                      ],
-                                    }),
-                                    r.jsx('span', {
-                                      className: `sino-simple-form__subsection-chevron${O ? ' sino-simple-form__subsection-chevron--open' : ''}`,
-                                      children: '▾',
-                                    }),
-                                  ],
-                                }),
-                                O &&
-                                  r.jsxs('div', {
-                                    id: 'destination-details-content',
-                                    className:
-                                      'sino-simple-form__fields sino-simple-form__fields--rows',
-                                    children: [
-                                      r.jsxs('div', {
-                                        className: 'sino-simple-form__field',
-                                        children: [
-                                          r.jsx('label', {
-                                            className: 'sino-simple-form__label',
-                                            children: S(
-                                              'destinationLocationType',
-                                              'Delivery location type'
-                                            ),
-                                          }),
-                                          r.jsx('input', {
-                                            className: 'sino-simple-form__input',
-                                            type: 'text',
-                                            name: 'destLocationType',
-                                            value: l.destLocationType,
-                                            onChange: Qe,
-                                            placeholder: S(
-                                              'destinationLocationTypePlaceholder',
-                                              'Port, warehouse, home address…'
-                                            ),
-                                          }),
-                                        ],
-                                      }),
-                                      r.jsxs('div', {
-                                        className: 'sino-simple-form__field',
-                                        children: [
-                                          r.jsx('label', {
-                                            className: 'sino-simple-form__label',
-                                            children: S('destinationZipCode', 'ZIP / postal code'),
-                                          }),
-                                          r.jsx('input', {
-                                            className: 'sino-simple-form__input',
-                                            type: 'text',
-                                            name: 'destZipCode',
-                                            value: l.destZipCode,
-                                            onChange: Qe,
-                                            placeholder: S(
-                                              'destinationZipCodePlaceholder',
-                                              'e.g. 75001'
-                                            ),
-                                          }),
-                                        ],
-                                      }),
-                                    ],
-                                  }),
-                              ],
-                            }),
-                            r.jsx('div', {
-                              className:
-                                'sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top',
-                              children: r.jsxs('div', {
-                                className: 'sino-simple-form__field',
-                                children: [
-                                  r.jsx('label', {
-                                    className: 'sino-simple-form__label',
-                                    children: S('shippingMode', 'Preferred mode'),
-                                  }),
-                                  r.jsx('div', {
-                                    className: 'sino-simple-form__chips',
-                                    children: [
-                                      {
-                                        value: 'Sea',
-                                        label: 'Sea',
-                                        tooltip: S(
-                                          'modeSeaHelp',
-                                          'Best for large volumes and lower cost when you have a few weeks.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'Air',
-                                        label: 'Air',
-                                        tooltip: S(
-                                          'modeAirHelp',
-                                          'Faster than sea, ideal for smaller, time-sensitive shipments.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'Railway',
-                                        label: 'Railway',
-                                        tooltip: S(
-                                          'modeRailHelp',
-                                          'Balanced option Europe–China: faster than sea, cheaper than air.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'Express',
-                                        label: 'Express',
-                                        tooltip: S(
-                                          'modeExpressHelp',
-                                          'Door‑to‑door courier (DHL/UPS/FedEx) for urgent small parcels.'
-                                        ),
-                                      },
-                                    ].map((y) =>
-                                      r.jsx(
-                                        'button',
-                                        {
-                                          type: 'button',
-                                          className: `sino-simple-chip${l.mode === y.value ? ' sino-simple-chip--active' : ''}`,
-                                          'data-tooltip': y.tooltip,
-                                          onClick: () =>
-                                            c((L) => ({
-                                              ...L,
-                                              mode: L.mode === y.value ? '' : y.value,
-                                            })),
-                                          'aria-pressed': l.mode === y.value ? 'true' : 'false',
-                                          'aria-label': `${y.label}${l.mode === y.value ? ', selected' : ', not selected'}. ${y.tooltip}`,
-                                          onKeyDown: (L) => {
-                                            (L.key === 'Enter' || L.key === ' ') &&
-                                              (L.preventDefault(),
-                                              c((ne) => ({
-                                                ...ne,
-                                                mode: ne.mode === y.value ? '' : y.value,
-                                              })));
-                                          },
-                                          children: y.label,
-                                        },
-                                        y.value
-                                      )
-                                    ),
-                                  }),
-                                ],
-                              }),
-                            }),
-                            r.jsx('div', {
-                              className:
-                                'sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top',
-                              children: r.jsxs('div', {
-                                className: 'sino-simple-form__field',
-                                children: [
-                                  r.jsxs('label', {
-                                    className: 'sino-simple-form__label',
-                                    children: [
-                                      S('incotermLabel', 'Trade terms (Incoterm)'),
-                                      r.jsx('span', {
-                                        className: 'sino-simple-form__label-hint',
-                                        children: S('ifKnown', 'if known'),
-                                      }),
-                                    ],
-                                  }),
-                                  r.jsx('div', {
-                                    className:
-                                      'sino-simple-form__chips sino-simple-form__chips--wrap',
-                                    children: [
-                                      {
-                                        value: 'EXW (Ex Work)',
-                                        label: 'EXW (Ex Work)',
-                                        tooltip: S(
-                                          'incotermEXWTooltip',
-                                          'Ex Works: You handle everything from the factory. We pick up at the supplier.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'FOB (Free On Board)',
-                                        label: 'FOB (Free On Board)',
-                                        tooltip: S(
-                                          'incotermFOBTooltip',
-                                          'Free On Board: Supplier delivers to port, you handle shipping and destination costs.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'CIF (Cost Insurance and Freight)',
-                                        label: 'CIF (Cost Insurance and Freight)',
-                                        tooltip: S(
-                                          'incotermCIFTooltip',
-                                          'Cost, Insurance & Freight: Supplier pays shipping to your port, you handle destination.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'CFR (Cost & Freight)',
-                                        label: 'CFR (Cost & Freight)',
-                                        tooltip: S(
-                                          'incotermCFRTooltip',
-                                          'Cost and Freight: Supplier pays shipping to your port.'
-                                        ),
-                                      },
-                                      {
-                                        value: 'DAT (Delivery at Terminal)',
-                                        label: 'DAT (Delivery at Terminal)',
-                                        tooltip: S(
-                                          'incotermDATTooltip',
-                                          'Delivered At Terminal: Delivered at a named terminal at destination.'
-                                        ),
-                                      },
-                                      {
-                                        value: "I don't know yet",
-                                        label: "I don't know yet",
-                                        tooltip: S(
-                                          'incotermNotSureTooltip',
-                                          "No problem! We'll help you choose the best option based on your needs."
-                                        ),
-                                      },
-                                    ].map((y) =>
-                                      r.jsx(
-                                        'button',
-                                        {
-                                          type: 'button',
-                                          className: `sino-simple-chip${l.incoterm === y.value ? ' sino-simple-chip--active' : ''}`,
-                                          'data-tooltip': y.tooltip,
-                                          'aria-pressed': l.incoterm === y.value ? 'true' : 'false',
-                                          onClick: () =>
-                                            c((L) => ({
-                                              ...L,
-                                              incoterm: L.incoterm === y.value ? '' : y.value,
-                                            })),
-                                          children: y.label,
-                                        },
-                                        y.value
-                                      )
-                                    ),
-                                  }),
-                                ],
-                              }),
-                            }),
-                            r.jsx('h3', {
-                              className: 'sino-simple-form__subsection-title',
-                              children: S('simpleStep2Title', 'Pickup in China'),
-                            }),
-                            r.jsxs('div', {
-                              className: 'sino-simple-form__fields sino-simple-form__fields--rows',
-                              children: [
-                                r.jsxs('div', {
-                                  className:
-                                    'sino-simple-form__field sino-simple-form__field--primary',
-                                  children: [
-                                    r.jsx('label', {
-                                      className: 'sino-simple-form__label',
-                                      htmlFor: 'city',
-                                      children: S('originCity', 'City in China'),
-                                    }),
-                                    r.jsx('input', {
-                                      className: 'sino-simple-form__input',
-                                      type: 'text',
-                                      name: 'city',
-                                      id: 'city',
-                                      value: l.city,
-                                      onChange: Qe,
-                                      placeholder: S(
-                                        'originCityPlaceholder',
-                                        'e.g. Shenzhen, Guangzhou…'
-                                      ),
-                                    }),
-                                    r.jsx('p', {
-                                      className: 'sino-simple-form__help',
-                                      children: S(
-                                        'originCityHelp',
-                                        'City is enough for now. You can skip the pickup details below if you prefer.'
-                                      ),
-                                    }),
-                                  ],
-                                }),
-                                r.jsxs('div', {
-                                  className: `sino-simple-form__subsection${z ? ' sino-simple-form__subsection--open' : ''}`,
-                                  children: [
-                                    r.jsxs('button', {
-                                      type: 'button',
-                                      className: 'sino-simple-form__subsection-toggle',
-                                      onClick: () => b((y) => !y),
-                                      'aria-expanded': z,
-                                      'aria-controls': 'origin-details-content',
-                                      'aria-label': z
-                                        ? S('collapseSection', 'Collapse origin details')
-                                        : S('expandSection', 'Expand origin details'),
-                                      onKeyDown: (y) => {
-                                        (y.key === 'Enter' || y.key === ' ') &&
-                                          (y.preventDefault(), b((L) => !L));
-                                      },
-                                      children: [
-                                        r.jsxs('span', {
-                                          className: 'sino-simple-form__subsection-label',
-                                          children: [
-                                            S(
-                                              'originDetailsTitle',
-                                              'Advanced pickup details (optional)'
-                                            ),
-                                            r.jsx('small', {
-                                              children: S(
-                                                'originDetailsSubtitle',
-                                                'Useful for door pickup but optional at this stage.'
-                                              ),
-                                            }),
-                                          ],
-                                        }),
-                                        r.jsx('span', {
-                                          className: `sino-simple-form__subsection-chevron${z ? ' sino-simple-form__subsection-chevron--open' : ''}`,
-                                          children: '▾',
-                                        }),
-                                      ],
-                                    }),
-                                    z &&
-                                      r.jsxs('div', {
-                                        id: 'origin-details-content',
-                                        className:
-                                          'sino-simple-form__fields sino-simple-form__fields--rows',
-                                        children: [
-                                          r.jsxs('div', {
-                                            className: 'sino-simple-form__field',
-                                            children: [
-                                              r.jsx('label', {
-                                                className: 'sino-simple-form__label',
-                                                children: S(
-                                                  'originLocationType',
-                                                  'Pickup location type'
-                                                ),
-                                              }),
-                                              r.jsx('input', {
-                                                className: 'sino-simple-form__input',
-                                                type: 'text',
-                                                name: 'locationType',
-                                                value: l.locationType,
-                                                onChange: Qe,
-                                                placeholder: S(
-                                                  'originLocationTypePlaceholder',
-                                                  'Factory, warehouse, port…'
-                                                ),
-                                              }),
-                                            ],
-                                          }),
-                                          r.jsx('div', {
-                                            className: 'sino-simple-form__field',
-                                            children: r.jsx('div', {
-                                              className: 'sino-simple-form__chips',
-                                              children: r.jsx('button', {
-                                                type: 'button',
-                                                className: `sino-simple-chip${l.locationType === 'unknown' ? ' sino-simple-chip--active' : ''}`,
-                                                onClick: () =>
-                                                  c((y) => ({ ...y, locationType: 'unknown' })),
-                                                'aria-pressed':
-                                                  l.locationType === 'unknown' ? 'true' : 'false',
-                                                'aria-label': `${S('originLocationTypeUnknown', "I'm still discussing with my supplier")}${l.locationType === 'unknown' ? ', selected' : ', not selected'}`,
-                                                onKeyDown: (y) => {
-                                                  (y.key === 'Enter' || y.key === ' ') &&
-                                                    (y.preventDefault(),
-                                                    c((L) => ({ ...L, locationType: 'unknown' })));
-                                                },
-                                                children: S(
-                                                  'originLocationTypeUnknown',
-                                                  "I'm still discussing with my supplier"
-                                                ),
-                                              }),
-                                            }),
-                                          }),
-                                          r.jsxs('div', {
-                                            className: 'sino-simple-form__field',
-                                            children: [
-                                              r.jsx('label', {
-                                                className: 'sino-simple-form__label',
-                                                children: S(
-                                                  'originZipCode',
-                                                  'ZIP / postal code in China'
-                                                ),
-                                              }),
-                                              r.jsx('input', {
-                                                className: 'sino-simple-form__input',
-                                                type: 'text',
-                                                name: 'zipCode',
-                                                value: l.zipCode,
-                                                onChange: Qe,
-                                                placeholder: S(
-                                                  'originZipCodePlaceholder',
-                                                  'e.g. 518000'
-                                                ),
-                                              }),
-                                            ],
-                                          }),
-                                          r.jsxs('div', {
-                                            className: 'sino-simple-form__field',
-                                            children: [
-                                              r.jsxs('label', {
-                                                className: 'sino-simple-form__label',
-                                                children: [
-                                                  S('originPort', 'Port of loading'),
-                                                  r.jsx('span', {
-                                                    className: 'sino-simple-form__label-hint',
-                                                    children: S('ifKnown', 'if known'),
-                                                  }),
-                                                ],
-                                              }),
-                                              r.jsx('input', {
-                                                className: 'sino-simple-form__input',
-                                                type: 'text',
-                                                name: 'origin',
-                                                value: l.origin,
-                                                onChange: Qe,
-                                                placeholder: S(
-                                                  'originPortPlaceholder',
-                                                  'e.g. Shenzhen (Yantian), Ningbo…'
-                                                ),
-                                              }),
-                                            ],
-                                          }),
-                                        ],
-                                      }),
-                                  ],
-                                }),
-                              ],
-                            }),
-                          ],
+                    r.jsx('span', {
+                      className: 'sino-simple-form__save-notification-icon',
+                      'aria-hidden': 'true',
+                      children: r.jsx('svg', {
+                        width: '16',
+                        height: '16',
+                        viewBox: '0 0 24 24',
+                        fill: 'none',
+                        xmlns: 'http://www.w3.org/2000/svg',
+                        children: r.jsx('path', {
+                          d: 'M20 6L9 17l-5-5',
+                          stroke: 'currentColor',
+                          strokeWidth: '2',
+                          strokeLinecap: 'round',
+                          strokeLinejoin: 'round',
                         }),
                       }),
-                    _e === 'shippingCargo' &&
-                      Hn &&
-                      r.jsxs('section', {
+                    }),
+                    r.jsx('span', {
+                      className: 'sino-simple-form__save-notification-text',
+                      children: S('saveNotification', 'Your progress is saved'),
+                    }),
+                  ],
+                }),
+              !Ve && r.jsx($m, { t: S }),
+              r.jsxs('div', {
+                className: `sino-simple-form__step-content${Ti ? ' sino-simple-form__step-content--transitioning' : ''}`,
+                children: [
+                  _e === 'services' &&
+                    r.jsx(gm, {
+                      formData: l,
+                      setFormData: c,
+                      t: S,
+                      stepLabel: `Step ${X + 1}`,
+                      shippingOnly: !1,
+                      isQuickQuote: f,
+                      setIsQuickQuote: k,
+                    }),
+                  _e === 'sourcing' &&
+                    r.jsx(Um, {
+                      formData: l,
+                      setFormData: c,
+                      t: S,
+                      stepLabel: `Step ${X + 1}`,
+                      showSourcingAdvanced: Y,
+                      setShowSourcingAdvanced: P,
+                      isQuickQuote: f,
+                    }),
+                  _e === 'warehousing' &&
+                    r.jsx(qm, {
+                      formData: l,
+                      setFormData: c,
+                      t: S,
+                      showWarehousingAdvanced: I,
+                      setShowWarehousingAdvanced: pe,
+                      stepLabel: `Step ${X + 1}`,
+                    }),
+                  _e === 'dropshipping' &&
+                    r.jsx(Dm, {
+                      formData: l,
+                      setFormData: c,
+                      t: S,
+                      showDropshippingAdvanced: me,
+                      setShowDropshippingAdvanced: re,
+                      stepLabel: `Step ${X + 1}`,
+                    }),
+                  _e === 'qc' &&
+                    r.jsx(Hm, {
+                      formData: l,
+                      setFormData: c,
+                      t: S,
+                      showQcAdvanced: ue,
+                      setShowQcAdvanced: fe,
+                      stepLabel: `Step ${X + 1}`,
+                    }),
+                  _e === 'chinaVisit' &&
+                    r.jsx(Gm, {
+                      formData: l,
+                      setFormData: c,
+                      t: S,
+                      showChinaVisitLogistics: ve,
+                      setShowChinaVisitLogistics: Ie,
+                      stepLabel: `Step ${X + 1}`,
+                    }),
+                  _e === 'other' &&
+                    r.jsx(Km, { formData: l, setFormData: c, t: S, stepLabel: `Step ${X + 1}` }),
+                  _e === 'shippingRoute' &&
+                    Hn &&
+                    r.jsx(r.Fragment, {
+                      children: r.jsxs('section', {
                         className:
                           'sino-simple-form__section sino-simple-form__section--service-shipping',
                         children: [
@@ -16065,64 +15276,33 @@ const tp = () => {
                                 className: 'sino-simple-form__section-step',
                                 children: `Step ${X + 1}`,
                               }),
-                              r.jsx('span', { children: S('simpleStep3Title', 'Cargo details') }),
+                              r.jsx('span', {
+                                children: S('shippingFromChinaTitle', 'Shipping from China'),
+                              }),
                             ],
                           }),
-                          r.jsx(il, {
-                            stepId: 'shippingCargo',
+                          r.jsx(nl, {
+                            stepId: 'shippingRoute',
                             formData: l,
                             currentStepIndex: X,
                             totalSteps: Ee,
                             t: S,
                           }),
-                          r.jsx('p', {
-                            className: 'sino-simple-form__hint',
-                            children: S(
-                              'simpleStep3Hint',
-                              'A short description, an approximate weight and a rough number of cartons/pallets is enough for a first quote.'
-                            ),
-                          }),
-                          r.jsx('p', {
-                            className: 'sino-simple-form__hint sino-simple-form__hint--secondary',
-                            children: S(
-                              'simpleStep3ImpactHint',
-                              'These 4 fields have the biggest impact on your rates: route, mode, total weight and when the goods are ready.'
-                            ),
+                          r.jsx('h3', {
+                            className: 'sino-simple-form__subsection-title',
+                            children: S('simpleStep1Title', 'Destination & mode'),
                           }),
                           r.jsxs('div', {
-                            className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                            className: 'sino-simple-form__fields',
                             children: [
                               r.jsxs('div', {
-                                className:
-                                  'sino-simple-form__field sino-simple-form__field--primary',
-                                children: [
-                                  r.jsx('label', {
-                                    className: 'sino-simple-form__label',
-                                    htmlFor: 'goodsDescription',
-                                    children: S('goodsDescription', 'What are you shipping?'),
-                                  }),
-                                  r.jsx('input', {
-                                    className: 'sino-simple-form__input',
-                                    type: 'text',
-                                    name: 'goodsDescription',
-                                    id: 'goodsDescription',
-                                    value: l.goodsDescription,
-                                    onChange: Qe,
-                                    placeholder: S(
-                                      'goodsDescriptionPlaceholder',
-                                      'e.g. electronics, furniture, clothing…'
-                                    ),
-                                  }),
-                                ],
-                              }),
-                              r.jsxs('div', {
-                                className: `sino-simple-form__field sino-simple-form__field--primary${V.totalWeight && K.totalWeight ? ' sino-simple-form__field--error' : ''}${V.totalWeight && !K.totalWeight && Be(l.totalWeight) ? ' sino-simple-form__field--success' : ''}`,
+                                className: `sino-simple-form__field sino-simple-form__field--primary${V.country && H.country ? ' sino-simple-form__field--error' : ''}${V.country && !H.country && Be(l.country) ? ' sino-simple-form__field--success' : ''}`,
                                 children: [
                                   r.jsxs('label', {
                                     className: 'sino-simple-form__label',
-                                    htmlFor: 'totalWeight',
+                                    htmlFor: 'country',
                                     children: [
-                                      S('totalWeight', 'Total Weight (kg)'),
+                                      S('destinationCountry', 'Destination country'),
                                       r.jsx('span', {
                                         className: 'sino-simple-form__required',
                                         'aria-label': 'required',
@@ -16133,36 +15313,46 @@ const tp = () => {
                                   r.jsxs('div', {
                                     className: 'sino-simple-form__field-wrapper',
                                     children: [
-                                      r.jsx('input', {
-                                        className: `sino-simple-form__input${K.totalWeight ? ' sino-simple-form__input--error' : ''}${V.totalWeight && !K.totalWeight && Be(l.totalWeight) ? ' sino-simple-form__input--success' : ''}`,
-                                        type: 'text',
-                                        id: 'totalWeight',
-                                        name: 'totalWeight',
-                                        ref: Li,
-                                        value: l.totalWeight,
-                                        onChange: (y) => {
-                                          (hn('totalWeight', y.target.value),
-                                            K.totalWeight &&
-                                              F((L) => {
-                                                const ne = { ...L };
-                                                return (delete ne.totalWeight, ne);
-                                              }));
+                                      r.jsx(Yu, {
+                                        id: 'country',
+                                        name: 'country',
+                                        value: l.country,
+                                        onChange: Qe,
+                                        onBlur: () => {
+                                          l.country &&
+                                            l.country.trim().length > 0 &&
+                                            fi('country', l.country);
                                         },
-                                        onBlur: () => fi('totalWeight', l.totalWeight),
-                                        placeholder: S('totalWeightPlaceholder', 'e.g. 1 200'),
-                                        'aria-label': S('totalWeight', 'Estimated total weight'),
-                                        'aria-describedby': K.totalWeight
-                                          ? 'totalWeight-error'
-                                          : V.totalWeight && !K.totalWeight && Be(l.totalWeight)
-                                            ? 'totalWeight-success'
-                                            : void 0,
-                                        'aria-invalid': K.totalWeight ? 'true' : 'false',
-                                        'aria-required': 'true',
+                                        onSelect: (y) => {
+                                          c((L) => ({ ...L, country: y }));
+                                        },
+                                        onSelectWithValidation: (y) => {
+                                          (c((ne) => ({ ...ne, country: y })),
+                                            ce(y),
+                                            A((ne) => ({ ...ne, country: !0 })));
+                                          const L = il(y);
+                                          !L.valid && L.error
+                                            ? F((ne) => ({ ...ne, country: L.error }))
+                                            : F((ne) => {
+                                                const we = { ...ne };
+                                                return (delete we.country, we);
+                                              });
+                                        },
+                                        placeholder: S(
+                                          'destinationCountryPlaceholder',
+                                          'France, USA, Canada…'
+                                        ),
+                                        options: Ei,
+                                        inputRef: rt,
+                                        error: H.country,
+                                        touched: V.country,
+                                        isValid: !H.country && Be(ge || l.country),
+                                        maxResults: 10,
                                       }),
-                                      V.totalWeight &&
+                                      V.country &&
                                         r.jsxs(r.Fragment, {
                                           children: [
-                                            K.totalWeight &&
+                                            H.country &&
                                               r.jsx('span', {
                                                 className:
                                                   'sino-simple-form__field-icon sino-simple-form__field-icon--error',
@@ -16202,8 +15392,8 @@ const tp = () => {
                                                   ],
                                                 }),
                                               }),
-                                            !K.totalWeight &&
-                                              Be(l.totalWeight) &&
+                                            !H.country &&
+                                              Be(l.country) &&
                                               r.jsx('span', {
                                                 className:
                                                   'sino-simple-form__field-icon sino-simple-form__field-icon--success',
@@ -16236,323 +15426,511 @@ const tp = () => {
                                         }),
                                     ],
                                   }),
-                                  K.totalWeight &&
+                                  H.country &&
                                     r.jsx('p', {
-                                      id: 'totalWeight-error',
+                                      id: 'country-error',
                                       className: 'sino-simple-form__field-error',
                                       role: 'alert',
                                       'aria-live': 'polite',
-                                      children: K.totalWeight,
+                                      children: H.country,
                                     }),
-                                  V.totalWeight &&
-                                    !K.totalWeight &&
-                                    Be(l.totalWeight) &&
+                                  V.country &&
+                                    !H.country &&
+                                    Be(l.country) &&
                                     r.jsx('p', {
-                                      id: 'totalWeight-success',
+                                      id: 'country-success',
                                       className: 'sino-simple-form__sr-only',
                                       'aria-live': 'polite',
                                       children: S('fieldValid', 'Field is valid'),
                                     }),
-                                  r.jsx('p', {
-                                    className: 'sino-simple-form__help',
-                                    children: S(
-                                      'totalWeightHelp',
-                                      'Rough estimate is OK. We refine it together before booking.'
-                                    ),
-                                  }),
                                 ],
                               }),
                               r.jsxs('div', {
-                                className: 'sino-simple-form__field',
+                                className: `sino-simple-form__field sino-simple-form__field--primary${V.destCity && H.destCity ? ' sino-simple-form__field--error' : ''}${V.destCity && !H.destCity && Be(l.destCity) ? ' sino-simple-form__field--success' : ''}`,
                                 children: [
-                                  r.jsx('label', {
-                                    className: `sino-simple-form__label${f ? ' sino-simple-form__label--muted' : ''}`,
-                                    htmlFor: 'numberOfUnits',
-                                    children: S('numberOfUnits', 'Number of cartons / pallets'),
+                                  r.jsxs('label', {
+                                    className: 'sino-simple-form__label',
+                                    htmlFor: 'destCity',
+                                    children: [
+                                      S('destinationCityOrPort', 'City or port'),
+                                      r.jsx('span', {
+                                        className: 'sino-simple-form__required',
+                                        'aria-label': 'required',
+                                        children: '*',
+                                      }),
+                                    ],
                                   }),
                                   r.jsxs('div', {
-                                    className: 'sino-simple-form__field-input-group',
+                                    className: 'sino-simple-form__field-wrapper',
                                     children: [
-                                      r.jsx('input', {
-                                        className: 'sino-simple-form__input',
-                                        type: 'number',
-                                        min: 1,
-                                        id: 'numberOfUnits',
-                                        value: l.numberOfUnits,
-                                        onChange: (y) => {
-                                          (h(!1), hn('numberOfUnits', Number(y.target.value)));
+                                      r.jsx(Yu, {
+                                        id: 'destCity',
+                                        name: 'destCity',
+                                        value: l.destCity,
+                                        onChange: Qe,
+                                        onBlur: () => {
+                                          l.destCity &&
+                                            l.destCity.trim().length > 0 &&
+                                            fi('destCity', l.destCity);
+                                        },
+                                        onSelectWithValidation: (y) => {
+                                          (c((ne) => ({ ...ne, destCity: y })),
+                                            Ke(y),
+                                            A((ne) => ({ ...ne, destCity: !0 })));
+                                          const L = tl(y);
+                                          !L.valid && L.error
+                                            ? F((ne) => ({ ...ne, destCity: L.error }))
+                                            : F((ne) => {
+                                                const we = { ...ne };
+                                                return (delete we.destCity, we);
+                                              });
                                         },
                                         placeholder: S(
-                                          'numberOfUnitsPlaceholder',
-                                          'e.g. 10 pallets'
+                                          'destinationCityPlaceholder',
+                                          'e.g. Paris, Le Havre…'
+                                        ),
+                                        options: tt,
+                                        inputRef: st,
+                                        error: H.destCity,
+                                        touched: V.destCity,
+                                        isValid: !H.destCity && Be(ye || l.destCity),
+                                        maxResults: 8,
+                                      }),
+                                      V.destCity &&
+                                        r.jsxs(r.Fragment, {
+                                          children: [
+                                            H.destCity &&
+                                              r.jsx('span', {
+                                                className:
+                                                  'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                                                'aria-hidden': 'true',
+                                                'aria-label': S('fieldError', 'Error'),
+                                                children: r.jsxs('svg', {
+                                                  width: '20',
+                                                  height: '20',
+                                                  viewBox: '0 0 24 24',
+                                                  fill: 'none',
+                                                  xmlns: 'http://www.w3.org/2000/svg',
+                                                  children: [
+                                                    r.jsx('circle', {
+                                                      cx: '12',
+                                                      cy: '12',
+                                                      r: '10',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                    }),
+                                                    r.jsx('line', {
+                                                      x1: '12',
+                                                      y1: '8',
+                                                      x2: '12',
+                                                      y2: '12',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                      strokeLinecap: 'round',
+                                                    }),
+                                                    r.jsx('line', {
+                                                      x1: '12',
+                                                      y1: '16',
+                                                      x2: '12.01',
+                                                      y2: '16',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                      strokeLinecap: 'round',
+                                                    }),
+                                                  ],
+                                                }),
+                                              }),
+                                            !H.destCity &&
+                                              Be(l.destCity) &&
+                                              r.jsx('span', {
+                                                className:
+                                                  'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                                                'aria-hidden': 'true',
+                                                'aria-label': S('fieldValid', 'Field is valid'),
+                                                children: r.jsxs('svg', {
+                                                  width: '20',
+                                                  height: '20',
+                                                  viewBox: '0 0 24 24',
+                                                  fill: 'none',
+                                                  xmlns: 'http://www.w3.org/2000/svg',
+                                                  children: [
+                                                    r.jsx('circle', {
+                                                      cx: '12',
+                                                      cy: '12',
+                                                      r: '10',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                    }),
+                                                    r.jsx('path', {
+                                                      d: 'M8 12l2 2 4-4',
+                                                      stroke: 'currentColor',
+                                                      strokeWidth: '2',
+                                                      strokeLinecap: 'round',
+                                                      strokeLinejoin: 'round',
+                                                    }),
+                                                  ],
+                                                }),
+                                              }),
+                                          ],
+                                        }),
+                                    ],
+                                  }),
+                                  H.destCity &&
+                                    r.jsx('p', {
+                                      id: 'destCity-error',
+                                      className: 'sino-simple-form__field-error',
+                                      role: 'alert',
+                                      'aria-live': 'polite',
+                                      children: H.destCity,
+                                    }),
+                                  V.destCity &&
+                                    !H.destCity &&
+                                    Be(l.destCity) &&
+                                    r.jsx('p', {
+                                      id: 'destCity-success',
+                                      className: 'sino-simple-form__sr-only',
+                                      'aria-live': 'polite',
+                                      children: S('fieldValid', 'Field is valid'),
+                                    }),
+                                ],
+                              }),
+                            ],
+                          }),
+                          r.jsxs('div', {
+                            className: `sino-simple-form__subsection${O ? ' sino-simple-form__subsection--open' : ''}`,
+                            children: [
+                              r.jsxs('button', {
+                                type: 'button',
+                                className: 'sino-simple-form__subsection-toggle',
+                                onClick: () => K((y) => !y),
+                                'aria-expanded': O,
+                                'aria-controls': 'destination-details-content',
+                                'aria-label': O
+                                  ? S('collapseSection', 'Collapse destination details')
+                                  : S('expandSection', 'Expand destination details'),
+                                onKeyDown: (y) => {
+                                  (y.key === 'Enter' || y.key === ' ') &&
+                                    (y.preventDefault(), K((L) => !L));
+                                },
+                                children: [
+                                  r.jsxs('span', {
+                                    className: 'sino-simple-form__subsection-label',
+                                    children: [
+                                      S(
+                                        'destinationDetailsTitle',
+                                        'Advanced delivery details (optional)'
+                                      ),
+                                      r.jsx('small', {
+                                        children: S(
+                                          'destinationDetailsSubtitle',
+                                          'Helps us refine delivery but you can skip this for now.'
                                         ),
                                       }),
-                                      r.jsx('div', {
-                                        className: 'sino-simple-form__chips',
-                                        children: r.jsx('button', {
-                                          type: 'button',
-                                          className: `sino-simple-chip${f ? ' sino-simple-chip--active' : ''}`,
-                                          'aria-pressed': f ? 'true' : 'false',
-                                          onClick: () => {
-                                            (h(!0), hn('numberOfUnits', 0));
-                                          },
-                                          children: S(
-                                            'numberOfUnitsUnknown',
-                                            "I don't know the exact number yet"
-                                          ),
-                                        }),
-                                      }),
                                     ],
+                                  }),
+                                  r.jsx('span', {
+                                    className: `sino-simple-form__subsection-chevron${O ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                                    children: '▾',
                                   }),
                                 ],
                               }),
-                              r.jsxs('div', {
-                                className: 'sino-simple-form__field',
-                                children: [
-                                  r.jsx('label', {
-                                    className: `sino-simple-form__label${w ? ' sino-simple-form__label--muted' : ''}`,
-                                    htmlFor: 'goodsValue',
-                                    children: S('goodsValue', 'Estimated cargo value'),
-                                  }),
-                                  r.jsxs('div', {
-                                    className: 'sino-simple-form__field-input-group',
-                                    children: [
-                                      r.jsx('input', {
-                                        className: 'sino-simple-form__input',
-                                        type: 'text',
-                                        name: 'goodsValue',
-                                        id: 'goodsValue',
-                                        value: l.goodsValue,
-                                        onChange: (y) => {
-                                          (N(!1), Qe(y));
+                              O &&
+                                r.jsxs('div', {
+                                  id: 'destination-details-content',
+                                  className:
+                                    'sino-simple-form__fields sino-simple-form__fields--rows',
+                                  children: [
+                                    r.jsxs('div', {
+                                      className: 'sino-simple-form__field',
+                                      children: [
+                                        r.jsx('label', {
+                                          className: 'sino-simple-form__label',
+                                          children: S(
+                                            'destinationLocationType',
+                                            'Delivery location type'
+                                          ),
+                                        }),
+                                        r.jsx('input', {
+                                          className: 'sino-simple-form__input',
+                                          type: 'text',
+                                          name: 'destLocationType',
+                                          value: l.destLocationType,
+                                          onChange: Qe,
+                                          placeholder: S(
+                                            'destinationLocationTypePlaceholder',
+                                            'Port, warehouse, home address…'
+                                          ),
+                                        }),
+                                      ],
+                                    }),
+                                    r.jsxs('div', {
+                                      className: 'sino-simple-form__field',
+                                      children: [
+                                        r.jsx('label', {
+                                          className: 'sino-simple-form__label',
+                                          children: S('destinationZipCode', 'ZIP / postal code'),
+                                        }),
+                                        r.jsx('input', {
+                                          className: 'sino-simple-form__input',
+                                          type: 'text',
+                                          name: 'destZipCode',
+                                          value: l.destZipCode,
+                                          onChange: Qe,
+                                          placeholder: S(
+                                            'destinationZipCodePlaceholder',
+                                            'e.g. 75001'
+                                          ),
+                                        }),
+                                      ],
+                                    }),
+                                  ],
+                                }),
+                            ],
+                          }),
+                          r.jsx('div', {
+                            className:
+                              'sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top',
+                            children: r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsx('label', {
+                                  className: 'sino-simple-form__label',
+                                  children: S('shippingMode', 'Preferred mode'),
+                                }),
+                                r.jsx('div', {
+                                  className: 'sino-simple-form__chips',
+                                  children: [
+                                    {
+                                      value: 'Sea',
+                                      label: 'Sea',
+                                      tooltip: S(
+                                        'modeSeaHelp',
+                                        'Best for large volumes and lower cost when you have a few weeks.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'Air',
+                                      label: 'Air',
+                                      tooltip: S(
+                                        'modeAirHelp',
+                                        'Faster than sea, ideal for smaller, time-sensitive shipments.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'Railway',
+                                      label: 'Railway',
+                                      tooltip: S(
+                                        'modeRailHelp',
+                                        'Balanced option Europe–China: faster than sea, cheaper than air.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'Express',
+                                      label: 'Express',
+                                      tooltip: S(
+                                        'modeExpressHelp',
+                                        'Door‑to‑door courier (DHL/UPS/FedEx) for urgent small parcels.'
+                                      ),
+                                    },
+                                  ].map((y) =>
+                                    r.jsx(
+                                      'button',
+                                      {
+                                        type: 'button',
+                                        className: `sino-simple-chip${l.mode === y.value ? ' sino-simple-chip--active' : ''}`,
+                                        'data-tooltip': y.tooltip,
+                                        onClick: () =>
+                                          c((L) => ({
+                                            ...L,
+                                            mode: L.mode === y.value ? '' : y.value,
+                                          })),
+                                        'aria-pressed': l.mode === y.value ? 'true' : 'false',
+                                        'aria-label': `${y.label}${l.mode === y.value ? ', selected' : ', not selected'}. ${y.tooltip}`,
+                                        onKeyDown: (L) => {
+                                          (L.key === 'Enter' || L.key === ' ') &&
+                                            (L.preventDefault(),
+                                            c((ne) => ({
+                                              ...ne,
+                                              mode: ne.mode === y.value ? '' : y.value,
+                                            })));
                                         },
-                                        placeholder: S('goodsValuePlaceholder', 'e.g. 25 000'),
-                                      }),
-                                      r.jsx('div', {
-                                        className: 'sino-simple-form__chips',
-                                        children: r.jsx('button', {
-                                          type: 'button',
-                                          className: `sino-simple-chip${w ? ' sino-simple-chip--active' : ''}`,
-                                          'aria-pressed': w ? 'true' : 'false',
-                                          onClick: () => {
-                                            (N(!0), c((y) => ({ ...y, goodsValue: '' })));
-                                          },
-                                          children: S(
-                                            'goodsValueUnknown',
-                                            "I don't know the value yet"
-                                          ),
-                                        }),
-                                      }),
-                                    ],
-                                  }),
-                                ],
-                              }),
-                              r.jsxs('div', {
-                                className: 'sino-simple-form__field',
-                                children: [
-                                  r.jsx('label', {
-                                    className: 'sino-simple-form__label',
-                                    htmlFor: 'goodsCurrency',
-                                    children: S('goodsCurrency', 'Currency'),
-                                  }),
-                                  r.jsx('input', {
-                                    className: 'sino-simple-form__input',
-                                    type: 'text',
-                                    name: 'goodsCurrency',
-                                    id: 'goodsCurrency',
-                                    value: l.goodsCurrency,
-                                    onChange: Qe,
-                                    placeholder: S('goodsCurrencyPlaceholder', 'USD, EUR…'),
-                                  }),
-                                ],
-                              }),
+                                        children: y.label,
+                                      },
+                                      y.value
+                                    )
+                                  ),
+                                }),
+                              ],
+                            }),
+                          }),
+                          r.jsx('div', {
+                            className:
+                              'sino-simple-form__fields sino-simple-form__fields--rows sino-simple-form__fields--m-top',
+                            children: r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsxs('label', {
+                                  className: 'sino-simple-form__label',
+                                  children: [
+                                    S('incotermLabel', 'Trade terms (Incoterm)'),
+                                    r.jsx('span', {
+                                      className: 'sino-simple-form__label-hint',
+                                      children: S('ifKnown', 'if known'),
+                                    }),
+                                  ],
+                                }),
+                                r.jsx('div', {
+                                  className:
+                                    'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                  children: [
+                                    {
+                                      value: 'EXW (Ex Work)',
+                                      label: 'EXW (Ex Work)',
+                                      tooltip: S(
+                                        'incotermEXWTooltip',
+                                        'Ex Works: You handle everything from the factory. We pick up at the supplier.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'FOB (Free On Board)',
+                                      label: 'FOB (Free On Board)',
+                                      tooltip: S(
+                                        'incotermFOBTooltip',
+                                        'Free On Board: Supplier delivers to port, you handle shipping and destination costs.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'CIF (Cost Insurance and Freight)',
+                                      label: 'CIF (Cost Insurance and Freight)',
+                                      tooltip: S(
+                                        'incotermCIFTooltip',
+                                        'Cost, Insurance & Freight: Supplier pays shipping to your port, you handle destination.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'CFR (Cost & Freight)',
+                                      label: 'CFR (Cost & Freight)',
+                                      tooltip: S(
+                                        'incotermCFRTooltip',
+                                        'Cost and Freight: Supplier pays shipping to your port.'
+                                      ),
+                                    },
+                                    {
+                                      value: 'DAT (Delivery at Terminal)',
+                                      label: 'DAT (Delivery at Terminal)',
+                                      tooltip: S(
+                                        'incotermDATTooltip',
+                                        'Delivered At Terminal: Delivered at a named terminal at destination.'
+                                      ),
+                                    },
+                                    {
+                                      value: "I don't know yet",
+                                      label: "I don't know yet",
+                                      tooltip: S(
+                                        'incotermNotSureTooltip',
+                                        "No problem! We'll help you choose the best option based on your needs."
+                                      ),
+                                    },
+                                  ].map((y) =>
+                                    r.jsx(
+                                      'button',
+                                      {
+                                        type: 'button',
+                                        className: `sino-simple-chip${l.incoterm === y.value ? ' sino-simple-chip--active' : ''}`,
+                                        'data-tooltip': y.tooltip,
+                                        'aria-pressed': l.incoterm === y.value ? 'true' : 'false',
+                                        onClick: () =>
+                                          c((L) => ({
+                                            ...L,
+                                            incoterm: L.incoterm === y.value ? '' : y.value,
+                                          })),
+                                        children: y.label,
+                                      },
+                                      y.value
+                                    )
+                                  ),
+                                }),
+                              ],
+                            }),
+                          }),
+                          r.jsx('h3', {
+                            className: 'sino-simple-form__subsection-title',
+                            children: S('simpleStep2Title', 'Pickup in China'),
+                          }),
+                          r.jsxs('div', {
+                            className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                            children: [
                               r.jsxs('div', {
                                 className:
                                   'sino-simple-form__field sino-simple-form__field--primary',
                                 children: [
                                   r.jsx('label', {
                                     className: 'sino-simple-form__label',
-                                    children: S('areGoodsReady', 'Are the goods ready?'),
+                                    htmlFor: 'city',
+                                    children: S('originCity', 'City in China'),
                                   }),
-                                  r.jsx('div', {
-                                    className:
-                                      'sino-simple-form__chips sino-simple-form__chips--wrap',
-                                    children: [
-                                      { value: 'yes', label: S('goodsReadyNow', 'Ready now') },
-                                      {
-                                        value: 'no_in_1_week',
-                                        label: S('goodsReady1Week', 'In ~1 week'),
-                                      },
-                                      {
-                                        value: 'no_in_2_weeks',
-                                        label: S('goodsReady2Weeks', 'In ~2 weeks'),
-                                      },
-                                      {
-                                        value: 'no_in_1_month',
-                                        label: S('goodsReady1Month', 'In ~1 month'),
-                                      },
-                                      {
-                                        value: 'no_date_set',
-                                        label: S('goodsReadyNoDate', 'No date set yet'),
-                                      },
-                                    ].map((y) =>
-                                      r.jsx(
-                                        'button',
-                                        {
-                                          type: 'button',
-                                          className: `sino-simple-chip${l.areGoodsReady === y.value ? ' sino-simple-chip--active' : ''}`,
-                                          'aria-pressed':
-                                            l.areGoodsReady === y.value ? 'true' : 'false',
-                                          onClick: () =>
-                                            c((L) => ({
-                                              ...L,
-                                              areGoodsReady:
-                                                L.areGoodsReady === y.value ? '' : y.value,
-                                            })),
-                                          children: y.label,
-                                        },
-                                        y.value
-                                      )
-                                    ),
-                                  }),
-                                ],
-                              }),
-                              r.jsxs('div', {
-                                className: 'sino-simple-form__field',
-                                children: [
-                                  r.jsxs('label', {
-                                    className: 'sino-simple-form__label',
-                                    children: [
-                                      S('annualVolumeLabel', 'Rough annual volume from China'),
-                                      r.jsx('span', {
-                                        className: 'sino-simple-form__label-hint',
-                                        children: S('ifKnown', 'if known'),
-                                      }),
-                                    ],
-                                  }),
-                                  r.jsx('div', {
-                                    className:
-                                      'sino-simple-form__chips sino-simple-form__chips--wrap',
-                                    children: [
-                                      { value: '50 ~ 500', label: '50 ~ 500' },
-                                      { value: '501 ~ 1000', label: '501 ~ 1000' },
-                                      { value: '1001 ~ 5000', label: '1001 ~ 5000' },
-                                      { value: '5001+', label: '5001+' },
-                                    ].map((y) =>
-                                      r.jsx(
-                                        'button',
-                                        {
-                                          type: 'button',
-                                          className: `sino-simple-chip${l.annualVolume === y.value ? ' sino-simple-chip--active' : ''}`,
-                                          'aria-pressed':
-                                            l.annualVolume === y.value ? 'true' : 'false',
-                                          onClick: () =>
-                                            c((L) => ({
-                                              ...L,
-                                              annualVolume:
-                                                L.annualVolume === y.value ? '' : y.value,
-                                            })),
-                                          children: y.label,
-                                        },
-                                        y.value
-                                      )
-                                    ),
-                                  }),
-                                ],
-                              }),
-                              r.jsxs('div', {
-                                className: 'sino-simple-form__field',
-                                children: [
-                                  r.jsx('label', {
-                                    className: 'sino-simple-form__label',
-                                    children: S(
-                                      'isPersonalOrHazardous',
-                                      'Personal effects or hazardous goods?'
-                                    ),
-                                  }),
-                                  r.jsx('div', {
-                                    className: 'sino-simple-form__chips',
-                                    children: [
-                                      {
-                                        value: !0,
-                                        label: S(
-                                          'personalOrHazardousYes',
-                                          'Yes, personal or hazardous'
-                                        ),
-                                      },
-                                      {
-                                        value: !1,
-                                        label: S(
-                                          'personalOrHazardousNo',
-                                          'No, standard commercial goods'
-                                        ),
-                                      },
-                                    ].map((y) =>
-                                      r.jsx(
-                                        'button',
-                                        {
-                                          type: 'button',
-                                          className: `sino-simple-chip${l.isPersonalOrHazardous === y.value ? ' sino-simple-chip--active' : ''}`,
-                                          'aria-pressed':
-                                            l.isPersonalOrHazardous === y.value ? 'true' : 'false',
-                                          onClick: () =>
-                                            c((L) => ({ ...L, isPersonalOrHazardous: y.value })),
-                                          children: y.label,
-                                        },
-                                        String(y.value)
-                                      )
+                                  r.jsx('input', {
+                                    className: 'sino-simple-form__input',
+                                    type: 'text',
+                                    name: 'city',
+                                    id: 'city',
+                                    value: l.city,
+                                    onChange: Qe,
+                                    placeholder: S(
+                                      'originCityPlaceholder',
+                                      'e.g. Shenzhen, Guangzhou…'
                                     ),
                                   }),
                                   r.jsx('p', {
                                     className: 'sino-simple-form__help',
                                     children: S(
-                                      'isPersonalOrHazardousHelp',
-                                      'This only helps us pick the right specialist on our side – it does not change your pricing automatically.'
+                                      'originCityHelp',
+                                      'City is enough for now. You can skip the pickup details below if you prefer.'
                                     ),
                                   }),
                                 ],
                               }),
                               r.jsxs('div', {
-                                className: `sino-simple-form__subsection${Z ? ' sino-simple-form__subsection--open' : ''}`,
+                                className: `sino-simple-form__subsection${z ? ' sino-simple-form__subsection--open' : ''}`,
                                 children: [
                                   r.jsxs('button', {
                                     type: 'button',
                                     className: 'sino-simple-form__subsection-toggle',
-                                    onClick: () => H((y) => !y),
-                                    'aria-expanded': Z,
-                                    'aria-controls': 'advanced-details-content',
-                                    'aria-label': Z
-                                      ? S('collapseSection', 'Collapse advanced cargo details')
-                                      : S('expandSection', 'Expand advanced cargo details'),
+                                    onClick: () => b((y) => !y),
+                                    'aria-expanded': z,
+                                    'aria-controls': 'origin-details-content',
+                                    'aria-label': z
+                                      ? S('collapseSection', 'Collapse origin details')
+                                      : S('expandSection', 'Expand origin details'),
                                     onKeyDown: (y) => {
                                       (y.key === 'Enter' || y.key === ' ') &&
-                                        (y.preventDefault(), H((L) => !L));
+                                        (y.preventDefault(), b((L) => !L));
                                     },
                                     children: [
                                       r.jsxs('span', {
                                         className: 'sino-simple-form__subsection-label',
                                         children: [
                                           S(
-                                            'simpleStep4Title',
-                                            'Advanced cargo details (optional)'
+                                            'originDetailsTitle',
+                                            'Advanced pickup details (optional)'
                                           ),
                                           r.jsx('small', {
                                             children: S(
-                                              'simpleStep4Subtitle',
-                                              'Dimensions and remarks help us fine-tune the quote but are not mandatory.'
+                                              'originDetailsSubtitle',
+                                              'Useful for door pickup but optional at this stage.'
                                             ),
                                           }),
                                         ],
                                       }),
                                       r.jsx('span', {
-                                        className: `sino-simple-form__subsection-chevron${Z ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                                        className: `sino-simple-form__subsection-chevron${z ? ' sino-simple-form__subsection-chevron--open' : ''}`,
                                         children: '▾',
                                       }),
                                     ],
                                   }),
-                                  Z &&
+                                  z &&
                                     r.jsxs('div', {
-                                      id: 'advanced-details-content',
+                                      id: 'origin-details-content',
                                       className:
                                         'sino-simple-form__fields sino-simple-form__fields--rows',
                                       children: [
@@ -16560,71 +15938,69 @@ const tp = () => {
                                           className: 'sino-simple-form__field',
                                           children: [
                                             r.jsx('label', {
-                                              className: `sino-simple-form__label${C ? ' sino-simple-form__label--muted' : ''}`,
+                                              className: 'sino-simple-form__label',
                                               children: S(
-                                                'dimensions',
-                                                'Approximate dimensions per unit'
+                                                'originLocationType',
+                                                'Pickup location type'
                                               ),
                                             }),
-                                            r.jsxs('div', {
-                                              className:
-                                                'sino-simple-form__fields sino-simple-form__fields--inline',
-                                              children: [
-                                                r.jsx('input', {
-                                                  className: 'sino-simple-form__input',
-                                                  type: 'text',
-                                                  value: l.dimensions.length,
-                                                  onChange: (y) =>
-                                                    hn('dimensions', {
-                                                      ...l.dimensions,
-                                                      length: y.target.value,
-                                                    }),
-                                                  placeholder: S('lengthPlaceholder', 'L (cm)'),
-                                                }),
-                                                r.jsx('input', {
-                                                  className: 'sino-simple-form__input',
-                                                  type: 'text',
-                                                  value: l.dimensions.width,
-                                                  onChange: (y) =>
-                                                    hn('dimensions', {
-                                                      ...l.dimensions,
-                                                      width: y.target.value,
-                                                    }),
-                                                  placeholder: S('widthPlaceholder', 'W (cm)'),
-                                                }),
-                                                r.jsx('input', {
-                                                  className: 'sino-simple-form__input',
-                                                  type: 'text',
-                                                  value: l.dimensions.height,
-                                                  onChange: (y) =>
-                                                    hn('dimensions', {
-                                                      ...l.dimensions,
-                                                      height: y.target.value,
-                                                    }),
-                                                  placeholder: S('heightPlaceholder', 'H (cm)'),
-                                                }),
-                                              ],
+                                            r.jsx('input', {
+                                              className: 'sino-simple-form__input',
+                                              type: 'text',
+                                              name: 'locationType',
+                                              value: l.locationType,
+                                              onChange: Qe,
+                                              placeholder: S(
+                                                'originLocationTypePlaceholder',
+                                                'Factory, warehouse, port…'
+                                              ),
                                             }),
-                                            r.jsx('div', {
-                                              className:
-                                                'sino-simple-form__chips sino-simple-form__chips--wrap',
-                                              children: r.jsx('button', {
-                                                type: 'button',
-                                                className: `sino-simple-chip${C ? ' sino-simple-chip--active' : ''}`,
-                                                'aria-pressed': C ? 'true' : 'false',
-                                                onClick: () => {
-                                                  (j(!0),
-                                                    hn('dimensions', {
-                                                      length: '',
-                                                      width: '',
-                                                      height: '',
-                                                    }));
-                                                },
-                                                children: S(
-                                                  'dimensionsUnknown',
-                                                  "I don't know the exact dimensions yet"
-                                                ),
-                                              }),
+                                          ],
+                                        }),
+                                        r.jsx('div', {
+                                          className: 'sino-simple-form__field',
+                                          children: r.jsx('div', {
+                                            className: 'sino-simple-form__chips',
+                                            children: r.jsx('button', {
+                                              type: 'button',
+                                              className: `sino-simple-chip${l.locationType === 'unknown' ? ' sino-simple-chip--active' : ''}`,
+                                              onClick: () =>
+                                                c((y) => ({ ...y, locationType: 'unknown' })),
+                                              'aria-pressed':
+                                                l.locationType === 'unknown' ? 'true' : 'false',
+                                              'aria-label': `${S('originLocationTypeUnknown', "I'm still discussing with my supplier")}${l.locationType === 'unknown' ? ', selected' : ', not selected'}`,
+                                              onKeyDown: (y) => {
+                                                (y.key === 'Enter' || y.key === ' ') &&
+                                                  (y.preventDefault(),
+                                                  c((L) => ({ ...L, locationType: 'unknown' })));
+                                              },
+                                              children: S(
+                                                'originLocationTypeUnknown',
+                                                "I'm still discussing with my supplier"
+                                              ),
+                                            }),
+                                          }),
+                                        }),
+                                        r.jsxs('div', {
+                                          className: 'sino-simple-form__field',
+                                          children: [
+                                            r.jsx('label', {
+                                              className: 'sino-simple-form__label',
+                                              children: S(
+                                                'originZipCode',
+                                                'ZIP / postal code in China'
+                                              ),
+                                            }),
+                                            r.jsx('input', {
+                                              className: 'sino-simple-form__input',
+                                              type: 'text',
+                                              name: 'zipCode',
+                                              value: l.zipCode,
+                                              onChange: Qe,
+                                              placeholder: S(
+                                                'originZipCodePlaceholder',
+                                                'e.g. 518000'
+                                              ),
                                             }),
                                           ],
                                         }),
@@ -16634,7 +16010,7 @@ const tp = () => {
                                             r.jsxs('label', {
                                               className: 'sino-simple-form__label',
                                               children: [
-                                                S('weightPerUnit', 'Weight per unit'),
+                                                S('originPort', 'Port of loading'),
                                                 r.jsx('span', {
                                                   className: 'sino-simple-form__label-hint',
                                                   children: S('ifKnown', 'if known'),
@@ -16644,41 +16020,12 @@ const tp = () => {
                                             r.jsx('input', {
                                               className: 'sino-simple-form__input',
                                               type: 'text',
-                                              value: l.weightPerUnit,
-                                              onChange: (y) => {
-                                                hn('weightPerUnit', y.target.value);
-                                              },
-                                              placeholder: S(
-                                                'weightPerUnitPlaceholder',
-                                                'e.g. 25 kg per pallet'
-                                              ),
-                                            }),
-                                            r.jsx('p', {
-                                              className: 'sino-simple-form__help',
-                                              children: S(
-                                                'weightPerUnitHelp',
-                                                'If you know the weight per unit, we can calculate the total weight automatically.'
-                                              ),
-                                            }),
-                                          ],
-                                        }),
-                                        r.jsx(Bm, { formData: l, setFormData: c, t: S }),
-                                        r.jsxs('div', {
-                                          className: 'sino-simple-form__field',
-                                          children: [
-                                            r.jsx('label', {
-                                              className: 'sino-simple-form__label',
-                                              children: S('remarks', 'Anything we should know?'),
-                                            }),
-                                            r.jsx('input', {
-                                              className: 'sino-simple-form__input',
-                                              type: 'text',
-                                              name: 'remarks',
-                                              value: l.remarks,
+                                              name: 'origin',
+                                              value: l.origin,
                                               onChange: Qe,
                                               placeholder: S(
-                                                'remarksPlaceholder',
-                                                'Fragile goods, specific deadlines, preferred routing…'
+                                                'originPortPlaceholder',
+                                                'e.g. Shenzhen (Yantian), Ningbo…'
                                               ),
                                             }),
                                           ],
@@ -16691,66 +16038,696 @@ const tp = () => {
                           }),
                         ],
                       }),
-                    _e === 'contact' &&
-                      r.jsxs(r.Fragment, {
-                        children: [
-                          r.jsx(xm, {
-                            formData: l,
-                            setFormData: c,
-                            t: S,
-                            isFilled: Be,
-                            onChange: Qe,
-                            onBlur: fi,
-                            fieldErrors: K,
-                            fieldTouched: V,
-                            firstNameRef: ot,
-                            emailRef: Ri,
-                            phoneRef: qn,
-                            stepLabel: `Step ${X + 1}`,
-                            currentStepIndex: X,
-                            totalSteps: Ee,
-                          }),
-                          r.jsx(Rm, {
-                            formData: l,
-                            t: S,
-                            selectedServiceLabels: Dn,
-                            submitError: Ge,
-                            setSubmitError: We,
-                            isSubmitting: cn,
-                            setIsSubmitting: Ae,
-                            scrollToFirstError: En,
-                            onSubmissionSuccess: at,
-                            setFieldErrors: F,
-                            setFieldTouched: A,
-                            orderedSteps: en,
-                            onEditStep: (y) => {
-                              (Te(y),
-                                typeof window < 'u' &&
-                                  window.scrollTo({ top: 0, behavior: 'smooth' }));
-                            },
-                          }),
-                        ],
-                      }),
-                  ],
-                }),
-                r.jsx(
-                  Fm,
-                  {
-                    currentStep: X,
-                    totalSteps: Ee,
-                    onNext: Zt,
-                    onPrevious: us,
-                    isFirstStep: Yt,
-                    isLastStep: as,
-                    orderedSteps: en,
-                    formData: l,
-                    t: S,
-                  },
-                  `nav-${Ee}-${X}-${JSON.stringify(l.servicesRequested)}`
-                ),
-              ],
-            }),
-          ],
+                    }),
+                  _e === 'shippingCargo' &&
+                    Hn &&
+                    r.jsxs('section', {
+                      className:
+                        'sino-simple-form__section sino-simple-form__section--service-shipping',
+                      children: [
+                        r.jsxs('h2', {
+                          className: 'sino-simple-form__section-title',
+                          children: [
+                            r.jsx('span', {
+                              className: 'sino-simple-form__section-step',
+                              children: `Step ${X + 1}`,
+                            }),
+                            r.jsx('span', { children: S('simpleStep3Title', 'Cargo details') }),
+                          ],
+                        }),
+                        r.jsx(nl, {
+                          stepId: 'shippingCargo',
+                          formData: l,
+                          currentStepIndex: X,
+                          totalSteps: Ee,
+                          t: S,
+                        }),
+                        r.jsx('p', {
+                          className: 'sino-simple-form__hint',
+                          children: S(
+                            'simpleStep3Hint',
+                            'A short description, an approximate weight and a rough number of cartons/pallets is enough for a first quote.'
+                          ),
+                        }),
+                        r.jsx('p', {
+                          className: 'sino-simple-form__hint sino-simple-form__hint--secondary',
+                          children: S(
+                            'simpleStep3ImpactHint',
+                            'These 4 fields have the biggest impact on your rates: route, mode, total weight and when the goods are ready.'
+                          ),
+                        }),
+                        r.jsxs('div', {
+                          className: 'sino-simple-form__fields sino-simple-form__fields--rows',
+                          children: [
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field sino-simple-form__field--primary',
+                              children: [
+                                r.jsx('label', {
+                                  className: 'sino-simple-form__label',
+                                  htmlFor: 'goodsDescription',
+                                  children: S('goodsDescription', 'What are you shipping?'),
+                                }),
+                                r.jsx('input', {
+                                  className: 'sino-simple-form__input',
+                                  type: 'text',
+                                  name: 'goodsDescription',
+                                  id: 'goodsDescription',
+                                  value: l.goodsDescription,
+                                  onChange: Qe,
+                                  placeholder: S(
+                                    'goodsDescriptionPlaceholder',
+                                    'e.g. electronics, furniture, clothing…'
+                                  ),
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: `sino-simple-form__field sino-simple-form__field--primary${V.totalWeight && H.totalWeight ? ' sino-simple-form__field--error' : ''}${V.totalWeight && !H.totalWeight && Be(l.totalWeight) ? ' sino-simple-form__field--success' : ''}`,
+                              children: [
+                                r.jsxs('label', {
+                                  className: 'sino-simple-form__label',
+                                  htmlFor: 'totalWeight',
+                                  children: [
+                                    S('totalWeight', 'Total Weight (kg)'),
+                                    r.jsx('span', {
+                                      className: 'sino-simple-form__required',
+                                      'aria-label': 'required',
+                                      children: '*',
+                                    }),
+                                  ],
+                                }),
+                                r.jsxs('div', {
+                                  className: 'sino-simple-form__field-wrapper',
+                                  children: [
+                                    r.jsx('input', {
+                                      className: `sino-simple-form__input${H.totalWeight ? ' sino-simple-form__input--error' : ''}${V.totalWeight && !H.totalWeight && Be(l.totalWeight) ? ' sino-simple-form__input--success' : ''}`,
+                                      type: 'text',
+                                      id: 'totalWeight',
+                                      name: 'totalWeight',
+                                      ref: Li,
+                                      value: l.totalWeight,
+                                      onChange: (y) => {
+                                        (hn('totalWeight', y.target.value),
+                                          H.totalWeight &&
+                                            F((L) => {
+                                              const ne = { ...L };
+                                              return (delete ne.totalWeight, ne);
+                                            }));
+                                      },
+                                      onBlur: () => fi('totalWeight', l.totalWeight),
+                                      placeholder: S('totalWeightPlaceholder', 'e.g. 1 200'),
+                                      'aria-label': S('totalWeight', 'Estimated total weight'),
+                                      'aria-describedby': H.totalWeight
+                                        ? 'totalWeight-error'
+                                        : V.totalWeight && !H.totalWeight && Be(l.totalWeight)
+                                          ? 'totalWeight-success'
+                                          : void 0,
+                                      'aria-invalid': H.totalWeight ? 'true' : 'false',
+                                      'aria-required': 'true',
+                                    }),
+                                    V.totalWeight &&
+                                      r.jsxs(r.Fragment, {
+                                        children: [
+                                          H.totalWeight &&
+                                            r.jsx('span', {
+                                              className:
+                                                'sino-simple-form__field-icon sino-simple-form__field-icon--error',
+                                              'aria-hidden': 'true',
+                                              children: r.jsxs('svg', {
+                                                width: '20',
+                                                height: '20',
+                                                viewBox: '0 0 24 24',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                children: [
+                                                  r.jsx('circle', {
+                                                    cx: '12',
+                                                    cy: '12',
+                                                    r: '10',
+                                                    stroke: 'currentColor',
+                                                    strokeWidth: '2',
+                                                  }),
+                                                  r.jsx('line', {
+                                                    x1: '12',
+                                                    y1: '8',
+                                                    x2: '12',
+                                                    y2: '12',
+                                                    stroke: 'currentColor',
+                                                    strokeWidth: '2',
+                                                    strokeLinecap: 'round',
+                                                  }),
+                                                  r.jsx('line', {
+                                                    x1: '12',
+                                                    y1: '16',
+                                                    x2: '12.01',
+                                                    y2: '16',
+                                                    stroke: 'currentColor',
+                                                    strokeWidth: '2',
+                                                    strokeLinecap: 'round',
+                                                  }),
+                                                ],
+                                              }),
+                                            }),
+                                          !H.totalWeight &&
+                                            Be(l.totalWeight) &&
+                                            r.jsx('span', {
+                                              className:
+                                                'sino-simple-form__field-icon sino-simple-form__field-icon--success',
+                                              'aria-hidden': 'true',
+                                              children: r.jsxs('svg', {
+                                                width: '20',
+                                                height: '20',
+                                                viewBox: '0 0 24 24',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                children: [
+                                                  r.jsx('circle', {
+                                                    cx: '12',
+                                                    cy: '12',
+                                                    r: '10',
+                                                    stroke: 'currentColor',
+                                                    strokeWidth: '2',
+                                                  }),
+                                                  r.jsx('path', {
+                                                    d: 'M8 12l2 2 4-4',
+                                                    stroke: 'currentColor',
+                                                    strokeWidth: '2',
+                                                    strokeLinecap: 'round',
+                                                    strokeLinejoin: 'round',
+                                                  }),
+                                                ],
+                                              }),
+                                            }),
+                                        ],
+                                      }),
+                                  ],
+                                }),
+                                H.totalWeight &&
+                                  r.jsx('p', {
+                                    id: 'totalWeight-error',
+                                    className: 'sino-simple-form__field-error',
+                                    role: 'alert',
+                                    'aria-live': 'polite',
+                                    children: H.totalWeight,
+                                  }),
+                                V.totalWeight &&
+                                  !H.totalWeight &&
+                                  Be(l.totalWeight) &&
+                                  r.jsx('p', {
+                                    id: 'totalWeight-success',
+                                    className: 'sino-simple-form__sr-only',
+                                    'aria-live': 'polite',
+                                    children: S('fieldValid', 'Field is valid'),
+                                  }),
+                                r.jsx('p', {
+                                  className: 'sino-simple-form__help',
+                                  children: S(
+                                    'totalWeightHelp',
+                                    'Rough estimate is OK. We refine it together before booking.'
+                                  ),
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsx('label', {
+                                  className: `sino-simple-form__label${m ? ' sino-simple-form__label--muted' : ''}`,
+                                  htmlFor: 'numberOfUnits',
+                                  children: S('numberOfUnits', 'Number of cartons / pallets'),
+                                }),
+                                r.jsxs('div', {
+                                  className: 'sino-simple-form__field-input-group',
+                                  children: [
+                                    r.jsx('input', {
+                                      className: 'sino-simple-form__input',
+                                      type: 'number',
+                                      min: 1,
+                                      id: 'numberOfUnits',
+                                      value: l.numberOfUnits,
+                                      onChange: (y) => {
+                                        (h(!1), hn('numberOfUnits', Number(y.target.value)));
+                                      },
+                                      placeholder: S('numberOfUnitsPlaceholder', 'e.g. 10 pallets'),
+                                    }),
+                                    r.jsx('div', {
+                                      className: 'sino-simple-form__chips',
+                                      children: r.jsx('button', {
+                                        type: 'button',
+                                        className: `sino-simple-chip${m ? ' sino-simple-chip--active' : ''}`,
+                                        'aria-pressed': m ? 'true' : 'false',
+                                        onClick: () => {
+                                          (h(!0), hn('numberOfUnits', 0));
+                                        },
+                                        children: S(
+                                          'numberOfUnitsUnknown',
+                                          "I don't know the exact number yet"
+                                        ),
+                                      }),
+                                    }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsx('label', {
+                                  className: `sino-simple-form__label${N ? ' sino-simple-form__label--muted' : ''}`,
+                                  htmlFor: 'goodsValue',
+                                  children: S('goodsValue', 'Estimated cargo value'),
+                                }),
+                                r.jsxs('div', {
+                                  className: 'sino-simple-form__field-input-group',
+                                  children: [
+                                    r.jsx('input', {
+                                      className: 'sino-simple-form__input',
+                                      type: 'text',
+                                      name: 'goodsValue',
+                                      id: 'goodsValue',
+                                      value: l.goodsValue,
+                                      onChange: (y) => {
+                                        (w(!1), Qe(y));
+                                      },
+                                      placeholder: S('goodsValuePlaceholder', 'e.g. 25 000'),
+                                    }),
+                                    r.jsx('div', {
+                                      className: 'sino-simple-form__chips',
+                                      children: r.jsx('button', {
+                                        type: 'button',
+                                        className: `sino-simple-chip${N ? ' sino-simple-chip--active' : ''}`,
+                                        'aria-pressed': N ? 'true' : 'false',
+                                        onClick: () => {
+                                          (w(!0), c((y) => ({ ...y, goodsValue: '' })));
+                                        },
+                                        children: S(
+                                          'goodsValueUnknown',
+                                          "I don't know the value yet"
+                                        ),
+                                      }),
+                                    }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsx('label', {
+                                  className: 'sino-simple-form__label',
+                                  htmlFor: 'goodsCurrency',
+                                  children: S('goodsCurrency', 'Currency'),
+                                }),
+                                r.jsx('input', {
+                                  className: 'sino-simple-form__input',
+                                  type: 'text',
+                                  name: 'goodsCurrency',
+                                  id: 'goodsCurrency',
+                                  value: l.goodsCurrency,
+                                  onChange: Qe,
+                                  placeholder: S('goodsCurrencyPlaceholder', 'USD, EUR…'),
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field sino-simple-form__field--primary',
+                              children: [
+                                r.jsx('label', {
+                                  className: 'sino-simple-form__label',
+                                  children: S('areGoodsReady', 'Are the goods ready?'),
+                                }),
+                                r.jsx('div', {
+                                  className:
+                                    'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                  children: [
+                                    { value: 'yes', label: S('goodsReadyNow', 'Ready now') },
+                                    {
+                                      value: 'no_in_1_week',
+                                      label: S('goodsReady1Week', 'In ~1 week'),
+                                    },
+                                    {
+                                      value: 'no_in_2_weeks',
+                                      label: S('goodsReady2Weeks', 'In ~2 weeks'),
+                                    },
+                                    {
+                                      value: 'no_in_1_month',
+                                      label: S('goodsReady1Month', 'In ~1 month'),
+                                    },
+                                    {
+                                      value: 'no_date_set',
+                                      label: S('goodsReadyNoDate', 'No date set yet'),
+                                    },
+                                  ].map((y) =>
+                                    r.jsx(
+                                      'button',
+                                      {
+                                        type: 'button',
+                                        className: `sino-simple-chip${l.areGoodsReady === y.value ? ' sino-simple-chip--active' : ''}`,
+                                        'aria-pressed':
+                                          l.areGoodsReady === y.value ? 'true' : 'false',
+                                        onClick: () =>
+                                          c((L) => ({
+                                            ...L,
+                                            areGoodsReady:
+                                              L.areGoodsReady === y.value ? '' : y.value,
+                                          })),
+                                        children: y.label,
+                                      },
+                                      y.value
+                                    )
+                                  ),
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsxs('label', {
+                                  className: 'sino-simple-form__label',
+                                  children: [
+                                    S('annualVolumeLabel', 'Rough annual volume from China'),
+                                    r.jsx('span', {
+                                      className: 'sino-simple-form__label-hint',
+                                      children: S('ifKnown', 'if known'),
+                                    }),
+                                  ],
+                                }),
+                                r.jsx('div', {
+                                  className:
+                                    'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                  children: [
+                                    { value: '50 ~ 500', label: '50 ~ 500' },
+                                    { value: '501 ~ 1000', label: '501 ~ 1000' },
+                                    { value: '1001 ~ 5000', label: '1001 ~ 5000' },
+                                    { value: '5001+', label: '5001+' },
+                                  ].map((y) =>
+                                    r.jsx(
+                                      'button',
+                                      {
+                                        type: 'button',
+                                        className: `sino-simple-chip${l.annualVolume === y.value ? ' sino-simple-chip--active' : ''}`,
+                                        'aria-pressed':
+                                          l.annualVolume === y.value ? 'true' : 'false',
+                                        onClick: () =>
+                                          c((L) => ({
+                                            ...L,
+                                            annualVolume: L.annualVolume === y.value ? '' : y.value,
+                                          })),
+                                        children: y.label,
+                                      },
+                                      y.value
+                                    )
+                                  ),
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: 'sino-simple-form__field',
+                              children: [
+                                r.jsx('label', {
+                                  className: 'sino-simple-form__label',
+                                  children: S(
+                                    'isPersonalOrHazardous',
+                                    'Personal effects or hazardous goods?'
+                                  ),
+                                }),
+                                r.jsx('div', {
+                                  className: 'sino-simple-form__chips',
+                                  children: [
+                                    {
+                                      value: !0,
+                                      label: S(
+                                        'personalOrHazardousYes',
+                                        'Yes, personal or hazardous'
+                                      ),
+                                    },
+                                    {
+                                      value: !1,
+                                      label: S(
+                                        'personalOrHazardousNo',
+                                        'No, standard commercial goods'
+                                      ),
+                                    },
+                                  ].map((y) =>
+                                    r.jsx(
+                                      'button',
+                                      {
+                                        type: 'button',
+                                        className: `sino-simple-chip${l.isPersonalOrHazardous === y.value ? ' sino-simple-chip--active' : ''}`,
+                                        'aria-pressed':
+                                          l.isPersonalOrHazardous === y.value ? 'true' : 'false',
+                                        onClick: () =>
+                                          c((L) => ({ ...L, isPersonalOrHazardous: y.value })),
+                                        children: y.label,
+                                      },
+                                      String(y.value)
+                                    )
+                                  ),
+                                }),
+                                r.jsx('p', {
+                                  className: 'sino-simple-form__help',
+                                  children: S(
+                                    'isPersonalOrHazardousHelp',
+                                    'This only helps us pick the right specialist on our side – it does not change your pricing automatically.'
+                                  ),
+                                }),
+                              ],
+                            }),
+                            r.jsxs('div', {
+                              className: `sino-simple-form__subsection${Z ? ' sino-simple-form__subsection--open' : ''}`,
+                              children: [
+                                r.jsxs('button', {
+                                  type: 'button',
+                                  className: 'sino-simple-form__subsection-toggle',
+                                  onClick: () => Q((y) => !y),
+                                  'aria-expanded': Z,
+                                  'aria-controls': 'advanced-details-content',
+                                  'aria-label': Z
+                                    ? S('collapseSection', 'Collapse advanced cargo details')
+                                    : S('expandSection', 'Expand advanced cargo details'),
+                                  onKeyDown: (y) => {
+                                    (y.key === 'Enter' || y.key === ' ') &&
+                                      (y.preventDefault(), Q((L) => !L));
+                                  },
+                                  children: [
+                                    r.jsxs('span', {
+                                      className: 'sino-simple-form__subsection-label',
+                                      children: [
+                                        S('simpleStep4Title', 'Advanced cargo details (optional)'),
+                                        r.jsx('small', {
+                                          children: S(
+                                            'simpleStep4Subtitle',
+                                            'Dimensions and remarks help us fine-tune the quote but are not mandatory.'
+                                          ),
+                                        }),
+                                      ],
+                                    }),
+                                    r.jsx('span', {
+                                      className: `sino-simple-form__subsection-chevron${Z ? ' sino-simple-form__subsection-chevron--open' : ''}`,
+                                      children: '▾',
+                                    }),
+                                  ],
+                                }),
+                                Z &&
+                                  r.jsxs('div', {
+                                    id: 'advanced-details-content',
+                                    className:
+                                      'sino-simple-form__fields sino-simple-form__fields--rows',
+                                    children: [
+                                      r.jsxs('div', {
+                                        className: 'sino-simple-form__field',
+                                        children: [
+                                          r.jsx('label', {
+                                            className: `sino-simple-form__label${C ? ' sino-simple-form__label--muted' : ''}`,
+                                            children: S(
+                                              'dimensions',
+                                              'Approximate dimensions per unit'
+                                            ),
+                                          }),
+                                          r.jsxs('div', {
+                                            className:
+                                              'sino-simple-form__fields sino-simple-form__fields--inline',
+                                            children: [
+                                              r.jsx('input', {
+                                                className: 'sino-simple-form__input',
+                                                type: 'text',
+                                                value: l.dimensions.length,
+                                                onChange: (y) =>
+                                                  hn('dimensions', {
+                                                    ...l.dimensions,
+                                                    length: y.target.value,
+                                                  }),
+                                                placeholder: S('lengthPlaceholder', 'L (cm)'),
+                                              }),
+                                              r.jsx('input', {
+                                                className: 'sino-simple-form__input',
+                                                type: 'text',
+                                                value: l.dimensions.width,
+                                                onChange: (y) =>
+                                                  hn('dimensions', {
+                                                    ...l.dimensions,
+                                                    width: y.target.value,
+                                                  }),
+                                                placeholder: S('widthPlaceholder', 'W (cm)'),
+                                              }),
+                                              r.jsx('input', {
+                                                className: 'sino-simple-form__input',
+                                                type: 'text',
+                                                value: l.dimensions.height,
+                                                onChange: (y) =>
+                                                  hn('dimensions', {
+                                                    ...l.dimensions,
+                                                    height: y.target.value,
+                                                  }),
+                                                placeholder: S('heightPlaceholder', 'H (cm)'),
+                                              }),
+                                            ],
+                                          }),
+                                          r.jsx('div', {
+                                            className:
+                                              'sino-simple-form__chips sino-simple-form__chips--wrap',
+                                            children: r.jsx('button', {
+                                              type: 'button',
+                                              className: `sino-simple-chip${C ? ' sino-simple-chip--active' : ''}`,
+                                              'aria-pressed': C ? 'true' : 'false',
+                                              onClick: () => {
+                                                (j(!0),
+                                                  hn('dimensions', {
+                                                    length: '',
+                                                    width: '',
+                                                    height: '',
+                                                  }));
+                                              },
+                                              children: S(
+                                                'dimensionsUnknown',
+                                                "I don't know the exact dimensions yet"
+                                              ),
+                                            }),
+                                          }),
+                                        ],
+                                      }),
+                                      r.jsxs('div', {
+                                        className: 'sino-simple-form__field',
+                                        children: [
+                                          r.jsxs('label', {
+                                            className: 'sino-simple-form__label',
+                                            children: [
+                                              S('weightPerUnit', 'Weight per unit'),
+                                              r.jsx('span', {
+                                                className: 'sino-simple-form__label-hint',
+                                                children: S('ifKnown', 'if known'),
+                                              }),
+                                            ],
+                                          }),
+                                          r.jsx('input', {
+                                            className: 'sino-simple-form__input',
+                                            type: 'text',
+                                            value: l.weightPerUnit,
+                                            onChange: (y) => {
+                                              hn('weightPerUnit', y.target.value);
+                                            },
+                                            placeholder: S(
+                                              'weightPerUnitPlaceholder',
+                                              'e.g. 25 kg per pallet'
+                                            ),
+                                          }),
+                                          r.jsx('p', {
+                                            className: 'sino-simple-form__help',
+                                            children: S(
+                                              'weightPerUnitHelp',
+                                              'If you know the weight per unit, we can calculate the total weight automatically.'
+                                            ),
+                                          }),
+                                        ],
+                                      }),
+                                      r.jsx(Bm, { formData: l, setFormData: c, t: S }),
+                                      r.jsxs('div', {
+                                        className: 'sino-simple-form__field',
+                                        children: [
+                                          r.jsx('label', {
+                                            className: 'sino-simple-form__label',
+                                            children: S('remarks', 'Anything we should know?'),
+                                          }),
+                                          r.jsx('input', {
+                                            className: 'sino-simple-form__input',
+                                            type: 'text',
+                                            name: 'remarks',
+                                            value: l.remarks,
+                                            onChange: Qe,
+                                            placeholder: S(
+                                              'remarksPlaceholder',
+                                              'Fragile goods, specific deadlines, preferred routing…'
+                                            ),
+                                          }),
+                                        ],
+                                      }),
+                                    ],
+                                  }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  _e === 'contact' &&
+                    r.jsxs(r.Fragment, {
+                      children: [
+                        r.jsx(xm, {
+                          formData: l,
+                          setFormData: c,
+                          t: S,
+                          isFilled: Be,
+                          onChange: Qe,
+                          onBlur: fi,
+                          fieldErrors: H,
+                          fieldTouched: V,
+                          firstNameRef: ot,
+                          emailRef: Ri,
+                          phoneRef: qn,
+                          stepLabel: `Step ${X + 1}`,
+                          currentStepIndex: X,
+                          totalSteps: Ee,
+                        }),
+                        r.jsx(Rm, {
+                          formData: l,
+                          t: S,
+                          selectedServiceLabels: Dn,
+                          submitError: Ge,
+                          setSubmitError: We,
+                          isSubmitting: cn,
+                          setIsSubmitting: Ae,
+                          scrollToFirstError: En,
+                          onSubmissionSuccess: at,
+                          setFieldErrors: F,
+                          setFieldTouched: A,
+                          orderedSteps: en,
+                          onEditStep: (y) => {
+                            (Te(y),
+                              typeof window < 'u' &&
+                                window.scrollTo({ top: 0, behavior: 'smooth' }));
+                          },
+                        }),
+                      ],
+                    }),
+                ],
+              }),
+              r.jsx(
+                Fm,
+                {
+                  currentStep: X,
+                  totalSteps: Ee,
+                  onNext: Zt,
+                  onPrevious: us,
+                  isFirstStep: Yt,
+                  isLastStep: as,
+                  orderedSteps: en,
+                  formData: l,
+                  t: S,
+                },
+                `nav-${Ee}-${X}-${JSON.stringify(l.servicesRequested)}`
+              ),
+            ],
+          }),
         });
   },
   Kt = new Map();

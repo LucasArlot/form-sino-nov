@@ -2186,6 +2186,28 @@
   .sino-simple-chip[data-tooltip]::after {
     max-width: min(220px, 90vw);
   }
+
+  /* Remove padding from main container on mobile - sections handle their own padding */
+  .sino-simple-form {
+    padding: 0 !important;
+  }
+
+  /* Service sections take full width with proper internal padding on mobile */
+  .sino-simple-form__section--service-sourcing,
+  .sino-simple-form__section--service-warehousing,
+  .sino-simple-form__section--service-dropshipping,
+  .sino-simple-form__section--service-qc,
+  .sino-simple-form__section--service-chinaVisits,
+  .sino-simple-form__section--service-other,
+  .sino-simple-form__section--service-shipping,
+  .sino-simple-form__section--services,
+  .sino-simple-form__section--contact {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding: 24px 20px 28px !important;
+    border-radius: 0;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2195,6 +2217,19 @@
 
   .sino-simple-form__section {
     padding: 20px 16px;
+  }
+
+  /* Keep proper padding for service sections on smaller mobile */
+  .sino-simple-form__section--service-sourcing,
+  .sino-simple-form__section--service-warehousing,
+  .sino-simple-form__section--service-dropshipping,
+  .sino-simple-form__section--service-qc,
+  .sino-simple-form__section--service-chinaVisits,
+  .sino-simple-form__section--service-other,
+  .sino-simple-form__section--service-shipping,
+  .sino-simple-form__section--services,
+  .sino-simple-form__section--contact {
+    padding: 20px 16px 24px !important;
   }
 }
 
@@ -5001,22 +5036,4 @@
 .sino-simple-form__subsection-toggle:focus-visible {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
-}
-
-/* Skip to main content link for screen readers */
-.sino-simple-form__skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: #3b82f6;
-  color: #ffffff;
-  padding: 8px 16px;
-  text-decoration: none;
-  z-index: 10000;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.sino-simple-form__skip-link:focus {
-  top: 0;
 }
