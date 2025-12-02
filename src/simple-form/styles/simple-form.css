@@ -310,6 +310,18 @@ body {
   margin: 0 0 12px;
 }
 
+/* On mobile, align badge to top when title wraps to multiple lines */
+@media (max-width: 480px) {
+  .sino-simple-form__section-title {
+    align-items: flex-start;
+  }
+
+  .sino-simple-form__section-step {
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+}
+
 .sino-simple-form__section-step {
   padding: 2px 8px;
   border-radius: 9999px;
