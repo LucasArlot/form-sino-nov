@@ -54,7 +54,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       if (!dropdownRef.current || !triggerRef.current || !isOpen) return;
 
       if (!dropdownRef.current.dataset.debugAdjustLogged) {
-        // eslint-disable-next-line no-console
+         
         console.log('[dropdown-debug] adjust run - custom-select-dropdown');
         dropdownRef.current.dataset.debugAdjustLogged = '1';
       }
@@ -86,7 +86,9 @@ const CustomSelect: FC<CustomSelectProps> = ({
       };
 
       // Vertical positioning - show above if not enough space below
-      if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+      // Sur mobile, toujours ouvrir vers le bas
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile && spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
         newPosition.showAbove = true;
       }
 
@@ -106,7 +108,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       dropdownRef.current.style.setProperty('--available-space-above', `${spaceAbove}px`);
 
       // Verify CSS vars on element vs parent
-      // eslint-disable-next-line no-console
+       
       console.log('[dropdown-debug] vars on element', {
         onElement: {
           '--available-space-bottom': dropdownRef.current.style.getPropertyValue('--available-space-bottom') || null,

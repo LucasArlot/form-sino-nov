@@ -41,18 +41,12 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
       
-      // Prevent body scroll on mobile when dropdown is open
-      const isMobile = window.innerWidth <= 768;
-      if (isMobile) {
-        document.body.style.overflow = 'hidden';
-      }
+      // Note: Body scroll est déjà géré globalement dans EmbedApp.tsx
+      // Pas besoin de le bloquer ici pour éviter les conflits
       
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
         document.removeEventListener('touchstart', handleClickOutside);
-        if (isMobile) {
-          document.body.style.overflow = '';
-        }
       };
     }
   }, [isOpen]);
@@ -86,7 +80,8 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
       listElement.classList.remove('show-above', 'adjust-left', 'adjust-right');
 
-      if (verticalSpaceBelow < 200 && verticalSpaceAbove > verticalSpaceBelow) {
+      // Sur mobile, toujours ouvrir vers le bas
+      if (!isMobile && verticalSpaceBelow < 200 && verticalSpaceAbove > verticalSpaceBelow) {
         listElement.classList.add('show-above');
       }
 

@@ -74,7 +74,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       };
 
       // Vertical positioning - show above if not enough space below
-      if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+      // Sur mobile, toujours ouvrir vers le bas
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile && spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
         newPosition.showAbove = true;
       }
 

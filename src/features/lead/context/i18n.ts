@@ -12,7 +12,7 @@ export function translate(locale: Locale, key: I18nKey, params?: Params) {
   const template =
     dict[key] ?? I18N_TEXT[DEFAULT_LOCALE][key] ?? (key as string);
   if (process.env.NODE_ENV !== 'production' && template === (key as string)) {
-    // eslint-disable-next-line no-console
+     
     console.warn(`[i18n] Missing key "${key}" for locale "${locale}"`);
   }
   return template.replace(/\{(\w+)\}/g, (_, p) =>
@@ -101,7 +101,7 @@ const EN_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'Enter the total dimensions and weight of your shipment.',
   numUnitsHelp: 'How many logical units does this total volume/weight represent?',
   totalVolume: 'Total Volume',
-  totalWeight: 'Total Weight',
+  totalWeight: 'Total Weight (kg)',
   configureContainer: 'Configure your container',
   selectContainerTypeQty: 'Select container type and quantity for your shipment',
   containerInfo: 'Select the container type and quantity that best fits your cargo volume.',
@@ -370,7 +370,7 @@ const FR_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'Saisissez les dimensions et le poids totaux de votre envoi.',
   numUnitsHelp: "Ce volume/poids total représente combien d'unités logiques ?",
   totalVolume: 'Volume total',
-  totalWeight: 'Poids total',
+  totalWeight: 'Poids total (kg)',
   configureContainer: 'Configurez votre conteneur',
   selectContainerTypeQty: 'Sélectionnez le type de conteneur et la quantité pour votre envoi',
   containerInfo:
@@ -640,7 +640,7 @@ const DE_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'Geben Sie die Gesamtmaße und das Gesamtgewicht Ihrer Sendung ein.',
   numUnitsHelp: 'Wieviele logische Einheiten entsprechen diesem Gesamtvolumen/-gewicht?',
   totalVolume: 'Gesamtvolumen',
-  totalWeight: 'Gesamtgewicht',
+  totalWeight: 'Gesamtgewicht (kg)',
   configureContainer: 'Container konfigurieren',
   selectContainerTypeQty: 'Containertyp und -anzahl für Ihre Sendung auswählen',
   containerInfo:
@@ -859,7 +859,7 @@ const ES_TEXT: Record<string, string> = {
     'Aportar cifras totales puede ser menos preciso. Dimensiones inexactas o sobredimensionadas pueden generar cargos adicionales.',
   enterTotalDimWeight: 'Introduzca las dimensiones y el peso totales de su envío.',
   totalVolume: 'Volumen total',
-  totalWeight: 'Peso total',
+  totalWeight: 'Peso total (kg)',
   configureContainer: 'Configure su contenedor',
   selectContainerTypeQty: 'Seleccione el tipo y la cantidad de contenedores para su envío',
   containerInfo:
@@ -1083,7 +1083,7 @@ const IT_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'Inserisci le dimensioni e il peso totali della spedizione.',
   numUnitsHelp: 'Quante unità logiche rappresenta questo volume/peso totale?',
   totalVolume: 'Volume totale',
-  totalWeight: 'Peso totale',
+  totalWeight: 'Peso totale (kg)',
   configureContainer: 'Configura il tuo container',
   selectContainerTypeQty: 'Seleziona tipo e quantità di container per la spedizione',
   containerInfo:
@@ -1304,7 +1304,7 @@ const NL_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'Voer de totale afmetingen en het totale gewicht van uw zending in.',
   numUnitsHelp: 'Aan hoeveel logische eenheden komt dit totaal volume/gewicht overeen?',
   totalVolume: 'Totaal volume',
-  totalWeight: 'Totaal gewicht',
+  totalWeight: 'Totaal gewicht (kg)',
   configureContainer: 'Configureer uw container',
   selectContainerTypeQty: 'Selecteer containertype en aantal voor uw zending',
   containerInfo: 'Selecteer het containertype en aantal dat past bij uw ladingsvolume.',
@@ -1521,7 +1521,7 @@ const ZH_TEXT: Record<string, string> = {
   totalInfo: '仅提供整票合计可能不够精确。不准确或超大的尺寸可能产生额外费用。',
   enterTotalDimWeight: '请输入货物的总体尺寸和重量。',
   totalVolume: '总体积',
-  totalWeight: '总重量',
+  totalWeight: '总重量 (kg)',
   configureContainer: '配置您的集装箱',
   selectContainerTypeQty: '选择适合您货物的箱型与数量',
   containerInfo: '选择最适合货物体积的箱型与数量。',
@@ -1741,7 +1741,7 @@ const AR_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'أدخل الأبعاد والوزن الإجماليين للشحنة.',
   numUnitsHelp: 'كم عدد الوحدات المنطقية التي يمثلها هذا الحجم/الوزن الإجمالي؟',
   totalVolume: 'الحجم الإجمالي',
-  totalWeight: 'الوزن الإجمالي',
+  totalWeight: 'الوزن الإجمالي (kg)',
   configureContainer: 'اضبط إعدادات الحاوية',
   selectContainerTypeQty: 'اختر نوع الحاوية والكمية للشحنة',
   containerInfo: 'اختر نوع الحاوية والكمية الأنسب لحجم بضاعتك.',
@@ -1959,7 +1959,7 @@ const PT_TEXT: Record<string, string> = {
   enterTotalDimWeight: 'Informe as dimensões e o peso totais da sua remessa.',
   numUnitsHelp: 'A que número de unidades lógicas corresponde este volume/peso total?',
   totalVolume: 'Volume total',
-  totalWeight: 'Peso total',
+  totalWeight: 'Peso total (kg)',
   configureContainer: 'Configure seu contêiner',
   selectContainerTypeQty: 'Selecione o tipo e a quantidade de contêineres para sua remessa',
   containerInfo:
@@ -2184,7 +2184,7 @@ const TR_TEXT: Record<string, string> = {
     'Toplam değerler daha az hassas olabilir. Hatalı veya büyük ölçüler ek ücretlere neden olabilir.',
   enterTotalDimWeight: 'Gönderinizin toplam ölçülerini ve toplam ağırlığını girin.',
   totalVolume: 'Toplam Hacim',
-  totalWeight: 'Toplam Ağırlık',
+  totalWeight: 'Toplam Ağırlık (kg)',
   configureContainer: 'Konteynerinizi yapılandırın',
   selectContainerTypeQty: 'Sevkiyat için konteyner tipi ve adedini seçin',
   containerInfo: 'Yük hacminize en uygun konteyner tipi ve adedini seçin.',
@@ -2399,7 +2399,7 @@ const RU_TEXT: Record<string, string> = {
     'Общие значения могут быть менее точными. Неточные или завышенные габариты могут привести к доп. расходам.',
   enterTotalDimWeight: 'Укажите общие габариты и общий вес вашей отправки.',
   totalVolume: 'Общий объём',
-  totalWeight: 'Общий вес',
+  totalWeight: 'Общий вес (kg)',
   required: 'Обязательно',
   numUnitsHelp: 'Сколько логических единиц соответствует этому общему объёму/весу?',
   containerFeedback:

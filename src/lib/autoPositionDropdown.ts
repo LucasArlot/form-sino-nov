@@ -42,8 +42,8 @@ export const installDropdownAutoPositioning = () => {
 
       list.classList.remove('show-above', 'adjust-right', 'adjust-left');
 
-      // Vertical check
-      if (spaceBelow < DROPDOWN_HEIGHT && spaceAbove > spaceBelow) {
+      // Vertical check - sur mobile, toujours ouvrir vers le bas
+      if (!isMobile && spaceBelow < DROPDOWN_HEIGHT && spaceAbove > spaceBelow) {
         list.classList.add('show-above');
       }
 

@@ -65,6 +65,16 @@
 }
 
 /* Position dropdown above when there's not enough space below */
+/* Sur mobile, forcer l'ouverture vers le bas - désactiver show-above */
+@media (max-width: 768px) {
+  .custom-select-dropdown.show-above {
+    top: calc(100% + 0.25rem) !important;
+    bottom: auto !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0 !important;
+  }
+}
+
 .custom-select-dropdown.show-above {
   top: auto;
   bottom: 100%;
@@ -189,32 +199,46 @@
 @media (max-width: 768px) {
   .custom-select-dropdown {
     /* Réduire la hauteur max sur mobile pour éviter de dépasser le footer */
-    max-height: min(200px, calc(100vh - 120px));
+    /* Utiliser la hauteur réelle du viewport (avec visualViewport) */
+    max-height: min(200px, calc(var(--viewport-height, 100dvh) - 120px));
+    max-height: min(200px, calc(100vh - 120px)); /* Fallback */
+    max-height: min(200px, calc(100dvh - 120px)); /* Dynamic viewport */
     /* S'assurer que le dropdown ne dépasse jamais le viewport */
-    --dropdown-max-height: min(200px, calc(100vh - 120px));
-    /* Z-index supérieur à la timeline sur mobile */
-    z-index: 150;
+    --dropdown-max-height: min(200px, calc(var(--viewport-height, 100dvh) - 120px));
+    --dropdown-max-height: min(200px, calc(100vh - 120px)); /* Fallback */
+    --dropdown-max-height: min(200px, calc(100dvh - 120px)); /* Dynamic viewport */
+    /* Z-index supérieur au footer fixe (200) pour être toujours visible */
+    z-index: 250;
   }
   
   .custom-select-dropdown.show-above {
     /* Ajuster aussi pour la position au-dessus */
-    --dropdown-max-height: min(200px, calc(100vh - 120px));
-    /* Z-index supérieur à la timeline sur mobile */
-    z-index: 150;
+    --dropdown-max-height: min(200px, calc(var(--viewport-height, 100dvh) - 120px));
+    --dropdown-max-height: min(200px, calc(100vh - 120px)); /* Fallback */
+    --dropdown-max-height: min(200px, calc(100dvh - 120px)); /* Dynamic viewport */
+    /* Z-index supérieur au footer fixe (200) pour être toujours visible */
+    z-index: 250;
   }
 }
 
 @media (max-width: 480px) {
   .custom-select-dropdown {
     /* Encore plus petit sur très petits écrans */
-    max-height: min(150px, calc(100vh - 100px));
-    --dropdown-max-height: min(150px, calc(100vh - 100px));
+    /* Utiliser la hauteur réelle du viewport (avec visualViewport) */
+    max-height: min(150px, calc(var(--viewport-height, 100dvh) - 100px));
+    max-height: min(150px, calc(100vh - 100px)); /* Fallback */
+    max-height: min(150px, calc(100dvh - 100px)); /* Dynamic viewport */
+    --dropdown-max-height: min(150px, calc(var(--viewport-height, 100dvh) - 100px));
+    --dropdown-max-height: min(150px, calc(100vh - 100px)); /* Fallback */
+    --dropdown-max-height: min(150px, calc(100dvh - 100px)); /* Dynamic viewport */
     /* Z-index supérieur à la timeline sur mobile */
     z-index: 150;
   }
   
   .custom-select-dropdown.show-above {
-    --dropdown-max-height: min(150px, calc(100vh - 100px));
+    --dropdown-max-height: min(150px, calc(var(--viewport-height, 100dvh) - 100px));
+    --dropdown-max-height: min(150px, calc(100vh - 100px)); /* Fallback */
+    --dropdown-max-height: min(150px, calc(100dvh - 100px)); /* Dynamic viewport */
     /* Z-index supérieur à la timeline sur mobile */
     z-index: 150;
   }

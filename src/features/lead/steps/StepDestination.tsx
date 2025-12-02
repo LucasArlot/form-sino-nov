@@ -131,7 +131,9 @@ const StepDestination: FC = () => {
       const spaceLeft = Math.max(0, triggerRect.right - containerRect.left);
 
       const estimatedHeight = Math.min(300, listEl.scrollHeight || 300);
-      const showAbove = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+      // Sur mobile, toujours ouvrir vers le bas
+      const isMobile = window.innerWidth <= 768;
+      const showAbove = !isMobile && spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
       listEl.classList.toggle('show-above', showAbove);
       listEl.classList.toggle('adjust-right', spaceRight < 200);
       listEl.classList.toggle('adjust-left', spaceLeft < 200);
@@ -213,8 +215,9 @@ const StepDestination: FC = () => {
 
       const estimatedHeight = Math.min(300, listEl.scrollHeight || 300);
 
-      // Vertical positioning
-      const showAbove = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+      // Vertical positioning - sur mobile, toujours ouvrir vers le bas
+      const isMobile = window.innerWidth <= 768;
+      const showAbove = !isMobile && spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
       listEl.classList.toggle('show-above', showAbove);
 
       // Horizontal adjustment
@@ -270,6 +273,7 @@ const StepDestination: FC = () => {
     >
       {/* Sub-step segmented control (compact & clickable) */}
       <div
+        className="step-1-segmented-control"
         style={{
           display: 'flex',
           justifyContent: 'flex-start',

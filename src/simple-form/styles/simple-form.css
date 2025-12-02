@@ -335,6 +335,11 @@ body {
   box-shadow:
     0 2px 8px rgba(29, 78, 216, 0.2),
     0 0 0 1px rgba(29, 78, 216, 0.1);
+  /* Center text inside badge - including multi-line */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 

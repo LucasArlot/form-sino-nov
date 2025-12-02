@@ -235,9 +235,9 @@ Présent si `servicesRequested.other === true`
     "lastName": "Dupont",
     "email": "jean.dupont@example.com",
     "phone": "+33612345678",
-    "phoneCountryCode": "+33",
+  "phoneCountryCode": "+33",
     "companyName": "Import France SARL",
-    "customerType": "company",
+  "customerType": "company",
     "shipperType": "few-times"
   },
 
@@ -259,10 +259,10 @@ Présent si `servicesRequested.other === true`
     "totalWeight": "1500",
     "numberOfUnits": 25,
     "goodsValue": "15000",
-    "goodsCurrency": "USD",
+  "goodsCurrency": "USD",
     "areGoodsReady": "2_weeks",
     "annualVolume": "1001-5000",
-    "isPersonalOrHazardous": false,
+  "isPersonalOrHazardous": false,
     "dimensions": { "length": "60", "width": "40", "height": "40" },
     "weightPerUnit": "60",
     "remarks": "Fragile electronics, please handle with care"

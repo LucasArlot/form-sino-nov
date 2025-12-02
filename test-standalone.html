@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Standalone SINO Form</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            padding: 12px 24px;
+            background: #D6DF20;
+            color: #001C38;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #E8F032;
+        }
+        #sinoform-react-root {
+            margin-top: 20px;
+            border: 2px solid #001C38;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 400px;
+        }
+        .log {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Standalone SINO Form</h1>
+    
+    <div class="test-container">
+        <h2>1. Charger le bundle</h2>
+        <button onclick="loadBundle()">Charger sino-form-standalone.js</button>
+        <div id="load-status" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>2. Initialiser React</h2>
+        <button onclick="initReact()">Initialiser dans #sinoform-react-root</button>
+        <div id="init-status" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>3. Container React</h2>
+        <div id="sinoform-react-root"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>4. Actions</h2>
+        <button onclick="destroyReact()">Détruire l'instance</button>
+        <button onclick="checkStatus()">Vérifier le statut</button>
+        <div id="action-status" class="log"></div>
+    </div>
+
+    <script type="module">
+        let bundleLoaded = false;
+
+        async function loadBundle() {
+            const statusDiv = document.getElementById('load-status');
+            statusDiv.innerHTML = 'Chargement du bundle...';
+
+            try {
+                // Charger le CSS
+                const cssLink = document.createElement('link');
+                cssLink.rel = 'stylesheet';
+                cssLink.href = './dist/sino-form-standalone.css';
+                document.head.appendChild(cssLink);
+
+                // Charger le JS
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = './dist/sino-form-standalone.js';
+
+                await new Promise((resolve, reject) => {
+                    script.onload = () => {
+                        // Attendre que window.SinoForm soit disponible
+                        const checkInterval = setInterval(() => {
+                            if (window.SinoForm && typeof window.SinoForm.init === 'function') {
+                                clearInterval(checkInterval);
+                                bundleLoaded = true;
+                                statusDiv.innerHTML = '✅ Bundle chargé ! window.SinoForm disponible.<br>';
+                                statusDiv.innerHTML += 'API disponible: init, destroy, isInitialized';
+                                resolve();
+                            }
+                        }, 50);
+
+                        setTimeout(() => {
+                            clearInterval(checkInterval);
+                            if (!window.SinoForm) {
+                                reject(new Error('window.SinoForm non disponible après 10s'));
+                            }
+                        }, 10000);
+                    };
+
+                    script.onerror = (error) => {
+                        statusDiv.innerHTML = '❌ Erreur lors du chargement du bundle';
+                        reject(error);
+                    };
+
+                    document.head.appendChild(script);
+                });
+            } catch (error) {
+                statusDiv.innerHTML = '❌ Erreur: ' + error.message;
+                console.error('Erreur chargement bundle:', error);
+            }
+        }
+
+        window.loadBundle = loadBundle;
+
+        function initReact() {
+            const statusDiv = document.getElementById('init-status');
+            
+            if (!bundleLoaded || !window.SinoForm) {
+                statusDiv.innerHTML = '❌ Le bundle doit être chargé d\'abord !';
+                return;
+            }
+
+            try {
+                window.SinoForm.init('sinoform-react-root');
+                statusDiv.innerHTML = '✅ React initialisé dans #sinoform-react-root';
+            } catch (error) {
+                statusDiv.innerHTML = '❌ Erreur: ' + error.message;
+                console.error('Erreur initialisation:', error);
+            }
+        }
+
+        window.initReact = initReact;
+
+        function destroyReact() {
+            const statusDiv = document.getElementById('action-status');
+            
+            if (!window.SinoForm) {
+                statusDiv.innerHTML = '❌ window.SinoForm non disponible';
+                return;
+            }
+
+            try {
+                window.SinoForm.destroy('sinoform-react-root');
+                statusDiv.innerHTML = '✅ Instance React détruite';
+            } catch (error) {
+                statusDiv.innerHTML = '❌ Erreur: ' + error.message;
+                console.error('Erreur destruction:', error);
+            }
+        }
+
+        window.destroyReact = destroyReact;
+
+        function checkStatus() {
+            const statusDiv = document.getElementById('action-status');
+            
+            if (!window.SinoForm) {
+                statusDiv.innerHTML = '❌ window.SinoForm non disponible';
+                return;
+            }
+
+            const isInit = window.SinoForm.isInitialized('sinoform-react-root');
+            statusDiv.innerHTML = `Statut: ${isInit ? '✅ Initialisé' : '❌ Non initialisé'}`;
+        }
+
+        window.checkStatus = checkStatus;
+
+        // Logs console
+        const originalLog = console.log;
+        console.log = function(...args) {
+            if (args[0] && args[0].includes && args[0].includes('[SinoForm]')) {
+                const statusDiv = document.getElementById('init-status');
+                if (statusDiv) {
+                    statusDiv.innerHTML += '<br>' + args.join(' ');
+                }
+            }
+            originalLog.apply(console, args);
+        };
+    </script>
+</body>
+</html>
+

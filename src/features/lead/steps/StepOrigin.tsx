@@ -81,7 +81,9 @@ const StepOrigin: FC = () => {
       const spaceLeft = Math.max(0, triggerRect.right - containerRect.left);
 
       const estimatedHeight = Math.min(300, listEl.scrollHeight || 300);
-      const showAbove = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+      // Sur mobile, toujours ouvrir vers le bas
+      const isMobile = window.innerWidth <= 768;
+      const showAbove = !isMobile && spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
 
       listEl.classList.toggle('show-above', showAbove);
       listEl.classList.toggle('adjust-right', spaceRight < 200);
@@ -171,6 +173,7 @@ const StepOrigin: FC = () => {
     >
       {/* Segmented control: Location · Details */}
       <div
+        className="step-3-segmented-control"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
@@ -183,6 +186,7 @@ const StepOrigin: FC = () => {
           width: '100%',
           maxWidth: '480px',
           margin: '0 0 0.75rem 0',
+          boxSizing: 'border-box',
         }}
       >
         {[
@@ -311,7 +315,12 @@ const StepOrigin: FC = () => {
                 <input
                   type="text"
                   className="input glassmorphism"
-                  style={{ flex: '1 0 200px' }}
+                  style={{ 
+                    flex: window.innerWidth <= 768 ? '1 1 100%' : '1 0 200px',
+                    minWidth: window.innerWidth <= 768 ? '0' : '200px',
+                    width: window.innerWidth <= 768 ? '100%' : 'auto',
+                    boxSizing: 'border-box',
+                  }}
                   placeholder={t('destinationCity', 'City')}
                   value={formData.city}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -323,7 +332,12 @@ const StepOrigin: FC = () => {
                 <input
                   type="text"
                   className="input glassmorphism"
-                  style={{ flex: '1 0 200px' }}
+                  style={{ 
+                    flex: window.innerWidth <= 768 ? '1 1 100%' : '1 0 200px',
+                    minWidth: window.innerWidth <= 768 ? '0' : '200px',
+                    width: window.innerWidth <= 768 ? '100%' : 'auto',
+                    boxSizing: 'border-box',
+                  }}
                   placeholder={t('destinationZipCode', 'ZIP Code')}
                   value={formData.zipCode}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

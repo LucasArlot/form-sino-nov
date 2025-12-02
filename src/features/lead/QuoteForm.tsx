@@ -6991,16 +6991,11 @@ const QuoteForm: FC = () => {
     // Allow any immediately preceding state updates (e.g., customer type click) to flush before validation
     await Promise.resolve();
     if (isStepValid) {
-      const makeWebhookUrl = 'https://hook.eu1.make.com/8afhony6fmk7pgxavn969atkmq0xrm1s';
-
       // Use proxy URLs in development, direct URLs in production
       const isDevelopment = import.meta.env.DEV;
-      const n8nTestWebhookUrl = isDevelopment
-        ? '/api/n8n-test'
-        : 'https://n8n.srv783609.hstgr.cloud/webhook-test/228cb671-34ad-4e2e-95ab-95d830d875df';
-      const n8nProdWebhookUrl = isDevelopment
-        ? '/api/n8n-prod'
-        : 'https://n8n.srv783609.hstgr.cloud/webhook/228cb671-34ad-4e2e-95ab-95d830d875df';
+      const webhookUrl = isDevelopment
+        ? '/api/n8n'
+        : 'https://n8n.srv783609.hstgr.cloud/webhook/5e52c71e-b113-4b3c-8c7d-91c78496ea91';
 
       // 1. Sync and prepare the data from current active load states
       const activeLoadSubmitData = syncCurrentLoadToArray();
@@ -7075,48 +7070,32 @@ const QuoteForm: FC = () => {
         loads: processedLoads, // Add the processed loads
       };
       try {
-        const promises = [
-          fetch(n8nTestWebhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(finalPayload),
-          }),
-          fetch(n8nProdWebhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(finalPayload),
-          }),
-          fetch(makeWebhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(finalPayload),
-          }),
-        ];
-
-        const results = await Promise.allSettled(promises);
-
-        results.forEach((result, index) => {
-          const url = [n8nTestWebhookUrl, n8nProdWebhookUrl, makeWebhookUrl][index];
-          if (result.status === 'fulfilled') {
-            console.log(`Webhook to ${url} succeeded.`, result.value);
-          } else {
-            console.error(`Webhook to ${url} failed.`, result.reason);
-          }
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(finalPayload),
         });
 
-        const makeResult = results[2];
-        if (
-          makeResult.status === 'rejected' ||
-          (makeResult.status === 'fulfilled' && !makeResult.value.ok)
-        ) {
-          const errorReason =
-            makeResult.status === 'rejected' ? makeResult.reason : await makeResult.value.text();
-          const errorStatus = makeResult.status === 'fulfilled' ? makeResult.value.status : 'N/A';
+        if (!response.ok) {
+          let errorReason = '';
+          try {
+            errorReason = await response.text();
+          } catch {
+            errorReason = 'Unknown error';
+          }
+          const errorStatus = response.status;
 
-          console.error('Main webhook (make.com) failed:', errorStatus, errorReason);
-          showToast(`Error: Main quote submission failed. Status: ${errorStatus}.`);
+          console.error('Webhook failed:', errorStatus, errorReason);
+          showToast(
+            getText(
+              'errorSubmissionMain',
+              userLang,
+            ) || `We could not send your quote request (status ${errorStatus}). Please try again in a few minutes or contact us directly.`,
+          );
           return;
         }
+
+        console.log(`Webhook to ${webhookUrl} succeeded.`, response.status);
 
         // Set submission data and go to confirmation page
         setSubmissionId(submissionId);
@@ -7129,7 +7108,9 @@ const QuoteForm: FC = () => {
         // User can start a new request from the confirmation page
       } catch (error) {
         console.error('An unexpected error occurred during submission:', error);
-        showToast(getText('errorSubmission', userLang));
+        const fallbackMessage =
+          'Something went wrong while sending your request. Our team has not received your details yet – please try again in a moment or reach out via email.';
+        showToast(getText('errorSubmission', userLang) || fallbackMessage);
       }
     }
   };

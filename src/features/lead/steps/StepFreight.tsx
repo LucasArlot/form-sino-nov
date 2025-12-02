@@ -29,6 +29,7 @@ const StepFreight: React.FC = () => {
     >
       {/* Segmented control: Type · Details */}
       <div
+        className="step-4-segmented-control"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',

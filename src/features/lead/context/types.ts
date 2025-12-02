@@ -58,22 +58,24 @@ export interface SourcingData {
   moq: number | null;
   platform: string;
   hasSupplier: boolean | null;
-  notes: string;
   targetMarkets: string;
   requiredCertifications: string;
+  timeline?: string;
+  qualityStandards?: string;
+  packagingRequirements?: string;
+  notes?: string;
 }
 
 export interface WarehousingData {
-  needed: boolean | null;
   duration: string;
   skuCount: number | null;
   consolidation: boolean | null;
   extraServices: string[];
-  specialHandling?: string;
   notes: string;
 }
 
 export interface DropshippingData {
+  products: string;
   model: string;
   customerCountries: string;
   dailyOrders: number | null;
@@ -91,23 +93,27 @@ export interface QcData {
 }
 
 export interface ChinaVisitData {
-  visitType: string;
+  visitType: string[];
   mainCity: string;
   otherCities: string;
   fairName: string;
+  factoryDescription: string;
   cantonPhase: string;
   startDate: string;
   endDate: string;
   numberOfDays: number | null;
   numberOfTravelers: number | null;
-  needInterpreter: boolean | null;
-  languages: string;
-  localTransportNeeds: string[];
-  needHotel: boolean | null;
-  mainGoal: string;
-  willShipAfterVisit: boolean | null;
-  remarks: string;
-  tripBudget: string;
+  needGuide: boolean | null;
+  needTransport: boolean | null;
+  needHotels: boolean | null;
+  notes: string;
+}
+
+export interface OtherProjectData {
+  projectType: string;
+  description: string;
+  budget: string;
+  timeline: string;
 }
 
 export interface FormData {
@@ -142,6 +148,12 @@ export interface FormData {
   incoterm: string;
   annualVolume: string;
 
+  // Simple form cargo fields (direct, no loads array)
+  totalWeight: string;
+  numberOfUnits: number;
+  dimensions: { length: string; width: string; height: string };
+  weightPerUnit: string;
+
   // Multi-service extensions
   servicesRequested: ServicesRequested;
   sourcing: SourcingData;
@@ -149,6 +161,7 @@ export interface FormData {
   dropshipping: DropshippingData;
   qc: QcData;
   chinaVisit: ChinaVisitData;
+  otherProject: OtherProjectData;
 }
 
 export const initialFormData: FormData = {
@@ -182,6 +195,12 @@ export const initialFormData: FormData = {
   incoterm: '',
   annualVolume: '',
 
+  // Simple form cargo fields
+  totalWeight: '',
+  numberOfUnits: 1,
+  dimensions: { length: '', width: '', height: '' },
+  weightPerUnit: '',
+
   servicesRequested: {
     shipping: true,
     sourcing: false,
@@ -199,12 +218,10 @@ export const initialFormData: FormData = {
     moq: null,
     platform: '',
     hasSupplier: null,
-    notes: '',
     targetMarkets: '',
     requiredCertifications: '',
   },
   warehousing: {
-    needed: null,
     duration: '',
     skuCount: null,
     consolidation: null,
@@ -212,6 +229,7 @@ export const initialFormData: FormData = {
     notes: '',
   },
   dropshipping: {
+    products: '',
     model: '',
     customerCountries: '',
     dailyOrders: null,
@@ -227,23 +245,26 @@ export const initialFormData: FormData = {
     notes: '',
   },
   chinaVisit: {
-    visitType: '',
+    visitType: [],
     mainCity: '',
     otherCities: '',
     fairName: '',
+    factoryDescription: '',
     cantonPhase: '',
     startDate: '',
     endDate: '',
     numberOfDays: null,
     numberOfTravelers: null,
-    needInterpreter: null,
-    languages: '',
-    localTransportNeeds: [],
-    needHotel: null,
-    mainGoal: '',
-    willShipAfterVisit: null,
-    remarks: '',
-    tripBudget: '',
+    needGuide: null,
+    needTransport: null,
+    needHotels: null,
+    notes: '',
+  },
+  otherProject: {
+    projectType: '',
+    description: '',
+    budget: '',
+    timeline: '',
   },
 };
 

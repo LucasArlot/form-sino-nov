@@ -3386,7 +3386,10 @@ const PRIORITY_COUNTRIES_BY_LANG: Record<string, string[]> = {
   ru: ['RU', 'BY', 'KZ', 'KG', 'UA'],
 };
 
-export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const QuoteFormProvider: FC<{
+  children: ReactNode;
+  initialLang?: 'en' | 'fr' | 'zh' | 'de' | 'es' | 'it' | 'nl' | 'ar' | 'pt' | 'tr' | 'ru';
+}> = ({ children, initialLang }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [fieldValid, setFieldValid] = useState<FieldValid>(initialFieldValid);
@@ -3400,6 +3403,9 @@ export const QuoteFormProvider: FC<{ children: ReactNode }> = ({ children }) => 
   const [userLang, setUserLang] = useState<
     'en' | 'fr' | 'zh' | 'de' | 'es' | 'it' | 'nl' | 'ar' | 'pt' | 'tr' | 'ru'
   >(() => {
+    if (initialLang) {
+      return initialLang;
+    }
     if (typeof navigator !== 'undefined') {
       const lang = navigator.language || 'en';
       if (lang.startsWith('fr')) return 'fr';
