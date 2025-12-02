@@ -1364,24 +1364,36 @@ const SimpleQuoteForm: FC = () => {
                             <button
                               type="button"
                               className={`sino-simple-chip${
-                                formData.locationType === 'unknown'
+                                formData.locationType ===
+                                t('originLocationTypeUnknownValue', 'To be confirmed with supplier')
                                   ? ' sino-simple-chip--active'
                                   : ''
                               }`}
                               onClick={() =>
                                 setFormData((prev) => ({
                                   ...prev,
-                                  locationType: 'unknown',
+                                  locationType: t(
+                                    'originLocationTypeUnknownValue',
+                                    'To be confirmed with supplier'
+                                  ),
                                 }))
                               }
-                              aria-pressed={formData.locationType === 'unknown' ? 'true' : 'false'}
-                              aria-label={`${t('originLocationTypeUnknown', "I'm still discussing with my supplier")}${formData.locationType === 'unknown' ? ', selected' : ', not selected'}`}
+                              aria-pressed={
+                                formData.locationType ===
+                                t('originLocationTypeUnknownValue', 'To be confirmed with supplier')
+                                  ? 'true'
+                                  : 'false'
+                              }
+                              aria-label={`${t('originLocationTypeUnknown', "I'm still discussing with my supplier")}${formData.locationType === t('originLocationTypeUnknownValue', 'To be confirmed with supplier') ? ', selected' : ', not selected'}`}
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                   e.preventDefault();
                                   setFormData((prev) => ({
                                     ...prev,
-                                    locationType: 'unknown',
+                                    locationType: t(
+                                      'originLocationTypeUnknownValue',
+                                      'To be confirmed with supplier'
+                                    ),
                                   }));
                                 }
                               }}
