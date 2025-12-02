@@ -335,6 +335,7 @@ body {
   box-shadow:
     0 2px 8px rgba(29, 78, 216, 0.2),
     0 0 0 1px rgba(29, 78, 216, 0.1);
+  text-align: center;
 }
 
 .sino-simple-form__section-step::after {
