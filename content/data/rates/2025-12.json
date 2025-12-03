@@ -1,0 +1,7469 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-12-01",
+    "totalCountries": 195,
+    "description": "Monthly shipping rates dataset for 2025-12",
+    "source": "SINO Shipping Database",
+    "fallbackMessage": "Rates unavailable — Get a quote",
+    "statistics": {
+      "seaAvailable": 195,
+      "airAvailable": 195,
+      "railAvailable": 29
+    }
+  },
+  "_reference": {
+    "_comment": "Documentation pour market_snapshot - Options disponibles pour remplir le JSON",
+    "market_snapshot": {
+      "available_icons": {
+        "airplane": "✈️ Air capacity, air freight",
+        "truck": "🚚 Express networks, courier",
+        "container": "📦 Ocean space, FCL/LCL",
+        "calendar": "📅 Planning, deadlines, cut-offs",
+        "cloud": "⛈️ Weather, typhoon season",
+        "clock": "🕐 Transit times, delays",
+        "alert": "⚠️ Warnings, important notices",
+        "chart": "📊 Market trends, data",
+        "info": "ℹ️ General information"
+      },
+      "available_statuses": {
+        "stable": "🟢 Badge 'Stable' (vert) - Capacité stable, conditions normales",
+        "normal": "🔵 Badge 'Normally' (bleu) - Fonctionnement normal",
+        "tighter": "🟠 Badge 'Tighter' (orange) - Espace réduit, réservations plus difficiles",
+        "warning": "🔴 Badge 'Warning' (rouge) - Attention requise, perturbations possibles"
+      },
+      "structure": {
+        "items": "Array flexible de 3-5 points (peut varier selon le mois et les événements)",
+        "label": "Titre du point (ex: 'Air capacity', 'Express networks', 'Q4 planning')",
+        "icon": "Nom de l'icône (voir available_icons ci-dessus)",
+        "status": "Statut (voir available_statuses ci-dessus)",
+        "text": "Description du point (court et actionnable, max 150 caractères recommandé)"
+      },
+      "notes": [
+        "Structure flexible: le nombre d'items peut varier (généralement 3-5)",
+        "Les points peuvent changer chaque mois selon les événements (ex: typhoon en été, Q4 planning en novembre)",
+        "Ordre recommandé: points les plus importants en premier",
+        "Adapter le contenu selon les conditions réelles du marché pour chaque mois"
+      ]
+    }
+  },
+  "rates": {
+    "afghanistan": {
+      "sea_20gp_usd": [
+        1012,
+        1237
+      ],
+      "sea_40gp_usd": [
+        1102,
+        1347
+      ],
+      "air_perkg_usd_1000kg": 4.9,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          15
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          7,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 53,
+      "express_perkg_usd": 7.84,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "albania": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          29
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          33
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "algeria": {
+      "sea_20gp_usd": [
+        4230,
+        5170
+      ],
+      "sea_40gp_usd": [
+        6030,
+        7370
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          44
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          36,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 290,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "andorra": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          30
+        ],
+        "air": [
+          6,
+          7
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          6,
+          8
+        ],
+        "lcl": [
+          26,
+          34
+        ]
+      },
+      "sea_lcl_usd_cbm": 73,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "angola": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          38
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          34,
+          42
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "antigua-and-barbuda": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "argentina": {
+      "sea_20gp_usd": [
+        1800,
+        2200
+      ],
+      "sea_40gp_usd": [
+        2160,
+        2640
+      ],
+      "air_perkg_usd_1000kg": 9.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": null,
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 14.72,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "armenia": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          11
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "australia": {
+      "sea_20gp_usd": [
+        1469,
+        1796
+      ],
+      "sea_40gp_usd": [
+        2295,
+        2805
+      ],
+      "air_perkg_usd_1000kg": 3.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          27
+        ],
+        "air": [
+          7,
+          8
+        ],
+        "rail": null,
+        "express": [
+          7,
+          9
+        ],
+        "lcl": [
+          21,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 6.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "austria": {
+      "sea_20gp_usd": [
+        1530,
+        1870
+      ],
+      "sea_40gp_usd": [
+        2520,
+        3080
+      ],
+      "air_perkg_usd_1000kg": 6.7,
+      "rail_lcl_usd_cbm": 210,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.72,
+      "rail_20gp_usd": [
+        4158,
+        5082
+      ],
+      "rail_40gp_usd": [
+        6048,
+        7392
+      ]
+    },
+    "azerbaijan": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bahamas": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bahrain": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          13
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          9,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bangladesh": {
+      "sea_20gp_usd": [
+        900,
+        1100
+      ],
+      "sea_40gp_usd": [
+        1080,
+        1320
+      ],
+      "air_perkg_usd_1000kg": 4.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          15
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 72,
+      "express_perkg_usd": 7.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "barbados": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "belarus": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 160,
+      "transit_days": {
+        "sea": [
+          25,
+          30
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          15
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          34
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        3168,
+        3872
+      ],
+      "rail_40gp_usd": [
+        4608,
+        5632
+      ]
+    },
+    "belgium": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.75,
+      "rail_lcl_usd_cbm": 204,
+      "transit_days": {
+        "sea": [
+          25,
+          26
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          30
+        ]
+      },
+      "sea_lcl_usd_cbm": 73,
+      "express_perkg_usd": 10.8,
+      "rail_20gp_usd": [
+        4039,
+        4936
+      ],
+      "rail_40gp_usd": [
+        5875,
+        7180
+      ]
+    },
+    "belize": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          8
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "benin": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          34
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          34,
+          38
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bhutan": {
+      "sea_20gp_usd": [
+        1012,
+        1237
+      ],
+      "sea_40gp_usd": [
+        1102,
+        1347
+      ],
+      "air_perkg_usd_1000kg": 4.9,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          7,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 53,
+      "express_perkg_usd": 7.84,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bolivia": {
+      "sea_20gp_usd": [
+        2144,
+        2621
+      ],
+      "sea_40gp_usd": [
+        2459,
+        3006
+      ],
+      "air_perkg_usd_1000kg": 9.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": null,
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 15.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bosnia-and-herzegovina": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          33
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          37
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "botswana": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          34
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          34,
+          38
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "brazil": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 9.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": null,
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 14.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "brunei": {
+      "sea_20gp_usd": [
+        552,
+        675
+      ],
+      "sea_40gp_usd": [
+        974,
+        1191
+      ],
+      "air_perkg_usd_1000kg": 1.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 29,
+      "express_perkg_usd": 2.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "bulgaria": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 229,
+      "transit_days": {
+        "sea": [
+          25,
+          26
+        ],
+        "air": [
+          6,
+          8
+        ],
+        "rail": [
+          13,
+          16
+        ],
+        "express": [
+          6,
+          9
+        ],
+        "lcl": [
+          26,
+          30
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        4554,
+        5566
+      ],
+      "rail_40gp_usd": [
+        6623,
+        8095
+      ]
+    },
+    "burkina-faso": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          36
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          40
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "burundi": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          41
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          36,
+          45
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "cabo-verde": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          43
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": [
+          25,
+          30
+        ],
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          36,
+          47
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "cambodia": {
+      "sea_20gp_usd": [
+        552,
+        675
+      ],
+      "sea_40gp_usd": [
+        974,
+        1191
+      ],
+      "air_perkg_usd_1000kg": 1.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 29,
+      "express_perkg_usd": 2.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "cameroon": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          38
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          33,
+          42
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "canada": {
+      "sea_20gp_usd": [
+        3375,
+        4125
+      ],
+      "sea_40gp_usd": [
+        4140,
+        5060
+      ],
+      "air_perkg_usd_1000kg": 5.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          11
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": null,
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 180,
+      "express_perkg_usd": 9.12,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "central-african-republic": {
+      "sea_20gp_usd": [
+        3061,
+        3742
+      ],
+      "sea_40gp_usd": [
+        3422,
+        4183
+      ],
+      "air_perkg_usd_1000kg": 8.6,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          44
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          33,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 163,
+      "express_perkg_usd": 13.76,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "chad": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          39
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          34,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "chile": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": null,
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "china": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          15
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "colombia": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          13
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": null,
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 14.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "comoros": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          37
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          33,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "congo": {
+      "sea_20gp_usd": [
+        3061,
+        3742
+      ],
+      "sea_40gp_usd": [
+        3422,
+        4183
+      ],
+      "air_perkg_usd_1000kg": 8.6,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          36
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          40
+        ]
+      },
+      "sea_lcl_usd_cbm": 163,
+      "express_perkg_usd": 13.76,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "costa-rica": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          15
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          7,
+          10
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "croatia": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          28
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          18
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "cuba": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          11
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          9,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "cyprus": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          28
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          12,
+          13
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "czech-republic": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 204,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        4039,
+        4936
+      ],
+      "rail_40gp_usd": [
+        5875,
+        7180
+      ]
+    },
+    "democratic-republic-of-the-congo": {
+      "sea_20gp_usd": [
+        3600,
+        4400
+      ],
+      "sea_40gp_usd": [
+        4005,
+        4895
+      ],
+      "air_perkg_usd_1000kg": 8.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          37
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": [
+          25,
+          27
+        ],
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          33,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 720,
+      "express_perkg_usd": 13.6,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "denmark": {
+      "sea_20gp_usd": [
+        1530,
+        1870
+      ],
+      "sea_40gp_usd": [
+        2340,
+        2860
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 210,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 45,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        4158,
+        5082
+      ],
+      "rail_40gp_usd": [
+        6048,
+        7392
+      ]
+    },
+    "djibouti": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          39
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "dominica": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          7,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "dominican-republic": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "ecuador": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          14
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": null,
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          9,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 14.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "egypt": {
+      "sea_20gp_usd": [
+        3015,
+        3685
+      ],
+      "sea_40gp_usd": [
+        3960,
+        4840
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          45
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          49
+        ]
+      },
+      "sea_lcl_usd_cbm": 105,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "el-salvador": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          5,
+          8
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "equatorial-guinea": {
+      "sea_20gp_usd": [
+        3061,
+        3742
+      ],
+      "sea_40gp_usd": [
+        3422,
+        4183
+      ],
+      "air_perkg_usd_1000kg": 8.6,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          43
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          34,
+          47
+        ]
+      },
+      "sea_lcl_usd_cbm": 163,
+      "express_perkg_usd": 13.76,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "eritrea": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          38
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          34,
+          42
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "estonia": {
+      "sea_20gp_usd": [
+        1597,
+        1952
+      ],
+      "sea_40gp_usd": [
+        2587,
+        3162
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          33
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          12,
+          16
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          37
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "eswatini": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          35
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          33,
+          39
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "ethiopia": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          39
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          34,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "fiji": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          27
+        ],
+        "air": [
+          7,
+          10
+        ],
+        "rail": [
+          29,
+          37
+        ],
+        "express": [
+          7,
+          11
+        ],
+        "lcl": [
+          21,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "finland": {
+      "sea_20gp_usd": [
+        1597,
+        1952
+      ],
+      "sea_40gp_usd": [
+        2587,
+        3162
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 220,
+      "transit_days": {
+        "sea": [
+          25,
+          33
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          15
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          37
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        4356,
+        5324
+      ],
+      "rail_40gp_usd": [
+        6336,
+        7744
+      ]
+    },
+    "france": {
+      "sea_20gp_usd": [
+        1386,
+        1694
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.95,
+      "rail_lcl_usd_cbm": 210,
+      "transit_days": {
+        "sea": [
+          25,
+          28
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          16
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 30,
+      "express_perkg_usd": 11.12,
+      "rail_20gp_usd": [
+        4158,
+        5082
+      ],
+      "rail_40gp_usd": [
+        6048,
+        7392
+      ]
+    },
+    "gabon": {
+      "sea_20gp_usd": [
+        3061,
+        3742
+      ],
+      "sea_40gp_usd": [
+        3422,
+        4183
+      ],
+      "air_perkg_usd_1000kg": 8.6,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          40
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          35,
+          44
+        ]
+      },
+      "sea_lcl_usd_cbm": 163,
+      "express_perkg_usd": 13.76,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "gambia": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          40
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          33,
+          44
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "georgia": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          15
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "germany": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 4.7,
+      "rail_lcl_usd_cbm": 200,
+      "transit_days": {
+        "sea": [
+          25,
+          33
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          37
+        ]
+      },
+      "sea_lcl_usd_cbm": 73,
+      "express_perkg_usd": 7.52,
+      "rail_20gp_usd": [
+        3960,
+        4840
+      ],
+      "rail_40gp_usd": [
+        5760,
+        7040
+      ]
+    },
+    "ghana": {
+      "sea_20gp_usd": [
+        2295,
+        2805
+      ],
+      "sea_40gp_usd": [
+        2430,
+        2970
+      ],
+      "air_perkg_usd_1000kg": 8.56,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          42
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          33,
+          46
+        ]
+      },
+      "sea_lcl_usd_cbm": 160,
+      "express_perkg_usd": 13.7,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "greece": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          31
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          16
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          35
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "grenada": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          10
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "guatemala": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          6
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "guinea": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          37
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          33,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "guinea-bissau": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          44
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          34,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "guyana": {
+      "sea_20gp_usd": [
+        2144,
+        2621
+      ],
+      "sea_40gp_usd": [
+        2459,
+        3006
+      ],
+      "air_perkg_usd_1000kg": 9.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          11,
+          15
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": null,
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          12,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 15.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "haiti": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          15
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "honduras": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          15
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "hungary": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 204,
+      "transit_days": {
+        "sea": [
+          25,
+          27
+        ],
+        "air": [
+          6,
+          8
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          6,
+          9
+        ],
+        "lcl": [
+          26,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        4039,
+        4936
+      ],
+      "rail_40gp_usd": [
+        5875,
+        7180
+      ]
+    },
+    "iceland": {
+      "sea_20gp_usd": [
+        1597,
+        1952
+      ],
+      "sea_40gp_usd": [
+        2587,
+        3162
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          33
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          13,
+          16
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          37
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "india": {
+      "sea_20gp_usd": [
+        990,
+        1210
+      ],
+      "sea_40gp_usd": [
+        990,
+        1210
+      ],
+      "air_perkg_usd_1000kg": 4.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 10,
+      "express_perkg_usd": 7.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "indonesia": {
+      "sea_20gp_usd": [
+        765,
+        935
+      ],
+      "sea_40gp_usd": [
+        1485,
+        1815
+      ],
+      "air_perkg_usd_1000kg": 2.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          7,
+          8
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 3.68,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "iran": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "iraq": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          14
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          9,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "ireland": {
+      "sea_20gp_usd": [
+        1530,
+        1870
+      ],
+      "sea_40gp_usd": [
+        2340,
+        2860
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          27
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 65,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "israel": {
+      "sea_20gp_usd": [
+        1755,
+        2145
+      ],
+      "sea_40gp_usd": [
+        3006,
+        3674
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 65,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "italy": {
+      "sea_20gp_usd": [
+        2070,
+        2530
+      ],
+      "sea_40gp_usd": [
+        3060,
+        3740
+      ],
+      "air_perkg_usd_1000kg": 6.7,
+      "rail_lcl_usd_cbm": 220,
+      "transit_days": {
+        "sea": [
+          25,
+          34
+        ],
+        "air": [
+          6,
+          7
+        ],
+        "rail": [
+          12,
+          15
+        ],
+        "express": [
+          6,
+          8
+        ],
+        "lcl": [
+          26,
+          38
+        ]
+      },
+      "sea_lcl_usd_cbm": 110,
+      "express_perkg_usd": 10.72,
+      "rail_20gp_usd": [
+        4356,
+        5324
+      ],
+      "rail_40gp_usd": [
+        6336,
+        7744
+      ]
+    },
+    "ivory-coast": {
+      "sea_20gp_usd": [
+        2295,
+        2805
+      ],
+      "sea_40gp_usd": [
+        2745,
+        3355
+      ],
+      "air_perkg_usd_1000kg": 9.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          36
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          34,
+          40
+        ]
+      },
+      "sea_lcl_usd_cbm": 265,
+      "express_perkg_usd": 14.72,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "jamaica": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          14
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          5,
+          9
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "japan": {
+      "sea_20gp_usd": [
+        315,
+        385
+      ],
+      "sea_40gp_usd": [
+        540,
+        660
+      ],
+      "air_perkg_usd_1000kg": 1.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": null,
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 10,
+      "express_perkg_usd": 2.08,
+      "market_snapshot": {
+        "items": [
+          {
+            "label": "Air capacity",
+            "icon": "airplane",
+            "status": "stable",
+            "text": "on key lanes (Shanghai PVG ⇄ Tokyo NRT/HND, Hong Kong HKG ⇄ Tokyo HND) — book by Thursday for Monday departures"
+          },
+          {
+            "label": "Express networks",
+            "icon": "truck",
+            "status": "normal",
+            "text": "operating normally — no major delays reported"
+          },
+          {
+            "label": "Ocean space",
+            "icon": "container",
+            "status": "stable",
+            "text": "available from East China ports — 20GP flat, 40GP down ~10% vs October; book 2 weeks ahead for peak weeks"
+          },
+          {
+            "label": "Q4 planning",
+            "icon": "calendar",
+            "status": "normal",
+            "text": "predictable demand patterns — good time to lock in rates for December/January shipments"
+          }
+        ]
+      },
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "jordan": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          10
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "kazakhstan": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 140,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        2772,
+        3388
+      ],
+      "rail_40gp_usd": [
+        4031,
+        4928
+      ]
+    },
+    "kenya": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          43
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          36,
+          47
+        ]
+      },
+      "sea_lcl_usd_cbm": 118,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "kiribati": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          21
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          30,
+          32
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          25
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "kuwait": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          13
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          5,
+          10
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "kyrgyzstan": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 150,
+      "transit_days": {
+        "sea": [
+          9,
+          11
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        2970,
+        3630
+      ],
+      "rail_40gp_usd": [
+        4320,
+        5280
+      ]
+    },
+    "laos": {
+      "sea_20gp_usd": [
+        552,
+        675
+      ],
+      "sea_40gp_usd": [
+        974,
+        1191
+      ],
+      "air_perkg_usd_1000kg": 1.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 29,
+      "express_perkg_usd": 2.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "latvia": {
+      "sea_20gp_usd": [
+        1597,
+        1952
+      ],
+      "sea_40gp_usd": [
+        2587,
+        3162
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          33
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          13,
+          17
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          37
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "lebanon": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          10
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "lesotho": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          43
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          47
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "liberia": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          42
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          36,
+          46
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "libya": {
+      "sea_20gp_usd": [
+        3622,
+        4427
+      ],
+      "sea_40gp_usd": [
+        4995,
+        6105
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          43
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          35,
+          47
+        ]
+      },
+      "sea_lcl_usd_cbm": 193,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "liechtenstein": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          34
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          13
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          38
+        ]
+      },
+      "sea_lcl_usd_cbm": 73,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "lithuania": {
+      "sea_20gp_usd": [
+        1597,
+        1952
+      ],
+      "sea_40gp_usd": [
+        2587,
+        3162
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "luxembourg": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          34
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          38
+        ]
+      },
+      "sea_lcl_usd_cbm": 73,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "madagascar": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          35
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          33,
+          39
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "malawi": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          39
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": [
+          25,
+          28
+        ],
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          35,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "malaysia": {
+      "sea_20gp_usd": [
+        585,
+        715
+      ],
+      "sea_40gp_usd": [
+        1062,
+        1298
+      ],
+      "air_perkg_usd_1000kg": 3.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          10
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          5,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          9,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 4.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "maldives": {
+      "sea_20gp_usd": [
+        1012,
+        1237
+      ],
+      "sea_40gp_usd": [
+        1102,
+        1347
+      ],
+      "air_perkg_usd_1000kg": 4.9,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          5,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 53,
+      "express_perkg_usd": 7.84,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "mali": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          37
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          34,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "malta": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          27
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "marshall-islands": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          27
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          30,
+          37
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "mauritania": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          44
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          33,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "mauritius": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          37
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          34,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "mexico": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "micronesia": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          25
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          29,
+          32
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          29
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "moldova": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          35
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          39
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "monaco": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          28
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 73,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "mongolia": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 180,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          7,
+          10
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        3564,
+        4356
+      ],
+      "rail_40gp_usd": [
+        5184,
+        6336
+      ]
+    },
+    "montenegro": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          29
+        ],
+        "air": [
+          6,
+          7
+        ],
+        "rail": [
+          12,
+          16
+        ],
+        "express": [
+          6,
+          8
+        ],
+        "lcl": [
+          26,
+          33
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "morocco": {
+      "sea_20gp_usd": [
+        3622,
+        4427
+      ],
+      "sea_40gp_usd": [
+        4995,
+        6105
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          45
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          33,
+          49
+        ]
+      },
+      "sea_lcl_usd_cbm": 193,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "mozambique": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          41
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": [
+          25,
+          33
+        ],
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          45
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "myanmar": {
+      "sea_20gp_usd": [
+        552,
+        675
+      ],
+      "sea_40gp_usd": [
+        974,
+        1191
+      ],
+      "air_perkg_usd_1000kg": 1.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          14
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          7,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 29,
+      "express_perkg_usd": 2.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "namibia": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          38
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          42
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "nauru": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          22
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          29,
+          34
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          26
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "nepal": {
+      "sea_20gp_usd": [
+        1012,
+        1237
+      ],
+      "sea_40gp_usd": [
+        1102,
+        1347
+      ],
+      "air_perkg_usd_1000kg": 4.9,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 53,
+      "express_perkg_usd": 7.84,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "netherlands": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 6.9,
+      "rail_lcl_usd_cbm": 204,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 52,
+      "express_perkg_usd": 11.04,
+      "rail_20gp_usd": [
+        4039,
+        4936
+      ],
+      "rail_40gp_usd": [
+        5875,
+        7180
+      ]
+    },
+    "new-zealand": {
+      "sea_20gp_usd": [
+        1125,
+        1375
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 4.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          23
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": null,
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          27
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 6.72,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "nicaragua": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          8
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "niger": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          42
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          36,
+          46
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "nigeria": {
+      "sea_20gp_usd": [
+        3240,
+        3960
+      ],
+      "sea_40gp_usd": [
+        3456,
+        4224
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          38
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          36,
+          42
+        ]
+      },
+      "sea_lcl_usd_cbm": 172,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "north-korea": {
+      "sea_20gp_usd": [
+        315,
+        385
+      ],
+      "sea_40gp_usd": [
+        540,
+        660
+      ],
+      "air_perkg_usd_1000kg": 1.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          15
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          5,
+          8
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 20,
+      "express_perkg_usd": 2.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "north-macedonia": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          13,
+          18
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "norway": {
+      "sea_20gp_usd": [
+        1665,
+        2035
+      ],
+      "sea_40gp_usd": [
+        2835,
+        3465
+      ],
+      "air_perkg_usd_1000kg": 6.9,
+      "rail_lcl_usd_cbm": 229,
+      "transit_days": {
+        "sea": [
+          25,
+          28
+        ],
+        "air": [
+          6,
+          7
+        ],
+        "rail": [
+          13,
+          17
+        ],
+        "express": [
+          6,
+          8
+        ],
+        "lcl": [
+          26,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 60,
+      "express_perkg_usd": 11.04,
+      "rail_20gp_usd": [
+        4554,
+        5566
+      ],
+      "rail_40gp_usd": [
+        6623,
+        8095
+      ]
+    },
+    "oman": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          7,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "pakistan": {
+      "sea_20gp_usd": [
+        1260,
+        1540
+      ],
+      "sea_40gp_usd": [
+        1350,
+        1650
+      ],
+      "air_perkg_usd_1000kg": 5.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 30,
+      "express_perkg_usd": 8.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "palau": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          28
+        ],
+        "air": [
+          7,
+          10
+        ],
+        "rail": [
+          30,
+          35
+        ],
+        "express": [
+          7,
+          11
+        ],
+        "lcl": [
+          21,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "panama": {
+      "sea_20gp_usd": [
+        2520,
+        3080
+      ],
+      "sea_40gp_usd": [
+        2700,
+        3300
+      ],
+      "air_perkg_usd_1000kg": 9.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 15.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "papua-new-guinea": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          24
+        ],
+        "air": [
+          7,
+          8
+        ],
+        "rail": [
+          29,
+          38
+        ],
+        "express": [
+          7,
+          9
+        ],
+        "lcl": [
+          21,
+          28
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "paraguay": {
+      "sea_20gp_usd": [
+        2144,
+        2621
+      ],
+      "sea_40gp_usd": [
+        2459,
+        3006
+      ],
+      "air_perkg_usd_1000kg": 9.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": null,
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 15.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "peru": {
+      "sea_20gp_usd": [
+        2144,
+        2621
+      ],
+      "sea_40gp_usd": [
+        2459,
+        3006
+      ],
+      "air_perkg_usd_1000kg": 9.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": null,
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 15.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "philippines": {
+      "sea_20gp_usd": [
+        436,
+        533
+      ],
+      "sea_40gp_usd": [
+        745,
+        910
+      ],
+      "air_perkg_usd_1000kg": 1.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          11
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          7,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 2.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "poland": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 200,
+      "transit_days": {
+        "sea": [
+          25,
+          31
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          15
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          35
+        ]
+      },
+      "sea_lcl_usd_cbm": 33,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        3960,
+        4840
+      ],
+      "rail_40gp_usd": [
+        5760,
+        7040
+      ]
+    },
+    "portugal": {
+      "sea_20gp_usd": [
+        1665,
+        2035
+      ],
+      "sea_40gp_usd": [
+        2655,
+        3245
+      ],
+      "air_perkg_usd_1000kg": 6.9,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          26
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          13
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          30
+        ]
+      },
+      "sea_lcl_usd_cbm": 30,
+      "express_perkg_usd": 11.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "qatar": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          7,
+          8
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "romania": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 220,
+      "transit_days": {
+        "sea": [
+          25,
+          30
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          34
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        4356,
+        5324
+      ],
+      "rail_40gp_usd": [
+        6336,
+        7744
+      ]
+    },
+    "russia": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 160,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        3168,
+        3872
+      ],
+      "rail_40gp_usd": [
+        4608,
+        5632
+      ]
+    },
+    "rwanda": {
+      "sea_20gp_usd": [
+        6750,
+        8250
+      ],
+      "sea_40gp_usd": [
+        7740,
+        9460
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          42
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          36,
+          46
+        ]
+      },
+      "sea_lcl_usd_cbm": 360,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "saint-kitts-and-nevis": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          10
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "saint-lucia": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "saint-vincent-and-the-grenadines": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "samoa": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          25
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          29,
+          39
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          29
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "san-marino": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          29
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          12,
+          13
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          33
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "sao-tome-and-principe": {
+      "sea_20gp_usd": [
+        3061,
+        3742
+      ],
+      "sea_40gp_usd": [
+        3422,
+        4183
+      ],
+      "air_perkg_usd_1000kg": 8.6,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          39
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          35,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 163,
+      "express_perkg_usd": 13.76,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "saudi-arabia": {
+      "sea_20gp_usd": [
+        2047,
+        2502
+      ],
+      "sea_40gp_usd": [
+        2430,
+        2970
+      ],
+      "air_perkg_usd_1000kg": 6.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          11
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 25,
+      "express_perkg_usd": 9.6,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "senegal": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          39
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "serbia": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": 229,
+      "transit_days": {
+        "sea": [
+          25,
+          27
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          14
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": [
+        4554,
+        5566
+      ],
+      "rail_40gp_usd": [
+        6623,
+        8095
+      ]
+    },
+    "seychelles": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          42
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          34,
+          46
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "sierra-leone": {
+      "sea_20gp_usd": [
+        2524,
+        3085
+      ],
+      "sea_40gp_usd": [
+        2841,
+        3472
+      ],
+      "air_perkg_usd_1000kg": 8.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          42
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          35,
+          46
+        ]
+      },
+      "sea_lcl_usd_cbm": 134,
+      "express_perkg_usd": 13.92,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "singapore": {
+      "sea_20gp_usd": [
+        472,
+        577
+      ],
+      "sea_40gp_usd": [
+        747,
+        913
+      ],
+      "air_perkg_usd_1000kg": 1.7,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          11
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 2.72,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "slovakia": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 204,
+      "transit_days": {
+        "sea": [
+          25,
+          27
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          15
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        4039,
+        4936
+      ],
+      "rail_40gp_usd": [
+        5875,
+        7180
+      ]
+    },
+    "slovenia": {
+      "sea_20gp_usd": [
+        1949,
+        2382
+      ],
+      "sea_40gp_usd": [
+        2970,
+        3630
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          13,
+          15
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 103,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "solomon-islands": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          24
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          30,
+          40
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          28
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "somalia": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          41
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          36,
+          45
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "south-africa": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2335,
+        2854
+      ],
+      "air_perkg_usd_1000kg": 7.16,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          44
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          36,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 200,
+      "express_perkg_usd": 11.46,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "south-korea": {
+      "sea_20gp_usd": [
+        315,
+        385
+      ],
+      "sea_40gp_usd": [
+        540,
+        660
+      ],
+      "air_perkg_usd_1000kg": 1.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          10
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 20,
+      "express_perkg_usd": 2.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "south-sudan": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          44
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": [
+          25,
+          35
+        ],
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          33,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "spain": {
+      "sea_20gp_usd": [
+        2115,
+        2585
+      ],
+      "sea_40gp_usd": [
+        3195,
+        3905
+      ],
+      "air_perkg_usd_1000kg": 7.26,
+      "rail_lcl_usd_cbm": 220,
+      "transit_days": {
+        "sea": [
+          25,
+          31
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          13,
+          18
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          35
+        ]
+      },
+      "sea_lcl_usd_cbm": 112,
+      "express_perkg_usd": 11.62,
+      "rail_20gp_usd": [
+        4356,
+        5324
+      ],
+      "rail_40gp_usd": [
+        6336,
+        7744
+      ]
+    },
+    "sri-lanka": {
+      "sea_20gp_usd": [
+        900,
+        1100
+      ],
+      "sea_40gp_usd": [
+        990,
+        1210
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          15
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 45,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "sudan": {
+      "sea_20gp_usd": [
+        5490,
+        6710
+      ],
+      "sea_40gp_usd": [
+        5643,
+        6897
+      ],
+      "air_perkg_usd_1000kg": 6.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          37
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          36,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 292,
+      "express_perkg_usd": 10.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "suriname": {
+      "sea_20gp_usd": [
+        2144,
+        2621
+      ],
+      "sea_40gp_usd": [
+        2459,
+        3006
+      ],
+      "air_perkg_usd_1000kg": 9.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": null,
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 15.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "sweden": {
+      "sea_20gp_usd": [
+        1597,
+        1952
+      ],
+      "sea_40gp_usd": [
+        2587,
+        3162
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 220,
+      "transit_days": {
+        "sea": [
+          25,
+          27
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          31
+        ]
+      },
+      "sea_lcl_usd_cbm": 85,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        4356,
+        5324
+      ],
+      "rail_40gp_usd": [
+        6336,
+        7744
+      ]
+    },
+    "switzerland": {
+      "sea_20gp_usd": [
+        2610,
+        3190
+      ],
+      "sea_40gp_usd": [
+        4050,
+        4950
+      ],
+      "air_perkg_usd_1000kg": 6.9,
+      "rail_lcl_usd_cbm": 216,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          12,
+          17
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 125,
+      "express_perkg_usd": 11.04,
+      "rail_20gp_usd": [
+        4276,
+        5227
+      ],
+      "rail_40gp_usd": [
+        6220,
+        7603
+      ]
+    },
+    "syria": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "taiwan": {
+      "sea_20gp_usd": [
+        315,
+        385
+      ],
+      "sea_40gp_usd": [
+        540,
+        660
+      ],
+      "air_perkg_usd_1000kg": 1.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          11,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 20,
+      "express_perkg_usd": 2.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "tajikistan": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 170,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        3366,
+        4114
+      ],
+      "rail_40gp_usd": [
+        4896,
+        5984
+      ]
+    },
+    "tanzania": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          35,
+          44
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          36,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "thailand": {
+      "sea_20gp_usd": [
+        657,
+        803
+      ],
+      "sea_40gp_usd": [
+        1093,
+        1336
+      ],
+      "air_perkg_usd_1000kg": 1.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          13
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          8
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          11,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 1.6,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "timor-leste": {
+      "sea_20gp_usd": [
+        552,
+        675
+      ],
+      "sea_40gp_usd": [
+        974,
+        1191
+      ],
+      "air_perkg_usd_1000kg": 1.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          7
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 29,
+      "express_perkg_usd": 2.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "togo": {
+      "sea_20gp_usd": [
+        2268,
+        2772
+      ],
+      "sea_40gp_usd": [
+        2736,
+        3344
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          33,
+          44
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          34,
+          48
+        ]
+      },
+      "sea_lcl_usd_cbm": 120,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "tonga": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          25
+        ],
+        "air": [
+          7,
+          10
+        ],
+        "rail": [
+          28,
+          38
+        ],
+        "express": [
+          7,
+          11
+        ],
+        "lcl": [
+          21,
+          29
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "trinidad-and-tobago": {
+      "sea_20gp_usd": [
+        5940,
+        7260
+      ],
+      "sea_40gp_usd": [
+        6840,
+        8360
+      ],
+      "air_perkg_usd_1000kg": 10.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 316,
+      "express_perkg_usd": 16.0,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "tunisia": {
+      "sea_20gp_usd": [
+        3622,
+        4427
+      ],
+      "sea_40gp_usd": [
+        4995,
+        6105
+      ],
+      "air_perkg_usd_1000kg": 6.3,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          34
+        ],
+        "air": [
+          9,
+          12
+        ],
+        "rail": null,
+        "express": [
+          9,
+          13
+        ],
+        "lcl": [
+          33,
+          38
+        ]
+      },
+      "sea_lcl_usd_cbm": 193,
+      "express_perkg_usd": 10.08,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "turkey": {
+      "sea_20gp_usd": [
+        1314,
+        1606
+      ],
+      "sea_40gp_usd": [
+        2295,
+        2805
+      ],
+      "air_perkg_usd_1000kg": 6.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          10
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          14
+        ]
+      },
+      "sea_lcl_usd_cbm": 70,
+      "express_perkg_usd": 10.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": [
+        7110,
+        8690
+      ]
+    },
+    "turkmenistan": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 180,
+      "transit_days": {
+        "sea": [
+          10,
+          14
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          7,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        3564,
+        4356
+      ],
+      "rail_40gp_usd": [
+        5184,
+        6336
+      ]
+    },
+    "tuvalu": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          28
+        ],
+        "air": [
+          7,
+          8
+        ],
+        "rail": [
+          29,
+          34
+        ],
+        "express": [
+          7,
+          9
+        ],
+        "lcl": [
+          21,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "uganda": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        1710,
+        2090
+      ],
+      "air_perkg_usd_1000kg": 5.5,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          37
+        ],
+        "air": [
+          9,
+          10
+        ],
+        "rail": null,
+        "express": [
+          9,
+          11
+        ],
+        "lcl": [
+          33,
+          41
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 8.8,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "ukraine": {
+      "sea_20gp_usd": [
+        1440,
+        1760
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 7.5,
+      "rail_lcl_usd_cbm": 220,
+      "transit_days": {
+        "sea": [
+          25,
+          31
+        ],
+        "air": [
+          5,
+          7
+        ],
+        "rail": [
+          13,
+          16
+        ],
+        "express": [
+          5,
+          8
+        ],
+        "lcl": [
+          26,
+          35
+        ]
+      },
+      "sea_lcl_usd_cbm": 76,
+      "express_perkg_usd": 12.0,
+      "rail_20gp_usd": [
+        4356,
+        5324
+      ],
+      "rail_40gp_usd": [
+        6336,
+        7744
+      ]
+    },
+    "united-arab-emirates": {
+      "sea_20gp_usd": [
+        2160,
+        2640
+      ],
+      "sea_40gp_usd": [
+        2790,
+        3410
+      ],
+      "air_perkg_usd_1000kg": 6.1,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          5,
+          6
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 15,
+      "express_perkg_usd": 9.76,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "united-kingdom": {
+      "sea_20gp_usd": [
+        1381,
+        1688
+      ],
+      "sea_40gp_usd": [
+        2205,
+        2695
+      ],
+      "air_perkg_usd_1000kg": 7.3,
+      "rail_lcl_usd_cbm": 229,
+      "transit_days": {
+        "sea": [
+          25,
+          28
+        ],
+        "air": [
+          5,
+          8
+        ],
+        "rail": [
+          13,
+          14
+        ],
+        "express": [
+          5,
+          9
+        ],
+        "lcl": [
+          26,
+          32
+        ]
+      },
+      "sea_lcl_usd_cbm": 60,
+      "express_perkg_usd": 11.68,
+      "rail_20gp_usd": [
+        4554,
+        5566
+      ],
+      "rail_40gp_usd": [
+        6623,
+        8095
+      ]
+    },
+    "united-states": {
+      "sea_20gp_usd": [
+        2227,
+        2722
+      ],
+      "sea_40gp_usd": [
+        2677,
+        3272
+      ],
+      "air_perkg_usd_1000kg": 7.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          13
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": null,
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 118,
+      "express_perkg_usd": 11.2,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "uruguay": {
+      "sea_20gp_usd": [
+        2070,
+        2530
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 11.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          11
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": null,
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          10,
+          15
+        ]
+      },
+      "sea_lcl_usd_cbm": 110,
+      "express_perkg_usd": 17.6,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "uzbekistan": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": 160,
+      "transit_days": {
+        "sea": [
+          8,
+          15
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          9,
+          19
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": [
+        3168,
+        3872
+      ],
+      "rail_40gp_usd": [
+        4608,
+        5632
+      ]
+    },
+    "vanuatu": {
+      "sea_20gp_usd": [
+        1296,
+        1585
+      ],
+      "sea_40gp_usd": [
+        2250,
+        2750
+      ],
+      "air_perkg_usd_1000kg": 4.0,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          20,
+          22
+        ],
+        "air": [
+          7,
+          9
+        ],
+        "rail": [
+          29,
+          31
+        ],
+        "express": [
+          7,
+          10
+        ],
+        "lcl": [
+          21,
+          26
+        ]
+      },
+      "sea_lcl_usd_cbm": 69,
+      "express_perkg_usd": 6.4,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "vatican-city": {
+      "sea_20gp_usd": [
+        2151,
+        2630
+      ],
+      "sea_40gp_usd": [
+        2771,
+        3386
+      ],
+      "air_perkg_usd_1000kg": 6.8,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          25,
+          32
+        ],
+        "air": [
+          5,
+          6
+        ],
+        "rail": [
+          13,
+          14
+        ],
+        "express": [
+          5,
+          7
+        ],
+        "lcl": [
+          26,
+          36
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 10.88,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "venezuela": {
+      "sea_20gp_usd": [
+        2144,
+        2621
+      ],
+      "sea_40gp_usd": [
+        2459,
+        3006
+      ],
+      "air_perkg_usd_1000kg": 9.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          10,
+          12
+        ],
+        "air": [
+          2,
+          4
+        ],
+        "rail": null,
+        "express": [
+          2,
+          5
+        ],
+        "lcl": [
+          11,
+          16
+        ]
+      },
+      "sea_lcl_usd_cbm": 114,
+      "express_perkg_usd": 15.04,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "vietnam": {
+      "sea_20gp_usd": [
+        405,
+        495
+      ],
+      "sea_40gp_usd": [
+        720,
+        880
+      ],
+      "air_perkg_usd_1000kg": 1.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          8,
+          13
+        ],
+        "air": [
+          3,
+          4
+        ],
+        "rail": [
+          5,
+          9
+        ],
+        "express": [
+          3,
+          5
+        ],
+        "lcl": [
+          9,
+          17
+        ]
+      },
+      "sea_lcl_usd_cbm": 5,
+      "express_perkg_usd": 2.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "yemen": {
+      "sea_20gp_usd": [
+        1818,
+        2223
+      ],
+      "sea_40gp_usd": [
+        2629,
+        3214
+      ],
+      "air_perkg_usd_1000kg": 6.4,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          9,
+          14
+        ],
+        "air": [
+          2,
+          3
+        ],
+        "rail": [
+          6,
+          9
+        ],
+        "express": [
+          2,
+          4
+        ],
+        "lcl": [
+          10,
+          18
+        ]
+      },
+      "sea_lcl_usd_cbm": 96,
+      "express_perkg_usd": 10.24,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "zambia": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          32,
+          38
+        ],
+        "air": [
+          9,
+          13
+        ],
+        "rail": null,
+        "express": [
+          9,
+          14
+        ],
+        "lcl": [
+          33,
+          42
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    },
+    "zimbabwe": {
+      "sea_20gp_usd": [
+        1989,
+        2431
+      ],
+      "sea_40gp_usd": [
+        2334,
+        2853
+      ],
+      "air_perkg_usd_1000kg": 7.2,
+      "rail_lcl_usd_cbm": null,
+      "transit_days": {
+        "sea": [
+          34,
+          39
+        ],
+        "air": [
+          9,
+          11
+        ],
+        "rail": null,
+        "express": [
+          9,
+          12
+        ],
+        "lcl": [
+          35,
+          43
+        ]
+      },
+      "sea_lcl_usd_cbm": 106,
+      "express_perkg_usd": 11.52,
+      "rail_20gp_usd": null,
+      "rail_40gp_usd": null
+    }
+  }
+}
