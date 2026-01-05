@@ -1,0 +1,4041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINO Shipping Rates Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* SINO Brand Colors */
+            --primary: #001c38;
+            --primary-light: #002a4e;
+            --primary-dark: #001428;
+            --accent: #d6df20;
+            --accent-light: #e4ea58;
+            --accent-dark: #b6be1b;
+            
+            /* Dark theme based on SINO primary */
+            --bg-primary: #001428;
+            --bg-secondary: #001c38;
+            --bg-tertiary: #002a4e;
+            --bg-card: #00243f;
+            
+            /* Accent gradient */
+            --accent-gradient: linear-gradient(135deg, #d6df20 0%, #e4ea58 50%, #b6be1b 100%);
+            
+            /* Text colors */
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #003d6b;
+            
+            /* Semantic colors */
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --error: #ef4444;
+            --error-light: #fef2f2;
+            --info: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(214, 223, 32, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(0, 61, 107, 0.3) 0%, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(0, 28, 56, 0.95) 100%);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--accent);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 
+                0 4px 24px rgba(0, 0, 0, 0.3),
+                0 0 40px rgba(214, 223, 32, 0.05);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 
+                0 4px 12px rgba(214, 223, 32, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            background: var(--accent-gradient);
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(8px);
+        }
+
+        .logo-text {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .version-badge {
+            background: rgba(214, 223, 32, 0.15);
+            border: 1px solid rgba(214, 223, 32, 0.3);
+            color: var(--accent);
+            font-size: 0.65rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(0, 42, 78, 0.5);
+            padding: 0.625rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .date-selector:hover {
+            border-color: rgba(214, 223, 32, 0.3);
+        }
+
+        .date-selector select {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .date-selector select:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .date-selector select:focus {
+            outline: none;
+            background: rgba(214, 223, 32, 0.15);
+        }
+
+        .date-selector select option {
+            background: var(--bg-secondary);
+            padding: 0.5rem;
+        }
+
+        .date-selector .date-icon {
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .action-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border-color);
+            margin: 0 0.25rem;
+        }
+
+        .auto-save-indicator {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            padding: 0.25rem 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 4px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Month Navigator */
+        .month-navigator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .month-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .month-nav-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: rgba(214, 223, 32, 0.1);
+        }
+
+        .month-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Month Status */
+        .month-status {
+            display: flex;
+            align-items: center;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .status-badge.editable {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-badge.locked {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status-badge.view-only {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Header Progress */
+        .header-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            min-width: 60px;
+        }
+
+        .header-progress-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .header-progress-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Icon buttons */
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-icon:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: rgba(214, 223, 32, 0.1);
+        }
+
+        .btn-icon:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Collapsible Cards */
+        .collapsible-card .card-header.clickable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible-card .card-header.clickable:hover {
+            background: rgba(214, 223, 32, 0.05);
+        }
+
+        .collapse-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+            margin-right: 0.25rem;
+        }
+
+        .collapsible-card:not(.collapsed) .collapse-arrow {
+            transform: rotate(90deg);
+        }
+
+        .collapsible-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .collapsible-card.collapsed .collapsible-content {
+            max-height: 0;
+            padding: 0 1.5rem;
+            opacity: 0;
+        }
+
+        .collapsible-card:not(.collapsed) .collapsible-content {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* Region Tabs (compact) */
+        .region-tabs {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .region-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.4rem 0.6rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .region-tab:hover {
+            border-color: var(--accent);
+            background: rgba(214, 223, 32, 0.08);
+        }
+
+        .region-tab.active {
+            background: rgba(214, 223, 32, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tab-icon {
+            font-size: 0.85rem;
+        }
+
+        .tab-label {
+            font-weight: 500;
+        }
+
+        .tab-count {
+            font-size: 0.65rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .region-tab.active .tab-count {
+            background: rgba(214, 223, 32, 0.3);
+        }
+
+        /* Status Filters (compact) */
+        .status-filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .status-btn {
+            flex: 1;
+            padding: 0.35rem 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .status-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .status-btn.active {
+            background: rgba(214, 223, 32, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-btn span {
+            font-size: 0.65rem;
+            opacity: 0.7;
+        }
+
+        /* Count badge */
+        .count-badge {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(214, 223, 32, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Country Navigation */
+        .country-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: rgba(214, 223, 32, 0.1);
+            color: var(--accent);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .country-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: var(--primary-dark);
+            font-weight: 600;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 24px rgba(214, 223, 32, 0.35),
+                0 0 0 1px rgba(214, 223, 32, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(0, 42, 78, 0.6);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border-radius: 8px;
+        }
+
+        /* Main Layout */
+        .main {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 380px 1fr 400px;
+            gap: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(145deg, var(--bg-card) 0%, rgba(0, 36, 63, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 24px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(214, 223, 32, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(214, 223, 32, 0.1);
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .country-search {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            padding-left: 2.75rem;
+            background: rgba(0, 42, 78, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+        }
+
+        .country-search:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
+            box-shadow: 0 0 0 3px rgba(214, 223, 32, 0.15);
+        }
+
+        .country-search::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+        }
+
+        .filter-chip {
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: var(--text-secondary);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .filter-chip.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        /* Country List */
+        .country-list {
+            max-height: calc(100vh - 400px);
+            overflow-y: auto;
+            padding: 0.25rem;
+        }
+
+        .country-item {
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 0.75rem;
+            margin-bottom: 0.25rem;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .country-item:hover {
+            background: rgba(0, 42, 78, 0.6);
+            border-color: var(--border-color);
+            transform: translateX(4px);
+        }
+
+        .country-item.active {
+            background: var(--accent);
+            color: var(--primary-dark);
+            border-color: var(--accent);
+            box-shadow: 
+                0 4px 16px rgba(214, 223, 32, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            transform: translateX(4px);
+        }
+
+        .country-item.active .country-name,
+        .country-item.active .country-flag {
+            color: var(--primary-dark);
+        }
+
+        .country-item.modified {
+            border-left: 3px solid var(--success);
+            padding-left: 0.75rem;
+        }
+
+        .country-item.modified::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+            50% { opacity: 0.5; transform: translateY(-50%) scale(1.2); }
+        }
+
+        .country-info {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .country-flag {
+            font-size: 1.75rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .country-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .country-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.01em;
+        }
+
+        .country-region {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.125rem;
+        }
+
+        .country-item.active .country-region {
+            color: rgba(0, 20, 40, 0.7);
+        }
+
+        .country-status {
+            font-size: 0.6875rem;
+            padding: 0.375rem 0.625rem;
+            border-radius: 6px;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+            font-weight: 500;
+        }
+
+        .country-status.modified {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Form */
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 61, 107, 0.3);
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .form-section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-weight: 600;
+        }
+
+        .form-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border-color) 0%, transparent 100%);
+            margin-left: 0.5rem;
+        }
+
+        .form-section-title .sparkline {
+            margin-left: auto;
+            margin-right: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .form-input {
+            padding: 0.75rem 1rem;
+            background: rgba(0, 42, 78, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
+            box-shadow: 0 0 0 3px rgba(214, 223, 32, 0.15);
+        }
+
+        .form-input:hover:not(:focus) {
+            border-color: rgba(214, 223, 32, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Market Snapshot */
+        .snapshot-item {
+            background: linear-gradient(135deg, rgba(0, 42, 78, 0.5) 0%, rgba(0, 36, 63, 0.3) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 0.875rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .snapshot-item:hover {
+            border-color: rgba(214, 223, 32, 0.3);
+            background: rgba(0, 42, 78, 0.6);
+        }
+
+        .snapshot-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 40%;
+            background: var(--accent-gradient);
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .snapshot-item:hover::before {
+            opacity: 1;
+        }
+
+        .snapshot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .snapshot-number {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .snapshot-remove {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--error);
+            cursor: pointer;
+            font-size: 1rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .snapshot-remove:hover {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: 1fr 110px 110px;
+            gap: 0.625rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .select-input {
+            padding: 0.625rem 0.75rem;
+            background: rgba(0, 28, 56, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.8125rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .select-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
+        }
+
+        .select-input:hover {
+            border-color: rgba(214, 223, 32, 0.3);
+        }
+
+        /* Bulk Import */
+        .bulk-textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 1.25rem;
+            background: rgba(0, 20, 40, 0.6);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+            transition: all 0.25s ease;
+            line-height: 1.6;
+        }
+
+        .bulk-textarea:hover {
+            border-color: rgba(214, 223, 32, 0.3);
+        }
+
+        .bulk-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            border-style: solid;
+            background: var(--bg-tertiary);
+            box-shadow: 0 0 0 3px rgba(214, 223, 32, 0.15);
+        }
+
+        .bulk-textarea::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        .bulk-help {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bulk-help::before {
+            content: '💡';
+        }
+
+        /* Preview */
+        .preview-container {
+            position: sticky;
+            top: 80px;
+        }
+
+        .json-preview {
+            background: rgba(0, 20, 40, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .json-preview::before {
+            content: 'JSON';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .json-key {
+            color: #7dd3fc;
+        }
+
+        .json-string {
+            color: var(--accent-light);
+        }
+
+        .json-number {
+            color: #fbbf24;
+        }
+
+        .json-boolean {
+            color: #a5b4fc;
+        }
+
+        .json-null {
+            color: #f87171;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(0, 42, 78, 0.5) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(214, 223, 32, 0.3);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 42, 78, 0.4);
+            padding: 0.375rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: var(--primary-dark);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(214, 223, 32, 0.25);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* File name display */
+        .file-name {
+            background: linear-gradient(135deg, rgba(214, 223, 32, 0.1) 0%, rgba(0, 42, 78, 0.3) 100%);
+            padding: 0.625rem 1.25rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            border: 1px solid rgba(214, 223, 32, 0.3);
+            font-weight: 500;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255,255,255,0.05);
+            transform: translateY(120px) scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .toast.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--success);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .toast.error {
+            border-color: var(--error);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-message {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-dark);
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-text {
+            font-size: 0.875rem;
+            max-width: 280px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Keyboard shortcut hints */
+        kbd {
+            background: rgba(0, 42, 78, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.125rem 0.375rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--border-color) 50%, transparent 100%);
+            margin: 1.5rem 0;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Glow effects */
+        .glow-accent {
+            box-shadow: 0 0 30px rgba(214, 223, 32, 0.15);
+        }
+
+        .glow-success {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Shortcuts Bar */
+        .shortcuts-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-top: 1px solid var(--border-color);
+            z-index: 99;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .shortcuts-bar.collapsed {
+            transform: translateY(calc(100% - 36px));
+        }
+
+        .shortcuts-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .shortcuts-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .shortcuts-arrow {
+            transition: transform 0.3s;
+        }
+
+        .shortcuts-bar.collapsed .shortcuts-arrow {
+            transform: rotate(180deg);
+        }
+
+        .shortcuts-content {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 0.75rem 2rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        .shortcut-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .shortcut-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .shortcut {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .shortcut kbd {
+            background: rgba(0, 42, 78, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.125rem 0.375rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-primary);
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* Add bottom padding to main for shortcuts bar */
+        .main {
+            padding-bottom: 6rem;
+        }
+
+        /* Completion Indicators */
+        .completion-dots {
+            display: flex;
+            gap: 0.375rem;
+            margin-left: auto;
+        }
+
+        .completion-dot {
+            font-size: 0.875rem;
+            opacity: 0.3;
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+            cursor: help;
+        }
+
+        .completion-dot.complete {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        .completion-pct {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            background: rgba(214, 223, 32, 0.15);
+            color: var(--accent);
+            border-radius: 4px;
+            margin-left: 0.25rem;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        /* Copy From Section */
+        .copy-from-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(214, 223, 32, 0.08) 0%, rgba(0, 42, 78, 0.3) 100%);
+            border: 1px dashed rgba(214, 223, 32, 0.3);
+            border-radius: 10px;
+        }
+
+        .copy-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .copy-select {
+            flex: 1;
+            padding: 0.625rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-select:hover {
+            border-color: var(--accent);
+        }
+
+        .copy-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(214, 223, 32, 0.15);
+        }
+
+        .copy-select option {
+            background: var(--bg-secondary);
+            padding: 0.5rem;
+        }
+
+        /* Country list completion badge */
+        .country-completion {
+            display: flex;
+            gap: 2px;
+            margin-left: auto;
+        }
+
+        .country-completion-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border-color);
+        }
+
+        .country-completion-dot.filled {
+            background: var(--accent);
+        }
+
+        /* Rate Change Indicators */
+        .rate-change {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .rate-change.up {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .rate-change.down {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .rate-change.stable {
+            background: rgba(148, 163, 184, 0.15);
+            color: var(--text-muted);
+        }
+
+        /* Sparklines */
+        .sparkline {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+        }
+
+        .sparkline-up {
+            color: #ef4444;
+        }
+
+        .sparkline-down {
+            color: #10b981;
+        }
+
+        .sparkline-stable {
+            color: var(--text-muted);
+        }
+
+        /* Rate with comparison */
+        .rate-with-history {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .rate-history-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+        }
+
+        /* History Status */
+        .history-status {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .history-status.loading {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--info);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .history-status.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .history-status.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+
+        /* History load buttons */
+        .history-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .btn-history {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--info);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-history:hover {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: var(--info);
+        }
+
+        .btn-history:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Previous value hint */
+        .prev-value-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .prev-value-hint strong {
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main {
+                grid-template-columns: 320px 1fr 350px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-container {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-center {
+                justify-content: center;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">📦</div>
+                <div class="logo-text">SINO <span>Rates</span></div>
+            </div>
+
+            <div class="header-center">
+                <div class="month-navigator">
+                    <button class="month-nav-btn" onclick="goToPreviousMonth()" title="Previous month" id="prevMonthBtn">
+                        ◀
+                    </button>
+                    <div class="date-selector">
+                        <select id="selectMonth">
+                            <option value="01">Jan</option>
+                            <option value="02">Feb</option>
+                            <option value="03">Mar</option>
+                            <option value="04">Apr</option>
+                            <option value="05">May</option>
+                            <option value="06">Jun</option>
+                            <option value="07">Jul</option>
+                            <option value="08">Aug</option>
+                            <option value="09">Sep</option>
+                            <option value="10">Oct</option>
+                            <option value="11">Nov</option>
+                            <option value="12">Dec</option>
+                        </select>
+                        <select id="selectYear">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+                    </div>
+                    <button class="month-nav-btn" onclick="goToNextMonth()" title="Next month" id="nextMonthBtn">
+                        ▶
+                    </button>
+                </div>
+                <div class="month-status" id="monthStatus">
+                    <span class="status-badge editable" id="editableBadge">✏️ Editable</span>
+                </div>
+            </div>
+
+            <div class="header-progress">
+                <div class="progress-text">
+                    <span id="progressCount">0</span>/<span id="totalCount">194</span>
+                </div>
+                <div class="header-progress-bar">
+                    <div class="header-progress-fill" id="headerProgressBar"></div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn btn-icon" id="undoBtn" onclick="undo()" title="Undo (⌘Z)">↩️</button>
+                <button class="btn btn-icon" id="redoBtn" onclick="redo()" title="Redo (⌘⇧Z)">↪️</button>
+                <button class="btn btn-icon" onclick="loadExistingFile()" title="Load file">📂</button>
+                <button class="btn btn-success" onclick="downloadJSON()" title="Download (⌘S)" id="downloadBtn">
+                    💾 Save
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Country List -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">🌍 Countries</h2>
+                <span id="countryCount" class="count-badge">0/194</span>
+            </div>
+            <div class="card-body">
+                <!-- Search -->
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="country-search" placeholder="Search..." id="countrySearch" oninput="filterCountries()">
+                </div>
+
+                <!-- Region Tabs with Stats -->
+                <div class="region-tabs" id="regionTabs">
+                    <button class="region-tab active" data-region="all" onclick="setRegionFilter('all')">
+                        <span class="tab-label">All</span>
+                        <span class="tab-count" id="tabCountAll">0</span>
+                    </button>
+                    <button class="region-tab" data-region="europe" onclick="setRegionFilter('europe')">
+                        <span class="tab-icon">🇪🇺</span>
+                        <span class="tab-count" id="tabCountEurope">0</span>
+                    </button>
+                    <button class="region-tab" data-region="asia" onclick="setRegionFilter('asia')">
+                        <span class="tab-icon">🌏</span>
+                        <span class="tab-count" id="tabCountAsia">0</span>
+                    </button>
+                    <button class="region-tab" data-region="americas" onclick="setRegionFilter('americas')">
+                        <span class="tab-icon">🌎</span>
+                        <span class="tab-count" id="tabCountAmericas">0</span>
+                    </button>
+                    <button class="region-tab" data-region="africa" onclick="setRegionFilter('africa')">
+                        <span class="tab-icon">🌍</span>
+                        <span class="tab-count" id="tabCountAfrica">0</span>
+                    </button>
+                    <button class="region-tab" data-region="oceania" onclick="setRegionFilter('oceania')">
+                        <span class="tab-icon">🏝️</span>
+                        <span class="tab-count" id="tabCountOceania">0</span>
+                    </button>
+                    <button class="region-tab" data-region="middle-east" onclick="setRegionFilter('middle-east')">
+                        <span class="tab-icon">🕌</span>
+                        <span class="tab-count" id="tabCountMiddle-east">0</span>
+                    </button>
+                </div>
+
+                <!-- Status Filters -->
+                <div class="status-filters">
+                    <button class="status-btn" data-status="modified" onclick="toggleStatusFilter('modified')">
+                        ✅ Done <span id="statusModifiedCount">0</span>
+                    </button>
+                    <button class="status-btn" data-status="pending" onclick="toggleStatusFilter('pending')">
+                        ⏳ Todo <span id="statusPendingCount">0</span>
+                    </button>
+                </div>
+
+                <div class="country-list" id="countryList"></div>
+            </div>
+        </div>
+
+        <!-- Editor -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" id="editorTitle">📝 Select a country</h2>
+            </div>
+            <div class="card-body">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('manual')">Manual Entry</button>
+                    <button class="tab" onclick="switchTab('bulk')">Bulk Import</button>
+                </div>
+
+                <!-- Manual Entry Tab -->
+                <div class="tab-content active" id="tab-manual">
+                    <div id="editorContent" class="empty-state">
+                        <div class="empty-state-icon">🌍</div>
+                        <div class="empty-state-title">No country selected</div>
+                        <div class="empty-state-text">Select a country from the list to edit its shipping rates and market snapshot</div>
+                    </div>
+                </div>
+
+                <!-- Bulk Import Tab -->
+                <div class="tab-content" id="tab-bulk">
+                    <div class="form-section">
+                        <div class="form-section-title">📋 Paste from Excel</div>
+                        <textarea class="bulk-textarea" id="bulkData" placeholder="Paste your data here...
+Format: Country | 20GP | 40GP | Air/kg | LCL
+
+Example:
+germany	1950	3100	6.9	50
+france	1950	3100	6.95	30
+spain	3230	4750	7.26	215"></textarea>
+                        <div class="bulk-help">
+                            Tab-separated values. Columns: Country, 20GP, 40GP, Air/kg, LCL (optional)
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="processBulkImport()">
+                            🚀 Import Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📊 Stats</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statTotal">194</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statModified">0</div>
+                            <div class="stat-label">Modified</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statPending">194</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+                        <span>Progress</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card collapsible-card collapsed" style="margin-top: 1rem;" id="jsonPreviewCard">
+                <div class="card-header clickable" onclick="toggleJsonPreview()">
+                    <h2 class="card-title">
+                        <span class="collapse-arrow">▶</span>
+                        👁️ JSON Preview
+                    </h2>
+                    <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); copyJSON()">
+                        📋 Copy
+                    </button>
+                </div>
+                <div class="card-body collapsible-content">
+                    <div class="json-preview" id="jsonPreview">
+                        <span style="color: var(--text-muted);">Select a country to preview its JSON</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toastIcon">✅</span>
+        <span class="toast-message" id="toastMessage">Changes saved</span>
+    </div>
+
+    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileLoad(event)">
+
+    <!-- Keyboard Shortcuts Help Bar -->
+    <div class="shortcuts-bar collapsed" id="shortcutsBar">
+        <div class="shortcuts-toggle" onclick="toggleShortcutsBar()">
+            <span>⌨️ Shortcuts</span>
+            <span class="shortcuts-arrow">▲</span>
+        </div>
+        <div class="shortcuts-content">
+            <div class="shortcut-group">
+                <span class="shortcut-title">Navigation</span>
+                <div class="shortcut"><kbd>↑</kbd><kbd>↓</kbd> Countries</div>
+                <div class="shortcut"><kbd>⌘</kbd><kbd>←</kbd><kbd>→</kbd> Months</div>
+                <div class="shortcut"><kbd>Esc</kbd> Deselect</div>
+            </div>
+            <div class="shortcut-group">
+                <span class="shortcut-title">Actions</span>
+                <div class="shortcut"><kbd>⌘</kbd><kbd>S</kbd> Save</div>
+                <div class="shortcut"><kbd>⌘</kbd><kbd>O</kbd> Load</div>
+                <div class="shortcut"><kbd>⌘</kbd><kbd>F</kbd> Search</div>
+            </div>
+            <div class="shortcut-group">
+                <span class="shortcut-title">Edit</span>
+                <div class="shortcut"><kbd>⌘</kbd><kbd>Z</kbd> Undo</div>
+                <div class="shortcut"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>Z</kbd> Redo</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Country data with flags and regions
+        const countryData = {
+            "afghanistan": { flag: "🇦🇫", region: "asia" },
+            "albania": { flag: "🇦🇱", region: "europe" },
+            "algeria": { flag: "🇩🇿", region: "africa" },
+            "andorra": { flag: "🇦🇩", region: "europe" },
+            "angola": { flag: "🇦🇴", region: "africa" },
+            "antigua-and-barbuda": { flag: "🇦🇬", region: "americas" },
+            "argentina": { flag: "🇦🇷", region: "americas" },
+            "armenia": { flag: "🇦🇲", region: "europe" },
+            "australia": { flag: "🇦🇺", region: "oceania" },
+            "austria": { flag: "🇦🇹", region: "europe" },
+            "azerbaijan": { flag: "🇦🇿", region: "asia" },
+            "bahamas": { flag: "🇧🇸", region: "americas" },
+            "bahrain": { flag: "🇧🇭", region: "middle-east" },
+            "bangladesh": { flag: "🇧🇩", region: "asia" },
+            "barbados": { flag: "🇧🇧", region: "americas" },
+            "belarus": { flag: "🇧🇾", region: "europe" },
+            "belgium": { flag: "🇧🇪", region: "europe" },
+            "belize": { flag: "🇧🇿", region: "americas" },
+            "benin": { flag: "🇧🇯", region: "africa" },
+            "bhutan": { flag: "🇧🇹", region: "asia" },
+            "bolivia": { flag: "🇧🇴", region: "americas" },
+            "bosnia-and-herzegovina": { flag: "🇧🇦", region: "europe" },
+            "botswana": { flag: "🇧🇼", region: "africa" },
+            "brazil": { flag: "🇧🇷", region: "americas" },
+            "brunei": { flag: "🇧🇳", region: "asia" },
+            "bulgaria": { flag: "🇧🇬", region: "europe" },
+            "burkina-faso": { flag: "🇧🇫", region: "africa" },
+            "burundi": { flag: "🇧🇮", region: "africa" },
+            "cabo-verde": { flag: "🇨🇻", region: "africa" },
+            "cambodia": { flag: "🇰🇭", region: "asia" },
+            "cameroon": { flag: "🇨🇲", region: "africa" },
+            "canada": { flag: "🇨🇦", region: "americas" },
+            "central-african-republic": { flag: "🇨🇫", region: "africa" },
+            "chad": { flag: "🇹🇩", region: "africa" },
+            "chile": { flag: "🇨🇱", region: "americas" },
+            "china": { flag: "🇨🇳", region: "asia" },
+            "colombia": { flag: "🇨🇴", region: "americas" },
+            "comoros": { flag: "🇰🇲", region: "africa" },
+            "congo": { flag: "🇨🇬", region: "africa" },
+            "costa-rica": { flag: "🇨🇷", region: "americas" },
+            "croatia": { flag: "🇭🇷", region: "europe" },
+            "cuba": { flag: "🇨🇺", region: "americas" },
+            "cyprus": { flag: "🇨🇾", region: "europe" },
+            "czech-republic": { flag: "🇨🇿", region: "europe" },
+            "democratic-republic-of-the-congo": { flag: "🇨🇩", region: "africa" },
+            "denmark": { flag: "🇩🇰", region: "europe" },
+            "djibouti": { flag: "🇩🇯", region: "africa" },
+            "dominica": { flag: "🇩🇲", region: "americas" },
+            "dominican-republic": { flag: "🇩🇴", region: "americas" },
+            "ecuador": { flag: "🇪🇨", region: "americas" },
+            "egypt": { flag: "🇪🇬", region: "africa" },
+            "el-salvador": { flag: "🇸🇻", region: "americas" },
+            "equatorial-guinea": { flag: "🇬🇶", region: "africa" },
+            "eritrea": { flag: "🇪🇷", region: "africa" },
+            "estonia": { flag: "🇪🇪", region: "europe" },
+            "eswatini": { flag: "🇸🇿", region: "africa" },
+            "ethiopia": { flag: "🇪🇹", region: "africa" },
+            "fiji": { flag: "🇫🇯", region: "oceania" },
+            "finland": { flag: "🇫🇮", region: "europe" },
+            "france": { flag: "🇫🇷", region: "europe" },
+            "gabon": { flag: "🇬🇦", region: "africa" },
+            "gambia": { flag: "🇬🇲", region: "africa" },
+            "georgia": { flag: "🇬🇪", region: "europe" },
+            "germany": { flag: "🇩🇪", region: "europe" },
+            "ghana": { flag: "🇬🇭", region: "africa" },
+            "greece": { flag: "🇬🇷", region: "europe" },
+            "grenada": { flag: "🇬🇩", region: "americas" },
+            "guatemala": { flag: "🇬🇹", region: "americas" },
+            "guinea": { flag: "🇬🇳", region: "africa" },
+            "guinea-bissau": { flag: "🇬🇼", region: "africa" },
+            "guyana": { flag: "🇬🇾", region: "americas" },
+            "haiti": { flag: "🇭🇹", region: "americas" },
+            "honduras": { flag: "🇭🇳", region: "americas" },
+            "hungary": { flag: "🇭🇺", region: "europe" },
+            "iceland": { flag: "🇮🇸", region: "europe" },
+            "india": { flag: "🇮🇳", region: "asia" },
+            "indonesia": { flag: "🇮🇩", region: "asia" },
+            "iran": { flag: "🇮🇷", region: "middle-east" },
+            "iraq": { flag: "🇮🇶", region: "middle-east" },
+            "ireland": { flag: "🇮🇪", region: "europe" },
+            "israel": { flag: "🇮🇱", region: "middle-east" },
+            "italy": { flag: "🇮🇹", region: "europe" },
+            "ivory-coast": { flag: "🇨🇮", region: "africa" },
+            "jamaica": { flag: "🇯🇲", region: "americas" },
+            "japan": { flag: "🇯🇵", region: "asia" },
+            "jordan": { flag: "🇯🇴", region: "middle-east" },
+            "kazakhstan": { flag: "🇰🇿", region: "asia" },
+            "kenya": { flag: "🇰🇪", region: "africa" },
+            "kiribati": { flag: "🇰🇮", region: "oceania" },
+            "kuwait": { flag: "🇰🇼", region: "middle-east" },
+            "kyrgyzstan": { flag: "🇰🇬", region: "asia" },
+            "laos": { flag: "🇱🇦", region: "asia" },
+            "latvia": { flag: "🇱🇻", region: "europe" },
+            "lebanon": { flag: "🇱🇧", region: "middle-east" },
+            "lesotho": { flag: "🇱🇸", region: "africa" },
+            "liberia": { flag: "🇱🇷", region: "africa" },
+            "libya": { flag: "🇱🇾", region: "africa" },
+            "liechtenstein": { flag: "🇱🇮", region: "europe" },
+            "lithuania": { flag: "🇱🇹", region: "europe" },
+            "luxembourg": { flag: "🇱🇺", region: "europe" },
+            "madagascar": { flag: "🇲🇬", region: "africa" },
+            "malawi": { flag: "🇲🇼", region: "africa" },
+            "malaysia": { flag: "🇲🇾", region: "asia" },
+            "maldives": { flag: "🇲🇻", region: "asia" },
+            "mali": { flag: "🇲🇱", region: "africa" },
+            "malta": { flag: "🇲🇹", region: "europe" },
+            "marshall-islands": { flag: "🇲🇭", region: "oceania" },
+            "mauritania": { flag: "🇲🇷", region: "africa" },
+            "mauritius": { flag: "🇲🇺", region: "africa" },
+            "mexico": { flag: "🇲🇽", region: "americas" },
+            "micronesia": { flag: "🇫🇲", region: "oceania" },
+            "moldova": { flag: "🇲🇩", region: "europe" },
+            "monaco": { flag: "🇲🇨", region: "europe" },
+            "mongolia": { flag: "🇲🇳", region: "asia" },
+            "montenegro": { flag: "🇲🇪", region: "europe" },
+            "morocco": { flag: "🇲🇦", region: "africa" },
+            "mozambique": { flag: "🇲🇿", region: "africa" },
+            "myanmar": { flag: "🇲🇲", region: "asia" },
+            "namibia": { flag: "🇳🇦", region: "africa" },
+            "nauru": { flag: "🇳🇷", region: "oceania" },
+            "nepal": { flag: "🇳🇵", region: "asia" },
+            "netherlands": { flag: "🇳🇱", region: "europe" },
+            "new-zealand": { flag: "🇳🇿", region: "oceania" },
+            "nicaragua": { flag: "🇳🇮", region: "americas" },
+            "niger": { flag: "🇳🇪", region: "africa" },
+            "nigeria": { flag: "🇳🇬", region: "africa" },
+            "north-korea": { flag: "🇰🇵", region: "asia" },
+            "north-macedonia": { flag: "🇲🇰", region: "europe" },
+            "norway": { flag: "🇳🇴", region: "europe" },
+            "oman": { flag: "🇴🇲", region: "middle-east" },
+            "pakistan": { flag: "🇵🇰", region: "asia" },
+            "palau": { flag: "🇵🇼", region: "oceania" },
+            "panama": { flag: "🇵🇦", region: "americas" },
+            "papua-new-guinea": { flag: "🇵🇬", region: "oceania" },
+            "paraguay": { flag: "🇵🇾", region: "americas" },
+            "peru": { flag: "🇵🇪", region: "americas" },
+            "philippines": { flag: "🇵🇭", region: "asia" },
+            "poland": { flag: "🇵🇱", region: "europe" },
+            "portugal": { flag: "🇵🇹", region: "europe" },
+            "qatar": { flag: "🇶🇦", region: "middle-east" },
+            "romania": { flag: "🇷🇴", region: "europe" },
+            "russia": { flag: "🇷🇺", region: "europe" },
+            "rwanda": { flag: "🇷🇼", region: "africa" },
+            "saint-kitts-and-nevis": { flag: "🇰🇳", region: "americas" },
+            "saint-lucia": { flag: "🇱🇨", region: "americas" },
+            "saint-vincent-and-the-grenadines": { flag: "🇻🇨", region: "americas" },
+            "samoa": { flag: "🇼🇸", region: "oceania" },
+            "san-marino": { flag: "🇸🇲", region: "europe" },
+            "sao-tome-and-principe": { flag: "🇸🇹", region: "africa" },
+            "saudi-arabia": { flag: "🇸🇦", region: "middle-east" },
+            "senegal": { flag: "🇸🇳", region: "africa" },
+            "serbia": { flag: "🇷🇸", region: "europe" },
+            "seychelles": { flag: "🇸🇨", region: "africa" },
+            "sierra-leone": { flag: "🇸🇱", region: "africa" },
+            "singapore": { flag: "🇸🇬", region: "asia" },
+            "slovakia": { flag: "🇸🇰", region: "europe" },
+            "slovenia": { flag: "🇸🇮", region: "europe" },
+            "solomon-islands": { flag: "🇸🇧", region: "oceania" },
+            "somalia": { flag: "🇸🇴", region: "africa" },
+            "south-africa": { flag: "🇿🇦", region: "africa" },
+            "south-korea": { flag: "🇰🇷", region: "asia" },
+            "south-sudan": { flag: "🇸🇸", region: "africa" },
+            "spain": { flag: "🇪🇸", region: "europe" },
+            "sri-lanka": { flag: "🇱🇰", region: "asia" },
+            "sudan": { flag: "🇸🇩", region: "africa" },
+            "suriname": { flag: "🇸🇷", region: "americas" },
+            "sweden": { flag: "🇸🇪", region: "europe" },
+            "switzerland": { flag: "🇨🇭", region: "europe" },
+            "syria": { flag: "🇸🇾", region: "middle-east" },
+            "taiwan": { flag: "🇹🇼", region: "asia" },
+            "tajikistan": { flag: "🇹🇯", region: "asia" },
+            "tanzania": { flag: "🇹🇿", region: "africa" },
+            "thailand": { flag: "🇹🇭", region: "asia" },
+            "timor-leste": { flag: "🇹🇱", region: "asia" },
+            "togo": { flag: "🇹🇬", region: "africa" },
+            "tonga": { flag: "🇹🇴", region: "oceania" },
+            "trinidad-and-tobago": { flag: "🇹🇹", region: "americas" },
+            "tunisia": { flag: "🇹🇳", region: "africa" },
+            "turkey": { flag: "🇹🇷", region: "europe" },
+            "turkmenistan": { flag: "🇹🇲", region: "asia" },
+            "tuvalu": { flag: "🇹🇻", region: "oceania" },
+            "uganda": { flag: "🇺🇬", region: "africa" },
+            "ukraine": { flag: "🇺🇦", region: "europe" },
+            "united-arab-emirates": { flag: "🇦🇪", region: "middle-east" },
+            "united-kingdom": { flag: "🇬🇧", region: "europe" },
+            "united-states": { flag: "🇺🇸", region: "americas" },
+            "uruguay": { flag: "🇺🇾", region: "americas" },
+            "uzbekistan": { flag: "🇺🇿", region: "asia" },
+            "vanuatu": { flag: "🇻🇺", region: "oceania" },
+            "vatican-city": { flag: "🇻🇦", region: "europe" },
+            "venezuela": { flag: "🇻🇪", region: "americas" },
+            "vietnam": { flag: "🇻🇳", region: "asia" },
+            "yemen": { flag: "🇾🇪", region: "middle-east" },
+            "zambia": { flag: "🇿🇲", region: "africa" },
+            "zimbabwe": { flag: "🇿🇼", region: "africa" }
+        };
+
+        const countries = Object.keys(countryData);
+
+        const regionNames = {
+            'europe': 'Europe',
+            'asia': 'Asia',
+            'americas': 'Americas',
+            'africa': 'Africa',
+            'oceania': 'Oceania',
+            'middle-east': 'Middle East'
+        };
+
+        // State
+        let ratesData = {};
+        let selectedCountry = null;
+        let modifiedCountries = new Set();
+        let currentRegionFilter = 'all';
+        let statusFilter = null;
+
+        // Undo/Redo History
+        const undoHistory = [];
+        const redoHistory = [];
+        const MAX_HISTORY = 50;
+
+        // Auto-save key
+        const AUTOSAVE_KEY = 'sino-rates-generator-draft';
+
+        // GitHub repository for historical data
+        const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/LucasArlot/sino-shipping-data/main/data/rates/';
+        
+        // Historical data storage
+        let previousMonthData = null;
+        let historicalData = {}; // { country: { field: { 'YYYY-MM': value } } }
+        let isLoadingHistory = false;
+        
+        // Month lock status
+        let isMonthLocked = false;
+        let existingMonthsCache = new Set();
+
+        // Initialize
+        function init() {
+            // Set current month/year
+            const now = new Date();
+            document.getElementById('selectMonth').value = String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('selectYear').value = String(now.getFullYear());
+            updateFileName();
+
+            // Initialize empty rates structure
+            countries.forEach(country => {
+                ratesData[country] = createEmptyRates();
+            });
+            
+            renderCountryList();
+            updateStats();
+        }
+
+        function updateFileName() {
+            // File name is now implicit from month/year selectors
+            // This function is kept for compatibility but no longer updates UI
+        }
+
+        function createEmptyRates() {
+            return {
+                sea_20gp_usd: [null, null],
+                sea_40gp_usd: [null, null],
+                air_perkg_usd_1000kg: null,
+                rail_lcl_usd_cbm: null,
+                transit_days: {
+                    sea: [null, null],
+                    air: [null, null],
+                    rail: null,
+                    express: [null, null],
+                    lcl: [null, null]
+                },
+                sea_lcl_usd_cbm: null,
+                express_perkg_usd: null,
+                rail_20gp_usd: null,
+                rail_40gp_usd: null,
+                market_snapshot: {
+                    items: []
+                }
+            };
+        }
+
+        function formatCountryName(slug) {
+            return slug.split('-').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function setRegionFilter(region) {
+            currentRegionFilter = region;
+            
+            // Update region tabs
+            document.querySelectorAll('.region-tab[data-region]').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.region === region);
+            });
+            
+            renderCountryList();
+        }
+
+        function toggleStatusFilter(status) {
+            const btn = document.querySelector(`.status-btn[data-status="${status}"]`);
+            if (statusFilter === status) {
+                statusFilter = null;
+                btn?.classList.remove('active');
+            } else {
+                document.querySelectorAll('.status-btn[data-status]').forEach(b => b.classList.remove('active'));
+                statusFilter = status;
+                btn?.classList.add('active');
+            }
+            renderCountryList();
+        }
+
+        function renderCountryList() {
+            const list = document.getElementById('countryList');
+            const search = document.getElementById('countrySearch').value.toLowerCase();
+            
+            let filtered = countries.filter(c => {
+                const nameMatch = formatCountryName(c).toLowerCase().includes(search) || c.includes(search);
+                const regionMatch = currentRegionFilter === 'all' || countryData[c].region === currentRegionFilter;
+                
+                let statusMatch = true;
+                if (statusFilter === 'modified') {
+                    statusMatch = modifiedCountries.has(c);
+                } else if (statusFilter === 'pending') {
+                    statusMatch = !modifiedCountries.has(c);
+                }
+                
+                return nameMatch && regionMatch && statusMatch;
+            });
+
+            list.innerHTML = filtered.map(country => {
+                const data = countryData[country];
+                const rates = ratesData[country];
+                const completion = getCompletionStatus(rates);
+                const isModified = modifiedCountries.has(country);
+                
+                return `
+                    <div class="country-item ${selectedCountry === country ? 'active' : ''} ${isModified ? 'modified' : ''}" 
+                         onclick="selectCountry('${country}')">
+                        <div class="country-info">
+                            <span class="country-flag">${data.flag}</span>
+                            <div class="country-details">
+                                <div class="country-name">${formatCountryName(country)}</div>
+                                <div class="country-region">${regionNames[data.region]}</div>
+                            </div>
+                        </div>
+                        ${isModified ? `
+                            <div class="country-completion" title="Sea: ${completion.sea ? '✓' : '✗'} | Air: ${completion.air ? '✓' : '✗'} | Rail: ${completion.rail ? '✓' : '✗'} | Snapshot: ${completion.snapshot ? '✓' : '✗'}">
+                                <span class="country-completion-dot ${completion.sea ? 'filled' : ''}"></span>
+                                <span class="country-completion-dot ${completion.air ? 'filled' : ''}"></span>
+                                <span class="country-completion-dot ${completion.rail ? 'filled' : ''}"></span>
+                                <span class="country-completion-dot ${completion.snapshot ? 'filled' : ''}"></span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('countryCount').textContent = `${filtered.length} / ${countries.length}`;
+        }
+
+        function filterCountries() {
+            renderCountryList();
+        }
+
+        function selectCountry(country) {
+            selectedCountry = country;
+            renderCountryList();
+            renderEditor();
+            updatePreview();
+            updateEditableState();
+        }
+
+        function renderEditor() {
+            if (!selectedCountry) return;
+
+            const rates = ratesData[selectedCountry];
+            const data = countryData[selectedCountry];
+            const completion = getCompletionStatus(rates);
+            const completionPct = getCompletionPercentage(rates);
+            const { sameRegion, otherRegions } = getSimilarCountries(selectedCountry);
+            const hasOptions = sameRegion.length > 0 || otherRegions.length > 0;
+            
+            const filteredList = getFilteredCountryList();
+            const currentIndex = filteredList.indexOf(selectedCountry);
+            const hasPrev = currentIndex > 0;
+            const hasNext = currentIndex < filteredList.length - 1;
+            
+            document.getElementById('editorTitle').innerHTML = `
+                <div class="country-nav">
+                    <button class="nav-btn" onclick="goToPrevCountry()" ${!hasPrev ? 'disabled' : ''} title="Previous country (↑)">
+                        ◀
+                    </button>
+                    <span class="country-name">${data.flag} ${formatCountryName(selectedCountry)}</span>
+                    <button class="nav-btn" onclick="goToNextCountry()" ${!hasNext ? 'disabled' : ''} title="Next country (↓)">
+                        ▶
+                    </button>
+                </div>
+                <div class="completion-dots">
+                    <span class="completion-dot ${completion.sea ? 'complete' : ''}" title="Sea Freight ${completion.sea ? '✓' : '✗'}">🚢</span>
+                    <span class="completion-dot ${completion.air ? 'complete' : ''}" title="Air Freight ${completion.air ? '✓' : '✗'}">✈️</span>
+                    <span class="completion-dot ${completion.rail ? 'complete' : ''}" title="Rail Freight ${completion.rail ? '✓' : '✗'}">🚂</span>
+                    <span class="completion-dot ${completion.snapshot ? 'complete' : ''}" title="Market Snapshot ${completion.snapshot ? '✓' : '✗'}">📊</span>
+                    <span class="completion-pct">${completionPct}%</span>
+                </div>
+            `;
+
+            document.getElementById('editorContent').innerHTML = `
+                <!-- Copy from another country -->
+                ${hasOptions ? `
+                <div class="copy-from-section">
+                    <span class="copy-label">📋 Copy rates from:</span>
+                    <select class="copy-select" onchange="copyRatesFrom(this.value)">
+                        ${buildCopyDropdownOptions(selectedCountry)}
+                    </select>
+                </div>
+                ` : ''}
+
+                <div class="form-section">
+                    <div class="form-section-title">🚢 Sea Freight (FCL) ${generateSparkline(getHistoricalValues(selectedCountry, 'sea_20gp'))}</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                20GP Min (USD)
+                                ${getRateComparison(selectedCountry, 'sea_20gp_usd', 0, rates.sea_20gp_usd[0])}
+                            </label>
+                            <input type="number" class="form-input" id="sea20min" 
+                                   value="${rates.sea_20gp_usd[0] || ''}" 
+                                   placeholder="${getPreviousValue(selectedCountry, 'sea_20gp_usd', 0) || 'e.g. 1755'}" 
+                                   oninput="updateRate('sea_20gp_usd', 0, this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                20GP Max (USD)
+                                ${getRateComparison(selectedCountry, 'sea_20gp_usd', 1, rates.sea_20gp_usd[1])}
+                            </label>
+                            <input type="number" class="form-input" id="sea20max" 
+                                   value="${rates.sea_20gp_usd[1] || ''}" 
+                                   placeholder="${getPreviousValue(selectedCountry, 'sea_20gp_usd', 1) || 'e.g. 2145'}" 
+                                   oninput="updateRate('sea_20gp_usd', 1, this.value)">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                40GP Min (USD)
+                                ${getRateComparison(selectedCountry, 'sea_40gp_usd', 0, rates.sea_40gp_usd[0])}
+                            </label>
+                            <input type="number" class="form-input" id="sea40min" 
+                                   value="${rates.sea_40gp_usd[0] || ''}" 
+                                   placeholder="${getPreviousValue(selectedCountry, 'sea_40gp_usd', 0) || 'e.g. 2790'}" 
+                                   oninput="updateRate('sea_40gp_usd', 0, this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                40GP Max (USD)
+                                ${getRateComparison(selectedCountry, 'sea_40gp_usd', 1, rates.sea_40gp_usd[1])}
+                            </label>
+                            <input type="number" class="form-input" id="sea40max" 
+                                   value="${rates.sea_40gp_usd[1] || ''}" 
+                                   placeholder="${getPreviousValue(selectedCountry, 'sea_40gp_usd', 1) || 'e.g. 3410'}" 
+                                   oninput="updateRate('sea_40gp_usd', 1, this.value)">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                LCL per CBM (USD)
+                                ${getRateComparisonSimple(selectedCountry, 'sea_lcl_usd_cbm', rates.sea_lcl_usd_cbm)}
+                            </label>
+                            <input type="number" class="form-input" id="lcl" 
+                                   value="${rates.sea_lcl_usd_cbm || ''}" 
+                                   placeholder="${getPreviousValueSimple(selectedCountry, 'sea_lcl_usd_cbm') || 'e.g. 50'}" 
+                                   oninput="updateSimpleRate('sea_lcl_usd_cbm', this.value)">
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">✈️ Air Freight ${generateSparkline(getHistoricalValues(selectedCountry, 'air'))}</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Per KG (1000kg+) USD
+                                ${getRateComparisonSimple(selectedCountry, 'air_perkg_usd_1000kg', rates.air_perkg_usd_1000kg)}
+                            </label>
+                            <input type="number" step="0.1" class="form-input" id="air" 
+                                   value="${rates.air_perkg_usd_1000kg || ''}" 
+                                   placeholder="${getPreviousValueSimple(selectedCountry, 'air_perkg_usd_1000kg') || 'e.g. 6.9'}" 
+                                   oninput="updateSimpleRate('air_perkg_usd_1000kg', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Express per KG (USD)
+                                ${getRateComparisonSimple(selectedCountry, 'express_perkg_usd', rates.express_perkg_usd)}
+                            </label>
+                            <input type="number" step="0.1" class="form-input" id="express" 
+                                   value="${rates.express_perkg_usd || ''}" 
+                                   placeholder="${getPreviousValueSimple(selectedCountry, 'express_perkg_usd') || 'e.g. 12.5'}" 
+                                   oninput="updateSimpleRate('express_perkg_usd', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">🚂 Rail Freight (Optional)</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">20GP (USD)</label>
+                            <input type="number" class="form-input" id="rail20" 
+                                   value="${rates.rail_20gp_usd ? rates.rail_20gp_usd[0] : ''}" 
+                                   placeholder="e.g. 4750" 
+                                   oninput="updateRailRate('rail_20gp_usd', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">40GP (USD)</label>
+                            <input type="number" class="form-input" id="rail40" 
+                                   value="${rates.rail_40gp_usd ? rates.rail_40gp_usd[0] : ''}" 
+                                   placeholder="e.g. 6950" 
+                                   oninput="updateRailRate('rail_40gp_usd', this.value)">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">LCL per CBM (USD)</label>
+                            <input type="number" class="form-input" id="railLcl" 
+                                   value="${rates.rail_lcl_usd_cbm || ''}" 
+                                   placeholder="e.g. 195" 
+                                   oninput="updateSimpleRate('rail_lcl_usd_cbm', this.value)">
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">
+                        📊 Market Snapshot
+                        <button class="btn btn-secondary btn-sm" style="margin-left: auto;" 
+                                onclick="addSnapshotItem()">+ Add</button>
+                    </div>
+                    <div id="snapshotItems">
+                        ${renderSnapshotItems(rates.market_snapshot.items)}
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="autoCalculateRanges()">
+                    🔄 Auto-calculate ±10% ranges
+                </button>
+            `;
+        }
+
+        function renderSnapshotItems(items) {
+            if (!items || items.length === 0) {
+                return `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted); background: rgba(0, 42, 78, 0.2); border-radius: 10px; border: 1px dashed var(--border-color);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <div style="font-size: 0.875rem;">No snapshot items yet</div>
+                        <div style="font-size: 0.75rem; margin-top: 0.25rem;">Click "+ Add" to create market insights</div>
+                    </div>`;
+            }
+
+            return items.map((item, index) => `
+                <div class="snapshot-item">
+                    <div class="snapshot-header">
+                        <span class="snapshot-number">#${index + 1}</span>
+                        <button class="snapshot-remove" onclick="removeSnapshotItem(${index})">×</button>
+                    </div>
+                    <div class="snapshot-grid">
+                        <input type="text" class="form-input" placeholder="Label (e.g., Q1 2026 outlook)" 
+                               value="${item.label || ''}" 
+                               oninput="updateSnapshotItem(${index}, 'label', this.value)">
+                        <select class="select-input" onchange="updateSnapshotItem(${index}, 'icon', this.value)">
+                            <option value="chart" ${item.icon === 'chart' ? 'selected' : ''}>📊 Chart</option>
+                            <option value="container" ${item.icon === 'container' ? 'selected' : ''}>📦 Container</option>
+                            <option value="airplane" ${item.icon === 'airplane' ? 'selected' : ''}>✈️ Airplane</option>
+                            <option value="train" ${item.icon === 'train' ? 'selected' : ''}>🚂 Train</option>
+                            <option value="truck" ${item.icon === 'truck' ? 'selected' : ''}>🚚 Truck</option>
+                            <option value="calendar" ${item.icon === 'calendar' ? 'selected' : ''}>📅 Calendar</option>
+                            <option value="alert" ${item.icon === 'alert' ? 'selected' : ''}>⚠️ Alert</option>
+                        </select>
+                        <select class="select-input" onchange="updateSnapshotItem(${index}, 'status', this.value)">
+                            <option value="stable" ${item.status === 'stable' ? 'selected' : ''}>🟢 Stable</option>
+                            <option value="normal" ${item.status === 'normal' ? 'selected' : ''}>🔵 Normal</option>
+                            <option value="tighter" ${item.status === 'tighter' ? 'selected' : ''}>🟠 Tighter</option>
+                            <option value="warning" ${item.status === 'warning' ? 'selected' : ''}>🔴 Warning</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-input" style="width: 100%;" placeholder="Description text..." 
+                           value="${item.text || ''}" 
+                           oninput="updateSnapshotItem(${index}, 'text', this.value)">
+                </div>
+            `).join('');
+        }
+
+        function updateRate(field, index, value) {
+            if (!selectedCountry) return;
+            ratesData[selectedCountry][field][index] = value ? parseFloat(value) : null;
+            markModified();
+            updatePreview();
+        }
+
+        function updateSimpleRate(field, value) {
+            if (!selectedCountry) return;
+            ratesData[selectedCountry][field] = value ? parseFloat(value) : null;
+            markModified();
+            updatePreview();
+        }
+
+        function updateRailRate(field, value) {
+            if (!selectedCountry) return;
+            if (value) {
+                const baseValue = parseFloat(value);
+                const min = Math.round(baseValue * 0.9);
+                const max = Math.round(baseValue * 1.1);
+                ratesData[selectedCountry][field] = [min, max];
+            } else {
+                ratesData[selectedCountry][field] = null;
+            }
+            markModified();
+            updatePreview();
+        }
+
+        function updateSnapshotItem(index, field, value) {
+            if (!selectedCountry) return;
+            ratesData[selectedCountry].market_snapshot.items[index][field] = value;
+            markModified();
+            updatePreview();
+        }
+
+        function addSnapshotItem() {
+            if (!selectedCountry) return;
+            ratesData[selectedCountry].market_snapshot.items.push({
+                label: "",
+                icon: "chart",
+                status: "stable",
+                text: ""
+            });
+            markModified();
+            renderEditor();
+            updatePreview();
+        }
+
+        function removeSnapshotItem(index) {
+            if (!selectedCountry) return;
+            ratesData[selectedCountry].market_snapshot.items.splice(index, 1);
+            markModified();
+            renderEditor();
+            updatePreview();
+        }
+
+        function autoCalculateRanges() {
+            if (!selectedCountry) return;
+            const rates = ratesData[selectedCountry];
+
+            const sea20min = document.getElementById('sea20min').value;
+            const sea40min = document.getElementById('sea40min').value;
+
+            if (sea20min && !document.getElementById('sea20max').value) {
+                const base = parseFloat(sea20min);
+                rates.sea_20gp_usd = [Math.round(base * 0.9), Math.round(base * 1.1)];
+            }
+
+            if (sea40min && !document.getElementById('sea40max').value) {
+                const base = parseFloat(sea40min);
+                rates.sea_40gp_usd = [Math.round(base * 0.9), Math.round(base * 1.1)];
+            }
+
+            markModified();
+            renderEditor();
+            updatePreview();
+            showToast('Ranges calculated!', 'success');
+        }
+
+        function markModified() {
+            if (selectedCountry) {
+                // Save to history before modification (for undo)
+                saveToHistory();
+                
+                modifiedCountries.add(selectedCountry);
+                updateStats();
+                renderCountryList();
+                
+                // Auto-save to localStorage
+                autoSave();
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('statTotal').textContent = countries.length;
+            document.getElementById('statModified').textContent = modifiedCountries.size;
+            document.getElementById('statPending').textContent = countries.length - modifiedCountries.size;
+            
+            // Update progress bar in stats panel
+            const progress = Math.round((modifiedCountries.size / countries.length) * 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = progress + '%';
+            
+            // Update header progress
+            document.getElementById('progressCount').textContent = modifiedCountries.size;
+            document.getElementById('totalCount').textContent = countries.length;
+            document.getElementById('headerProgressBar').style.width = progress + '%';
+            
+            // Update region heatmap
+            updateHeatmap();
+        }
+
+        function updatePreview() {
+            if (!selectedCountry) return;
+            const preview = document.getElementById('jsonPreview');
+            const json = JSON.stringify(ratesData[selectedCountry], null, 2);
+            preview.innerHTML = syntaxHighlight(json);
+        }
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+
+        function processBulkImport() {
+            const data = document.getElementById('bulkData').value.trim();
+            if (!data) {
+                showToast('No data to import', 'error');
+                return;
+            }
+
+            const lines = data.split('\n').filter(line => line.trim());
+            let imported = 0;
+
+            lines.forEach(line => {
+                const parts = line.split(/\t|,/).map(p => p.trim().toLowerCase());
+                if (parts.length >= 3) {
+                    const countryName = parts[0].replace(/\s+/g, '-');
+                    const country = countries.find(c => 
+                        c === countryName || 
+                        c.includes(countryName) || 
+                        formatCountryName(c).toLowerCase().includes(parts[0])
+                    );
+
+                    if (country) {
+                        const rate20 = parseFloat(parts[1]);
+                        const rate40 = parseFloat(parts[2]);
+                        const air = parts[3] ? parseFloat(parts[3]) : null;
+                        const lcl = parts[4] ? parseFloat(parts[4]) : null;
+
+                        if (!isNaN(rate20)) {
+                            ratesData[country].sea_20gp_usd = [Math.round(rate20 * 0.9), Math.round(rate20 * 1.1)];
+                        }
+                        if (!isNaN(rate40)) {
+                            ratesData[country].sea_40gp_usd = [Math.round(rate40 * 0.9), Math.round(rate40 * 1.1)];
+                        }
+                        if (air && !isNaN(air)) {
+                            ratesData[country].air_perkg_usd_1000kg = air;
+                        }
+                        if (lcl && !isNaN(lcl)) {
+                            ratesData[country].sea_lcl_usd_cbm = lcl;
+                        }
+
+                        modifiedCountries.add(country);
+                        imported++;
+                    }
+                }
+            });
+
+            updateStats();
+            renderCountryList();
+            showToast(`Imported ${imported} countries!`, 'success');
+        }
+
+        function downloadJSON() {
+            const month = document.getElementById('selectMonth').value;
+            const year = document.getElementById('selectYear').value;
+            
+            // Warn if downloading a locked month
+            if (isMonthLocked) {
+                showToast(`⚠️ ${year}-${month} is already published on GitHub`, 'warning');
+            }
+            
+            const output = {
+                metadata: {
+                    lastUpdated: new Date().toISOString().split('T')[0],
+                    version: "3.3",
+                    description: `Monthly shipping rates dataset for ${year}-${month}`
+                },
+                _reference: {
+                    sea_20gp_usd: "Full container 20ft standard - price range in USD",
+                    sea_40gp_usd: "Full container 40ft standard - price range in USD",
+                    air_perkg_usd_1000kg: "Air freight per kg for 1000kg+ shipments",
+                    sea_lcl_usd_cbm: "Less than container load - per cubic meter",
+                    rail_20gp_usd: "Rail freight 20ft container - price range in USD",
+                    rail_40gp_usd: "Rail freight 40ft container - price range in USD"
+                },
+                rates: ratesData
+            };
+
+            const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${year}-${month}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showToast(`Downloaded ${year}-${month}.json`, 'success');
+        }
+
+        function loadExistingFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileLoad(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.rates) {
+                        ratesData = data.rates;
+                        modifiedCountries = new Set(Object.keys(data.rates).filter(c => 
+                            data.rates[c].sea_20gp_usd && data.rates[c].sea_20gp_usd[0]
+                        ));
+                        
+                        // Try to extract month/year from filename
+                        const match = file.name.match(/(\d{4})-(\d{2})/);
+                        if (match) {
+                            document.getElementById('selectYear').value = match[1];
+                            document.getElementById('selectMonth').value = match[2];
+                            updateFileName();
+                        }
+                        
+                        updateStats();
+                        renderCountryList();
+                        showToast(`Loaded ${file.name}`, 'success');
+                    }
+                } catch (err) {
+                    showToast('Invalid JSON file', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function copyJSON() {
+            if (!selectedCountry) return;
+            const json = JSON.stringify(ratesData[selectedCountry], null, 2);
+            navigator.clipboard.writeText(json);
+            showToast('JSON copied to clipboard', 'success');
+        }
+
+        function resetAll() {
+            if (confirm('Reset all data? This cannot be undone.\n\nThis will also clear auto-saved data.')) {
+                // Clear all state
+                modifiedCountries.clear();
+                undoHistory.length = 0;
+                redoHistory.length = 0;
+                
+                // Clear auto-save
+                clearDraft();
+                
+                // Reinitialize
+                init();
+                selectedCountry = null;
+                document.getElementById('editorTitle').textContent = '📝 Select a country';
+                document.getElementById('editorContent').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🌍</div>
+                        <div class="empty-state-title">No country selected</div>
+                        <div class="empty-state-text">Select a country from the list to edit its shipping rates and market snapshot</div>
+                    </div>`;
+                document.getElementById('jsonPreview').innerHTML = '<span style="color: var(--text-muted);">Select a country to preview its JSON</span>';
+                
+                updateUndoRedoButtons();
+                showToast('All data reset', 'success');
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            icon.textContent = type === 'success' ? '✅' : '❌';
+            msg.textContent = message;
+            toast.className = `toast ${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ==========================================
+        // MONTH NAVIGATION & LOCKING
+        // ==========================================
+
+        function goToPreviousMonth() {
+            const year = parseInt(document.getElementById('selectYear').value);
+            const month = parseInt(document.getElementById('selectMonth').value);
+            
+            let newMonth = month - 1;
+            let newYear = year;
+            
+            if (newMonth === 0) {
+                newMonth = 12;
+                newYear--;
+            }
+            
+            document.getElementById('selectMonth').value = String(newMonth).padStart(2, '0');
+            document.getElementById('selectYear').value = String(newYear);
+            
+            onMonthChange();
+        }
+
+        function goToNextMonth() {
+            const year = parseInt(document.getElementById('selectYear').value);
+            const month = parseInt(document.getElementById('selectMonth').value);
+            
+            let newMonth = month + 1;
+            let newYear = year;
+            
+            if (newMonth === 13) {
+                newMonth = 1;
+                newYear++;
+            }
+            
+            document.getElementById('selectMonth').value = String(newMonth).padStart(2, '0');
+            document.getElementById('selectYear').value = String(newYear);
+            
+            onMonthChange();
+        }
+
+        async function checkMonthExists(yearMonth) {
+            if (existingMonthsCache.has(yearMonth)) {
+                return true;
+            }
+            
+            try {
+                const response = await fetch(`${GITHUB_RAW_URL}${yearMonth}.json`, { method: 'HEAD' });
+                if (response.ok) {
+                    existingMonthsCache.add(yearMonth);
+                    return true;
+                }
+            } catch (e) {
+                // Ignore errors
+            }
+            return false;
+        }
+
+        async function updateMonthLockStatus() {
+            const year = document.getElementById('selectYear').value;
+            const month = document.getElementById('selectMonth').value;
+            const currentYearMonth = `${year}-${month}`;
+            
+            // Check if this month already exists on GitHub
+            const exists = await checkMonthExists(currentYearMonth);
+            isMonthLocked = exists;
+            
+            // Update UI
+            const badge = document.getElementById('editableBadge');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            if (isMonthLocked) {
+                badge.textContent = '🔒 Published';
+                badge.className = 'status-badge locked';
+                downloadBtn.disabled = false; // Can still download to view
+            } else {
+                badge.textContent = '✏️ Editable';
+                badge.className = 'status-badge editable';
+                downloadBtn.disabled = false;
+            }
+            
+            // Disable inputs if locked
+            updateEditableState();
+        }
+
+        function updateEditableState() {
+            const inputs = document.querySelectorAll('#editorContent input, #editorContent select, #editorContent textarea');
+            inputs.forEach(input => {
+                if (isMonthLocked) {
+                    input.disabled = true;
+                    input.style.opacity = '0.6';
+                } else {
+                    input.disabled = false;
+                    input.style.opacity = '1';
+                }
+            });
+            
+            // Update buttons
+            const addSnapshotBtn = document.querySelector('[onclick="addSnapshotItem()"]');
+            if (addSnapshotBtn) {
+                addSnapshotBtn.disabled = isMonthLocked;
+                addSnapshotBtn.style.opacity = isMonthLocked ? '0.5' : '1';
+            }
+        }
+
+        async function onMonthChange() {
+            updateFileName();
+            await updateMonthLockStatus();
+            
+            // Load historical data first (for previous month and sparklines)
+            await loadHistoricalData();
+            
+            // Then load data for this month (either from GitHub or use previous month)
+            await loadMonthData();
+        }
+
+        async function loadMonthData() {
+            const year = document.getElementById('selectYear').value;
+            const month = document.getElementById('selectMonth').value;
+            const yearMonth = `${year}-${month}`;
+            
+            // Reset modified countries
+            modifiedCountries.clear();
+            
+            // Clear undo/redo history for new month
+            historyStack = [];
+            redoStack = [];
+            updateUndoRedoButtons();
+            
+            // Try to load from GitHub if the month exists (published)
+            if (isMonthLocked) {
+                showToast(`📥 Loading ${yearMonth}...`, 'info');
+                try {
+                    const data = await fetchFromGitHub(yearMonth);
+                    if (data && data.rates) {
+                        // Load rates from GitHub
+                        for (const country of countries) {
+                            if (data.rates[country]) {
+                                ratesData[country] = { ...createEmptyRates(), ...data.rates[country] };
+                                // Check if country has actual data
+                                if (hasAnyData(data.rates[country])) {
+                                    modifiedCountries.add(country);
+                                }
+                            } else {
+                                ratesData[country] = createEmptyRates();
+                            }
+                        }
+                        showToast(`✅ Loaded ${yearMonth} (read-only)`, 'success');
+                    }
+                } catch (e) {
+                    console.error('Failed to load month data:', e);
+                    showToast(`⚠️ Could not load ${yearMonth}`, 'error');
+                    resetAllRates();
+                }
+            } else {
+                // New month - pre-fill from previous month's data
+                if (previousMonthData && previousMonthData.rates) {
+                    for (const country of countries) {
+                        if (previousMonthData.rates[country]) {
+                            // Pre-fill with previous month data (deep copy)
+                            ratesData[country] = JSON.parse(JSON.stringify(previousMonthData.rates[country]));
+                        } else {
+                            ratesData[country] = createEmptyRates();
+                        }
+                    }
+                    // Don't mark as modified - they're pre-filled, not saved
+                    showToast(`📋 Pre-filled from previous month - ready to edit`, 'info');
+                } else {
+                    resetAllRates();
+                    showToast(`📝 New month - no previous data found`, 'info');
+                }
+            }
+            
+            // Update UI
+            updateStats();
+            renderCountryList();
+            if (selectedCountry) {
+                renderEditor();
+                updatePreview();
+                updateEditableState();
+            }
+        }
+
+        function resetAllRates() {
+            countries.forEach(country => {
+                ratesData[country] = createEmptyRates();
+            });
+        }
+
+        function hasAnyData(rates) {
+            if (!rates) return false;
+            return (
+                (rates.sea_20gp_usd && (rates.sea_20gp_usd[0] || rates.sea_20gp_usd[1])) ||
+                (rates.sea_40gp_usd && (rates.sea_40gp_usd[0] || rates.sea_40gp_usd[1])) ||
+                rates.air_perkg_usd_1000kg ||
+                rates.sea_lcl_usd_cbm ||
+                (rates.rail_20gp_usd && (rates.rail_20gp_usd[0] || rates.rail_20gp_usd[1])) ||
+                (rates.rail_40gp_usd && (rates.rail_40gp_usd[0] || rates.rail_40gp_usd[1])) ||
+                rates.rail_lcl_usd_cbm
+            );
+        }
+
+        // ==========================================
+        // COUNTRY NAVIGATION
+        // ==========================================
+
+        function getFilteredCountryList() {
+            const search = document.getElementById('countrySearch')?.value?.toLowerCase() || '';
+            
+            return countries.filter(code => {
+                const data = countryData[code];
+                
+                // Region filter
+                if (currentRegionFilter !== 'all' && data.region !== currentRegionFilter) {
+                    return false;
+                }
+                
+                // Status filter
+                if (statusFilter === 'modified' && !modifiedCountries.has(code)) {
+                    return false;
+                }
+                if (statusFilter === 'pending' && modifiedCountries.has(code)) {
+                    return false;
+                }
+                
+                // Search filter
+                if (search) {
+                    const name = formatCountryName(code).toLowerCase();
+                    if (!name.includes(search) && !code.includes(search)) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+        }
+
+        function goToPrevCountry() {
+            const list = getFilteredCountryList();
+            const currentIndex = list.indexOf(selectedCountry);
+            if (currentIndex > 0) {
+                selectCountry(list[currentIndex - 1]);
+            }
+        }
+
+        function goToNextCountry() {
+            const list = getFilteredCountryList();
+            const currentIndex = list.indexOf(selectedCountry);
+            if (currentIndex < list.length - 1) {
+                selectCountry(list[currentIndex + 1]);
+            }
+        }
+
+        // ==========================================
+        // GITHUB HISTORICAL DATA FETCHING
+        // ==========================================
+
+        async function fetchFromGitHub(yearMonth) {
+            try {
+                const url = `${GITHUB_RAW_URL}${yearMonth}.json`;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.warn(`No data found for ${yearMonth}`);
+                    return null;
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.warn(`Failed to fetch ${yearMonth}:`, error);
+                return null;
+            }
+        }
+
+        function getPreviousMonth(year, month) {
+            let y = parseInt(year);
+            let m = parseInt(month);
+            m--;
+            if (m === 0) {
+                m = 12;
+                y--;
+            }
+            return `${y}-${String(m).padStart(2, '0')}`;
+        }
+
+        function getLastNMonths(year, month, n) {
+            const months = [];
+            let y = parseInt(year);
+            let m = parseInt(month);
+            
+            for (let i = 0; i < n; i++) {
+                m--;
+                if (m === 0) {
+                    m = 12;
+                    y--;
+                }
+                months.push(`${y}-${String(m).padStart(2, '0')}`);
+            }
+            return months.reverse(); // Oldest first
+        }
+
+        async function loadPreviousMonth() {
+            const year = document.getElementById('selectYear').value;
+            const month = document.getElementById('selectMonth').value;
+            const prevMonth = getPreviousMonth(year, month);
+            
+            updateHistoryStatus('loading', `Loading ${prevMonth}...`);
+            
+            const data = await fetchFromGitHub(prevMonth);
+            if (data && data.rates) {
+                previousMonthData = data.rates;
+                updateHistoryStatus('success', `✓ Loaded ${prevMonth}`);
+                renderCountryList();
+                if (selectedCountry) renderEditor();
+            } else {
+                previousMonthData = null;
+                updateHistoryStatus('error', `✗ ${prevMonth} not found`);
+            }
+        }
+
+        async function loadHistoricalData() {
+            if (isLoadingHistory) return;
+            isLoadingHistory = true;
+            
+            const year = document.getElementById('selectYear').value;
+            const month = document.getElementById('selectMonth').value;
+            const months = getLastNMonths(year, month, 6);
+            
+            updateHistoryStatus('loading', `Loading 6 months...`);
+            
+            historicalData = {};
+            let loadedCount = 0;
+            
+            for (const ym of months) {
+                const data = await fetchFromGitHub(ym);
+                if (data && data.rates) {
+                    loadedCount++;
+                    // Store historical data per country
+                    for (const country in data.rates) {
+                        if (!historicalData[country]) {
+                            historicalData[country] = {};
+                        }
+                        historicalData[country][ym] = data.rates[country];
+                    }
+                }
+            }
+            
+            // Load previous month data (the month just before the current one)
+            const prevMonth = getPreviousMonth(year, month);
+            const prevMonthStr = `${prevMonth.year}-${prevMonth.month}`;
+            
+            // Find previous month data from historical data
+            previousMonthData = { rates: {} };
+            for (const country in historicalData) {
+                if (historicalData[country][prevMonthStr]) {
+                    previousMonthData.rates[country] = historicalData[country][prevMonthStr];
+                }
+            }
+            
+            // If previous month wasn't in the last 6, try to load it directly
+            if (Object.keys(previousMonthData.rates).length === 0 && !months.includes(prevMonthStr)) {
+                const prevData = await fetchFromGitHub(prevMonthStr);
+                if (prevData && prevData.rates) {
+                    previousMonthData = prevData;
+                }
+            }
+            
+            isLoadingHistory = false;
+            
+            if (loadedCount > 0) {
+                updateHistoryStatus('success', `✓ Loaded ${loadedCount} months`);
+                
+                // Pre-fill current rates with previous month's values
+                prefillFromPreviousMonth();
+                
+                renderCountryList();
+                if (selectedCountry) renderEditor();
+            } else {
+                updateHistoryStatus('error', `✗ No historical data found`);
+            }
+        }
+
+        function prefillFromPreviousMonth() {
+            if (!previousMonthData) return;
+            
+            let prefilledCount = 0;
+            
+            for (const country in previousMonthData) {
+                const prevRates = previousMonthData[country];
+                if (!prevRates) continue;
+                
+                // Only prefill if not already modified by user
+                if (modifiedCountries.has(country)) continue;
+                
+                // Initialize if not exists
+                if (!ratesData[country]) {
+                    ratesData[country] = createEmptyRates();
+                }
+                
+                // Copy previous values
+                if (prevRates.sea_20gp_usd) {
+                    ratesData[country].sea_20gp_usd = [...prevRates.sea_20gp_usd];
+                }
+                if (prevRates.sea_40gp_usd) {
+                    ratesData[country].sea_40gp_usd = [...prevRates.sea_40gp_usd];
+                }
+                if (prevRates.air_perkg_usd_1000kg) {
+                    ratesData[country].air_perkg_usd_1000kg = prevRates.air_perkg_usd_1000kg;
+                }
+                if (prevRates.express_perkg_usd) {
+                    ratesData[country].express_perkg_usd = prevRates.express_perkg_usd;
+                }
+                if (prevRates.sea_lcl_usd_cbm) {
+                    ratesData[country].sea_lcl_usd_cbm = prevRates.sea_lcl_usd_cbm;
+                }
+                if (prevRates.rail_20gp_usd) {
+                    ratesData[country].rail_20gp_usd = Array.isArray(prevRates.rail_20gp_usd) 
+                        ? [...prevRates.rail_20gp_usd] 
+                        : prevRates.rail_20gp_usd;
+                }
+                if (prevRates.rail_40gp_usd) {
+                    ratesData[country].rail_40gp_usd = Array.isArray(prevRates.rail_40gp_usd) 
+                        ? [...prevRates.rail_40gp_usd] 
+                        : prevRates.rail_40gp_usd;
+                }
+                if (prevRates.rail_lcl_usd_cbm) {
+                    ratesData[country].rail_lcl_usd_cbm = prevRates.rail_lcl_usd_cbm;
+                }
+                if (prevRates.market_snapshot && prevRates.market_snapshot.items) {
+                    ratesData[country].market_snapshot = JSON.parse(JSON.stringify(prevRates.market_snapshot));
+                }
+                if (prevRates.transit_days) {
+                    ratesData[country].transit_days = JSON.parse(JSON.stringify(prevRates.transit_days));
+                }
+                
+                prefilledCount++;
+            }
+            
+            if (prefilledCount > 0) {
+                console.log(`Pre-filled ${prefilledCount} countries with previous month data`);
+            }
+        }
+
+        function updateHistoryStatus(status, message) {
+            const indicator = document.getElementById('historyStatus');
+            if (!indicator) return;
+            
+            indicator.className = `history-status ${status}`;
+            indicator.textContent = message;
+        }
+
+        function getPercentageChange(current, previous) {
+            if (!previous || previous === 0 || !current) return null;
+            return ((current - previous) / previous * 100).toFixed(1);
+        }
+
+        function formatPercentageChange(change) {
+            if (change === null) return '';
+            const num = parseFloat(change);
+            if (num > 0) {
+                return `<span class="rate-change up">+${change}%</span>`;
+            } else if (num < 0) {
+                return `<span class="rate-change down">${change}%</span>`;
+            } else {
+                return `<span class="rate-change stable">0%</span>`;
+            }
+        }
+
+        function generateSparkline(data, width = 60, height = 20) {
+            if (!data || data.length < 2) return '';
+            
+            const values = data.filter(v => v !== null && v !== undefined);
+            if (values.length < 2) return '';
+            
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const range = max - min || 1;
+            
+            const points = values.map((v, i) => {
+                const x = (i / (values.length - 1)) * width;
+                const y = height - ((v - min) / range) * height;
+                return `${x},${y}`;
+            }).join(' ');
+            
+            const lastValue = values[values.length - 1];
+            const firstValue = values[0];
+            const trend = lastValue > firstValue ? 'up' : lastValue < firstValue ? 'down' : 'stable';
+            
+            return `
+                <svg class="sparkline sparkline-${trend}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+                    <polyline points="${points}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="${width}" cy="${height - ((lastValue - min) / range) * height}" r="2" fill="currentColor"/>
+                </svg>
+            `;
+        }
+
+        function getHistoricalValues(country, field) {
+            if (!historicalData[country]) return [];
+            
+            const months = Object.keys(historicalData[country]).sort();
+            return months.map(m => {
+                const data = historicalData[country][m];
+                if (!data) return null;
+                
+                if (field === 'sea_20gp') {
+                    return data.sea_20gp_usd?.[0] || null;
+                } else if (field === 'sea_40gp') {
+                    return data.sea_40gp_usd?.[0] || null;
+                } else if (field === 'air') {
+                    return data.air_perkg_usd_1000kg || null;
+                }
+                return null;
+            });
+        }
+
+        function getPreviousValue(country, field, index) {
+            if (!previousMonthData || !previousMonthData[country]) return null;
+            const fieldData = previousMonthData[country][field];
+            if (!fieldData) return null;
+            return Array.isArray(fieldData) ? fieldData[index] : fieldData;
+        }
+
+        function getPreviousValueSimple(country, field) {
+            if (!previousMonthData || !previousMonthData[country]) return null;
+            return previousMonthData[country][field];
+        }
+
+        function getRateComparison(country, field, index, currentValue) {
+            const prevValue = getPreviousValue(country, field, index);
+            if (!prevValue || !currentValue) return '';
+            
+            const change = getPercentageChange(currentValue, prevValue);
+            return formatPercentageChange(change);
+        }
+
+        function getRateComparisonSimple(country, field, currentValue) {
+            const prevValue = getPreviousValueSimple(country, field);
+            if (!prevValue || !currentValue) return '';
+            
+            const change = getPercentageChange(currentValue, prevValue);
+            return formatPercentageChange(change);
+        }
+
+        // ==========================================
+        // COMPLETION STATUS & COPY FEATURES
+        // ==========================================
+
+        function getCompletionStatus(rates) {
+            return {
+                sea: !!(rates.sea_20gp_usd[0] || rates.sea_40gp_usd[0] || rates.sea_lcl_usd_cbm),
+                air: !!(rates.air_perkg_usd_1000kg || rates.express_perkg_usd),
+                rail: !!(rates.rail_20gp_usd || rates.rail_40gp_usd || rates.rail_lcl_usd_cbm),
+                snapshot: !!(rates.market_snapshot && rates.market_snapshot.items && rates.market_snapshot.items.length > 0)
+            };
+        }
+
+        function getCompletionPercentage(rates) {
+            const status = getCompletionStatus(rates);
+            const completed = Object.values(status).filter(Boolean).length;
+            return Math.round((completed / 4) * 100);
+        }
+
+        function getSimilarCountries(country) {
+            const region = countryData[country].region;
+            
+            // Get countries from same region
+            const sameRegion = countries.filter(c => 
+                countryData[c].region === region && 
+                modifiedCountries.has(c) && 
+                c !== country
+            );
+            
+            // Get other modified countries
+            const otherRegions = countries.filter(c => 
+                countryData[c].region !== region && 
+                modifiedCountries.has(c) && 
+                c !== country
+            );
+            
+            return { sameRegion, otherRegions };
+        }
+
+        function buildCopyDropdownOptions(country) {
+            const { sameRegion, otherRegions } = getSimilarCountries(country);
+            const region = countryData[country].region;
+            
+            let html = '<option value="">Select a country...</option>';
+            
+            if (sameRegion.length > 0) {
+                html += `<optgroup label="📍 ${regionNames[region]}">`;
+                sameRegion.forEach(c => {
+                    const completion = getCompletionPercentage(ratesData[c]);
+                    html += `<option value="${c}">${countryData[c].flag} ${formatCountryName(c)} (${completion}%)</option>`;
+                });
+                html += '</optgroup>';
+            }
+            
+            if (otherRegions.length > 0) {
+                html += '<optgroup label="🌍 Other Regions">';
+                otherRegions.slice(0, 10).forEach(c => {
+                    const completion = getCompletionPercentage(ratesData[c]);
+                    html += `<option value="${c}">${countryData[c].flag} ${formatCountryName(c)} (${completion}%)</option>`;
+                });
+                html += '</optgroup>';
+            }
+            
+            return html;
+        }
+
+        function copyRatesFrom(sourceCountry) {
+            if (!sourceCountry || !selectedCountry) return;
+            
+            const sourceName = formatCountryName(sourceCountry);
+            const targetName = formatCountryName(selectedCountry);
+            
+            if (confirm(`Copy all rates from ${sourceName} to ${targetName}?\n\nThis will overwrite current values.`)) {
+                // Save to history first for undo
+                saveToHistory();
+                
+                // Deep copy the rates
+                ratesData[selectedCountry] = JSON.parse(JSON.stringify(ratesData[sourceCountry]));
+                
+                modifiedCountries.add(selectedCountry);
+                updateStats();
+                renderCountryList();
+                renderEditor();
+                updatePreview();
+                autoSave();
+                
+                showToast(`📋 Copied from ${sourceName}`, 'success');
+            }
+            
+            // Reset the select
+            const select = document.querySelector('.copy-select');
+            if (select) select.value = '';
+        }
+
+        // ==========================================
+        // REGION HEATMAP
+        // ==========================================
+
+        function calculateRegionStats() {
+            const regionStats = {
+                'europe': { total: 0, sum: 0, count: 0, modified: 0 },
+                'asia': { total: 0, sum: 0, count: 0, modified: 0 },
+                'americas': { total: 0, sum: 0, count: 0, modified: 0 },
+                'africa': { total: 0, sum: 0, count: 0, modified: 0 },
+                'oceania': { total: 0, sum: 0, count: 0, modified: 0 },
+                'middle-east': { total: 0, sum: 0, count: 0, modified: 0 }
+            };
+
+            for (const country of countries) {
+                const region = countryData[country].region;
+                if (!regionStats[region]) continue;
+
+                regionStats[region].total++;
+
+                const rates = ratesData[country];
+                if (rates && rates.sea_20gp_usd && rates.sea_20gp_usd[0]) {
+                    regionStats[region].sum += rates.sea_20gp_usd[0];
+                    regionStats[region].count++;
+                }
+
+                if (modifiedCountries.has(country)) {
+                    regionStats[region].modified++;
+                }
+            }
+
+            return regionStats;
+        }
+
+        function updateHeatmap() {
+            const stats = calculateRegionStats();
+            
+            // Update region tab counts
+            let totalModified = 0;
+            let totalAll = 0;
+            
+            for (const region in stats) {
+                const stat = stats[region];
+                totalModified += stat.modified;
+                totalAll += stat.total;
+                
+                // Update tab count
+                const regionKey = region === 'middle-east' ? 'Middle-east' : capitalizeFirst(region);
+                const tabCountEl = document.getElementById(`tabCount${regionKey}`);
+                if (tabCountEl) {
+                    tabCountEl.textContent = `${stat.modified}/${stat.total}`;
+                }
+                
+                // Update active state
+                const tabEl = document.querySelector(`.region-tab[data-region="${region}"]`);
+                if (tabEl) {
+                    tabEl.classList.toggle('active', currentRegionFilter === region);
+                }
+            }
+            
+            // Update "All" tab
+            const allTabEl = document.getElementById('tabCountAll');
+            if (allTabEl) {
+                allTabEl.textContent = `${totalModified}/${totalAll}`;
+            }
+            const allTab = document.querySelector('.region-tab[data-region="all"]');
+            if (allTab) {
+                allTab.classList.toggle('active', currentRegionFilter === 'all');
+            }
+            
+            // Update count badge in card header
+            const countBadge = document.getElementById('countryCount');
+            if (countBadge) {
+                countBadge.textContent = `${totalModified}/${totalAll}`;
+            }
+            
+            // Update status filter counts
+            const statusModifiedCount = document.getElementById('statusModifiedCount');
+            const statusPendingCount = document.getElementById('statusPendingCount');
+            if (statusModifiedCount) {
+                statusModifiedCount.textContent = modifiedCountries.size;
+            }
+            if (statusPendingCount) {
+                statusPendingCount.textContent = countries.length - modifiedCountries.size;
+            }
+        }
+
+        function capitalizeFirst(str) {
+            // Handle middle-east -> Middle-east
+            return str.split('-').map((part, i) => 
+                i === 0 ? part.charAt(0).toUpperCase() + part.slice(1) : part
+            ).join('-');
+        }
+
+
+        // ==========================================
+        // UI HELPERS
+        // ==========================================
+
+        function toggleShortcutsBar() {
+            const bar = document.getElementById('shortcutsBar');
+            bar.classList.toggle('collapsed');
+            localStorage.setItem('shortcuts-bar-collapsed', bar.classList.contains('collapsed'));
+        }
+
+        function toggleJsonPreview() {
+            const card = document.getElementById('jsonPreviewCard');
+            card.classList.toggle('collapsed');
+            localStorage.setItem('json-preview-collapsed', card.classList.contains('collapsed'));
+        }
+
+        // Initialize JSON preview state (collapsed by default)
+        (function() {
+            const collapsed = localStorage.getItem('json-preview-collapsed');
+            // Default to collapsed if not set
+            if (collapsed === null || collapsed === 'true') {
+                document.getElementById('jsonPreviewCard')?.classList.add('collapsed');
+            } else {
+                document.getElementById('jsonPreviewCard')?.classList.remove('collapsed');
+            }
+        })();
+
+        // Initialize shortcuts bar state
+        (function() {
+            const collapsed = localStorage.getItem('shortcuts-bar-collapsed') === 'true';
+            if (collapsed) {
+                document.getElementById('shortcutsBar')?.classList.add('collapsed');
+            }
+        })();
+
+        // ==========================================
+        // AUTO-SAVE FUNCTIONS
+        // ==========================================
+        
+        function autoSave() {
+            try {
+                const data = {
+                    ratesData,
+                    modifiedCountries: [...modifiedCountries],
+                    selectedMonth: document.getElementById('selectMonth').value,
+                    selectedYear: document.getElementById('selectYear').value,
+                    selectedCountry,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(data));
+                updateAutoSaveIndicator();
+            } catch (e) {
+                console.warn('Auto-save failed:', e);
+            }
+        }
+
+        function restoreFromDraft() {
+            try {
+                const draft = localStorage.getItem(AUTOSAVE_KEY);
+                if (!draft) return false;
+
+                const data = JSON.parse(draft);
+                const age = Date.now() - data.timestamp;
+                const ageMinutes = Math.round(age / 60000);
+                const ageText = ageMinutes < 60 ? `${ageMinutes} min ago` : `${Math.round(ageMinutes / 60)}h ago`;
+
+                if (data.modifiedCountries && data.modifiedCountries.length > 0) {
+                    if (confirm(`🔄 Restore previous session?\n\n${data.modifiedCountries.length} countries modified\nSaved: ${ageText}`)) {
+                        ratesData = data.ratesData;
+                        modifiedCountries = new Set(data.modifiedCountries);
+                        
+                        if (data.selectedMonth) {
+                            document.getElementById('selectMonth').value = data.selectedMonth;
+                        }
+                        if (data.selectedYear) {
+                            document.getElementById('selectYear').value = data.selectedYear;
+                        }
+                        
+                        updateFileName();
+                        updateStats();
+                        renderCountryList();
+                        
+                        if (data.selectedCountry) {
+                            selectCountry(data.selectedCountry);
+                        }
+                        
+                        showToast(`Restored ${data.modifiedCountries.length} countries`, 'success');
+                        return true;
+                    }
+                }
+            } catch (e) {
+                console.warn('Restore failed:', e);
+            }
+            return false;
+        }
+
+        function clearDraft() {
+            localStorage.removeItem(AUTOSAVE_KEY);
+            updateAutoSaveIndicator();
+        }
+
+        function updateAutoSaveIndicator() {
+            const indicator = document.getElementById('autoSaveIndicator');
+            if (indicator) {
+                const now = new Date();
+                indicator.textContent = `Saved ${now.toLocaleTimeString()}`;
+                indicator.style.opacity = '1';
+                setTimeout(() => {
+                    indicator.style.opacity = '0.6';
+                }, 2000);
+            }
+        }
+
+        // ==========================================
+        // UNDO/REDO FUNCTIONS
+        // ==========================================
+
+        function saveToHistory() {
+            if (!selectedCountry) return;
+            
+            const state = {
+                country: selectedCountry,
+                data: JSON.parse(JSON.stringify(ratesData[selectedCountry]))
+            };
+            
+            undoHistory.push(state);
+            
+            // Clear redo history when new action is performed
+            redoHistory.length = 0;
+            
+            // Limit history size
+            if (undoHistory.length > MAX_HISTORY) {
+                undoHistory.shift();
+            }
+            
+            updateUndoRedoButtons();
+        }
+
+        function undo() {
+            if (undoHistory.length === 0) {
+                showToast('Nothing to undo', 'error');
+                return;
+            }
+            
+            const state = undoHistory.pop();
+            
+            // Save current state to redo
+            redoHistory.push({
+                country: state.country,
+                data: JSON.parse(JSON.stringify(ratesData[state.country]))
+            });
+            
+            // Restore previous state
+            ratesData[state.country] = state.data;
+            
+            if (selectedCountry === state.country) {
+                renderEditor();
+                updatePreview();
+            }
+            
+            updateUndoRedoButtons();
+            autoSave();
+            showToast('↩️ Undo', 'success');
+        }
+
+        function redo() {
+            if (redoHistory.length === 0) {
+                showToast('Nothing to redo', 'error');
+                return;
+            }
+            
+            const state = redoHistory.pop();
+            
+            // Save current state to undo
+            undoHistory.push({
+                country: state.country,
+                data: JSON.parse(JSON.stringify(ratesData[state.country]))
+            });
+            
+            // Apply redo state
+            ratesData[state.country] = state.data;
+            
+            if (selectedCountry === state.country) {
+                renderEditor();
+                updatePreview();
+            }
+            
+            updateUndoRedoButtons();
+            autoSave();
+            showToast('↪️ Redo', 'success');
+        }
+
+        function updateUndoRedoButtons() {
+            const undoBtn = document.getElementById('undoBtn');
+            const redoBtn = document.getElementById('redoBtn');
+            
+            if (undoBtn) {
+                undoBtn.disabled = undoHistory.length === 0;
+                undoBtn.style.opacity = undoHistory.length === 0 ? '0.5' : '1';
+            }
+            if (redoBtn) {
+                redoBtn.disabled = redoHistory.length === 0;
+                redoBtn.style.opacity = redoHistory.length === 0 ? '0.5' : '1';
+            }
+        }
+
+        // ==========================================
+        // KEYBOARD SHORTCUTS
+        // ==========================================
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Don't trigger shortcuts when typing in inputs
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                    // Allow Escape to blur input
+                    if (e.key === 'Escape') {
+                        e.target.blur();
+                    }
+                    return;
+                }
+
+                const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+                const cmdKey = isMac ? e.metaKey : e.ctrlKey;
+
+                // Cmd/Ctrl + S: Save/Download
+                if (cmdKey && e.key === 's') {
+                    e.preventDefault();
+                    downloadJSON();
+                    return;
+                }
+
+                // Cmd/Ctrl + O: Open/Load file
+                if (cmdKey && e.key === 'o') {
+                    e.preventDefault();
+                    loadExistingFile();
+                    return;
+                }
+
+                // Cmd/Ctrl + F: Focus search
+                if (cmdKey && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('countrySearch').focus();
+                    return;
+                }
+
+                // Cmd/Ctrl + Z: Undo
+                if (cmdKey && e.key === 'z' && !e.shiftKey) {
+                    e.preventDefault();
+                    undo();
+                    return;
+                }
+
+                // Cmd/Ctrl + Shift + Z or Cmd/Ctrl + Y: Redo
+                if ((cmdKey && e.shiftKey && e.key === 'z') || (cmdKey && e.key === 'y')) {
+                    e.preventDefault();
+                    redo();
+                    return;
+                }
+
+                // Arrow Up: Previous country
+                if (e.key === 'ArrowUp' && selectedCountry) {
+                    e.preventDefault();
+                    goToPrevCountry();
+                    return;
+                }
+
+                // Arrow Down: Next country
+                if (e.key === 'ArrowDown' && selectedCountry) {
+                    e.preventDefault();
+                    goToNextCountry();
+                    return;
+                }
+
+                // Arrow Left: Previous month
+                if (e.key === 'ArrowLeft' && cmdKey) {
+                    e.preventDefault();
+                    goToPreviousMonth();
+                    return;
+                }
+
+                // Arrow Right: Next month
+                if (e.key === 'ArrowRight' && cmdKey) {
+                    e.preventDefault();
+                    goToNextMonth();
+                    return;
+                }
+
+                // Escape: Deselect country
+                if (e.key === 'Escape') {
+                    selectedCountry = null;
+                    renderCountryList();
+                    document.getElementById('editorTitle').textContent = '📝 Select a country';
+                    document.getElementById('editorContent').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🌍</div>
+                            <div class="empty-state-title">No country selected</div>
+                            <div class="empty-state-text">Select a country from the list to edit its shipping rates</div>
+                        </div>`;
+                    return;
+                }
+
+                // Arrow Down: Next country
+                if (e.key === 'ArrowDown' && selectedCountry) {
+                    e.preventDefault();
+                    selectNextCountry();
+                    return;
+                }
+
+                // Arrow Up: Previous country
+                if (e.key === 'ArrowUp' && selectedCountry) {
+                    e.preventDefault();
+                    selectPreviousCountry();
+                    return;
+                }
+
+                // 1-6: Quick region filters
+                const regionKeys = { '1': 'all', '2': 'europe', '3': 'asia', '4': 'americas', '5': 'africa', '6': 'oceania', '7': 'middle-east' };
+                if (regionKeys[e.key]) {
+                    setRegionFilter(regionKeys[e.key]);
+                    return;
+                }
+            });
+        }
+
+        // ==========================================
+        // NAVIGATION HELPERS
+        // ==========================================
+
+        function getFilteredCountries() {
+            const search = document.getElementById('countrySearch').value.toLowerCase();
+            return countries.filter(c => {
+                const nameMatch = formatCountryName(c).toLowerCase().includes(search) || c.includes(search);
+                const regionMatch = currentRegionFilter === 'all' || countryData[c].region === currentRegionFilter;
+                let statusMatch = true;
+                if (statusFilter === 'modified') statusMatch = modifiedCountries.has(c);
+                else if (statusFilter === 'pending') statusMatch = !modifiedCountries.has(c);
+                return nameMatch && regionMatch && statusMatch;
+            });
+        }
+
+        function selectNextCountry() {
+            const filtered = getFilteredCountries();
+            const currentIndex = filtered.indexOf(selectedCountry);
+            if (currentIndex < filtered.length - 1) {
+                selectCountry(filtered[currentIndex + 1]);
+                scrollToCountry(filtered[currentIndex + 1]);
+            }
+        }
+
+        function selectPreviousCountry() {
+            const filtered = getFilteredCountries();
+            const currentIndex = filtered.indexOf(selectedCountry);
+            if (currentIndex > 0) {
+                selectCountry(filtered[currentIndex - 1]);
+                scrollToCountry(filtered[currentIndex - 1]);
+            }
+        }
+
+        function scrollToCountry(country) {
+            const element = document.querySelector(`[onclick="selectCountry('${country}')"]`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Initialize on load
+        setupKeyboardShortcuts();
+        
+        // Try to restore draft first
+        if (!restoreFromDraft()) {
+            init();
+        } else {
+            // Still need to set up basic state if restoring
+            document.getElementById('selectMonth').addEventListener('change', updateFileName);
+            document.getElementById('selectYear').addEventListener('change', updateFileName);
+        }
+        
+        updateUndoRedoButtons();
+        
+        // Auto-load data on startup
+        (async function() {
+            await updateMonthLockStatus();
+            await loadHistoricalData();
+            await loadMonthData();
+        })();
+        
+        // Reload when month/year changes
+        document.getElementById('selectMonth').addEventListener('change', onMonthChange);
+        document.getElementById('selectYear').addEventListener('change', onMonthChange);
+    </script>
+</body>
+</html>
