@@ -6993,9 +6993,11 @@ const QuoteForm: FC = () => {
     if (isStepValid) {
       // Use proxy URLs in development, direct URLs in production
       const isDevelopment = import.meta.env.DEV;
-      const webhookUrl = isDevelopment
-        ? '/api/n8n'
-        : 'https://n8n.srv783609.hstgr.cloud/webhook/5e52c71e-b113-4b3c-8c7d-91c78496ea91';
+      const WEBHOOK_URL_PROD =
+        'https://n8n.srv783609.hstgr.cloud/webhook/5e52c71e-b113-4b3c-8c7d-91c78496ea91';
+      // const WEBHOOK_URL_TEST = 'https://n8n.srv783609.hstgr.cloud/webhook-test/5e52c71e-b113-4b3c-8c7d-91c78496ea91'; // Configured in vite.config.ts proxy for dev
+
+      const webhookUrl = isDevelopment ? '/api/n8n' : WEBHOOK_URL_PROD;
 
       // 1. Sync and prepare the data from current active load states
       const activeLoadSubmitData = syncCurrentLoadToArray();
@@ -7087,10 +7089,8 @@ const QuoteForm: FC = () => {
 
           console.error('Webhook failed:', errorStatus, errorReason);
           showToast(
-            getText(
-              'errorSubmissionMain',
-              userLang,
-            ) || `We could not send your quote request (status ${errorStatus}). Please try again in a few minutes or contact us directly.`,
+            getText('errorSubmissionMain', userLang) ||
+              `We could not send your quote request (status ${errorStatus}). Please try again in a few minutes or contact us directly.`
           );
           return;
         }
