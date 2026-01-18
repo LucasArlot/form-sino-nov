@@ -7074,7 +7074,7 @@ const QuoteForm: FC = () => {
       try {
         const response = await fetch(webhookUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(finalPayload),
         });
 
