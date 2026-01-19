@@ -34,20 +34,20 @@ export default defineConfig(({ mode }) => {
           // Format ESM par défaut (compatible avec type="module")
           entryFileNames: (chunkInfo) => {
             if (chunkInfo.name === 'standalone') {
-              return 'sino-form-standalone-v4.js';
+              return 'sino-form-standalone-v5.js';
             }
             if (chunkInfo.name === 'standalone-simple') {
-              return 'sino-form-simple-standalone-v4.js';
+              return 'sino-form-simple-standalone-v5.js';
             }
             return 'assets/[name]-[hash].js';
           },
           // Pour standalone, nom fixe pour le CSS
           assetFileNames: (assetInfo) => {
             if (assetInfo.name === 'style.css' && isStandalone) {
-              return 'sino-form-standalone-v4.css';
+              return 'sino-form-standalone-v5.css';
             }
             if (assetInfo.name === 'style.css' && isStandaloneSimple) {
-              return 'sino-form-simple-standalone-v4.css';
+              return 'sino-form-simple-standalone-v5.css';
             }
             return 'assets/[name]-[hash][extname]';
           },
@@ -104,12 +104,12 @@ export default defineConfig(({ mode }) => {
         overlay: false, // Disable error overlay to prevent reload issues
       },
       proxy: {
-        '/api/n8n': {
+        '/api/submit': {
           target:
             'https://n8n.srv783609.hstgr.cloud/webhook-test/5e52c71e-b113-4b3c-8c7d-91c78496ea91',
           changeOrigin: true,
           secure: true,
-          rewrite: (path) => path.replace(/^\/api\/n8n/, ''),
+          rewrite: (path) => path.replace(/^\/api\/submit/, ''),
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
               proxyReq.setHeader('Access-Control-Allow-Origin', '*');

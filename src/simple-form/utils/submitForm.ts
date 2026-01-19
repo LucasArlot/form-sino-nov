@@ -166,16 +166,18 @@ export async function submitFormData(
   payload: Record<string, unknown>,
   onError?: (error: string) => void
 ): Promise<string> {
-  const WEBHOOK_URL_PROD =
-    'https://n8n.srv783609.hstgr.cloud/webhook/5e52c71e-b113-4b3c-8c7d-91c78496ea91';
-  // const WEBHOOK_URL_TEST = 'https://n8n.srv783609.hstgr.cloud/webhook-test/5e52c71e-b113-4b3c-8c7d-91c78496ea91'; // Configured in vite.config.ts proxy for dev
+  // Use Vercel proxy endpoint to bypass CORS
+  // This works both on Vercel (form-sino.vercel.app) and localhost (via Vite proxy)
+  const isVercelOrLocalhost =
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' ||
+      window.location.hostname.includes('vercel.app') ||
+      window.location.hostname.includes('form-sino'));
 
-  // For standalone builds, always use direct URLs (no proxy available)
-  // Only use proxy in dev server mode
-  const isDevServer = typeof window !== 'undefined' && window.location.hostname === 'localhost';
-
-  // In dev, use proxy which points to TEST. In prod/standalone, use PROD url.
-  const webhookUrl = isDevServer ? '/api/n8n' : WEBHOOK_URL_PROD;
+  // GitHub Pages still needs direct URL, but Vercel deployments use the proxy
+  const webhookUrl = isVercelOrLocalhost
+    ? '/api/submit'
+    : 'https://form-sino.vercel.app/api/submit'; // Fallback to Vercel proxy for external embeds
 
   console.log('[submitFormData] Starting submission with payload:', {
     submissionId: payload.submissionId,
