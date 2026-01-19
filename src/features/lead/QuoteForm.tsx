@@ -7072,30 +7072,16 @@ const QuoteForm: FC = () => {
         loads: processedLoads, // Add the processed loads
       };
       try {
-        const response = await fetch(webhookUrl, {
+        await fetch(webhookUrl, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(finalPayload),
         });
 
-        if (!response.ok) {
-          let errorReason = '';
-          try {
-            errorReason = await response.text();
-          } catch {
-            errorReason = 'Unknown error';
-          }
-          const errorStatus = response.status;
+        // if (!response.ok) { ... } -> Removed because response is opaque in no-cors
 
-          console.error('Webhook failed:', errorStatus, errorReason);
-          showToast(
-            getText('errorSubmissionMain', userLang) ||
-              `We could not send your quote request (status ${errorStatus}). Please try again in a few minutes or contact us directly.`
-          );
-          return;
-        }
-
-        console.log(`Webhook to ${webhookUrl} succeeded.`, response.status);
+        console.log(`Webhook to ${webhookUrl} sent (opaque response).`);
 
         // Set submission data and go to confirmation page
         setSubmissionId(submissionId);
