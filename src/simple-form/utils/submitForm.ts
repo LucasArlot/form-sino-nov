@@ -184,7 +184,7 @@ export async function submitFormData(
   });
 
   try {
-    const response = await fetch(webhookUrl, {
+    await fetch(webhookUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
@@ -202,10 +202,6 @@ export async function submitFormData(
       '[submitFormData] Submission successful (assumed), submissionId:',
       payload.submissionId
     );
-    return payload.submissionId as string;
-
-    console.log('[submitFormData] Webhook succeeded:', response.status);
-    console.log('[submitFormData] Submission successful, submissionId:', payload.submissionId);
     return payload.submissionId as string;
   } catch (error) {
     console.error('[submitFormData] Unexpected error during submission:', error);
