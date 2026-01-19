@@ -611,6 +611,83 @@ const SimpleQuoteForm: FC = () => {
           </div>
         )}
 
+        {/* --- TEST BUTTON (DEV ONLY) --- */}
+        {/* Hidden by default, click 5 times on the title to reveal or just always visible in dev mode? */}
+        {/* For now, just a discreet button at the top for easy testing during this session */}
+        <button
+          type="button"
+          onClick={() => {
+            setFormData((prev) => ({
+              ...prev,
+              // Services
+              servicesRequested: {
+                shipping: true,
+                sourcing: Math.random() > 0.5,
+                warehousing: false,
+                dropshipping: false,
+                qc: false,
+                chinaVisits: false,
+                other: false,
+              },
+              // Shipping Route
+              country: 'France',
+              mode: 'Air Freight',
+              city: 'Shanghai',
+              zipCode: '200000',
+              locationType: 'factory',
+              destCity: 'Paris',
+              destZipCode: '75001',
+              destLocationType: 'business_address',
+              incoterm: 'FOB',
+              // Cargo
+              goodsDescription: 'Test Cargo ' + Math.floor(Math.random() * 1000),
+              totalWeight: (100 + Math.floor(Math.random() * 1000)).toString(),
+              numberOfUnits: 10,
+              goodsValue: '5000',
+              goodsCurrency: 'USD',
+              areGoodsReady: 'yes',
+              annualVolume: '1001 ~ 5000',
+              isPersonalOrHazardous: false,
+              dimensions: {
+                length: '100',
+                width: '100',
+                height: '100',
+              },
+              // Contact (Specific Email)
+              firstName: 'TestUser',
+              lastName: 'Automated',
+              email: 'DELETEMEPLEASE51247312541@gmail.com',
+              phone: '+33612345678',
+              phoneCountryCode: '+33',
+              companyName: 'Test Company Ltd',
+              customerType: 'company',
+              shipperType: 'commercial',
+            }));
+
+            // Mark fields as valid to bypass validation blocks
+            setFieldErrors({});
+
+            // Show toast or log
+            console.log('Form filled with test data');
+          }}
+          style={{
+            position: 'fixed',
+            bottom: '10px',
+            left: '10px',
+            zIndex: 9999,
+            opacity: 0.7,
+            fontSize: '10px',
+            padding: '5px',
+            background: '#ff0000',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          FILL TEST DATA
+        </button>
+
         {/* Social Proof Widget - visible during form filling */}
         {!submissionId && <SimpleSocialProofWidget t={t} />}
 
