@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
         }
       : {
           main: resolve(__dirname, 'index.html'),
-          embed: resolve(__dirname, 'embed.html'),
         };
 
   return {
