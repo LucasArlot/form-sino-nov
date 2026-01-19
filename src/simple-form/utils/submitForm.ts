@@ -184,24 +184,31 @@ export async function submitFormData(
   });
 
   try {
-    await fetch(webhookUrl, {
+    const response = await fetch(webhookUrl, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
-    // In no-cors mode, response is opaque (status 0, ok false, type 'opaque').
-    // We cannot read the text() or json(), nor check status.
-    // We assume if fetch didn't throw, it was sent.
+    if (!response.ok) {
+      let errorReason = '';
+      try {
+        errorReason = await response.text();
+      } catch {
+        errorReason = 'Unknown error';
+      }
+      const errorStatus = response.status;
+      console.error('[submitFormData] Webhook failed:', errorStatus, errorReason);
 
-    console.log('[submitFormData] Webhook request sent (opaque response).');
+      const errorMessage = `We could not send your quote request (status ${errorStatus}). Please try again in a few minutes or contact us directly.`;
+      if (onError) {
+        onError(errorMessage);
+      }
+      throw new Error(errorMessage);
+    }
 
-    // NOTE: We cannot verify valid status in no-cors mode, but it bypasses CORS errors.
-    console.log(
-      '[submitFormData] Submission successful (assumed), submissionId:',
-      payload.submissionId
-    );
+    console.log('[submitFormData] Webhook succeeded:', response.status);
+    console.log('[submitFormData] Submission successful, submissionId:', payload.submissionId);
     return payload.submissionId as string;
   } catch (error) {
     console.error('[submitFormData] Unexpected error during submission:', error);
