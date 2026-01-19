@@ -34,20 +34,20 @@ export default defineConfig(({ mode }) => {
           // Format ESM par défaut (compatible avec type="module")
           entryFileNames: (chunkInfo) => {
             if (chunkInfo.name === 'standalone') {
-              return 'sino-form-standalone.js';
+              return 'sino-form-standalone-v2.js';
             }
             if (chunkInfo.name === 'standalone-simple') {
-              return 'sino-form-simple-standalone.js';
+              return 'sino-form-simple-standalone-v2.js';
             }
             return 'assets/[name]-[hash].js';
           },
           // Pour standalone, nom fixe pour le CSS
           assetFileNames: (assetInfo) => {
             if (assetInfo.name === 'style.css' && isStandalone) {
-              return 'sino-form-standalone.css';
+              return 'sino-form-standalone-v2.css';
             }
             if (assetInfo.name === 'style.css' && isStandaloneSimple) {
-              return 'sino-form-simple-standalone.css';
+              return 'sino-form-simple-standalone-v2.css';
             }
             return 'assets/[name]-[hash][extname]';
           },
