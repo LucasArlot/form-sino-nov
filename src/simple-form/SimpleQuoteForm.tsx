@@ -617,58 +617,106 @@ const SimpleQuoteForm: FC = () => {
         <button
           type="button"
           onClick={() => {
+            // Helper for random selection
+            const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+            const randomBool = () => Math.random() > 0.5;
+            const randomInt = (min: number, max: number) =>
+              Math.floor(Math.random() * (max - min + 1)) + min;
+
+            // Random Data Sets
+            const countries = [
+              'France',
+              'United States',
+              'Germany',
+              'Spain',
+              'Italy',
+              'Canada',
+              'Australia',
+            ];
+            const modes = ['Air Freight', 'Sea Freight', 'Rail Freight', 'Express Courier'];
+            const cities = ['Paris', 'New York', 'Berlin', 'Madrid', 'Rome', 'Toronto', 'Sydney'];
+            const incoterms = ['FOB', 'EXW', 'CIF', 'DDP'];
+            const goodsTypes = [
+              'Electronics',
+              'Furniture',
+              'Textiles',
+              'Machinery',
+              'Toys',
+              'Auto Parts',
+            ];
+            const firstNames = ['John', 'Emma', 'Michael', 'Sarah', 'David', 'Laura'];
+            const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia'];
+            const companies = ['TechSol', 'GlobalTrade', 'ImportsInc', 'BestGoods', 'FastShip'];
+
+            const selectedCountry = pick(countries);
+            const isShipping = true; // Always true for base test, or randomBool()
+            const weight = randomInt(50, 15000);
+
             setFormData((prev) => ({
               ...prev,
-              // Services
+              // Services (Random mix)
               servicesRequested: {
-                shipping: true,
-                sourcing: Math.random() > 0.5,
-                warehousing: false,
-                dropshipping: false,
-                qc: false,
-                chinaVisits: false,
-                other: false,
+                shipping: isShipping,
+                sourcing: randomBool(),
+                warehousing: randomBool(),
+                dropshipping: randomBool(),
+                qc: randomBool(),
+                chinaVisits: randomBool(),
+                other: randomBool(),
               },
+
               // Shipping Route
-              country: 'France',
-              mode: 'Air Freight',
-              city: 'Shanghai',
-              zipCode: '200000',
-              locationType: 'factory',
-              destCity: 'Paris',
-              destZipCode: '75001',
-              destLocationType: 'business_address',
-              incoterm: 'FOB',
+              country: selectedCountry,
+              mode: pick(modes),
+              city: 'Shenzhen', // Origin
+              zipCode: randomInt(10000, 99999).toString(),
+              locationType: pick(['factory', 'port', 'warehouse']),
+
+              destCity: pick(cities),
+              destZipCode: randomInt(10000, 99999).toString(),
+              destLocationType: pick(['business_address', 'private_address', 'warehouse']),
+              incoterm: pick(incoterms),
+
               // Cargo
-              goodsDescription: 'Test Cargo ' + Math.floor(Math.random() * 1000),
-              totalWeight: (100 + Math.floor(Math.random() * 1000)).toString(),
-              numberOfUnits: 10,
-              goodsValue: '5000',
-              goodsCurrency: 'USD',
-              areGoodsReady: 'yes',
-              annualVolume: '1001 ~ 5000',
-              isPersonalOrHazardous: false,
+              goodsDescription: `${pick(goodsTypes)} - Batch #${randomInt(100, 999)}`,
+              totalWeight: weight.toString(),
+              numberOfUnits: randomInt(1, 500),
+              goodsValue: randomInt(1000, 50000).toString(),
+              goodsCurrency: pick(['USD', 'EUR', 'CNY']),
+              areGoodsReady: pick(['yes', 'no_in_1_week', 'no_in_1_month']),
+              annualVolume: pick(['50 ~ 500', '501 ~ 1000', '1001 ~ 5000', '5001+']),
+              isPersonalOrHazardous: false, // Keep false to avoid complexity in simple test
               dimensions: {
-                length: '100',
-                width: '100',
-                height: '100',
+                length: randomInt(20, 200).toString(),
+                width: randomInt(20, 200).toString(),
+                height: randomInt(20, 200).toString(),
               },
-              // Contact (Specific Email)
-              firstName: 'TestUser',
-              lastName: 'Automated',
-              email: 'DELETEMEPLEASE51247312541@gmail.com',
-              phone: '+33612345678',
+              weightPerUnit: '', // derived usually
+
+              // Sourcing (if active)
+              sourcing: {
+                productDescription: 'Looking for ' + pick(goodsTypes),
+                targetPrice: randomInt(10, 100).toString(),
+                targetCurrency: 'USD',
+                moq: randomInt(100, 1000).toString(),
+              },
+
+              // Contact (Specific Email + Random details)
+              firstName: pick(firstNames),
+              lastName: pick(lastNames),
+              email: 'DELETEMEPLEASE51247312541@gmail.com', // CONSTANT
+              phone: `+336${randomInt(10000000, 99999999)}`,
               phoneCountryCode: '+33',
-              companyName: 'Test Company Ltd',
-              customerType: 'company',
-              shipperType: 'commercial',
+              companyName: pick(companies) + ' ' + pick(['Ltd', 'Inc', 'GmbH', 'SARL']),
+              customerType: pick(['company', 'individual']),
+              shipperType: pick(['commercial', 'personal']),
+              remarks: 'Automated Test Submission ' + new Date().toISOString(),
             }));
 
-            // Mark fields as valid to bypass validation blocks
+            // Mark fields as valid
             setFieldErrors({});
 
-            // Show toast or log
-            console.log('Form filled with test data');
+            console.log('Form filled with RANDOM test data');
           }}
           style={{
             position: 'fixed',
