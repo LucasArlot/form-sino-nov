@@ -649,74 +649,212 @@ const SimpleQuoteForm: FC = () => {
             const companies = ['TechSol', 'GlobalTrade', 'ImportsInc', 'BestGoods', 'FastShip'];
 
             const selectedCountry = pick(countries);
-            const isShipping = true; // Always true for base test, or randomBool()
             const weight = randomInt(50, 15000);
 
-            setFormData((prev) => ({
-              ...prev,
-              // Services (Random mix)
-              servicesRequested: {
-                shipping: isShipping,
+            setFormData((prev) => {
+              // Decide services first
+              const services = {
+                shipping: true, // Core service
                 sourcing: randomBool(),
                 warehousing: randomBool(),
                 dropshipping: randomBool(),
                 qc: randomBool(),
                 chinaVisits: randomBool(),
                 other: randomBool(),
-              },
+              };
 
-              // Shipping Route
-              country: selectedCountry,
-              mode: pick(modes),
-              city: 'Shenzhen', // Origin
-              zipCode: randomInt(10000, 99999).toString(),
-              locationType: pick(['factory', 'port', 'warehouse']),
+              return {
+                ...prev,
+                // Services
+                servicesRequested: services,
 
-              destCity: pick(cities),
-              destZipCode: randomInt(10000, 99999).toString(),
-              destLocationType: pick(['business_address', 'private_address', 'warehouse']),
-              incoterm: pick(incoterms),
+                // Shipping Route
+                country: selectedCountry,
+                mode: pick(modes),
+                city: pick(['Shenzhen', 'Ningbo', 'Shanghai', 'Qingdao']),
+                zipCode: randomInt(10000, 99999).toString(),
+                locationType: pick(['factory', 'port', 'warehouse']),
 
-              // Cargo
-              goodsDescription: `${pick(goodsTypes)} - Batch #${randomInt(100, 999)}`,
-              totalWeight: weight.toString(),
-              numberOfUnits: randomInt(1, 500),
-              goodsValue: randomInt(1000, 50000).toString(),
-              goodsCurrency: pick(['USD', 'EUR', 'CNY']),
-              areGoodsReady: pick(['yes', 'no_in_1_week', 'no_in_1_month']),
-              annualVolume: pick(['50 ~ 500', '501 ~ 1000', '1001 ~ 5000', '5001+']),
-              isPersonalOrHazardous: false, // Keep false to avoid complexity in simple test
-              dimensions: {
-                length: randomInt(20, 200).toString(),
-                width: randomInt(20, 200).toString(),
-                height: randomInt(20, 200).toString(),
-              },
-              weightPerUnit: '', // derived usually
+                destCity: pick(cities),
+                destZipCode: randomInt(10000, 99999).toString(),
+                destLocationType: pick(['business_address', 'private_address', 'warehouse']),
+                destPort:
+                  services.shipping && randomBool()
+                    ? pick(['Le Havre', 'Marseille', 'Hamburg', 'Valencia'])
+                    : '',
+                incoterm: pick(incoterms),
 
-              // Sourcing (if active)
-              sourcing: {
-                productDescription: 'Looking for ' + pick(goodsTypes),
-                targetPrice: randomInt(10, 100).toString(),
-                targetCurrency: 'USD',
-                moq: randomInt(100, 1000).toString(),
-              },
+                // Cargo
+                goodsDescription: `${pick(goodsTypes)} - Batch #${randomInt(100, 999)}`,
+                totalWeight: weight.toString(),
+                numberOfUnits: randomInt(1, 500),
+                goodsValue: randomInt(1000, 50000).toString(),
+                goodsCurrency: pick(['USD', 'EUR', 'CNY']),
+                areGoodsReady: pick(['yes', 'no_in_1_week', 'no_in_1_month']),
+                annualVolume: pick(['50 ~ 500', '501 ~ 1000', '1001 ~ 5000', '5001+']),
+                isPersonalOrHazardous: false,
+                dimensions: {
+                  length: randomInt(20, 200).toString(),
+                  width: randomInt(20, 200).toString(),
+                  height: randomInt(20, 200).toString(),
+                },
+                specialRequirements: randomBool() ? 'Fragile, requires careful handling.' : '',
+                weightPerUnit: '', // derived
 
-              // Contact (Specific Email + Random details)
-              firstName: pick(firstNames),
-              lastName: pick(lastNames),
-              email: 'DELETEMEPLEASE51247312541@gmail.com', // CONSTANT
-              phone: `+336${randomInt(10000000, 99999999)}`,
-              phoneCountryCode: '+33',
-              companyName: pick(companies) + ' ' + pick(['Ltd', 'Inc', 'GmbH', 'SARL']),
-              customerType: pick(['company', 'individual']),
-              shipperType: pick(['commercial', 'personal']),
-              remarks: 'Automated Test Submission ' + new Date().toISOString(),
-            }));
+                // Sourcing Details (if selected)
+                sourcing: services.sourcing
+                  ? {
+                      productDescription: 'Looking for high-quality ' + pick(goodsTypes),
+                      targetPrice: randomInt(5, 200),
+                      targetCurrency: 'USD',
+                      moq: randomInt(500, 5000),
+                      referenceLink: 'https://alibaba.com/product/example-' + randomInt(100, 999),
+                      platform: pick(['Alibaba', 'Made-in-China', '1688', 'Other']),
+                      hasSupplier: randomBool(),
+                      targetMarkets: pick(['Europe', 'North America', 'Global']),
+                      requiredCertifications: pick(['CE', 'FCC', 'ROHS', 'ISO9001']),
+                      timeline: pick(['Urgent', 'Standard', 'Future Project']),
+                      qualityStandards: 'High standard required for retail.',
+                      packagingRequirements: 'Custom branded box needed.',
+                      notes: 'We need a reliable supplier.',
+                    }
+                  : {
+                      productDescription: '',
+                      targetPrice: null,
+                      targetCurrency: 'USD',
+                      moq: null,
+                      referenceLink: '',
+                      platform: '',
+                      hasSupplier: null,
+                      targetMarkets: '',
+                      requiredCertifications: '',
+                      timeline: '',
+                      qualityStandards: '',
+                      packagingRequirements: '',
+                      notes: '',
+                    },
+
+                // Warehousing Details (if selected)
+                warehousing: services.warehousing
+                  ? {
+                      duration: pick(['1 month', '3 months', '6 months', '1 year']),
+                      skuCount: randomInt(1, 100),
+                      consolidation: randomBool(),
+                      extraServices: [pick(['Labeling', 'Repackaging', 'Kitting'])],
+                      notes: 'Need temperature controlled storage if possible.',
+                    }
+                  : {
+                      duration: '',
+                      skuCount: null,
+                      consolidation: null,
+                      extraServices: [],
+                      notes: '',
+                    },
+
+                // Dropshipping Details (if selected)
+                dropshipping: services.dropshipping
+                  ? {
+                      products: pick(goodsTypes),
+                      model: pick(['Blind dropshipping', 'Branded dropshipping']),
+                      customerCountries: pick(['Europe', 'USA', 'Worldwide']),
+                      dailyOrders: randomInt(10, 500),
+                      hasCatalog: randomBool(),
+                      brandingNeeded: randomBool(),
+                      notes: 'Looking for fast fulfillment times.',
+                    }
+                  : {
+                      products: '',
+                      model: '',
+                      customerCountries: '',
+                      dailyOrders: null,
+                      hasCatalog: null,
+                      brandingNeeded: null,
+                      notes: '',
+                    },
+
+                // QC Details (if selected)
+                qc: services.qc
+                  ? {
+                      type: pick([
+                        'Pre-shipment Inspection',
+                        'During Production',
+                        'Container Loading',
+                      ]),
+                      productionStage: pick(['Finished', '50% complete', 'Just starting']),
+                      factoryCity: pick(['Shenzhen', 'Dongguan', 'Yiwu']),
+                      preferredDate: '2026-06-' + randomInt(10, 28),
+                      notes: 'Focus on cosmetic defects and packaging.',
+                    }
+                  : {
+                      type: '',
+                      productionStage: '',
+                      factoryCity: '',
+                      preferredDate: '',
+                      notes: '',
+                    },
+
+                // China Visit Details (if selected)
+                chinaVisit: services.chinaVisits
+                  ? {
+                      visitType: [pick(['Factory Visit', 'Trade Fair'])],
+                      mainCity: pick(['Guangzhou', 'Shanghai', 'Yiwu']),
+                      otherCities: 'Maybe Hangzhou',
+                      fairName: 'Canton Fair',
+                      factoryDescription: 'Visiting electronics suppliers',
+                      cantonPhase: 'Phase 1',
+                      startDate: '2026-10-15',
+                      endDate: '2026-10-25',
+                      numberOfDays: 10,
+                      numberOfTravelers: 2,
+                      needGuide: randomBool(),
+                      needTransport: randomBool(),
+                      needHotels: randomBool(),
+                      notes: 'Need invitation letter for visa.',
+                    }
+                  : {
+                      visitType: [],
+                      mainCity: '',
+                      otherCities: '',
+                      fairName: '',
+                      factoryDescription: '',
+                      cantonPhase: '',
+                      startDate: '',
+                      endDate: '',
+                      numberOfDays: null,
+                      numberOfTravelers: null,
+                      needGuide: null,
+                      needTransport: null,
+                      needHotels: null,
+                      notes: '',
+                    },
+
+                // Other Project (if selected)
+                otherProject: services.other
+                  ? {
+                      projectType: 'Consulting',
+                      description: 'Need help with market research.',
+                      budget: '5000',
+                      timeline: 'Next month',
+                    }
+                  : { projectType: '', description: '', budget: '', timeline: '' },
+
+                // Contact (Specific Email + Random details)
+                firstName: pick(firstNames),
+                lastName: pick(lastNames),
+                email: 'DELETEMEPLEASE51247312541@gmail.com', // CONSTANT
+                phone: `+336${randomInt(10000000, 99999999)}`,
+                phoneCountryCode: '+33',
+                companyName: pick(companies) + ' ' + pick(['Ltd', 'Inc', 'GmbH', 'SARL']),
+                customerType: pick(['company', 'individual']),
+                shipperType: pick(['commercial', 'personal']),
+                remarks: 'Automated Test Submission ' + new Date().toISOString(),
+              };
+            });
 
             // Mark fields as valid
             setFieldErrors({});
 
-            console.log('Form filled with RANDOM test data');
+            console.log('Form filled with RICH RANDOM test data');
           }}
           style={{
             position: 'fixed',

@@ -102,6 +102,7 @@ export interface SimpleFormData {
   destCity: string;
   destZipCode: string;
   destLocationType: string;
+  destPort: string;
 
   // Shipping Route - Origin (China)
   origin: string;
@@ -124,6 +125,7 @@ export interface SimpleFormData {
   areGoodsReady: string;
   annualVolume: string;
   isPersonalOrHazardous: boolean;
+  specialRequirements: string;
   remarks: string;
 
   // Services
@@ -156,6 +158,7 @@ export const initialSimpleFormData: SimpleFormData = {
   destCity: '',
   destZipCode: '',
   destLocationType: '',
+  destPort: '',
 
   // Shipping Route - Origin
   origin: '',
@@ -178,6 +181,7 @@ export const initialSimpleFormData: SimpleFormData = {
   areGoodsReady: '',
   annualVolume: '',
   isPersonalOrHazardous: false,
+  specialRequirements: '',
   remarks: '',
 
   // Services
