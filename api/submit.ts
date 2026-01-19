@@ -21,6 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     // Forward request to N8N (Both Prod and Test)
+    // Send ONLY the body content, stripping headers/metadata which N8N adds anyway
     const payload = JSON.stringify(req.body);
     const headers = { 'Content-Type': 'application/json' };
 
