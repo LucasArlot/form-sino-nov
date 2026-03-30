@@ -5,6 +5,7 @@ import {
   validateRequired,
   validateCountry,
   validateDestCity,
+  validateOriginCity,
   validateWeight,
   isStepComplete,
 } from '../../src/simple-form/utils/validation';
@@ -106,6 +107,25 @@ describe('validateDestCity', () => {
   });
 });
 
+describe('validateOriginCity', () => {
+  test('returns valid for non-empty city', () => {
+    expect(validateOriginCity('Shenzhen').valid).toBe(true);
+    expect(validateOriginCity('Guangzhou').valid).toBe(true);
+  });
+
+  test('returns invalid for empty city', () => {
+    const result = validateOriginCity('');
+    expect(result.valid).toBe(false);
+    expect(result.error).toBe('City in China is required');
+  });
+
+  test('returns invalid for too short city name', () => {
+    const result = validateOriginCity('AB');
+    expect(result.valid).toBe(false);
+    expect(result.error).toBe('City in China is too short');
+  });
+});
+
 describe('validateWeight', () => {
   test('returns valid for numeric weight', () => {
     expect(validateWeight('100').valid).toBe(true);
@@ -140,6 +160,7 @@ describe('isStepComplete', () => {
   const baseFormData = {
     country: '',
     destCity: '',
+    city: '',
     firstName: '',
     email: '',
     phone: '',
@@ -159,7 +180,7 @@ describe('isStepComplete', () => {
     expect(isStepComplete('services', baseFormData)).toBe(true);
   });
 
-  test('shippingRoute step requires country and destCity', () => {
+  test('shippingRoute step requires country, destCity, and city in China', () => {
     expect(isStepComplete('shippingRoute', baseFormData)).toBe(false);
 
     expect(
@@ -167,6 +188,15 @@ describe('isStepComplete', () => {
         ...baseFormData,
         country: 'FR',
         destCity: 'Paris',
+      })
+    ).toBe(false);
+
+    expect(
+      isStepComplete('shippingRoute', {
+        ...baseFormData,
+        country: 'FR',
+        destCity: 'Paris',
+        city: 'Shenzhen',
       })
     ).toBe(true);
   });

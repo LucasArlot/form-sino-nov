@@ -17,6 +17,18 @@ export const SimpleFormProvider: FC<SimpleFormProviderProps> = ({ children }) =>
   // Main form state
   const [formData, setFormData] = useState<SimpleFormData>(initialSimpleFormData);
 
+  // Prefilled fields tracking
+  const [prefilledFields, setPrefilledFields] = useState<Set<string>>(new Set());
+
+  const clearPrefilledField = useCallback((field: string): void => {
+    setPrefilledFields((prev) => {
+      if (!prev.has(field)) return prev;
+      const next = new Set(prev);
+      next.delete(field);
+      return next;
+    });
+  }, []);
+
   // Generic input change handler
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -27,8 +39,10 @@ export const SimpleFormProvider: FC<SimpleFormProviderProps> = ({ children }) =>
         ...prev,
         [name]: type === 'checkbox' ? checked : value,
       }));
+
+      clearPrefilledField(name);
     },
-    []
+    [clearPrefilledField]
   );
 
   // Context value
@@ -36,6 +50,9 @@ export const SimpleFormProvider: FC<SimpleFormProviderProps> = ({ children }) =>
     formData,
     setFormData,
     handleInputChange,
+    prefilledFields,
+    clearPrefilledField,
+    setPrefilledFields,
   };
 
   return <SimpleFormContext.Provider value={contextValue}>{children}</SimpleFormContext.Provider>;

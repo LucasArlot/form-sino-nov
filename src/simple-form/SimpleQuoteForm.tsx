@@ -1,7 +1,9 @@
 import type { FC, ChangeEvent } from 'react';
+import { initialSimpleFormData } from './context/types';
+import type { SimpleFormData } from './context/types';
+
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useSimpleForm } from './context/useSimpleForm';
-// SimpleFormData type is used via useSimpleForm hook
 import SimpleServicesSection from './SimpleServicesSection';
 import SimpleContactSection from './SimpleContactSection';
 import SimpleFooterSection from './SimpleFooterSection';
@@ -17,18 +19,27 @@ import SimpleQcSection from './SimpleQcSection';
 import SimpleChinaVisitSection from './SimpleChinaVisitSection';
 import SimpleOtherSection from './SimpleOtherSection';
 import SimpleConfirmationSection from './SimpleConfirmationSection';
+import PrefillBanner from './PrefillBanner';
+import { buildPrefill, type PrefillResult } from './utils/prefill';
 import {
   validateEmail,
   validatePhone,
   validateRequired,
   validateCountry,
   validateDestCity,
+  validateOriginCity,
   validateWeight,
   validateStepFields,
   isStepComplete,
   type ValidationResult,
 } from './utils/validation';
-import { getSessionId, saveFormDraft, loadFormDraft } from './utils/sessionStorage';
+import {
+  getSessionId,
+  saveFormDraft,
+  loadFormDraft,
+  saveVisitorContact,
+  loadVisitorContact,
+} from './utils/sessionStorage';
 import {
   initFormTracking,
   trackStepChange,
@@ -46,8 +57,21 @@ import {
  * - No i18n dependency (uses fallback strings directly)
  * - CSS scoping through .sino-simple-form* classes
  */
-const SimpleQuoteForm: FC = () => {
-  const { formData, setFormData, handleInputChange } = useSimpleForm();
+
+interface SimpleQuoteFormProps {
+  containerId?: string;
+  initPrefill?: Record<string, unknown>;
+}
+
+const SimpleQuoteForm: FC<SimpleQuoteFormProps> = ({ containerId, initPrefill }) => {
+  const {
+    formData,
+    setFormData,
+    handleInputChange,
+    prefilledFields,
+    clearPrefilledField,
+    setPrefilledFields,
+  } = useSimpleForm();
 
   const [goodsValueUnknown, setGoodsValueUnknown] = useState(false);
   const [dimensionsUnknown, setDimensionsUnknown] = useState(false);
@@ -73,12 +97,16 @@ const SimpleQuoteForm: FC = () => {
   const [lastSelectedCity, setLastSelectedCity] = useState<string>('');
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Prefill state
+  const [prefillResult, setPrefillResult] = useState<PrefillResult | null>(null);
+
   // Memoize country and city options
   const countryOptions = useMemo(() => createCountryOptions(), []);
   const cityOptions = useMemo(() => createCityOptions(formData.country), [formData.country]);
 
   const countryRef = useRef<HTMLInputElement | null>(null);
   const destCityRef = useRef<HTMLInputElement | null>(null);
+  const cityRef = useRef<HTMLInputElement | null>(null);
   const totalWeightRef = useRef<HTMLInputElement | null>(null);
   const firstNameRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -91,6 +119,7 @@ const SimpleQuoteForm: FC = () => {
       phoneRef.current,
       countryRef.current,
       destCityRef.current,
+      cityRef.current,
       totalWeightRef.current,
     ];
 
@@ -109,6 +138,12 @@ const SimpleQuoteForm: FC = () => {
 
   // Simple translation function - just returns the fallback (no i18n)
   const t = useCallback((_key: string, fallback: string): string => fallback, []);
+
+  const pfClass = useCallback(
+    (field: string): string =>
+      prefilledFields.has(field) ? ' sino-simple-form__input--prefilled' : '',
+    [prefilledFields]
+  );
 
   const onChange = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -210,6 +245,9 @@ const SimpleQuoteForm: FC = () => {
           break;
         case 'destCity':
           result = validateDestCity(value as string);
+          break;
+        case 'city':
+          result = validateOriginCity(value as string);
           break;
         case 'totalWeight':
           result = validateWeight(value);
@@ -433,6 +471,66 @@ const SimpleQuoteForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Apply prefill data from URL params, data attributes, or init({ prefill }) API
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const result = buildPrefill({ containerId, initPrefill });
+    if (result.source === 'none' || result.count === 0) return;
+
+    setPrefillResult(result);
+    setPrefilledFields(new Set(result.fields));
+
+    setFormData((prev) => {
+      const merged = { ...prev };
+
+      for (const [key, value] of Object.entries(result.data)) {
+        if (
+          value !== null &&
+          value !== undefined &&
+          typeof value === 'object' &&
+          !Array.isArray(value)
+        ) {
+          (merged as Record<string, unknown>)[key] = {
+            ...(((prev as Record<string, unknown>)[key] as Record<string, unknown>) ?? {}),
+            ...(value as Record<string, unknown>),
+          };
+        } else {
+          (merged as Record<string, unknown>)[key] = value;
+        }
+      }
+
+      return merged as SimpleFormData;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Returning visitor: pre-fill contact info from previous sessions (lowest priority)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (prefillResult && prefillResult.count > 0) return; // explicit prefill takes precedence
+
+    const visitor = loadVisitorContact();
+    if (!visitor) return;
+
+    setFormData((prev) => {
+      // Only fill empty contact fields
+      const updates: Partial<SimpleFormData> = {};
+      if (visitor.firstName && !prev.firstName) updates.firstName = visitor.firstName;
+      if (visitor.lastName && !prev.lastName) updates.lastName = visitor.lastName;
+      if (visitor.email && !prev.email) updates.email = visitor.email;
+      if (visitor.phone && !prev.phone) updates.phone = visitor.phone;
+      if (visitor.phoneCountryCode && prev.phoneCountryCode === '+33')
+        updates.phoneCountryCode = visitor.phoneCountryCode;
+      if (visitor.companyName && !prev.companyName) updates.companyName = visitor.companyName;
+      if (visitor.country && !prev.country) updates.country = visitor.country;
+
+      if (Object.keys(updates).length === 0) return prev;
+      return { ...prev, ...updates } as SimpleFormData;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Track form abandonment on page unload
   useEffect(() => {
     if (typeof window === 'undefined' || submissionId) return;
@@ -542,6 +640,18 @@ const SimpleQuoteForm: FC = () => {
       // Track form submission
       trackFormSubmission(id, formData as Record<string, unknown>);
 
+      // Save contact info for returning visitor recognition
+      saveVisitorContact({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        phoneCountryCode: formData.phoneCountryCode,
+        companyName: formData.companyName,
+        customerType: formData.customerType,
+        country: formData.country,
+      });
+
       // Clear localStorage draft on successful submission
       if (typeof window !== 'undefined' && sessionId) {
         try {
@@ -554,7 +664,7 @@ const SimpleQuoteForm: FC = () => {
         }
       }
     },
-    [sessionId]
+    [sessionId, formData]
   );
 
   // Handle start new request (memoized)
@@ -562,9 +672,11 @@ const SimpleQuoteForm: FC = () => {
     setSubmissionId(null);
     setCurrentStepIndex(0);
     setSubmitError(null);
-    // Optionally reset form data here if needed
-    // setFormData(initialFormData);
-  }, []);
+    setFieldErrors({});
+    setFieldTouched({});
+    // Reset form data to initial state
+    setFormData(initialSimpleFormData);
+  }, [setFormData]);
 
   // If submission successful, show confirmation
   if (submissionId) {
@@ -874,6 +986,27 @@ const SimpleQuoteForm: FC = () => {
           FILL TEST DATA
         </button>
 
+        {/* Prefill Banner */}
+        {prefillResult && prefillResult.count > 0 && (
+          <PrefillBanner
+            data={prefillResult.data}
+            fields={prefillResult.fields}
+            count={prefillResult.count}
+            onDismiss={() => setPrefillResult(null)}
+            onClearAll={() => {
+              setPrefillResult(null);
+              setPrefilledFields(new Set());
+              setFormData(initialSimpleFormData);
+            }}
+            onContinue={() => {
+              setPrefillResult(null);
+              if (currentStepIndex === 0 && orderedSteps.length > 1) {
+                handleNext();
+              }
+            }}
+          />
+        )}
+
         {/* Social Proof Widget - visible during form filling */}
         {!submissionId && <SimpleSocialProofWidget t={t} />}
 
@@ -1005,7 +1138,11 @@ const SimpleQuoteForm: FC = () => {
                         id="country"
                         name="country"
                         value={formData.country}
-                        onChange={onChange}
+                        className={pfClass('country').trim() || undefined}
+                        onChange={(e) => {
+                          onChange(e);
+                          clearPrefilledField('country');
+                        }}
                         onBlur={() => {
                           // Only validate on blur if field has a value and was actually touched by user
                           if (formData.country && formData.country.trim().length > 0) {
@@ -1163,7 +1300,11 @@ const SimpleQuoteForm: FC = () => {
                         id="destCity"
                         name="destCity"
                         value={formData.destCity}
-                        onChange={onChange}
+                        className={pfClass('destCity').trim() || undefined}
+                        onChange={(e) => {
+                          onChange(e);
+                          clearPrefilledField('destCity');
+                        }}
                         onBlur={() => {
                           // Only validate on blur if field has a value and was actually touched by user
                           if (formData.destCity && formData.destCity.trim().length > 0) {
@@ -1538,23 +1679,151 @@ const SimpleQuoteForm: FC = () => {
                 </h3>
 
                 <div className="sino-simple-form__fields sino-simple-form__fields--rows">
-                  <div className="sino-simple-form__field sino-simple-form__field--primary">
+                  <div
+                    className={`sino-simple-form__field sino-simple-form__field--primary${
+                      fieldTouched.city && fieldErrors.city ? ' sino-simple-form__field--error' : ''
+                    }${
+                      fieldTouched.city && !fieldErrors.city && isFilled(formData.city)
+                        ? ' sino-simple-form__field--success'
+                        : ''
+                    }`}
+                  >
                     <label className="sino-simple-form__label" htmlFor="city">
                       {t('originCity', 'City in China')}
+                      <span className="sino-simple-form__required" aria-label="required">
+                        *
+                      </span>
                     </label>
-                    <input
-                      className="sino-simple-form__input"
-                      type="text"
-                      name="city"
-                      id="city"
-                      value={formData.city}
-                      onChange={onChange}
-                      placeholder={t('originCityPlaceholder', 'e.g. Shenzhen, Guangzhou…')}
-                    />
-                    <p className="sino-simple-form__help">
+                    <div className="sino-simple-form__field-wrapper">
+                      <input
+                        className={`sino-simple-form__input${
+                          fieldErrors.city ? ' sino-simple-form__input--error' : ''
+                        }${
+                          fieldTouched.city && !fieldErrors.city && isFilled(formData.city)
+                            ? ' sino-simple-form__input--success'
+                            : ''
+                        }${pfClass('city')}`}
+                        type="text"
+                        name="city"
+                        id="city"
+                        ref={cityRef}
+                        value={formData.city}
+                        onChange={(event) => {
+                          onChange(event);
+                          clearPrefilledField('city');
+                          if (fieldErrors.city) {
+                            setFieldErrors((prev) => {
+                              const next = { ...prev };
+                              delete next.city;
+                              return next;
+                            });
+                          }
+                        }}
+                        onBlur={() => onBlur('city', formData.city)}
+                        placeholder={t('originCityPlaceholder', 'e.g. Shenzhen, Guangzhou…')}
+                        aria-describedby={
+                          fieldErrors.city
+                            ? 'city-error'
+                            : fieldTouched.city && !fieldErrors.city && isFilled(formData.city)
+                              ? 'city-success city-help'
+                              : 'city-help'
+                        }
+                        aria-invalid={fieldErrors.city ? 'true' : 'false'}
+                        aria-required="true"
+                      />
+                      {fieldTouched.city && (
+                        <>
+                          {fieldErrors.city && (
+                            <span
+                              className="sino-simple-form__field-icon sino-simple-form__field-icon--error"
+                              aria-hidden="true"
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <line
+                                  x1="12"
+                                  y1="8"
+                                  x2="12"
+                                  y2="12"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <line
+                                  x1="12"
+                                  y1="16"
+                                  x2="12.01"
+                                  y2="16"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                          {!fieldErrors.city && isFilled(formData.city) && (
+                            <span
+                              className="sino-simple-form__field-icon sino-simple-form__field-icon--success"
+                              aria-hidden="true"
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <path
+                                  d="M8 12l2 2 4-4"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {fieldErrors.city && (
+                      <p
+                        id="city-error"
+                        className="sino-simple-form__field-error"
+                        role="alert"
+                        aria-live="polite"
+                      >
+                        {fieldErrors.city}
+                      </p>
+                    )}
+                    {fieldTouched.city && !fieldErrors.city && isFilled(formData.city) && (
+                      <p id="city-success" className="sino-simple-form__sr-only" aria-live="polite">
+                        {t('fieldValid', 'Field is valid')}
+                      </p>
+                    )}
+                    <p id="city-help" className="sino-simple-form__help">
                       {t(
                         'originCityHelp',
-                        'City is enough for now. You can skip the pickup details below if you prefer.'
+                        'City is enough for now. Advanced pickup details below stay optional.'
                       )}
                     </p>
                   </div>
@@ -1745,7 +2014,7 @@ const SimpleQuoteForm: FC = () => {
                     {t('goodsDescription', 'What are you shipping?')}
                   </label>
                   <input
-                    className="sino-simple-form__input"
+                    className={`sino-simple-form__input${pfClass('goodsDescription')}`}
                     type="text"
                     name="goodsDescription"
                     id="goodsDescription"
@@ -1787,7 +2056,7 @@ const SimpleQuoteForm: FC = () => {
                         isFilled(formData.totalWeight)
                           ? ' sino-simple-form__input--success'
                           : ''
-                      }`}
+                      }${pfClass('totalWeight')}`}
                       type="text"
                       id="totalWeight"
                       name="totalWeight"
@@ -1795,6 +2064,7 @@ const SimpleQuoteForm: FC = () => {
                       value={formData.totalWeight}
                       onChange={(event) => {
                         updateCargoField('totalWeight', event.target.value);
+                        clearPrefilledField('totalWeight');
                         // Clear error when user starts typing
                         if (fieldErrors.totalWeight) {
                           setFieldErrors((prev) => {

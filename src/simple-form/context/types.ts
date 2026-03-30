@@ -264,6 +264,12 @@ export interface SimpleFormContextValue {
   formData: SimpleFormData;
   setFormData: React.Dispatch<React.SetStateAction<SimpleFormData>>;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  /** Set of dot-paths for fields that were pre-filled (e.g. "country", "sourcing.productDescription") */
+  prefilledFields: Set<string>;
+  /** Remove a field from the prefilled set (call when user manually edits) */
+  clearPrefilledField: (field: string) => void;
+  /** Replace the entire prefilled fields set (used by prefill engine on mount) */
+  setPrefilledFields: React.Dispatch<React.SetStateAction<Set<string>>>;
 }
 
 // Type alias for component props (replaces Pick<QuoteFormContextValue, ...>)

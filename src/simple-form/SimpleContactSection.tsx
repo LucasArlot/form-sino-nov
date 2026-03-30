@@ -1,5 +1,6 @@
 import type { FC, ChangeEvent, RefObject } from 'react';
 import type { SimpleFormProps } from './context/types';
+import { useSimpleForm } from './context/useSimpleForm';
 import SimpleStepProgress from './SimpleStepProgress';
 import SimpleTestimonials from './SimpleTestimonials';
 
@@ -34,6 +35,9 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
   currentStepIndex,
   totalSteps,
 }) => {
+  const { prefilledFields } = useSimpleForm();
+  const pf = (field: string): string =>
+    prefilledFields.has(field) ? ' sino-simple-form__input--prefilled' : '';
   return (
     <section className="sino-simple-form__section sino-simple-form__section--contact">
       <h2 className="sino-simple-form__section-title">
@@ -170,7 +174,7 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
                 fieldTouched.firstName && !fieldErrors.firstName && isFilled(formData.firstName)
                   ? ' sino-simple-form__input--success'
                   : ''
-              }`}
+              }${pf('firstName')}`}
               type="text"
               name="firstName"
               id="firstName"
@@ -274,7 +278,7 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
             {t('lastName', 'Last name')}
           </label>
           <input
-            className="sino-simple-form__input"
+            className={`sino-simple-form__input${pf('lastName')}`}
             type="text"
             name="lastName"
             id="lastName"
@@ -292,7 +296,7 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
             </span>
           </label>
           <input
-            className="sino-simple-form__input"
+            className={`sino-simple-form__input${pf('companyName')}`}
             type="text"
             name="companyName"
             id="companyName"
@@ -325,7 +329,7 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
                 fieldTouched.email && !fieldErrors.email && isFilled(formData.email)
                   ? ' sino-simple-form__input--success'
                   : ''
-              }`}
+              }${pf('email')}`}
               type="email"
               name="email"
               id="email"
@@ -447,7 +451,7 @@ const SimpleContactSection: FC<SimpleContactSectionProps> = ({
                 fieldTouched.phone && !fieldErrors.phone && isFilled(formData.phone)
                   ? ' sino-simple-form__input--success'
                   : ''
-              }`}
+              }${pf('phone')}`}
               type="tel"
               name="phone"
               id="phone"

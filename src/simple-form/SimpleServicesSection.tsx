@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import type { SimpleFormProps } from './context/types';
+import { useSimpleForm } from './context/useSimpleForm';
 
 type SimpleServicesSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
@@ -30,6 +31,9 @@ const SimpleServicesSection: FC<SimpleServicesSectionPropsWithHeader> = ({
   isQuickQuote = false,
   setIsQuickQuote,
 }) => {
+  const { prefilledFields, clearPrefilledField } = useSimpleForm();
+  const isServicesPrefilled = prefilledFields.has('servicesRequested');
+
   const toggleService = (service: ServiceKey): void => {
     setFormData((prev) => ({
       ...prev,
@@ -370,8 +374,11 @@ const SimpleServicesSection: FC<SimpleServicesSectionPropsWithHeader> = ({
                 type="button"
                 className={`sino-simple-chip sino-simple-chip--service-${option.key}${
                   formData.servicesRequested[option.key] ? ' sino-simple-chip--active' : ''
-                }`}
-                onClick={() => toggleService(option.key)}
+                }${isServicesPrefilled && formData.servicesRequested[option.key] ? ' sino-simple-chip--prefilled' : ''}`}
+                onClick={() => {
+                  toggleService(option.key);
+                  clearPrefilledField('servicesRequested');
+                }}
                 aria-pressed={formData.servicesRequested[option.key] ? 'true' : 'false'}
                 aria-label={`${option.label}${formData.servicesRequested[option.key] ? ', selected' : ', not selected'}`}
                 onKeyDown={(e) => {

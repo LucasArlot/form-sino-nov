@@ -84,3 +84,68 @@ export function getShareableLink(_sessionId: string): string | null {
   // return `${window.location.origin}/form/resume/${sessionId}`;
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Returning visitor: persist contact info across sessions
+// ---------------------------------------------------------------------------
+
+const VISITOR_KEY = 'sinoSimpleFormVisitor';
+const VISITOR_MAX_AGE_MS = 90 * 24 * 60 * 60 * 1000; // 90 days
+
+export interface VisitorContactInfo {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  phoneCountryCode?: string;
+  companyName?: string;
+  customerType?: string;
+  country?: string;
+  savedAt: string;
+}
+
+export function saveVisitorContact(info: Omit<VisitorContactInfo, 'savedAt'>): void {
+  if (typeof window === 'undefined') return;
+  const hasData = info.email || info.firstName || info.phone;
+  if (!hasData) return;
+
+  try {
+    const data: VisitorContactInfo = { ...info, savedAt: new Date().toISOString() };
+    window.localStorage.setItem(VISITOR_KEY, JSON.stringify(data));
+  } catch {
+    // storage full or unavailable
+  }
+}
+
+export function loadVisitorContact(): VisitorContactInfo | null {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const raw = window.localStorage.getItem(VISITOR_KEY);
+    if (!raw) return null;
+
+    const data = JSON.parse(raw) as VisitorContactInfo;
+
+    // Expire after 90 days
+    if (data.savedAt) {
+      const age = Date.now() - new Date(data.savedAt).getTime();
+      if (age > VISITOR_MAX_AGE_MS) {
+        window.localStorage.removeItem(VISITOR_KEY);
+        return null;
+      }
+    }
+
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+export function clearVisitorContact(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(VISITOR_KEY);
+  } catch {
+    // ignore
+  }
+}

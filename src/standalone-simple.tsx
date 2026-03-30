@@ -5,15 +5,20 @@ import SimpleQuoteForm from '@/simple-form/SimpleQuoteForm';
 import '@/styles/main.css';
 import '@/simple-form/styles/simple-form.css';
 
+export interface SinoSimpleFormInitOptions {
+  /** Pre-fill form fields on init (JS API) */
+  prefill?: Record<string, unknown>;
+}
+
 interface SinoSimpleFormAPI {
-  init: (containerId: string) => void;
+  init: (containerId: string, options?: SinoSimpleFormInitOptions) => void;
   destroy: (containerId: string) => void;
   isInitialized: (containerId: string) => boolean;
 }
 
 const instances: Map<string, Root> = new Map();
 
-function init(containerId: string): void {
+function init(containerId: string, options?: SinoSimpleFormInitOptions): void {
   const container = document.getElementById(containerId);
   if (!container) {
     console.error(`[SinoSimpleForm] Container with id "${containerId}" not found`);
@@ -31,7 +36,7 @@ function init(containerId: string): void {
     <StrictMode>
       <div className="sino-simple-form-root">
         <SimpleFormProvider>
-          <SimpleQuoteForm />
+          <SimpleQuoteForm containerId={containerId} initPrefill={options?.prefill} />
         </SimpleFormProvider>
       </div>
     </StrictMode>
@@ -71,6 +76,7 @@ const SinoSimpleFormAPI: SinoSimpleFormAPI = {
 declare global {
   interface Window {
     SinoSimpleForm?: SinoSimpleFormAPI;
+    __sinoSimpleFormPrefill?: Record<string, unknown>;
   }
 }
 

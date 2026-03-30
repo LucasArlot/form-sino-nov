@@ -229,6 +229,36 @@ export function validateDestCity(city: string): ValidationResult {
 }
 
 /**
+ * Validate origin city in China (pickup)
+ * Same rules as destination city, distinct user-facing messages
+ */
+export function validateOriginCity(city: string): ValidationResult {
+  if (!city || typeof city !== 'string') {
+    return {
+      valid: false,
+      error: 'City in China is required',
+    };
+  }
+
+  const trimmed = city.trim();
+  if (trimmed.length === 0) {
+    return {
+      valid: false,
+      error: 'City in China is required',
+    };
+  }
+
+  if (trimmed.length <= 2) {
+    return {
+      valid: false,
+      error: 'City in China is too short',
+    };
+  }
+
+  return { valid: true };
+}
+
+/**
  * Validate weight (numeric value)
  */
 export function validateWeight(weight: string | number | undefined | null): ValidationResult {
@@ -407,6 +437,7 @@ export function validateStepFields(
     case 'shippingRoute':
       errors.country = validateCountry(formData.country as string);
       errors.destCity = validateDestCity(formData.destCity as string);
+      errors.city = validateOriginCity(formData.city as string);
       break;
 
     case 'shippingCargo':

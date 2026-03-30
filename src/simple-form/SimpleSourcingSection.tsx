@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import type { SimpleFormProps } from './context/types';
+import { useSimpleForm } from './context/useSimpleForm';
 
 type SimpleSourcingSectionProps = SimpleFormProps & {
   t: (key: string, fallback: string) => string;
@@ -19,6 +20,9 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isQuickQuote = false,
 }) => {
+  const { prefilledFields, clearPrefilledField } = useSimpleForm();
+  const pf = (field: string): string =>
+    prefilledFields.has(field) ? ' sino-simple-form__input--prefilled' : '';
   return (
     <>
       {formData.servicesRequested.sourcing && (
@@ -38,18 +42,19 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
               </label>
               <textarea
                 id="sourcingProductDescription"
-                className="sino-simple-form__input sino-simple-form__input--textarea"
+                className={`sino-simple-form__input sino-simple-form__input--textarea${pf('sourcing.productDescription')}`}
                 name="sourcingProductDescription"
                 value={formData.sourcing.productDescription}
-                onChange={(event) =>
+                onChange={(event) => {
+                  clearPrefilledField('sourcing.productDescription');
                   setFormData((prev) => ({
                     ...prev,
                     sourcing: {
                       ...prev.sourcing,
                       productDescription: event.target.value,
                     },
-                  }))
-                }
+                  }));
+                }}
                 placeholder={t(
                   'sourcingProductDescriptionPlaceholder',
                   'Briefly describe the product, specs, or categories you need.'
@@ -90,19 +95,20 @@ const SimpleSourcingSection: FC<SimpleSourcingSectionProps> = ({
               <div className="sino-simple-form__fields sino-simple-form__fields--inline">
                 <input
                   id="sourcingTargetPrice"
-                  className="sino-simple-form__input"
+                  className={`sino-simple-form__input${pf('sourcing.targetPrice')}`}
                   type="number"
                   min={0}
                   value={formData.sourcing.targetPrice ?? ''}
-                  onChange={(event) =>
+                  onChange={(event) => {
+                    clearPrefilledField('sourcing.targetPrice');
                     setFormData((prev) => ({
                       ...prev,
                       sourcing: {
                         ...prev.sourcing,
                         targetPrice: event.target.value ? Number(event.target.value) : null,
                       },
-                    }))
-                  }
+                    }));
+                  }}
                   placeholder={t('sourcingTargetPricePlaceholder', 'e.g. 5.50')}
                 />
                 <input
